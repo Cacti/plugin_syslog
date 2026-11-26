@@ -1,0 +1,4091 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-20 14:13-0500\n"
+"PO-Revision-Date: 2026-11-24 19:00+0000\n"
+"Last-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\n"
+"Language-Team: Yoruba\n"
+"Language: yo-NG\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d minutes"
+msgstr "ìṣẹ́jú %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d hour"
+msgstr "wákàtí %d"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d hours"
+msgstr "wákàtí %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d day"
+msgstr "ọjọ́ %d"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d days"
+msgstr "ọjọ́ %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d week"
+msgstr "ọ̀sẹ̀ %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d weeks"
+msgstr "àwọn ọ̀sẹ̀ %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d month"
+msgstr "oṣù %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d months"
+msgstr "àwọn oṣù %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d year"
+msgstr "ọdún %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d years"
+msgstr "àwọn ọdún %d"
+
+#: includes/functions.php
+msgid "Day Shift"
+msgstr "Ìṣẹ́ Ọ̀sán"
+
+#: includes/functions.php
+msgid "This Day"
+msgstr "Ọjọ́ Yìí"
+
+#: includes/functions.php
+msgid "This Week"
+msgstr "Ọ̀sẹ̀ Yìí"
+
+#: includes/functions.php
+msgid "This Month"
+msgstr "Oṣù Yìí"
+
+#: includes/functions.php
+msgid "This Year"
+msgstr "Ọdún Yìí"
+
+#: includes/functions.php
+msgid "Previous Day"
+msgstr "Ọjọ́ Tó Kọjá"
+
+#: includes/functions.php
+msgid "Previous Week"
+msgstr "Ọ̀sẹ̀ Tó Kọjá"
+
+#: includes/functions.php
+msgid "Previous Month"
+msgstr "Oṣù Tó Kọjá"
+
+#: includes/functions.php
+msgid "Previous Year"
+msgstr "Ọdún Tó Kọjá"
+
+#: includes/functions.php
+msgid "Syslog download"
+msgstr "Ìgbàsílẹ̀ Syslog"
+
+#: includes/functions.php
+msgid "Share with users…"
+msgstr "Pín pẹ̀lú àwọn olùlò…"
+
+#: includes/functions.php
+msgid "Share with groups…"
+msgstr "Pín pẹ̀lú àwọn ẹgbẹ́…"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Emergency"
+msgstr "Pàjáwìrì"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Critical"
+msgstr "Pàtàkì"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Alert"
+msgstr "Ìfiyèsí"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Error"
+msgstr "Àṣìṣe"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Warning"
+msgstr "Ìkìlọ̀"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Notice"
+msgstr "Àkíyèsí"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "Ìfitónilétí"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Debug"
+msgstr "Wádìí Àṣìṣe"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Informational"
+msgstr "Onífitónilétí"
+
+#: includes/functions.php
+msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
+msgstr "Ìfipamọ́ Kùnà.  Àwọn Olùkójọ Dátà Òkèèrè ní Ipò Ìbámu kò ní àṣẹ láti Fipamọ́ Àwọn Òfin.  Fipamọ́ láti Olùpèsè Cacti Àkọ́kọ́ dípò rẹ̀."
+
+#: includes/functions.php
+msgid "Please use an HTML Email Client"
+msgstr "Jọ̀wọ́ lo Olùṣàkóso Ímeèlì HTML kan"
+
+#: includes/functions.php
+msgid "Text import payload exceeds the maximum size"
+msgstr "Ìwọ̀n àkójọpọ̀ ọ̀rọ̀ tí a ń kó wọlé ti ju ìwọ̀n tó pọ̀ jùlọ lọ"
+
+#: includes/functions.php
+msgid "Unable to read the uploaded import file. Check the file and upload size limit."
+msgstr "Kò le ka fáìlì ìkówọlé tí a gbé sókè. Ṣàyẹ̀wò fáìlì náà àti ààlà ìwọ̀n ìgbésókè."
+
+#: includes/functions.php
+msgid "Select an import file or paste its contents before importing."
+msgstr "Yan fáìlì ìgbéwọlé tàbí lẹ àkóónú rẹ̀ kí o tó gbé e wọlé."
+
+#: includes/functions.php
+msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
+msgstr "Àwọn tábìlì Syslog kò sí ní ìpínsísọ̀rí. Àwọn tábìlì ìbílẹ̀ (tí kò sí ní ìpínsísọ̀rí) ti di àtijọ́, a sì nílò àwọn tábìlì ìpínsísọ̀rí fún àwọn ìfisílẹ̀ tuntun. Dátà rẹ yóò máa bá a lọ láti jẹ́ kíkójọ, ṣùgbọ́n ó yẹ kí o ṣí tábìlì syslog lọ sí ètò ìpínsísọ̀rí."
+
+#: includes/functions.php
+msgid "Waiting for a completed processing run."
+msgstr "Ń dúró de ìṣiṣẹ́ tí a parí."
+
+#: includes/functions.php
+msgid "Processing is completing within the allowed delay."
+msgstr "Ìṣiṣẹ́ ń parí láàárín àkókò ìfàsẹ́yìn tí a gbà láyè."
+
+#: includes/functions.php
+#, php-format
+msgid "No processing run has completed for more than %d seconds."
+msgstr "Kò sí ìṣiṣẹ́ kankan tí ó parí fún ju ìṣẹ́jú-àáyá %d lọ."
+
+#: includes/functions.php
+msgid "Incoming messages are within the configured limits."
+msgstr "Àwọn ìránṣẹ́ tí ń wọlé wà láàárín àwọn ààlà tí a ṣètò."
+
+#: includes/functions.php
+msgid "Incoming queue metrics are unavailable."
+msgstr "Àwọn ìwọ̀n ìlà tí ń wọlé kò sí."
+
+#: includes/functions.php
+#, php-format
+msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
+msgstr "Àkójọpọ̀ ìránṣẹ́ tí ń wọlé tó kéré jù %s kọjá ààlà %s."
+
+#: includes/functions.php
+msgid "The oldest incoming message timestamp is unavailable."
+msgstr "Àmì àkókò ìránṣẹ́ tí ó ń wọlé tí ó pẹ́ jùlọ kò sí."
+
+#: includes/functions.php
+#, php-format
+msgid "Unprocessed messages are older than %d seconds."
+msgstr "Àwọn ìfìránṣẹ́ tí a kò tíì ṣiṣẹ́ lé lórí ti ju ìṣẹ́jú-àáyá %d lọ."
+
+#: includes/functions.php
+msgid "Synchronization is not enabled on this collector."
+msgstr "Ìmúbáramu kò sí ní ipò ṣiṣẹ́ lórí olùkójọ yìí."
+
+#: includes/functions.php
+msgid "Synchronization is within the allowed delay."
+msgstr "Ìmúbáramu wà láàárín àkókò ìdádúró tí a fàyè gbà."
+
+#: includes/functions.php
+msgid "Synchronization queue metrics are unavailable."
+msgstr "Àwọn ìwọ̀n ìlà ìmúbáramu kò sí lọ́wọ́lọ́wọ́."
+
+#: includes/functions.php
+msgid "The oldest synchronization record timestamp is unavailable."
+msgstr "Àmì àkókò àkọsílẹ̀ ìṣàmúṣọ̀kan tí ó pẹ́ jùlọ kò sí."
+
+#: includes/functions.php
+msgid "Synchronization has failed or queued records exceed the allowed delay."
+msgstr "Ìmúbáramu ti kùnà tàbí àwọn àkọsílẹ̀ tó wà lórí ìlà ti kọjá àkókò ìdádúró tí a fàyè gbà."
+
+#: includes/functions.php
+msgid "Partition maintenance is not blocked."
+msgstr "Ìtọ́jú ìpín kò dí."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition maintenance is blocked: %s"
+msgstr "Ìtọ́jú ìpín ti dí: %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Syslog pipeline health - collector %d"
+msgstr "Ìlera ìlà-iṣẹ́ Syslog - olùkójọ %d"
+
+#: includes/functions.php
+msgid "The Syslog pipeline has recovered."
+msgstr "Ìlà iṣẹ́ Syslog ti bọ̀ sípò."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
+msgstr "Ètò ìpín fún %s kò tọ́ tàbí kò pé; ìtọ́jú ìpín ti dáwọ́ dúró. Ṣàyẹ̀wò àlàyé ìpín pẹ̀lú SHOW CREATE TABLE, bí ó bá sì pọndandan, tún àwọn ìpín kọ́; àwọn ìkọ̀wé ń tẹ̀síwájú sínú ìpín ààbò dMaxValue."
+
+#: includes/functions.php
+#, php-format
+msgid "remaining partition gap: %d partition(s)"
+msgstr "àlàfo ìpín tó kù: ìpín %d"
+
+#: includes/functions.php
+msgid "no retention deferral"
+msgstr "kò sí ìdádúró ìpamọ́"
+
+#: includes/functions.php
+msgid "retention pruning deferred until the future horizon is restored"
+msgstr "a dá ìdínkù ìpamọ́ dúró títí tí ààlà ọjọ́ iwájú yóò fi padà bọ̀ sípò"
+
+#: includes/functions.php
+msgid "new records are accumulating in the dMaxValue safety partition"
+msgstr "àwọn àkọsílẹ̀ tuntun ń kóra jọ sínú ìpín ààbò dMaxValue"
+
+#: includes/functions.php
+msgid "per run recovery limit reached"
+msgstr "àlà ìmúpadàbọ̀sípò fún ìṣiṣẹ́ kọ̀ọ̀kan ti pé"
+
+#: includes/functions.php
+msgid "partition creation failed"
+msgstr "ìdásílẹ̀ ìpín kùnà"
+
+#: includes/functions.php
+msgid "Unknown partitioning level; choose Hourly or Daily."
+msgstr "Ìpele ìpín àìmọ̀; yan Wákàtí kan tàbí Ojoojúmọ́."
+
+#: includes/functions.php
+msgid "The Syslog retention is invalid."
+msgstr "Àkókò ìpamọ́ Syslog kò tọ́."
+
+#: includes/functions.php
+msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
+msgstr "A kò lè lo ìpínyà lóòrèkóòrè wákàtí pẹ̀lú ìpamọ́ àìlópin, èyí tí yóò nílò iye ìpín tí kò ní òpin. Yan àkókò ìpamọ́ kan tàbí ìpínyà ojoojúmọ́."
+
+#: includes/functions.php
+#, php-format
+msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
+msgstr "Ìpínsísọ̀rí %s pẹ̀lú ọjọ́ %s ti ìpamọ́ àti fèrèsé ìṣẹ̀dá ṣáájú ọjọ́ %s nílò ìpín %s fún tábìlì kọ̀ọ̀kan, èyí tí ó kọjá àlà ìpín %s ti sẹ́fà ibi-ìpamọ́ dátà yìí. Dín ìpamọ́ kù, mú fèrèsé ìṣẹ̀dá ṣáájú kúrú, tàbí kí o yan ìpínsísọ̀rí Ojoojúmọ́."
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Daily"
+msgstr "Ojoojúmọ́"
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Hourly"
+msgstr "Wákàtí Kọ̀ọ̀kan"
+
+#: includes/functions.php
+#, php-format
+msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
+msgstr "Àwọn tábìlì náà ṣì ń lo àwọn ìpín %s títí cli/upgrade_partitioning.php yóò fi tún wọn kọ."
+
+#: includes/functions.php
+msgid "The partitioning level of the existing Syslog tables could not be read."
+msgstr "Kò ṣeé ṣe láti ka ìpele ìpínsíwẹ́wẹ́ àwọn tábìlì Syslog tí ó wà."
+
+#: includes/functions.php
+msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
+msgstr "Ìgbàpadà ìpín aládàáṣe ti di sísún síwájú: ìwọ̀n dMaxValue kò sí; ìdásí olùṣiṣẹ́ pọndandan."
+
+#: includes/functions.php
+#, php-format
+msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
+msgstr "Ìgbàpadà ìpín aládàáṣe ti di sísún síwájú: dMaxValue ní ìṣirò %s àwọn ìlà àti %s báìtì; àwọn òpin ni ìlà 100000 àti báìtì 134217728. Ìdásí olùṣiṣẹ́ pọndandan."
+
+#: includes/functions.php
+msgid "Unknown rule type."
+msgstr "Irú òfin àìmọ̀."
+
+#: includes/functions.php
+msgid "The configured incoming field mapping is invalid."
+msgstr "Ìtòsọ́nà pápá àbáwọlé tí a ṣètò kò tọ́."
+
+#: includes/functions.php
+msgid "The facility of this rule is not in the reference table yet."
+msgstr "Ohun èlò òfin yìí kò sí nínú tábìlì ìtọ́kasí síbẹ̀."
+
+#: includes/functions.php
+msgid "Unknown rule match type."
+msgstr "Irú ìbámu òfin àìmọ̀."
+
+#: includes/functions.php
+msgid "The rule did not compile to a query."
+msgstr "Òfin náà kò ṣàkójọpọ̀ sí ìbéèrè kan."
+
+#: includes/functions.php
+msgid "The preview query could not be evaluated."
+msgstr "Kò ṣeé ṣe láti ṣàyẹ̀wò ìbéèrè àwòkọ́."
+
+#: includes/functions.php
+msgid "The historical preview filter could not be compiled."
+msgstr "A kò lè ṣàkójọ àlẹ̀mọ́ àwòkọ́ṣe ìtàn náà."
+
+#: includes/functions.php
+msgid "The historical preview query could not be evaluated."
+msgstr "A kò lè ṣe ìṣirò ìbéèrè àwòkọ́ṣe ìtàn náà."
+
+#: includes/functions.php
+msgid "The preview sample could not be read."
+msgstr "Kò ṣeé ṣe láti ka àpẹẹrẹ àwòkọ́."
+
+#: includes/functions.php
+msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
+msgstr "Àwòkọ́ṣe gbólóhùn SQL ń ṣàyẹ̀wò àwọn ìránṣẹ́ tó ń bọ̀ lórí ìlà nìkan. A kò ní wá àwọn ìránṣẹ́ tí a ti ṣiṣẹ́ lé lórí tẹ́lẹ̀. Ìdánwò kì í fi ìtanijí ránṣẹ́."
+
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Permission denied."
+msgstr "A kọ̀ àṣẹ."
+
+#: includes/functions.php includes/utilities.php syslog.php
+msgid "Invalid request. Please try again."
+msgstr "Ìbéèrè tí kò tọ́. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i."
+
+#: includes/functions.php
+msgid "The rule has no match expression to test."
+msgstr "Òfin náà kò ní gbólóhùn ìbámu láti dán wò."
+
+#: includes/functions.php
+msgid "The match expression is too long to test."
+msgstr "Àpèjúwe ìbáramu náà gùn jù láti dán wò."
+
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
+msgid "Unknown"
+msgstr "Àìmọ̀"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
+msgstr "Ìkìlọ̀ Àlà Syslog Cacti '%s' fún Olùgbàlejò '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "Ìkìlọ̀ Àlà Syslog Cacti '%s'"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+msgid "Alert Name"
+msgstr "Orúkọ Ìfiyèsí"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+#: syslog_recommendations.php
+msgid "Severity"
+msgstr "Ìwọ̀n Ìṣòro"
+
+#: includes/functions.php syslog_alerts.php
+msgid "Threshold"
+msgstr "Àlà"
+
+#: includes/functions.php syslog.php
+msgid "Count"
+msgstr "Iye"
+
+#: includes/functions.php
+msgid "Match String"
+msgstr "Okùn Ìbámu"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s' for Host '%s'"
+msgstr "Ìkìlọ̀ Syslog Cacti '%s' fún Olùgbàlejò '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s'"
+msgstr "Ìkìlọ̀ Syslog Cacti '%s'"
+
+#: includes/functions.php
+msgid "Hostname"
+msgstr "Orúkọ Olùgbàlejò"
+
+#: includes/functions.php syslog.php
+msgid "Date"
+msgstr "Ọjọ́"
+
+#: includes/functions.php
+msgid "Level"
+msgstr "Ìpele"
+
+#: includes/functions.php includes/recommendations.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Message"
+msgstr "Ìfiranṣẹ́"
+
+#: includes/functions.php
+#, php-format
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
+msgstr "ÌKÌLỌ̀: Ìtanijí Àlà Syslog Kan Ti Jàde fún Olùgbàlejò '%s'"
+
+#: includes/functions.php
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
+msgstr "ÌKÌLỌ̀: Ìtanijí Àlà Syslog Kan Ti Jàde"
+
+#: includes/functions.php
+msgid "Name:"
+msgstr "Orúkọ:"
+
+#: includes/functions.php
+msgid "Severity:"
+msgstr "Ìwúwo:"
+
+#: includes/functions.php
+msgid "Threshold:"
+msgstr "Àlà:"
+
+#: includes/functions.php
+msgid "Count:"
+msgstr "Iye:"
+
+#: includes/functions.php
+msgid "Message String:"
+msgstr "Okùn Ìfiranṣẹ́:"
+
+#: includes/functions.php
+msgid "Hostname:"
+msgstr "Orúkọ olùgbàlejò:"
+
+#: includes/functions.php
+msgid "Date:"
+msgstr "Ọjọ́:"
+
+#: includes/functions.php
+msgid "Level:"
+msgstr "Ìpele:"
+
+#: includes/functions.php
+msgid "Message:"
+msgstr "Ìfiranṣẹ́:"
+
+#: includes/functions.php
+msgid ", Host:"
+msgstr ", Olùgbàlejò:"
+
+#: includes/functions.php
+msgid ", URL:"
+msgstr ", URL:"
+
+#: includes/functions.php
+msgid "Sev:"
+msgstr "Ìwúwo:"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Alert - %s"
+msgstr "Ìtànijí Ìṣẹ̀lẹ̀ - %s"
+
+#: includes/functions.php
+msgid ", Count:"
+msgstr ", Iye:"
+
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php syslog_reports.php
+msgid "Host"
+msgstr "Olùgbàlejò"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Report - %s"
+msgstr "Ìjábọ̀ Ìṣẹ̀lẹ̀ - %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
+msgstr "Àwọn àwòtẹ́lẹ̀ ìròyìn máa ń wá àwọn ìfiránṣẹ́ %d tó ṣẹ̀ṣẹ̀ fipamọ́ jù lọ; ìròyìn fúnra rẹ̀ bo gbogbo àsìkò rẹ̀. Ìdánwò kì í fi ímeèlì ránṣẹ́."
+
+#: includes/functions.php
+msgid "Grouped results are unavailable or expired. Refresh the results and try again."
+msgstr "Àwọn èsì tí a kójọ kò sí tàbí wọ́n ti parí àkókò. Tún àwọn èsì ṣe kí o sì gbìyànjú lẹ́ẹ̀kan sí i."
+
+#: includes/functions.php syslog.php
+msgid "Group messages could not be loaded."
+msgstr "Kò ṣeé ṣe láti gbé àwọn ìránṣẹ́ ẹgbẹ́."
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "No"
+msgstr "Rárá"
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "Yes"
+msgstr "Bẹ́ẹ̀ Ni"
+
+#: includes/functions.php
+msgid "All Text"
+msgstr "Gbogbo Ọ̀rọ̀"
+
+#: includes/functions.php
+msgid "Fit Column"
+msgstr "Mu Ọ̀wọ́n Ba Mu"
+
+#: includes/functions.php
+#, php-format
+msgid "%d Chars"
+msgstr "Àwọn Àmì-ọ̀rọ̀ %d"
+
+#: includes/installer.php
+msgid "Syslog Upgrade Advisor"
+msgstr "Olùdámọ̀ràn Ìgbéga Syslog"
+
+#: includes/installer.php
+#, php-format
+msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
+msgstr "Ṣé kí a gbé Syslog sókè láti %s sí %s? A ó pa àwọn ìránṣẹ́ àti àwọn òfin tó wà tẹ́lẹ̀ mọ́. Àwọn àyípadà ètò ibi ìpamọ́ dátà lè gba àkókò."
+
+#: includes/installer.php
+msgid "What upgrade/install type do you wish to use"
+msgstr "Irú ìgbéga/ìfisílẹ̀ wo ni o fẹ́ lò"
+
+#: includes/installer.php
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
+msgstr "Nígbà tí o bá ní àwọn tábìlì tó tóbi gan-an, ṣíṣe Truncate yóò yára púpọ̀ sí i.  Tí o bá ṣe àníyàn nípa dátà ìpamọ́ àtijọ́, o lè yan Inline, èyí tí yóò dá aṣàwárí rẹ dúró fún àkókò ìgbéga yìí, tàbí ẹ̀yìn, èyí tí yóò dá ìṣiṣẹ́ ẹ̀yìn sílẹ̀ láti mú dátà syslog àtijọ́ rẹ láti tábìlì àfẹ̀hìntì wá sí ọ̀nà syslog tuntun.  Lẹ́ẹ̀kan sí i, ìlànà yìí lè gba ọ̀pọ̀ wákàtí.  Truncate ń da àwọn ìfọ̀rọ̀wérọ̀ syslog tí a pamọ́ àti èyí tí a ti yọ kúrò nìkan nù; àwọn òfin ìtanijí, ìyọkúrò àti ìròyìn ni a máa ń pa mọ́ nígbà gbogbo."
+
+#: includes/installer.php
+msgid "Truncate Syslog Table"
+msgstr "Sọ Tábìlì Syslog di Òfo"
+
+#: includes/installer.php
+msgid "Inline Upgrade"
+msgstr "Ìgbéga Lórí Ìlà"
+
+#: includes/installer.php
+msgid "Background Upgrade"
+msgstr "Ìgbéga Lábẹ́lẹ̀"
+
+#: includes/installer.php
+msgid "Database Storage Engine"
+msgstr "Ẹ̀rọ Ìpamọ́ Dátàbẹ́ẹ̀sì"
+
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
+msgstr "Ẹ́ńjìnì ìpamọ́ fún àwọn tábìlì ìtúpalẹ̀.  InnoDB nìkan àti, lórí MariaDB, àwọn ẹ́ńjìnì ìpamọ́ Aria ni a ṣe àtìlẹ́yìn fún.  Èyíkéyìí àṣàyàn Olùkójọpọ̀ Dátà Òkèèrè nílò InnoDB; a kò lè fi àwọn àpapọ̀ tí kò báramu ránṣẹ́."
+
+#: includes/installer.php
+msgid "InnoDB Storage"
+msgstr "Ìpamọ́ InnoDB"
+
+#: includes/installer.php
+msgid "Aria Storage"
+msgstr "Ibi Ìpamọ́ Aria"
+
+#: includes/installer.php
+msgid "Timestamp Precision"
+msgstr "Ìpéye Àmì-àkókò"
+
+#: includes/installer.php
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
+msgstr "Ìṣedéédé milisẹ́kọ́ǹdù ń fi àwọn àmì-àkókò syslog tí ó kéré ju ìṣẹ́jú-àáyá lọ pamọ́ sínú òpó TIMESTAMP(3) ó sì wà lórí MariaDB nìkan. Ìṣedéédé ìṣẹ́jú-àáyá ń lo òpó TIMESTAMP ìbílẹ̀. Lórí ètò iṣẹ́ gidi, lo cli/upgrade_partitioning.php --convert-ms lásìkò ìtọ́jú láti yí àwọn ìránṣẹ́ tí ó ti wà tẹ́lẹ̀ padà láì da wọ́n nù."
+
+#: includes/installer.php
+msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
+msgstr "Milisẹ́kọ́ǹdù - TIMESTAMP(3) (MariaDB nìkan)"
+
+#: includes/installer.php
+msgid "Second - TIMESTAMP"
+msgstr "Ìṣẹ́jú-àáyá - TIMESTAMP"
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Message Processing"
+msgstr "Ìṣiṣẹ́ Ìfiranṣẹ́ Òkèèrè"
+
+#: includes/installer.php includes/settings.php
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "Mú Ìṣiṣẹ́ Ìránṣẹ́ Olùkójọpọ̀ Dátà Ọ̀nà Jíjìn ṣiṣẹ́"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "Tí Àwọn Olùkójọpọ̀ Dátà Ọ̀nà Jíjìn rẹ bá ní ibi-ìpamọ́ dátà Syslog tiwọn tí wọ́n sì ń ṣe ìṣiṣẹ́ àwọn ìránṣẹ́ wọn lọ́tọ̀, ṣàmì sí àpótí àyẹ̀wò yìí. Nípa ṣíṣàmì sí Àpótí àyẹ̀wò yìí, Àwọn Olùkójọpọ̀ Dátà Ọ̀nà Jíjìn rẹ yóò nílò láti tọ́jú fáìlì 'config_local.php' tiwọn láti lè sọ fún Syslog láti lo ibi-ìpamọ́ dátà òmìnira fún ìṣàfihàn àti ìṣiṣẹ́ ìránṣẹ́. Jọ̀wọ́ lo fáìlì Àdàkọ 'config_local.php.dist' fún ìdí yìí. ÌKÌLỌ̀: A óò ṣẹ̀dá àwọn tábìlì Syslog lọ́nà àdánidá nígbà tí àṣàyàn yìí bá ti wà ní Ṣiṣẹ́."
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Data Collector Rules Sync"
+msgstr "Ìmúṣọ̀kan Àwọn Òfin Olùkó Dátà Òkèèrè"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "Tí Àwọn Olùkójọpọ̀ Dátà Ọ̀nà Jíjìn rẹ bá ní ibi-ìpamọ́ dátà Syslog tiwọn tí wọ́n sì ń ṣe ìṣiṣẹ́ àwọn ìránṣẹ́ wọn lọ́tọ̀, ṣàmì sí àpótí àyẹ̀wò yìí tí o bá fẹ́ kí a fi àwọn òfin Ìtanijí, Ìyọkúrò àti Ìròyìn ti ibi-ìpamọ́ dátà Cacti Pàtàkì ránṣẹ́ sí Ètò Cacti Ọ̀nà Jíjìn."
+
+#: includes/installer.php includes/settings.php
+msgid "Store Records on Remote Collector"
+msgstr "Tọ́jú Àwọn Àkọsílẹ̀ sí Olùkójọ Òkèèrè"
+
+#: includes/installer.php includes/settings.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr "Pa àwọn ìránṣẹ́ tí a ti ṣiṣẹ́ lé lórí mọ́ sínú tábìlì syslog ti olùkójọ òkèèrè lẹ́yìn tí a bá ti fi wọ́n ránṣẹ́ sí Olùkójọ Àkọ́kọ́. Nígbà tí ó bá wà ní àìṣiṣẹ́, àwọn àkọsílẹ̀ ni a ó máa tọ́jú ní agbègbè nìkan nígbà tí Olùkójọ Àkọ́kọ́ kò bá sí lárọ̀ọ́wọ́tó, a ó sì yọ wọ́n kúrò lẹ́yìn ìjẹ́rìísí ìfìránṣẹ́ ìpadàbọ̀."
+
+#: includes/installer.php
+msgid "Retention Policy"
+msgstr "Ìlànà Ìpamọ́"
+
+#: includes/installer.php
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "Yan iye ọjọ́ àwọn iye Syslog tí o fẹ́ tọ́jú sínú ibi ìpamọ́ dátà."
+
+#: includes/installer.php includes/settings.php
+msgid "Partitioning Level"
+msgstr "Ìpele Ìpín"
+
+#: includes/installer.php
+msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
+msgstr "Ìwọ̀n ìpín kọ̀ọ̀kan ti àwọn tábìlì syslog àti syslog_removed.  Ojoojúmọ́ ni a dámọ̀ràn.  Wákàtí kọ̀ọ̀kan nílò ìtọ́jú tí ó ní òpin, àti pé ìtọ́jú àti ìpele ìpínsíwẹ́wẹ́ papọ̀ gbọ́dọ̀ bá ààlà ìpín olùpèsè ibùdó dátà mu.  Láti yí ìpele náà padà lẹ́yìn náà, yí i padà nínú Àwọn Ètò kí o sì ṣiṣẹ́ cli/upgrade_partitioning.php."
+
+#: includes/installer.php
+msgid "Upgrade"
+msgstr "Ìgbéga"
+
+#: includes/installer.php
+msgid "Install"
+msgstr "Fi sílẹ̀"
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Advisor"
+msgstr "Olùdámọ̀ràn %s Syslog"
+
+#: includes/installer.php
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "ÌKÌLỌ̀: Ìgbéga Syslog Ń Gba Àkókò Púpọ̀!!!"
+
+#: includes/installer.php
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
+msgstr "Ìgbéga tábìlì syslog 'main' lè jẹ́ ìlànà tó ń gba àkókò púpọ̀. Nítorí náà, a dámọ̀ràn pé kí o dín ìwọ̀n tábìlì syslog rẹ kù ṣáájú ìgbéga, tàbí kí o yan àṣàyàn abẹ́lẹ̀."
+
+#: includes/installer.php
+msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
+msgstr "Tí o bá yan àṣàyàn abẹ́lẹ̀, tábìlì Syslog àtijọ́ rẹ yóò gba orúkọ tuntun, a óò sì ṣẹ̀dá tábìlì Syslog tuntun kan. Lẹ́yìn náà, a óò bẹ̀rẹ̀ ìlànà ìgbéga ní abẹ́lẹ̀. Lẹ́ẹ̀kan sí i, ìlànà abẹ́lẹ̀ yìí lè gba àkókò púpọ̀ láti parí. Síbẹ̀síbẹ̀, a óò pa dátà rẹ mọ́."
+
+#: includes/installer.php
+msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
+msgstr "Láìka àṣàyàn rẹ sí, gbogbo àwọn òfin ìyọkúrò àti ìtanijí tí ó wà tẹ́lẹ̀ ni a ó pa mọ́ nígbà ìlànà ìgbésókè."
+
+#: includes/installer.php
+msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Tẹ <b>'Ìgbéga'</b> láti tẹ̀síwájú pẹ̀lú ìgbéga náà, tàbí <b>'Fagilé'</b> láti padà sí àtòjọ Àwọn Àfikún."
+
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
+msgstr "O tún lè ṣètò ẹ̀rọ ìpamọ́ ibi-ìpamọ́ dátà fún àwọn tábìlì ìtúpalẹ̀ syslog àti syslog_remove.  Ẹ̀rọ ìpamọ́ InnoDB nìkan àti, lórí MariaDB, ẹ̀rọ ìpamọ́ Aria ni a ṣe àtìlẹ́yìn fún.  Tí o bá ń lo MariaDB, a gbani nímọ̀ràn Ẹ̀rọ Ìpamọ́ Aria nígbà tí kò bá sí àwọn àṣàyàn Olùkójọ Dátà Òkèèrè tí ó ṣiṣẹ́; àwọn àṣàyàn olùkójọ béèrè fún InnoDB."
+
+#: includes/installer.php
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "O ní ọ̀pọ̀ àṣàyàn láti yan lára wọn nígbà tí o bá ń fi Syslog sí i.  Èkíní ni Ìṣètò Ibùdó Dátà.  Àwọn tábìlì tí a pín sí abala ni ìṣètò kan ṣoṣo tí a ṣe àtìlẹ́yìn fún nítorí pé wọ́n ń dènà kí ìwọ̀n àwọn tábìlì má baà pọ̀ jù tí yóò sì dín ìwádìí kù.  Àwọn tábìlì àtijọ́ tí a kò pín sí abala ti di àkójúgbẹ́, a kò sì pèsè wọn mọ́ fún àwọn ìfisílẹ̀ tuntun."
+
+#: includes/installer.php
+msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
+msgstr "O tún lè yan ìpẹ̀kun àkókò àmì-àkókò.  Ìpẹ̀kun ìdá-ẹgbẹ̀rún ìṣẹ́jú-àáyá (TIMESTAMP(3)) máa ń pa ìtòlẹ́sẹẹsẹ abẹ́-ìṣẹ́jú-àáyá ti àwọn ìfọ̀rọ̀wérọ̀ tó ń wọlé mọ́, ó sì wà lórí MariaDB nìkan; àwọn ìfisílẹ̀ MySQL ń lo ìpẹ̀kun ìṣẹ́jú-àáyá.  A kò lè yí èyí padà ní ibi kan náà lẹ́yìn náà láìpa àwọn ìfọ̀rọ̀wérọ̀ tí a pamọ́ run."
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr "Ibi ìpamọ́ Aria kò sí nígbà tí èyíkéyìí àṣàyàn Olùkójọ Dátà Òkèèrè bá wà ní ṣiṣẹ́. A ti yan InnoDB."
+
+#: includes/installer.php
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "O tún lè yan àkókò ìpamọ́.  Jọ̀wọ́ rántí pé tí o bá ní ọ̀pọ̀ àwọn olùgbàlejò tó ń kọsílẹ̀ sí syslog, tábìlì yìí lè tóbi púpọ̀."
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Settings"
+msgstr "Àwọn Ètò %s Syslog"
+
+#: includes/installer.php
+msgid "What uninstall method do you want to use?"
+msgstr "Ọ̀nà ìyọkúrò wo ni o fẹ́ lò?"
+
+#: includes/installer.php
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "Nígbà tí o bá ń yọ syslog kúrò, o lè yọ ohun gbogbo kúrò, tàbí àwọn ẹ̀yà nìkan, bí o bá gbèrò láti tún fi sí i lọ́jọ́ iwájú."
+
+#: includes/installer.php
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "Yọ Ohun Gbogbo Kúrò (Àwọn Àkọsílẹ̀, Àwọn Tábìlì, Àwọn Ètò)"
+
+#: includes/installer.php
+msgid "Syslog Data Only"
+msgstr "Dátà Syslog Nìkan"
+
+#: includes/installer.php
+msgid "Syslog Uninstall Preferences"
+msgstr "Àwọn Àṣàyàn Ìyọkúrò Syslog"
+
+#: includes/installer.php
+msgid "Uninstall"
+msgstr "Yọ kúrò"
+
+#: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Cancel"
+msgstr "Fagilé"
+
+#: includes/navigation.php includes/settings.php
+msgid "Syslog"
+msgstr "Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Removals"
+msgstr "Àwọn Ìyọkúrò Syslog"
+
+#: includes/navigation.php
+msgid "(Edit)"
+msgstr "(Ṣàtúnṣe)"
+
+#: includes/navigation.php
+msgid "(Actions)"
+msgstr "(Àwọn Ìgbésẹ̀)"
+
+#: includes/navigation.php
+msgid "Syslog Alerts"
+msgstr "Àwọn Ìtanijí Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Reports"
+msgstr "Àwọn Ìjábọ̀ Syslog"
+
+#: includes/navigation.php includes/settings.php syslog_saved_searches.php
+msgid "Saved Search Templates"
+msgstr "Àwọn Àdàkọ Ìwádìí Tí A Fipamọ́"
+
+#: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
+#: syslog_dashboards.php
+msgid "Dashboards"
+msgstr "Àwọn Pátákó Ìṣàkóso"
+
+#: includes/navigation.php syslog_recommendations.php
+msgid "Syslog Recommendations"
+msgstr "Àwọn Ìmọ̀ràn Syslog"
+
+#: includes/navigation.php
+msgid "(Import)"
+msgstr "(Kó wọlé)"
+
+#: includes/navigation.php
+msgid "Display Syslog in Range"
+msgstr "Ṣàfihàn Syslog láàárín Ààlà"
+
+#: includes/recommendations.php
+msgid "the identifier is empty"
+msgstr "olùdánimọ̀ náà ṣófo"
+
+#: includes/recommendations.php
+msgid "the identifier is longer than 190 characters"
+msgstr "olùdánimọ̀ náà gùn ju àmì-ìkọ̀wé 190 lọ"
+
+#: includes/recommendations.php
+msgid "the identifier contains spaces or line breaks"
+msgstr "olùdánimọ̀ náà ní àwọn àlàfo tàbí ìpínyà ìlà"
+
+#: includes/recommendations.php
+msgid "it has neither an explanation nor a recommended action"
+msgstr "kò ní àlàyé kankan tàbí ìgbésẹ̀ tí a dábàá"
+
+#: includes/recommendations.php
+msgid "it is not a JSON object"
+msgstr "kì í ṣe nǹkan JSON"
+
+#: includes/recommendations.php syslog.php
+msgid "Recommendations could not be loaded."
+msgstr "A kò lè gbé àwọn ìmọ̀ràn wọlé."
+
+#: includes/recommendations.php
+msgid "Recommendation available - click the message for details"
+msgstr "Ìmọ̀ràn wà - tẹ ìránṣẹ́ náà fún àlàyé kíkún"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Explanation"
+msgstr "Àlàyé"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Recommended Action"
+msgstr "Ìgbésẹ̀ Tí A Dábàá"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Reference"
+msgstr "Ìtọ́kasí"
+
+#: includes/settings.php
+msgid "Monday"
+msgstr "Ọjọ́ Ajé"
+
+#: includes/settings.php
+msgid "Tuesday"
+msgstr "Ọjọ́ Ìṣẹ́gun"
+
+#: includes/settings.php
+msgid "Wednesday"
+msgstr "Ọjọ́rú"
+
+#: includes/settings.php
+msgid "Friday"
+msgstr "Ọjọ́ Ẹtì"
+
+#: includes/settings.php
+msgid "Saturday"
+msgstr "Ọjọ́ Àbámẹ́ta"
+
+#: includes/settings.php
+msgid "Sunday"
+msgstr "Ọjọ́ Àìkú"
+
+#: includes/settings.php
+msgid "Thursday"
+msgstr "Ọjọ́bọ"
+
+#: includes/settings.php
+msgid "Monday through Friday"
+msgstr "Ọjọ́ Ajé títí dé Ọjọ́ Ẹtì"
+
+#: includes/settings.php
+msgid "Saturday and Sunday"
+msgstr "Ọjọ́ Àbámẹ́ta àti Ọjọ́ Àìkú"
+
+#: includes/settings.php
+msgid "Every day"
+msgstr "Lójoojúmọ́"
+
+#: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Disabled"
+msgstr "Àìṣiṣẹ́"
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_reports.php
+msgid "None"
+msgstr "Kò Sí"
+
+#: includes/settings.php
+msgid "General Settings"
+msgstr "Àwọn Ètò Gbogbogbòò"
+
+#: includes/settings.php
+msgid "Syslog Enabled"
+msgstr "Syslog Ṣiṣẹ́"
+
+#: includes/settings.php
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "Tí a bá ṣàmì sí àpótí àyẹ̀wò yìí, a óò gbé àwọn àkọsílẹ̀ láti tábìlì Syslog Incoming sí tábìlì Syslog pàtàkì, Àwọn Ìtanijí àti Àwọn Ìròyìn yóò sì wà ní Ṣiṣẹ́. Jọ̀wọ́ rántí pé tí ètò bá wà ní Àìṣiṣẹ́, àwọn àkọsílẹ̀ ìwé-ìtàn yóò ṣì máa kóra jọ sínú tábìlì Syslog Incoming nítorí ìlànà rsyslog tàbí syslog-ng ni ó ṣàlàyé èyí."
+
+#: includes/settings.php
+msgid "Forward alarms to Alarm Manager"
+msgstr "Fi àwọn ìtanijí ránṣẹ́ sí Olùṣàkóso Ìtanijí"
+
+#: includes/settings.php
+msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
+msgstr "Gba àwọn òfin tí a ṣètò sí Olùṣàkóso Ìtànijí láàyè láti fi àwọn ìtànijí ránṣẹ́ síwájú. Ímeèlì Syslog ṣì wà gẹ́gẹ́ bí ààbò ìgbẹ̀yìn; àwọn ìṣe àṣẹ máa ń ṣiṣẹ́ fún àwọn òfin Ìtànijí Syslog nìkan."
+
+#: includes/settings.php
+msgid "Strip Domains"
+msgstr "Yọ Àwọn Dòmẹ́ìnì Kúrò"
+
+#: includes/settings.php
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "Àtòjọ àwọn agbègbè ìkànnì tí àmì idánudúró pín sí tí o fẹ́ yọ kúrò lára orúkọ olùgbàlejò Syslog, Àpẹẹrẹ yóò jẹ́ 'mydomain.com, otherdomain.com'"
+
+#: includes/settings.php
+msgid "Refresh Interval"
+msgstr "Ààrin Ìsọdọ̀tun"
+
+#: includes/settings.php
+msgid "This is the time in seconds before the page refreshes."
+msgstr "Èyí ni àkókò ní ìṣẹ́jú-àáyá kí ojú-ewé tó tún sọ ara rẹ̀ dọ̀tun."
+
+#: includes/settings.php
+msgid "Skip Total Row Count"
+msgstr "Fò Àpapọ̀ Ìka Ìlà"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
+msgstr "Tí a bá ṣàmì sí àpótí àyẹ̀wò yìí, àwọn àbùlà Àkọsílẹ̀ Ètò àti Àkọsílẹ̀ Ìtanijí kò ní ka gbogbo àkọsílẹ̀ tí ó báramu, èyí tí ó lè ná ìṣiṣẹ́ púpọ̀ lórí àwọn ìfisílẹ̀ ńlá. Ojú-ewé náà yóò fi àwọn ìjápọ̀ Tẹ́lẹ̀ àti Tókàn hàn dípò àpapọ̀ àti àkójọ ojú-ewé, a óò sì fúnni ní Tókàn nígbà tí àwọn àkọsílẹ̀ mìíràn bá ṣì wà."
+
+#: includes/settings.php
+msgid "Max Report Records"
+msgstr "Àwọn Àkọsílẹ̀ Ìjábọ̀ Tó Pọ̀ Jù Lọ"
+
+#: includes/settings.php
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "Fún àwọn Ìtanijí tí ó dá lórí Àlà, kí ni iye tí ó pọ̀ jùlọ tí o fẹ́ fi hàn nínú ìròyìn. Èyí ni a fi ń dín ìwọ̀n àkọsílẹ̀ html àti Ímeèlì kù."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Records"
+msgstr "Àwọn Àkọsílẹ̀ %d"
+
+#: includes/settings.php
+msgid "Maximum Syslog Processing Processes"
+msgstr "Àwọn Ìlànà Ìṣiṣẹ́ Syslog Tó Pọ̀ Jù Lọ"
+
+#: includes/settings.php
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr "Nígbà tí a bá ṣètò rẹ̀ ju 1 lọ, ìṣiṣẹ́ ìfọ̀rọ̀wérọ̀ tó ń wọlé máa ń pín káàkiri àwọn ìṣiṣẹ́ òṣìṣẹ́ aláfọ̀wọ́sowọ́pọ̀.  Òṣìṣẹ́ kọ̀ọ̀kan ń ṣàkóso àgbègbè ìfọ̀rọ̀wérọ̀ tó yàtọ̀, èyí tó ń mú kí ìtúmọ̀ orúkọ olùgbàlejò àti gbígbé ìfọ̀rọ̀wérọ̀ yára sí i lábẹ́ ẹrù wúwo.  Ètò 1 máa ń ṣiṣẹ́ gbogbo ìfọ̀rọ̀wérọ̀ nínú ìṣiṣẹ́ kan ṣoṣo.  Àwọn ìṣiṣẹ́ òṣìṣẹ́ kò ní àtìlẹ́yìn lórí Windows tàbí nígbà tí àwọn àfikún PHP pcntl àti POSIX kò bá sí, nígbà náà ìṣiṣẹ́ yóò padà sí ìṣiṣẹ́ kan ṣoṣo."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Process"
+msgstr "Ìlànà Ìṣiṣẹ́ Olùṣe %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Processes"
+msgstr "Àwọn Ìlànà Ìṣiṣẹ́ Olùṣe %d"
+
+#: includes/settings.php
+msgid "Command for Opening Tickets"
+msgstr "Àṣẹ fún Ṣíṣí Àwọn Tíkẹ́ẹ̀tì"
+
+#: includes/settings.php
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "A ó ṣe àṣẹ yìí fún ṣíṣí Àwọn Tíkẹ́ẹ̀tì Help Desk. Àṣẹ náà yóò nílò láti ṣàyẹ̀wò ọ̀pọ̀lọpọ̀ àwọn pàrámítà ìtẹ̀wọlé gẹ́gẹ́ bí ìsàlẹ̀ yìí: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>. Àkójọ olùgbàlejò yóò jẹ́ àkójọ àwọn olùgbàlejò tí ìkìlọ̀ náà kàn tí a fi kọ́mà pín."
+
+#: includes/settings.php
+msgid "Host Discovery Options"
+msgstr "Àwọn Àṣàyàn Ìwárí Olùgbàlejò"
+
+#: includes/settings.php
+msgid "Enable Hostname Resolution"
+msgstr "Mú Ìtúmọ̀ Orúkọ Olùgbàlejò ṣiṣẹ́"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr "Tí a bá ṣàmì sí àpótí àyẹ̀wò yìí, gbogbo orúkọ Olùgbàlejò yóò jẹ́ wíwá nípasẹ̀ ìwádìí DNS lákọ̀ọ́kọ́ (Tí ó bá wà ní Ṣiṣẹ́), nípa lílo àwọn àkọsílẹ̀ A àti AAAA. Àwọn àdírẹ́sì IPv4 àti IPv6 kò nílò ìwádìí, a sì ń tọ́jú àwọn àdírẹ́sì IPv6 ní ìrísí lẹ́tà kékeré tí a fún pọ̀. Tí ìwádìí DNS bá kùnà, ètò náà yóò gbìyànjú láti wá orúkọ Olùgbàlejò náà pẹ̀lú tábìlì Olùgbàlejò Cacti kí ó sì fi àpèjúwe Olùgbàlejò Cacti rọ́pò rẹ̀. Tí ìwádìí DNS àti Cacti bá kùnà, a óò fún àwọn àkọsílẹ̀ ní ìṣáájú 'unresolved-Original_hostname'."
+
+#: includes/settings.php
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr "Fò Ìtumọ̀ DNS fún àwọn Olùgbàlejò tó ń bọ̀"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr "Tí a bá ṣàmì sí àpótí àyẹ̀wò yìí, ètò náà kò ní gbìyànjú láti túmọ̀ àwọn Olùgbàlejò nípasẹ̀ ìwádìí DNS. Èyí wúlò fún àwọn àyíká níbi tí ìtúmọ̀ DNS kò ti ṣeé ṣe tàbí tí a kò fẹ́ ẹ."
+
+#: includes/settings.php
+msgid "HTML Notification Settings"
+msgstr "Àwọn Ètò Ìfitónilétí HTML"
+
+#: includes/settings.php
+msgid "Enable HTML Based Email"
+msgstr "Mú Ímeèlì Tí Ó Dá lórí HTML ṣiṣẹ́"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "Tí a bá ṣàmì sí àpótí àyẹ̀wò yìí, gbogbo Ímeèlì yóò jẹ́ fífiránṣẹ́ ní ìrísí HTML. Bíbẹ́ẹ̀kọ́, Ímeèlì yóò jẹ́ fífiránṣẹ́ bí ọ̀rọ̀ lasan."
+
+#: includes/settings.php
+msgid "Format File to Use"
+msgstr "Fáìlì Ìṣètò-ìrísí Láti Lò"
+
+#: includes/settings.php
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr "Yan àpò html àdáni àti fáìlì CSS láti lò.  Fáìlì yìí ní html àti CSS méjèèjì láti wé yí ìjábọ̀ rẹ ká.  Tí ó bá ní ju CSS lásán lọ, o nílò láti fi àmì <REPORT> pàtàkì kan sínú fáìlì náà.  Àkóónú ìjábọ̀ náà yóò rọ́pò àmì ìṣètò-ìrísí yìí.  Àwọn fáìlì wọ̀nyí wà nínú àtòjọ-fáìlì 'formats'."
+
+#: includes/settings.php
+msgid "Data Retention and Partitioning"
+msgstr "Ìtọ́jú Dátà àti Pípín sí Apá"
+
+#: includes/settings.php
+msgid "Syslog Retention"
+msgstr "Ìpamọ́ Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep events."
+msgstr "Èyí ni iye ọjọ́ láti tọ́jú àwọn ìṣẹ̀lẹ̀."
+
+#: includes/settings.php
+msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
+msgstr "Ìwọ̀n ìpín kọ̀ọ̀kan ti àwọn tábìlì syslog àti syslog_removed. A fi àyípadà pamọ́ síbí ṣùgbọ́n yóò bẹ̀rẹ̀ sí í ṣiṣẹ́ nìkan nígbà tí cli/upgrade_partitioning.php bá tún àwọn tábìlì méjèèjì kọ; títí di ìgbà náà, ìtọ́jú ìpín yóò pa ìwọ̀n tí ó wà mọ́. Ìpínsíwẹ́wẹ́ wákàtí kọ̀ọ̀kan nílò ìtọ́jú tí ó ní òpin. Ìtọ́jú, fèrèsé ìṣẹ̀dá-tẹ́lẹ̀ àti ìpele ìpínsíwẹ́wẹ́ papọ̀ gbọ́dọ̀ bá ààlà ìpín olùpèsè ibùdó dátà mu, tàbí a kò ní fi àwọn ètò náà pamọ́."
+
+#: includes/settings.php
+msgid "Partition Pre-create Window"
+msgstr "Àkókò Ìṣẹ̀dá Ìpín Tẹ́lẹ̀"
+
+#: includes/settings.php
+msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
+msgstr "Èyí ni iye ọjọ́ àwọn ìpín ọjọ́ iwájú láti tọ́jú fún àwọn tábìlì Syslog tí a pín, kí a lè máa pín àwọn ìpín tuntun láti inú ìpín dMaxValue tí ó ṣófo nígbà gbogbo. Ìpín wákàtí máa ń tọ́jú ó kéré jù ọjọ́ 2 nígbà gbogbo."
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Day"
+msgstr "Ọjọ́ %d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Days"
+msgstr "Ọjọ́ %d"
+
+#: includes/settings.php
+msgid "Partition Recovery Limit"
+msgstr "Ààlà Ìgbàpadà Ìpín"
+
+#: includes/settings.php
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr "Nígbà tí àwọn ìpín bá sọnù (fún àpẹẹrẹ lẹ́yìn àkókò ìsinmi ìtọ́jú), ó pọ̀ jù iye àwọn ìpín tó sọnù yìí fún tábìlì kọ̀ọ̀kan ni a máa ń dá sílẹ̀ ní ìṣiṣẹ́ olùṣàyẹ̀wò kọ̀ọ̀kan.  Àlàfo tó kù yóò pé lórí àwọn ìṣiṣẹ́ tó tẹ̀lé e; ìgéwọ́ ìpamọ́ yóò dúró títí tí ojú-ọ̀nà ìpín ọjọ́ iwájú yóò fi padà bọ̀ sípò pátápátá.  Ó kan àwọn tábìlì Syslog tí a pín nìkan."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partition per run"
+msgstr "Ìpín %d fún ìṣiṣẹ́ kọ̀ọ̀kan"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partitions per run"
+msgstr "Ìpín %d fún ìṣiṣẹ́ kọ̀ọ̀kan"
+
+#: includes/settings.php
+msgid "Collector Staleness Threshold"
+msgstr "Àlà Àtijọ́ Olùkójọ"
+
+#: includes/settings.php
+msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
+msgstr "Àwọn ìtanijí ìlera ọ̀nà ìṣiṣẹ́ máa ń kìlọ̀ nígbà tí àwọn ìfiranṣẹ́ tí a kò tíì ṣe, ìparí ìṣiṣẹ́, tàbí ìṣọ̀kan tí ó wà lórí ìlà bá kọjá ìdádúró yìí. Ìdádúró gidi kò dín sí ààlà àkókò Olùṣàyẹ̀wò mẹ́ta àti ìṣẹ́jú-àáyá 300. Ṣètò sí 0 láti lo ìṣẹ́jú-àáyá 300."
+
+#: includes/settings.php
+msgid "Default (300 seconds)"
+msgstr "Àìyípadà (ìṣẹ́jú-àáyá 300)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d seconds"
+msgstr "ìṣẹ́jú-àáyá %d"
+
+#: includes/settings.php
+msgid "Collector Backlog Threshold"
+msgstr "Àlà Àṣẹ́kù Olùkójọ"
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr "Ojú-ewé Ipò Syslog máa ń fi ìkìlọ̀ hàn nígbà tí ìránṣẹ́ tó ju iye yìí lọ bá jókòó láìṣiṣẹ́ nínú tábìlì Àbáwọlé Syslog. Ṣètò sí 0 láti lo àìyípadà ìránṣẹ́ 10000."
+
+#: includes/settings.php
+msgid "Default (10000 messages)"
+msgstr "Àìyípadà (ìfiránṣẹ́ 10000)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Messages"
+msgstr "Ìfìránṣẹ́ %d"
+
+#: includes/settings.php
+msgid "Pipeline Health Alerts"
+msgstr "Àwọn Ìtanijí Ìlera Ọ̀nà Ìṣiṣẹ́"
+
+#: includes/settings.php
+msgid "Pipeline Health Notification List"
+msgstr "Àtòjọ Ìfitọ́nilétí Ìlera Ọ̀nà Ìṣiṣẹ́"
+
+#: includes/settings.php
+msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
+msgstr "Yan àkójọ ìfitónilétí Thold tó wà fún àwọn ìkìlọ̀ ìlera ọ̀nà ìṣiṣẹ́. Àwọn olùgbà àkójọ tó Ṣiṣẹ́ ni a ó dà pọ̀ mọ́ àwọn àdírẹ́sì ímeèlì ní ìsàlẹ̀, pẹ̀lú pípa àwọn olùgbà BCC mọ́. Àwọn àkójọ nílò tábìlì àkójọ ìfitónilétí Thold."
+
+#: includes/settings.php
+msgid "Pipeline Health Email Recipients"
+msgstr "Àwọn Olùgbà Ímeèlì Ìlera Ọ̀nà Ìṣiṣẹ́"
+
+#: includes/settings.php
+msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
+msgstr "Àwọn olùgbà ímeèlì tí a fi kọ́mà yà sọ́tọ̀ fún ìkùnà àti ìpadàbọ̀ ọ̀nà iṣẹ́. Fi sílẹ̀ ní òfo kí o sì má ṣe yan àtòjọ ìfitónilétí kankan láti ṣe àìṣiṣẹ́ ímeèlì; ìlera yóò máa hàn lórí tábù Ipò, a ó sì kọ àwọn àyípadà ipò sílẹ̀. Àwọn àyẹ̀wò nílò kí Olùṣàyẹ̀wò Cacti ṣiṣẹ́."
+
+#: includes/settings.php
+msgid "Pipeline Health Reminder Interval"
+msgstr "Ààlà Àkókò Ìránnilétí Ìlera Ọ̀nà Ìṣiṣẹ́"
+
+#: includes/settings.php
+msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
+msgstr "Tún àwọn ìfitónilétí ṣe fún àwọn ìṣòro ìlà iṣẹ́ tí ó ń lọ lọ́wọ́ lẹ́yìn àlàfo yìí. A kò ní gbìyànjú àwọn ìgbìyànjú ímeèlì tí ó kùnà ju ẹ̀ẹ̀kan lọ ní gbogbo ìṣẹ́jú márùn-ún."
+
+#: includes/settings.php
+msgid "Syslog Alert Retention"
+msgstr "Ìpamọ́ Ìtanijí Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep alert logs."
+msgstr "Èyí ni iye ọjọ́ láti tọ́jú àwọn àkọọ́lẹ̀ ìtànijí."
+
+#: includes/settings.php
+msgid "Alert Suppression and Maintenance"
+msgstr "Ìdádúró Ìfiyèsí àti Ìtọ́jú"
+
+#: includes/settings.php
+msgid "Maintenance Window Days"
+msgstr "Àwọn Ọjọ́ Àkókò Ìtọ́jú"
+
+#: includes/settings.php
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr "Àwọn ọjọ́ tí gbogbo ìfitónilétí ìtanijì yóò wà ní ìdákẹ́jẹ́ẹ́ ní àkókò ìtọ́jú tí a ṣètò."
+
+#: includes/settings.php
+msgid "Maintenance Window Starts"
+msgstr "Àkókò Ìtọ́jú Bẹ̀rẹ̀"
+
+#: includes/settings.php
+msgid "Local start time for the global maintenance window."
+msgstr "Àkókò ìbẹ̀rẹ̀ abẹ́lé fún fèrèsé ìtọ́jú àgbáyé."
+
+#: includes/settings.php
+msgid "Maintenance Window Ends"
+msgstr "Àkókò Ìtọ́jú Parí"
+
+#: includes/settings.php
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr "Àkókò ìparí abẹ́lé fún fèrèsé ìtọ́jú àgbáyé. Àkókò ìparí tó ṣáájú yóò tẹ̀síwájú sínú ọjọ́ kejì."
+
+#: includes/settings.php
+msgid "One-time Maintenance Starts"
+msgstr "Àtúnṣe Lẹ́ẹ̀kan Péré Bẹ̀rẹ̀"
+
+#: includes/settings.php
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr "Ọjọ́ àti àkókò àdúgbò àṣàyàn láti bẹ̀rẹ̀ fèrèsé àtúnṣe gbogbogbòò lẹ́ẹ̀kan péré."
+
+#: includes/settings.php
+msgid "One-time Maintenance Ends"
+msgstr "Àtúnṣe Lẹ́ẹ̀kan Péré Parí"
+
+#: includes/settings.php
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr "Ọjọ́ àti àkókò àdúgbò àṣàyàn láti parí fèrèsé àtúnṣe gbogbogbòò lẹ́ẹ̀kan péré. Ìrísí: YYYY-MM-DD HH:MM."
+
+#: includes/settings.php
+msgid "Default Alert Cooldown"
+msgstr "Àkókò Ìsinmi Ìtanijì Àìyípadà"
+
+#: includes/settings.php
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Dá ìfitónilétí àtúnṣe èyíkéyìí dúró fún òfin kan náà àti ààlà ìròyìn fún iye ìṣẹ́jú yìí. Àwọn iye fún òfin kọ̀ọ̀kan lè borí ètò yìí. Ṣètò sí 0 láti sọ ọ́ di àìṣiṣẹ́."
+
+#: includes/settings.php
+msgid "Default Duplicate Suppression"
+msgstr "Ìdènà Ẹ̀dà-méjì Àìyípadà"
+
+#: includes/settings.php
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Dá ìfitónilétí tó ní ìfiránṣẹ́ bákan náà tó bá mu dúró fún iye ìṣẹ́jú yìí. Àwọn iye fún òfin kọ̀ọ̀kan lè borí ètò yìí. Ṣètò sí 0 láti sọ ọ́ di àìṣiṣẹ́."
+
+#: includes/settings.php
+msgid "Remote Syslog Recovery"
+msgstr "Ìgbàpadà Syslog Òkèèrè"
+
+#: includes/settings.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr "Àwọn Àkọsílẹ̀ Ìmúpadàbọ̀sípò Tó Pọ̀ Jù Lọ Fún Ìṣiṣẹ́ Kọ̀ọ̀kan"
+
+#: includes/settings.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr "Iye àwọn ìṣẹ̀lẹ̀ Syslog òkèèrè tí a pa mọ́ tó pọ̀ jù lọ tí a fi ránṣẹ́ sí Olùkójọ Pàtàkì nípasẹ̀ ìṣiṣẹ́ òṣìṣẹ́ ìmúpadàbọ̀sípò kan. Ìṣòwò ibùdó dátà àárín kọ̀ọ̀kan ṣì wà ní ààlà àkọsílẹ̀ 100. Máa fi kún un díẹ̀díẹ̀ nígbà tí o bá ń ṣàkíyèsí ẹrù Olùkójọ Pàtàkì àti ìdádúró títìpa."
+
+#: includes/settings.php
+msgid "Recovery Pause Between Batches"
+msgstr "Ìdádúró Ìgba-padà Láàárín Àwọn Ìdìpọ̀"
+
+#: includes/settings.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr "Ìdádúró láàárín ìṣẹ̀lẹ̀ ìfiránṣẹ́ Akójọpọ̀ Àkọ́kọ́ 100-àkọsílẹ̀ kọ̀ọ̀kan. Ìdádúró gígùn dín ìfúnpọ̀ Akójọpọ̀ Àkọ́kọ́ kù; ìdádúró kúkúrú mú kí ìkójọpọ̀ àṣẹ́hìn yára kánkán."
+
+#: includes/settings.php
+msgid "No pause"
+msgstr "Kò sí ìdádúró"
+
+#: includes/settings.php
+#, php-format
+msgid "%d milliseconds"
+msgstr "mílísẹ́kọ̀ǹdì %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d second"
+msgstr "ìṣẹ́jú-àáyá %d"
+
+#: includes/settings.php
+msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
+msgstr "Ibùdó dátà Syslog kò sí, nítorí náà a kò lè ṣàyẹ̀wò àwọn ètò ìpínsísọ̀rí lọ́wọ́ ìpín ààlà àti àwọn tábìlì rẹ̀."
+
+#: includes/settings.php
+msgid "The Syslog settings were not saved."
+msgstr "A kò fi àwọn ètò Syslog pamọ́."
+
+#: includes/settings.php
+#, php-format
+msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
+msgstr "Ó ń dúró: tábìlì ìfiranṣẹ́ kan ṣì ń lo ìpín %s. Ṣiṣẹ́ cli/upgrade_partitioning.php láti fi ìpele tí o yàn sílẹ̀."
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_saved_searches.php
+msgid "Delete"
+msgstr "Pa rẹ́"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Disable"
+msgstr "Dá Dúró"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Enable"
+msgstr "Mú Ṣiṣẹ́"
+
+#: includes/settings.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_saved_searches.php
+msgid "Export"
+msgstr "Kó Jáde"
+
+#: includes/settings.php
+msgid "Indefinite"
+msgstr "Àìlópin"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Week"
+msgstr "Ọ̀sẹ̀ %d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Weeks"
+msgstr "Ọ̀sẹ̀ %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Month"
+msgstr "Oṣù %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Months"
+msgstr "Oṣù %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Year"
+msgstr "Ọdún %d"
+
+#: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
+msgid "Never"
+msgstr "Kò ṣẹlẹ̀ rí"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Minute"
+msgstr "Ìṣẹ́jú %d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Minutes"
+msgstr "Ìṣẹ́jú %d"
+
+#: includes/settings.php
+msgid "Begins with"
+msgstr "Bẹ̀rẹ̀ pẹ̀lú"
+
+#: includes/settings.php
+msgid "Contains"
+msgstr "Ní nínú"
+
+#: includes/settings.php
+msgid "Ends with"
+msgstr "Parí pẹ̀lú"
+
+#: includes/settings.php
+msgid "Hostname is"
+msgstr "Orúkọ olùgbàlejò jẹ́"
+
+#: includes/settings.php
+msgid "Program is"
+msgstr "Pírógírámù jẹ́"
+
+#: includes/settings.php
+msgid "Facility is"
+msgstr "Ohun Èlò jẹ́"
+
+#: includes/settings.php syslog_alerts.php
+msgid "Filter Builder"
+msgstr "Olùkọ́ Àlẹ̀mọ́"
+
+#: includes/settings.php syslog_alerts.php
+msgid "SQL Expression"
+msgstr "Gbólóhùn SQL"
+
+#: includes/settings.php
+msgid "Weekly"
+msgstr "Ọ̀sọ̀ọ̀sẹ̀"
+
+#: includes/settings.php
+msgid "Import/Export"
+msgstr "Ìgbàwọlé/Ìfìjáde"
+
+#: includes/settings.php
+msgid "Alert Rules"
+msgstr "Àwọn Òfin Ìfiyèsí"
+
+#: includes/settings.php
+msgid "Syslog Settings"
+msgstr "Àwọn Ètò Syslog"
+
+#: includes/settings.php syslog_device_rules.php
+msgid "Device Alert Rules"
+msgstr "Àwọn Òfin Ìtanijí Ẹ̀rọ"
+
+#: includes/settings.php
+msgid "Removal Rules"
+msgstr "Àwọn Òfin Ìyọkúrò"
+
+#: includes/settings.php
+msgid "Report Rules"
+msgstr "Àwọn Òfin Ìròyìn"
+
+#: includes/settings.php syslog.php syslog_recommendations.php
+msgid "Recommendations"
+msgstr "Àwọn Ìmọ̀ràn"
+
+#: includes/utilities.php
+msgid "Unable to connect to the Syslog database. No Device records were removed."
+msgstr "Kò le sopọ̀ mọ́ ibi ìpamọ́ dátà Syslog. Kò sí àkọsílẹ̀ Ẹ̀rọ kankan tí a yọ kúrò."
+
+#: includes/utilities.php
+#, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "A ti yọ %s àkọsílẹ̀ Ẹ̀rọ kúrò nínú ibi-ìpamọ́ dátà Syslog"
+
+#: includes/utilities.php
+msgid "Syslog Utilities"
+msgstr "Àwọn Irinṣẹ́ Syslog"
+
+#: includes/utilities.php
+msgid "Purge Syslog Devices"
+msgstr "Fọ Àwọn Ẹ̀rọ Syslog Kúrò"
+
+#: includes/utilities.php
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr "Ṣé o dá ọ lójú pé o fẹ́ nu àwọn ẹ̀rọ Syslog tí ó ti pẹ́ kúrò?"
+
+#: includes/utilities.php
+msgid "Confirm Purge"
+msgstr "Fìdí Ìparẹ́ Pátápátá Múlẹ̀"
+
+#: includes/utilities.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Continue"
+msgstr "Tẹ̀síwájú"
+
+#: includes/utilities.php
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "Àṣàyàn àtòjọ yìí pèsè ọ̀nà láti yọ Àwọn Ẹ̀rọ tí kò tún ròyìn mọ́ sínú olùpèsè syslog Cacti kúrò."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel source."
+msgstr "Orísun pánẹ́lì pátákó ìṣàkóso tí kò tọ́."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel type."
+msgstr "Irú pánẹ́lì pátákó ìṣàkóso tí kò tọ́."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard chart type."
+msgstr "Irú àtẹ pátákó ìṣàkóso tí kò tọ́."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard breakdown field."
+msgstr "Ààyè ìpínsísọ̀rí pátákó ìṣàkóso tí kò tọ́."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard interval."
+msgstr "Ààrin àkókò pátákó ìṣàkóso tí kò tọ́."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard timespan."
+msgstr "Àkókò pátákó ìṣàkóso tí kò tọ́."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard record type."
+msgstr "Irú àkọsílẹ̀ pátákó ìṣàkóso tí kò tọ́."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard top count."
+msgstr "Iye òkè pátákó ìṣàkóso tí kò tọ́."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel width."
+msgstr "Fífẹ̀ pánẹ́lì pátákó ìṣàkóso tí kò tọ́."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel height."
+msgstr "Gíga pánẹ́lì pátákó ìṣàkóso tí kò tọ́."
+
+#: lib/syslog_dashboard.php syslog.php
+#, php-format
+msgid "Invalid logical search: %s"
+msgstr "Ìwádìí ọgbọ́n tí kò tọ́: %s"
+
+#: lib/syslog_dashboard.php
+msgid "Other"
+msgstr "Òmíràn"
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard panel is required."
+msgstr "Pánẹ́lì pátákó ìṣàkóso tó péye pọndandan."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard panel not found."
+msgstr "A kò rí abala Pátákó Àkóso."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "A name of up to 128 characters is required."
+msgstr "Orúkọ tí ó tó lẹ́tà 128 pọndandan."
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard is required."
+msgstr "Pátákó ìṣàkóso tó péye pọndandan."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard not found."
+msgstr "A kò rí Pátákó Àkóso."
+
+#: lib/syslog_dashboard.php syslog_dashboards.php
+msgid "Unable to save dashboard changes."
+msgstr "Kò le fi àwọn àyípadà dasibọ́ọ̀dù pamọ́."
+
+#: lib/syslog_dashboard.php
+msgid "You may only share your own dashboards."
+msgstr "O lè pín àwọn pátákó ìṣàkóso tirẹ nìkan."
+
+#: lib/syslog_dashboard.php
+msgid "copy"
+msgstr "ẹ̀dà"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard could not be copied."
+msgstr "A kò lè ṣe ẹ̀dà Pátákó Àkóso."
+
+#: lib/syslog_dashboard.php
+msgid "A valid panel position is required."
+msgstr "Ipò pánẹ́lì tó péye pọndandan."
+
+#: lib/syslog_dashboard.php
+msgid "A title of up to 128 characters is required."
+msgstr "Àkọlé tí ó tó lẹ́tà 128 pọndandan."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Drag to reorder card"
+msgstr "Fà á láti tún káàdì tò"
+
+#: lib/syslog_dashboard.php
+msgid "Refresh Panel"
+msgstr "Sọ Pánẹ́lì Di Ọ̀tun"
+
+#: lib/syslog_dashboard.php
+msgid "Total messages"
+msgstr "Àpapọ̀ àwọn ìránṣẹ́"
+
+#: lib/syslog_dashboard.php
+msgid "Chart library unavailable on this Cacti installation."
+msgstr "Ilé-ìkàwé àtẹ kò sí lórí àgbékalẹ̀ Cacti yìí."
+
+#: lib/syslog_dashboard.php
+msgid "Edit Panel"
+msgstr "Ṣàtúnṣe Pánẹ́lì"
+
+#: lib/syslog_dashboard.php
+msgid "New Panel"
+msgstr "Pánẹ́ẹ̀lì Tuntun"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Save"
+msgstr "Fipamọ́"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Apply"
+msgstr "Fi sílò"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard panel?"
+msgstr "Ṣé kí á pa pánẹ́lì pátákó ìṣàkóso yìí rẹ́?"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard and all of its panels?"
+msgstr "Ṣé kí á pa pátákó ìṣàkóso yìí àti gbogbo àwọn pánẹ́lì rẹ̀ rẹ́?"
+
+#: lib/syslog_dashboard.php
+msgid "Name your dashboard"
+msgstr "Fún pátákó iṣẹ́ rẹ lórúkọ"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Make Private"
+msgstr "Ṣe é ní Àdáni"
+
+#: lib/syslog_dashboard.php
+msgid "Share with all"
+msgstr "Pín pẹ̀lú gbogbo ènìyàn"
+
+#: lib/syslog_dashboard.php
+msgid "Save as my copy"
+msgstr "Fipamọ́ gẹ́gẹ́ bí ẹ̀dà mi"
+
+#: lib/syslog_dashboard.php
+msgid "Syslog Dashboards"
+msgstr "Àwọn Pátákó Àfihàn Syslog"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Dashboard"
+msgstr "Pátákó Àkóso"
+
+#: lib/syslog_dashboard.php
+msgid "Time Range"
+msgstr "Ìwọ̀n Àkókò"
+
+#: lib/syslog_dashboard.php
+msgid "Last Hour"
+msgstr "Wákàtí Tó Kọjá"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Hours"
+msgstr "Wákàtí %d Tó Kọjá"
+
+#: lib/syslog_dashboard.php
+msgid "Last Day"
+msgstr "Ọjọ́ Tó Kọjá"
+
+#: lib/syslog_dashboard.php
+msgid "Last Week"
+msgstr "Ọ̀sẹ̀ Tó Kọjá"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Weeks"
+msgstr "Ọ̀sẹ̀ %d Tó Kọjá"
+
+#: lib/syslog_dashboard.php
+msgid "Last Month"
+msgstr "Oṣù Tó Kọjá"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Months"
+msgstr "Oṣù %d Tó Kọjá"
+
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
+msgid "Refresh"
+msgstr "Sọdọ̀tun"
+
+#: lib/syslog_dashboard.php
+msgid "My Dashboards"
+msgstr "Àwọn Pátákó Àfihàn Mi"
+
+#: lib/syslog_dashboard.php
+msgid "Global Dashboards"
+msgstr "Àwọn Pátákó Ìṣàkóso Àgbáyé"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Shared With Me"
+msgstr "Ti Pín Pẹ̀lú Mi"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "New"
+msgstr "Tuntun"
+
+#: lib/syslog_dashboard.php
+msgid "Rename"
+msgstr "Tún sọ orúkọ"
+
+#: lib/syslog_dashboard.php
+msgid "Add Panel"
+msgstr "Fi Pánẹ́lì Kún un"
+
+#: lib/syslog_dashboard.php
+msgid "Create your first dashboard to visualize syslog trends."
+msgstr "Ṣẹ̀dá pátákó àkọ́kọ́ rẹ láti wo àṣà syslog."
+
+#: lib/syslog_dashboard.php
+msgid "Add a panel to start charting.  Panels can use your saved searches."
+msgstr "Fi pánẹ́lì kan kún un láti bẹ̀rẹ̀ sí í ṣe àtẹ.  Àwọn pánẹ́lì lè lo àwọn ìwádìí rẹ tí o ti fipamọ́."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Panel"
+msgstr "Abala Pátákó Àkóso"
+
+#: lib/syslog_dashboard.php
+msgid "Title"
+msgstr "Àkọlé"
+
+#: lib/syslog_dashboard.php
+msgid "Log Source"
+msgstr "Orísun Àkọọ́lẹ̀"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "System Logs"
+msgstr "Àwọn Àkọsílẹ̀ Ètò"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Alert Logs"
+msgstr "Àwọn Àkọsílẹ̀ Ìfiyèsí"
+
+#: lib/syslog_dashboard.php
+msgid "Panel Type"
+msgstr "Irú Pánẹ́lì"
+
+#: lib/syslog_dashboard.php
+msgid "Time Series"
+msgstr "Ìtẹ̀léra Àkókò"
+
+#: lib/syslog_dashboard.php
+msgid "Breakdown"
+msgstr "Àtúpalẹ̀"
+
+#: lib/syslog_dashboard.php
+msgid "Chart"
+msgstr "Àtẹ"
+
+#: lib/syslog_dashboard.php
+msgid "Line"
+msgstr "Ìlà"
+
+#: lib/syslog_dashboard.php
+msgid "Area"
+msgstr "Agbègbè"
+
+#: lib/syslog_dashboard.php
+msgid "Bar"
+msgstr "Ọ̀pá"
+
+#: lib/syslog_dashboard.php
+msgid "Interval"
+msgstr "Àlàfo-àkókò"
+
+#: lib/syslog_dashboard.php
+msgid "Auto"
+msgstr "Aládàáṣe"
+
+#: lib/syslog_dashboard.php
+msgid "Minute"
+msgstr "Ìṣẹ́jú"
+
+#: lib/syslog_dashboard.php
+msgid "10 Minutes"
+msgstr "Ìṣẹ́jú 10"
+
+#: lib/syslog_dashboard.php
+msgid "Hour"
+msgstr "Wákàtí"
+
+#: lib/syslog_dashboard.php
+msgid "Day"
+msgstr "Ọjọ́"
+
+#: lib/syslog_dashboard.php
+msgid "Field"
+msgstr "Pápá"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Program"
+msgstr "Pírógírámù"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Facility"
+msgstr "Ohun Èlò"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Priority"
+msgstr "Ìpò Pàtàkì"
+
+#: lib/syslog_dashboard.php
+msgid "Top Count"
+msgstr "Ìka Tó Ga Jùlọ"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Record Type"
+msgstr "Irú Àkọsílẹ̀"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "All Records"
+msgstr "Gbogbo Àwọn Àkọsílẹ̀"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Main Records"
+msgstr "Àwọn Àkọsílẹ̀ Àkọ́kọ́"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Removed Records"
+msgstr "Àwọn Àkọsílẹ̀ Tí A Yọ Kúrò"
+
+#: lib/syslog_dashboard.php
+msgid "Start from Saved Search"
+msgstr "Bẹ̀rẹ̀ láti Àwárí tí a Fipamọ́"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Enter message text…"
+msgstr "Tẹ ọ̀rọ̀ ìránṣẹ́…"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Remove condition"
+msgstr "Yọ ìpò kúrò"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Match group"
+msgstr "Ẹgbẹ́ ìbámu"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Exclude group"
+msgstr "Yọ ẹgbẹ́ kúrò"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Name"
+msgstr "Orúkọ Pátákó Àkóso"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Name"
+msgstr "Orúkọ"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Breached Thresholds"
+msgstr "Àwọn Àlà Tí Ó Rékọjá"
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr "Ti Rékọjá Láti"
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr "Olùkójọ"
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr "Ẹ̀rọ"
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr "Ìránṣẹ́ Tí Ó Báramu Tó Kẹ́yìn"
+
+#: lib/syslog_thresholds.php
+msgid "Recovers After"
+msgstr "Gba Padà Lẹ́yìn"
+
+#: lib/syslog_thresholds.php
+msgid "Rule"
+msgstr "Òfin"
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr "Gbogbo àwọn ẹ̀rọ tó báramu"
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr "Kò sí àwọn àlà kankan tí a rú lọ́wọ́lọ́wọ́."
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr "Ìgba-padà kò nílò àwọn ìránṣẹ́ tí ó báramu títí di àkókò tí a fi hàn. Gbogbo ìbáramu ni ó ń tún bẹ̀rẹ̀ àkókò ìdákẹ́jẹ́ẹ́."
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Previous"
+msgstr "Tẹ́lẹ̀"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Next"
+msgstr "Tókàn"
+
+#: setup.php
+msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
+msgstr "Jọ̀wọ́ sọ ọ̀kan lára àwọn fáìlì config.php.dist tàbí config_local.php.dist rẹ lórúkọ míràn nínú àkójọpọ̀ syslog, kí o sì ṣàtúnṣe ètò ibùdó dátà rẹ kí o tó fi sori ẹ̀rọ."
+
+#: setup.php
+msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
+msgstr "Àwọn àmì-àkókò milisẹ́kọ́ǹdù (TIMESTAMP(3)) ni a ṣe àtìlẹ́yìn fún lórí MariaDB nìkan. Sáfà yìí jẹ́ MySQL, nítorí náà fi sí i pẹ̀lú àwọn àmì-àkókò ìṣedéédé ìṣẹ́jú-àáyá dípò."
+
+#: setup.php
+msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
+msgstr "Ibi ìpamọ́ Aria kò ṣe é lò nígbà tí èyíkéyìí àṣàyàn Olùkójọ Dátà Òkèèrè bá wà ní ṣiṣẹ́. Yan InnoDB tàbí pa gbogbo àwọn àṣàyàn Olùkójọ Dátà Òkèèrè."
+
+#: setup.php
+msgid "Top 10 Hosts"
+msgstr "Àwọn Olùgbàlejò 10 Tó Ga Jùlọ"
+
+#: setup.php
+msgid "Syslog Messages - Past Hour"
+msgstr "Àwọn Ìránṣẹ́ Syslog - Wákàtí Tó Kọjá"
+
+#: setup.php
+msgid "Messages by Severity"
+msgstr "Àwọn Ìránṣẹ́ nípa Ìwọ̀n Ìṣòro"
+
+#: setup.php
+msgid "Top 10 Programs"
+msgstr "Àwọn Ètò 10 Tó Ga Jùlọ"
+
+#: setup.php
+msgid "Alert Activity"
+msgstr "Ìṣe Ìfiyèsí"
+
+#: syslog.php
+msgid "Syslog Viewer"
+msgstr "Olùwòran Syslog"
+
+#: syslog.php
+msgid "Syslog Status"
+msgstr "Ipò Syslog"
+
+#: syslog.php
+msgid "Selected Alert"
+msgstr "Ìkìlọ̀ Tí A Yan"
+
+#: syslog.php
+msgid "seconds"
+msgstr "ìṣẹ́jú àáyá"
+
+#: syslog.php
+msgid "Unavailable"
+msgstr "Kò Wà Nílẹ̀"
+
+#: syslog.php
+#, php-format
+msgid "unprocessed messages are %s old"
+msgstr "àwọn ìránṣẹ́ tí a kò tíì ṣiṣẹ́ lé lórí ti pẹ́ tó %s"
+
+#: syslog.php
+#, php-format
+msgid "incoming backlog of %s messages"
+msgstr "àkójọpọ̀ àwọn ìránṣẹ́ %s tó ń bọ̀"
+
+#: syslog.php
+msgid "day"
+msgstr "ọjọ́"
+
+#: syslog.php
+msgid "days"
+msgstr "ọjọ́"
+
+#: syslog.php
+msgid "hour"
+msgstr "wákàtí"
+
+#: syslog.php
+msgid "hours"
+msgstr "wákàtí"
+
+#: syslog.php
+msgid "minute"
+msgstr "ìṣẹ́jú"
+
+#: syslog.php
+msgid "minutes"
+msgstr "ìṣẹ́jú"
+
+#: syslog.php
+msgid "Rows in syslog_incoming"
+msgstr "Àwọn ìlà nínú syslog_incoming"
+
+#: syslog.php
+msgid "Syslog table size (data + indexes)"
+msgstr "Ìwọ̀n tábìlì Syslog (dátà + àwọn atọ́ka)"
+
+#: syslog.php
+msgid "Syslog retention"
+msgstr "Ìpamọ́ Syslog"
+
+#: syslog.php
+msgid "Alert retention"
+msgstr "Ìpamọ́ Ìfiyèsí"
+
+#: syslog.php
+msgid "No recovery activity recorded yet."
+msgstr "Kò sí ìṣe ìmúpadàbọ̀sípò tí a kọ sílẹ̀ síbẹ̀."
+
+#: syslog.php
+msgid "created"
+msgstr "ti dá sílẹ̀"
+
+#: syslog.php
+msgid "remaining"
+msgstr "tó kù"
+
+#: syslog.php
+msgid "retention deferred"
+msgstr "ìpamọ́ tí a dá dúró"
+
+#: syslog.php
+msgid "Latest processing run"
+msgstr "Ìṣiṣẹ́ ìtọ́pasẹ̀ tuntun jùlọ"
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr "Ìmúṣiṣẹ́pọ̀ pípín"
+
+#: syslog.php
+msgid "Remote collector receipts"
+msgstr "Àwọn ìwé-ẹ̀rí olùkójọ òkèèrè"
+
+#: syslog.php
+msgid "Storage and retention"
+msgstr "Ìpamọ́ àti ìtọ́jú"
+
+#: syslog.php
+msgid "Partition health"
+msgstr "Ìlera ìpín"
+
+#: syslog.php
+msgid "Partition maintenance activity"
+msgstr "Iṣẹ́ ìtọ́jú ìpín"
+
+#: syslog.php
+msgid "Recent partition maintenance activity"
+msgstr "Ìgbòkègbodò ìtọ́jú ìpín láìpẹ́"
+
+#: syslog.php
+msgid "Pipeline health"
+msgstr "Ìlera ọ̀nà ìṣiṣẹ́"
+
+#: syslog.php
+msgid "Parallel workers"
+msgstr "Àwọn òṣìṣẹ́ lẹ́ẹ̀kan-náà"
+
+#: syslog.php
+msgid "Worker processes"
+msgstr "Àwọn ìṣiṣẹ́ òṣìṣẹ́"
+
+#: syslog.php
+msgid "Processing phases"
+msgstr "Àwọn ìpele ìṣiṣẹ́"
+
+#: syslog.php
+msgid "Rule activity"
+msgstr "Ìṣiṣẹ́ òfin"
+
+#: syslog.php
+msgid "Records processed"
+msgstr "Àwọn àkọsílẹ̀ tí a ṣiṣẹ́ lé lórí"
+
+#: syslog.php
+msgid "Polling runtime"
+msgstr "Àkókò ìṣiṣẹ́ ìṣàyẹ̀wò"
+
+#: syslog.php
+msgid "Started"
+msgstr "Bẹ̀rẹ̀"
+
+#: syslog.php
+msgid "Finished"
+msgstr "Ti parí"
+
+#: syslog.php
+msgid "Minimum runtime"
+msgstr "Àkókò ìṣiṣẹ́ tó kéré jù"
+
+#: syslog.php
+msgid "Average runtime"
+msgstr "Ìpíndọ́gba àkókò ìṣiṣẹ́"
+
+#: syslog.php
+msgid "Maximum runtime"
+msgstr "Àkókò ìṣiṣẹ́ tó pọ̀ jù lọ"
+
+#: syslog.php
+msgid "State"
+msgstr "Ìpínlẹ̀"
+
+#: syslog.php
+msgid "Queued Recovery Records"
+msgstr "Àwọn Àkọsílẹ̀ Ìpadàbọ̀ Tí Ó Wà Lórí Ìlà"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr "Tí ó ń dúró tí ó pẹ́ jùlọ"
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr "Ìṣọ̀kan àṣeyọrí tó kẹ́yìn"
+
+#: syslog.php
+msgid "Active"
+msgstr "Ń ṣiṣẹ́"
+
+#: syslog.php
+msgid "Inactive"
+msgstr "Kò ṣiṣẹ́"
+
+#: syslog.php
+msgid "Recovery worker"
+msgstr "Oṣìṣẹ́ ìgba-padà"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr "Àṣìṣe ìṣọ̀kan tó kẹ́yìn"
+
+#: syslog.php
+msgid "Last Batch Count"
+msgstr "Iye Ìdìpọ̀ Tó Kẹ́yìn"
+
+#: syslog.php
+msgid "Last Record Received"
+msgstr "Àkọsílẹ̀ Tí A Gbà Kẹ́yìn"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr "Olùṣàyẹ̀wò Òkèèrè"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr "Olùṣàyẹ̀wò ọ̀nà jíjìn àìmọ̀"
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
+msgstr "Kò sí àwọn àkọsílẹ̀ olùkójọpọ̀ òkèèrè tí a tíì gbà síbẹ̀."
+
+#: syslog.php
+msgid "Partition maintenance blocked"
+msgstr "Ìtọ́jú ìpín ti dí"
+
+#: syslog.php
+msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
+msgstr "Ìtọ́jú ìpín ti dáwọ́ dúró; àwọn ìkọ̀wé ń tẹ̀síwájú sínú ìpín ààbò dMaxValue."
+
+#: syslog.php
+msgid "Date coverage"
+msgstr "Àkókò tí ọjọ́ dé"
+
+#: syslog.php
+msgid "Table"
+msgstr "Tábìlì"
+
+#: syslog.php
+msgid "dMaxValue rows (estimated)"
+msgstr "àwọn ìlà dMaxValue (ìṣirò)"
+
+#: syslog.php
+msgid "dMaxValue size"
+msgstr "ìwọ̀n dMaxValue"
+
+#: syslog.php
+msgid "Partitioning level"
+msgstr "Ìpele ìpín"
+
+#: syslog.php
+#, php-format
+msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
+msgstr "A ti yan %s nínú Àwọn Ètò, yóò sì bẹ̀rẹ̀ sí í ṣiṣẹ́ lẹ́yìn tí cli/upgrade_partitioning.php bá tún àwọn tábìlì kọ́."
+
+#: syslog.php
+msgid "Last attempt"
+msgstr "Ìgbìyànjú tó kẹ́yìn"
+
+#: syslog.php
+msgid "Last successful maintenance"
+msgstr "Ìtọ́jú àṣeyọrí tó kẹ́yìn"
+
+#: syslog.php
+msgid "Complete"
+msgstr "Ti Parí"
+
+#: syslog.php
+msgid "Deferred"
+msgstr "Ti sún síwájú"
+
+#: syslog.php
+msgid "Latest outcome"
+msgstr "Àbájáde tuntun jùlọ"
+
+#: syslog.php
+msgid "Recovery progress"
+msgstr "Ìlọsíwájú ìgba-padà"
+
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "Àwọn Àlàyé"
+
+#: syslog.php
+msgid "Outcome"
+msgstr "Àbájáde"
+
+#: syslog.php
+msgid "Recovery"
+msgstr "Ìmúpadàbọ̀sípò"
+
+#: syslog.php
+msgid "When"
+msgstr "Nígbà wo"
+
+#: syslog.php
+msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
+msgstr "Kò sí ìṣe ìtọ́jú ìpín tí a kọ sílẹ̀ síbẹ̀. Ìṣe yóò hàn lẹ́yìn ìṣiṣẹ́ olùṣàyẹ̀wò tó tẹ̀lé."
+
+#: syslog.php
+#, php-format
+msgid "%d created, %d remaining, %d pruned"
+msgstr "%d ni a dá sílẹ̀, %d ló kù, %d ni a gé kúrò"
+
+#: syslog.php
+msgid "No action required."
+msgstr "Kò nílò ìgbésẹ̀ kankan."
+
+#: syslog.php
+msgid "Incoming backlog"
+msgstr "Àkójọpọ̀ tí ń wọlé"
+
+#: syslog.php
+msgid "Processing"
+msgstr "Ń ṣiṣẹ́ lọ́wọ́"
+
+#: syslog.php
+msgid "Partition maintenance"
+msgstr "Ìtọ́jú ìpín"
+
+#: syslog.php
+msgid "Synchronization"
+msgstr "Ìmúbáramu"
+
+#: syslog.php
+msgid "Attention required"
+msgstr "A nílò àfiyèsí"
+
+#: syslog.php
+msgid "Healthy"
+msgstr "Ní Ìlera"
+
+#: syslog.php
+msgid "Processing disabled"
+msgstr "Ṣíṣe ìṣiṣẹ́ wà ní àìṣiṣẹ́"
+
+#: syslog.php
+msgid "Waiting for processing"
+msgstr "Ń dúró de ìṣiṣẹ́"
+
+#: syslog.php
+msgid "Health"
+msgstr "Ìlera"
+
+#: syslog.php
+msgid "Ready"
+msgstr "Ṣetán"
+
+#: syslog.php
+msgid "Sent"
+msgstr "Ti Firanṣẹ́"
+
+#: syslog.php
+msgid "Failed; retry pending"
+msgstr "Ó kùnà; àtúngbìyànjú ń dúró"
+
+#: syslog.php
+msgid "Pending; next poller check"
+msgstr "Ó ń dúró; àyẹ̀wò Olùṣàyẹ̀wò tó kàn"
+
+#: syslog.php
+msgid "Last health check"
+msgstr "Àyẹ̀wò ìlera tó kẹ́yìn"
+
+#: syslog.php
+msgid "Email notifications"
+msgstr "Àwọn ìfitónilétí ímeèlì"
+
+#: syslog.php
+msgid "Not checked yet"
+msgstr "A kò tíì ṣàyẹ̀wò rẹ̀"
+
+#: syslog.php
+msgid "Last notification sent"
+msgstr "Ìfitọ́nilétí tó kẹ́yìn tí a fi ránṣẹ́"
+
+#: syslog.php
+msgid "Last received log"
+msgstr "Àkọsílẹ̀ tó kẹ́yìn tí a gbà"
+
+#: syslog.php
+msgid "Oldest unprocessed message"
+msgstr "Ìfiranṣẹ́ tí a kò tíì ṣiṣẹ́ lé tí ó pẹ́ jùlọ"
+
+#: syslog.php
+msgid "Records processed in latest run"
+msgstr "Àwọn àkọsílẹ̀ tí a ṣiṣẹ́ lé lórí ní ìṣiṣẹ́ tuntun jùlọ"
+
+#: syslog.php
+msgid "Worker processes running"
+msgstr "Àwọn ìṣiṣẹ́ òṣìṣẹ́ tó ń ṣiṣẹ́"
+
+#: syslog.php
+msgid "Configured worker processes"
+msgstr "Àwọn ìlànà òṣìṣẹ́ tí a ṣètò"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr "Àwọn olùgbàlejò tí a túmọ̀"
+
+#: syslog.php
+msgid "Process"
+msgstr "Ìṣiṣẹ́"
+
+#: syslog.php
+msgid "Records handled"
+msgstr "Àwọn àkọsílẹ̀ tí a ṣe"
+
+#: syslog.php
+msgid "Runtime"
+msgstr "Àkókò ìṣiṣẹ́"
+
+#: syslog.php
+msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
+msgstr "Kò sí àwọn ìṣirò fún ìlànà kọ̀ọ̀kan tí a kọ sílẹ̀ síbẹ̀. Ìṣirò òṣìṣẹ́ yóò hàn lẹ́yìn ìṣiṣẹ́ lẹ́ẹ̀kan náà àkọ́kọ́."
+
+#: syslog.php
+msgid "Duration"
+msgstr "Àkókò Tó Gbà"
+
+#: syslog.php
+msgid "Phase"
+msgstr "Ìpele"
+
+#: syslog.php
+msgid "Records"
+msgstr "Àwọn Àkọsílẹ̀"
+
+#: syslog.php
+msgid "Reference updates"
+msgstr "Àwọn àtúnṣe ìtọ́kasí"
+
+#: syslog.php
+msgid "Removal rules"
+msgstr "Àwọn òfin ìyọkúrò"
+
+#: syslog.php
+msgid "Alert evaluation"
+msgstr "Àyẹ̀wò Ìfiyèsí"
+
+#: syslog.php
+msgid "Incoming transfer"
+msgstr "Ìfiránṣẹ́ tí ń wọlé"
+
+#: syslog.php
+msgid "Report processing"
+msgstr "Ìṣiṣẹ́ ìròyìn"
+
+#: syslog.php
+msgid "slowest"
+msgstr "tó lọ́ra jùlọ"
+
+#: syslog.php
+msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
+msgstr "Kò sí àwọn àkókò ìpele tí a kọ sílẹ̀ síbẹ̀. Àwọn àkókò ìpele yóò hàn lẹ́yìn ìṣiṣẹ́ olùṣàyẹ̀wò tó tẹ̀lé."
+
+#: syslog.php
+msgid "Last run"
+msgstr "Ìṣiṣẹ́ tó kẹ́yìn"
+
+#: syslog.php
+msgid "Rules processed"
+msgstr "Àwọn òfin tí a ṣiṣẹ́ lé lórí"
+
+#: syslog.php
+msgid "Total"
+msgstr "Àpapọ̀"
+
+#: syslog.php
+msgid "Alert rules"
+msgstr "Àwọn òfin Ìfiyèsí"
+
+#: syslog.php
+msgid "Delete rules"
+msgstr "Pa àwọn òfin rẹ́"
+
+#: syslog.php
+msgid "Fired last run"
+msgstr "Ó ṣẹlẹ̀ ní ìṣiṣẹ́ tó kẹ́yìn"
+
+#: syslog.php
+msgid "Show more"
+msgstr "Ṣàfihàn sí i"
+
+#: syslog.php
+msgid "Show less"
+msgstr "Ṣàfihàn díẹ̀"
+
+#: syslog.php
+msgid "Open in a dialog"
+msgstr "Ṣí nínú àpótí ìfọ̀rọ̀wérọ̀"
+
+#: syslog.php
+msgid "Remove from page"
+msgstr "Yọ kúrò láti ojú-ewé"
+
+#: syslog.php
+msgid "Invalid refresh interval."
+msgstr "Ààrin àkókò ìsọdọ̀tun tí kò tọ́."
+
+#: syslog.php
+msgid "Unknown card."
+msgstr "Káàdì àìmọ̀."
+
+#: syslog.php
+msgid "Add card"
+msgstr "Fi káàdì kún un"
+
+#: syslog.php
+msgid "Add a status card…"
+msgstr "Fi káàdì ipò kan kún un…"
+
+#: syslog.php
+msgid "Syslog Alert View"
+msgstr "Ìwòye Ìtanijí Syslog"
+
+#: syslog.php
+msgid "A valid saved search is required."
+msgstr "Ìwádìí tí a fipamọ́ tó péye pọndandan."
+
+#: syslog.php
+msgid "Saved search not found."
+msgstr "A kò rí ìwádìí tí a fipamọ́."
+
+#: syslog.php
+msgid "You may only share your own saved searches."
+msgstr "O lè pín àwọn ìwádìí tí o fipamọ́ tirẹ nìkan."
+
+#: syslog.php
+#, php-format
+msgid "[ Unprocessed Messages: %s ]"
+msgstr "[ Àwọn Ìránṣẹ́ Tí A Kò Tíì Ṣe: %s ]"
+
+#: syslog.php syslog_device_rules.php
+msgid "Enter a search term"
+msgstr "Tẹ ọ̀rọ̀ àwárí kan sínú"
+
+#: syslog.php
+msgid "Select Device(s)"
+msgstr "Yan (Àwọn) Ẹ̀rọ"
+
+#: syslog.php
+msgid "Devices Selected"
+msgstr "Àwọn Ẹ̀rọ tí A Yàn"
+
+#: syslog.php
+msgid "All Devices Selected"
+msgstr "Gbogbo Àwọn Ẹ̀rọ Tí A Yàn"
+
+#: syslog.php
+#, php-format
+msgid "Syslog Message Filter %s"
+msgstr "Àlẹ̀mọ́ Ìránṣẹ́ Syslog %s"
+
+#: syslog.php
+msgid "Search messages"
+msgstr "Ṣàwárí àwọn ìránṣẹ́"
+
+#: syslog.php
+msgid "Collapse filters"
+msgstr "Ká àwọn àlẹ̀mọ́ pọ̀"
+
+#: syslog.php
+msgid "Edit filters"
+msgstr "Ṣàtúnṣe àwọn àlẹ̀mọ́"
+
+#: syslog.php
+msgid "Saved Searches"
+msgstr "Àwọn Ìwádìí Tí A Fipamọ́"
+
+#: syslog.php
+msgid "My Searches"
+msgstr "Àwọn Ìwádìí Mi"
+
+#: syslog.php
+msgid "Global Searches"
+msgstr "Àwọn Ìwádìí Àgbáyé"
+
+#: syslog.php
+#, php-format
+msgid "%s (Default)"
+msgstr "%s (Àìyípadà)"
+
+#: syslog.php
+msgid "Manage"
+msgstr "Ṣàkóso"
+
+#: syslog.php
+msgid "Manage saved searches"
+msgstr "Ṣàkóso àwọn ìwádìí tí a fipamọ́"
+
+#: syslog.php
+msgid "Save search"
+msgstr "Fipamọ́ ìwádìí"
+
+#: syslog.php
+msgid "Edit"
+msgstr "Ṣàtúnṣe"
+
+#: syslog.php
+msgid "Save for all"
+msgstr "Fipamọ́ fún gbogbo ènìyàn"
+
+#: syslog.php
+msgid "contains"
+msgstr "ní nínú"
+
+#: syslog.php
+msgid "does not contain"
+msgstr "kò ní nínú"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Rows"
+msgstr "Àwọn Ìlà"
+
+#: syslog.php
+msgid "Display Rows"
+msgstr "Ṣàfihàn Àwọn Ìlà"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Default"
+msgstr "Àìyípadà"
+
+#: syslog.php
+msgid "View options"
+msgstr "Wo àwọn àṣàyàn"
+
+#: syslog.php
+msgid "Trim"
+msgstr "Gé kúrò"
+
+#: syslog.php
+msgid "Message Trim"
+msgstr "Ìgékúrú Ìfiranṣẹ́"
+
+#: syslog.php
+msgid "Removal Handling"
+msgstr "Ìtọ́jú Ìyọkúrò"
+
+#: syslog.php
+msgid "Display"
+msgstr "Ìfihàn"
+
+#: syslog.php
+msgid "Group Duplicate Messages"
+msgstr "Ṣàkójọ Àwọn Ìránṣẹ́ Tí Ó Jọra"
+
+#: syslog.php
+msgid "Individual Messages"
+msgstr "Àwọn Ìránṣẹ́ Ẹnìkọ̀ọ̀kan"
+
+#: syslog.php
+msgid "Grouped Messages"
+msgstr "Àwọn Ìránṣẹ́ Tí A Kójọ"
+
+#: syslog.php
+#, no-php-format
+msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
+msgstr "Yan pápá kan, olùṣiṣẹ́, àti iye. AND ní ipò àkọ́kọ́ lórí OR; NOT yọ ipò kan kúrò. LIKE ń lo % fún iye àmì lẹ́tà èyíkéyìí àti _ fún àmì lẹ́tà kan. Àwọn déètì ń lo YYYY-MM-DD HH:MM:SS. Àwọn ID ń lo àwọn nọ́ńbà odidi tí kì í ṣe òdì. Ní àìyípadà, a ó fi ọjọ́ tí ó kẹ́yìn àwọn àkọsílẹ̀ hàn àyàfi bí a bá ṣàtúnṣe àkókò déètì náà."
+
+#: syslog.php
+msgid "Search help"
+msgstr "Ìrànlọ́wọ́ ìwádìí"
+
+#: syslog.php
+msgid "New Saved Search"
+msgstr "Ìwádìí Tí A Fipamọ́ Tuntun"
+
+#: syslog.php
+msgid "Edit Saved Search"
+msgstr "Ṣàtúnṣe Ìwádìí Tí A Fipamọ́"
+
+#: syslog.php
+msgid "Save As"
+msgstr "Fipamọ́ Gẹ́gẹ́ Bí"
+
+#: syslog.php
+msgid "Delete the selected saved search?"
+msgstr "Ṣé kí á pa ìwádìí tí a fipamọ́ tí a yàn rẹ́?"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Search"
+msgstr "Ṣàwárí"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Clear"
+msgstr "Nu Kúrò"
+
+#: syslog.php
+msgid "Return filter values to their user defined defaults"
+msgstr "Dá àwọn iye àlẹ̀mọ́ padà sí àṣàyàn àkọ́kọ́ tí olùlò ṣètò"
+
+#: syslog.php
+msgid "Refresh Results"
+msgstr "Sọ Àwọn Èsì Di Ọ̀tun"
+
+#: syslog.php
+msgid "Export Records to CSV"
+msgstr "Kó Àwọn Àkọsílẹ̀ Jáde sí CSV"
+
+#: syslog.php
+msgid "Save Default Settings"
+msgstr "Fipamọ́ Àwọn Ètò Àìyípadà"
+
+#: syslog.php
+msgid "Save view defaults"
+msgstr "Fipamọ́ àwọn àìyípadà ìwòye"
+
+#: syslog.php
+msgid "Save Search As"
+msgstr "Fipamọ́ Ìwádìí Gẹ́gẹ́ Bí"
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
+msgstr "Lo ìṣàwárí yìí nígbà tí o bá ṣí ojú ìwé yìí tí kò sì sí ìṣàwárí kankan tó ń ṣiṣẹ́ síbẹ̀"
+
+#: syslog.php
+msgid "Breach"
+msgstr "Ìrékọjá"
+
+#: syslog.php
+msgid "Threshold breached"
+msgstr "Àlà ti kọjá"
+
+#: syslog.php
+msgid "Messages"
+msgstr "Àwọn Ìfiranṣẹ́"
+
+#: syslog.php
+msgid "Empty message"
+msgstr "Ìránṣẹ́ òfo"
+
+#: syslog.php
+msgid "Toggle group messages"
+msgstr "Yí ìfiránṣẹ́ ẹgbẹ́ padà"
+
+#: syslog.php
+msgid "Loading group messages..."
+msgstr "Ń gbé àwọn ìránṣẹ́ ẹgbẹ́ wọlé..."
+
+#: syslog.php
+msgid "No matching messages."
+msgstr "Kò sí àwọn ìránṣẹ́ tí ó bá a mu."
+
+#: syslog.php
+msgid "No Syslog Messages"
+msgstr "Kò sí Àwọn Ìránṣẹ́ Syslog"
+
+#: syslog.php
+msgid "Alert Log Rows"
+msgstr "Àwọn Ìlà Àkọsílẹ̀ Ìfiyèsí"
+
+#: syslog.php
+msgid "Alert Removed"
+msgstr "A Ti Yọ Ìfiyèsí Kúrò"
+
+#: syslog.php
+msgid "No Alert Log Messages"
+msgstr "Kò Sí Àwọn Ìránṣẹ́ Àkọsílẹ̀ Ìtanijí"
+
+#: syslog.php
+msgid "Close message details"
+msgstr "Pa àlàyé ìfiránṣẹ́ dé"
+
+#: syslog.php
+msgid "Message details"
+msgstr "Àwọn àlàyé ìfiranṣẹ́"
+
+#: syslog.php
+msgid "General"
+msgstr "Gbogbogbò"
+
+#: syslog.php
+msgid "Alert Rule"
+msgstr "Òfin Ìfiyèsí"
+
+#: syslog.php
+msgid "Sequence"
+msgstr "Ìtẹ̀léra"
+
+#: syslog.php
+msgid "Copied"
+msgstr "Ti ṣe àdàkọ"
+
+#: syslog.php
+msgid "Copy link"
+msgstr "Ṣe àdàkọ ìjápọ̀"
+
+#: syslog.php
+msgid "Copy message"
+msgstr "Ṣe àdàkọ ìránṣẹ́"
+
+#: syslog.php
+msgid "Copy unavailable. Select and copy the message text."
+msgstr "Àdàkọ kò sí. Yan kí o sì ṣe àdàkọ ọ̀rọ̀ ìránṣẹ́ náà."
+
+#: syslog.php
+msgid "Looking up recommendations…"
+msgstr "Ń wá àwọn àbá…"
+
+#: syslog.php
+msgid "No recommendation matches this message."
+msgstr "Kò sí àbá kankan tí ó bá ìránṣẹ́ yìí mu."
+
+#: syslog.php syslog_alerts.php
+msgid "Actions"
+msgstr "Àwọn Ìgbésẹ̀"
+
+#: syslog.php
+msgid "Create Alarm Rule"
+msgstr "Ṣẹ̀dá Òfin Ìtanijí"
+
+#: syslog.php
+msgid "Create Device Alert Rule"
+msgstr "Ṣẹ̀dá Òfin Ìkìlọ̀ Ẹ̀rọ"
+
+#: syslog.php
+msgid "Create Removal Rule"
+msgstr "Ṣẹ̀dá Òfin Ìyọkúrò"
+
+#: syslog.php
+msgid "Filter by device"
+msgstr "Ṣe àlẹ̀mọ́ nípasẹ̀ ẹ̀rọ"
+
+#: syslog.php
+msgid "Filter by program"
+msgstr "Ṣe àlẹ̀mọ́ nípasẹ̀ ètò"
+
+#: syslog.php
+msgid "All Programs"
+msgstr "Gbogbo Àwọn Ètò Ìṣiṣẹ́"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti Pa Òfin Ìkìlọ̀ Syslog wọ̀nyí rẹ́."
+
+#: syslog_alerts.php
+msgid "Delete Syslog Alert Rule(s)"
+msgstr "Pa (Àwọn) Òfin Ìtanijì Syslog Rẹ́"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti Mú Òfin Ìkìlọ̀ Syslog wọ̀nyí di àìṣiṣẹ́."
+
+#: syslog_alerts.php
+msgid "Disable Syslog Alert Rule(s)"
+msgstr "Ṣe àìṣiṣẹ́ Òfin Ìtànijí Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti Mú Òfin Ìkìlọ̀ Syslog wọ̀nyí ṣiṣẹ́."
+
+#: syslog_alerts.php
+msgid "Enable Syslog Alert Rule(s)"
+msgstr "Mú Àwọn Òfin Ìtànijí Syslog ṣiṣẹ́"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti kó àwọn Òfin Ìkìlọ̀ Syslog wọ̀nyí jáde."
+
+#: syslog_alerts.php
+msgid "Export Syslog Alert Rule(s)"
+msgstr "Kó Àwọn Òfin Ìtànijí Syslog Jáde"
+
+#: syslog_alerts.php
+msgid "Select Syslog Alarming or Alarm Manager."
+msgstr "Yan Ìtanijì Syslog tàbí Olùṣàkóso Ìtanijì."
+
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr "Tẹ nọ́mbà odidi ti ìṣẹ́jú, wákàtí, tàbí ọjọ́ fún fèrèsé àlà."
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr "Tẹ nọ́mbà odidi rere ti ìṣẹ́jú, wákàtí, tàbí ọjọ́ fún ìpadàbọ̀sípò àlà."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
+msgstr "Ìlànà SQL tí a tẹ̀ síi kò tọ́. Jọ̀wọ́ tún SQL rẹ ṣe.<br>"
+
+#: syslog_alerts.php syslog_reports.php
+#, php-format
+msgid "The Pre-processed SQL is:<br><br> %s"
+msgstr "SQL tí a ti ṣètò tẹ́lẹ̀ ni:<br><br> %s"
+
+#: syslog_alerts.php syslog_removal.php
+#, php-format
+msgid "The filter is invalid: %s"
+msgstr "Àlẹ̀mọ́ náà kò tọ́: %s"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The processed SQL was invalid.  Please correct your SQL"
+msgstr "SQL tí a ṣiṣẹ́ lé kò tọ́.  Jọ̀wọ́ ṣàtúnṣe SQL rẹ"
+
+#: syslog_alerts.php
+msgid "Not Set"
+msgstr "Kò Tíì Jẹ́ Ṣíṣètò"
+
+#: syslog_alerts.php
+msgid "1 Minute"
+msgstr "Ìṣẹ́jú 1"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hour"
+msgstr "Wákàtí %d"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hours"
+msgstr "Wákàtí %d"
+
+#: syslog_alerts.php
+msgid "1 Month"
+msgstr "Oṣù 1"
+
+#: syslog_alerts.php
+#, php-format
+msgid "Alert Edit [edit: %s]"
+msgstr "Ṣàtúnṣe Ìfiyèsí [àtúnṣe: %s]"
+
+#: syslog_alerts.php
+msgid "Alert Edit [new]"
+msgstr "Ṣàtúnṣe Ìfiyèsí [tuntun]"
+
+#: syslog_alerts.php
+msgid "New Alert Rule"
+msgstr "Òfin Ìtanijí Tuntun"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "N/A"
+msgstr "Kò Sí"
+
+#: syslog_alerts.php
+msgid "Time unit"
+msgstr "Ẹ̀yà àkókò"
+
+#: syslog_alerts.php
+msgid "Days"
+msgstr "Àwọn Ọjọ́"
+
+#: syslog_alerts.php
+msgid "Hours"
+msgstr "Àwọn Wákàtí"
+
+#: syslog_alerts.php
+msgid "Minutes"
+msgstr "Àwọn Ìṣẹ́jú"
+
+#: syslog_alerts.php
+msgid "Please describe this Alert."
+msgstr "Jọ̀wọ́ ṣàpèjúwe Ìtanijí yìí."
+
+#: syslog_alerts.php
+msgid "Alarm Destination"
+msgstr "Àfojúsùn Ìtanijì"
+
+#: syslog_alerts.php
+msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
+msgstr "Yan Ìtànijí Syslog tàbí Olùṣàkóso Ìtànijí. Olùṣàkóso Ìtànijí tún nílò kí ìfiránṣẹ́ síwájú wà ní Ṣiṣẹ́ nínú Àwọn Ètò Syslog. A pa Ímeèlì mọ́ gẹ́gẹ́ bí ààbò àfikún; àwọn ìgbésẹ̀ àṣẹ kì í ṣiṣẹ́ fún àwọn òfin Olùṣàkóso Ìtànijí."
+
+#: syslog_alerts.php
+msgid "Alarm Manager"
+msgstr "Olùṣàkóso Ìtanijì"
+
+#: syslog_alerts.php
+msgid "Syslog Alarming"
+msgstr "Ìtanijí Syslog"
+
+#: syslog_alerts.php
+msgid "What is the Severity Level of this Alert?"
+msgstr "Kí ni Ìpele Ìlewu Ìtajì yìí?"
+
+#: syslog_alerts.php
+msgid "Reporting Level"
+msgstr "Ìpele Ìròyìn"
+
+#: syslog_alerts.php
+msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
+msgstr "Fún kíkọ àwọn Ìyípo Àtún-Ìtanijí sílẹ̀, ṣé kí a tọ́pa Ìtanijí ní ìpele Ètò tàbí Ẹ̀rọ."
+
+#: syslog_alerts.php
+msgid "System"
+msgstr "Ètò"
+
+#: syslog_alerts.php
+msgid "Reporting Method"
+msgstr "Ọ̀nà Ìròyìn"
+
+#: syslog_alerts.php
+msgid "Define how to Alert on the syslog messages."
+msgstr "Ṣàlàyé bí a ṣe lè ṣe Ìtanijì lórí àwọn ìfiránṣẹ́ syslog."
+
+#: syslog_alerts.php
+msgid "Individual"
+msgstr "Ẹnìkọ̀ọ̀kan"
+
+#: syslog_alerts.php
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
+msgstr "Fún ọ̀nà 'Àlà', a ó dá Ìtanijí sílẹ̀ nígbà tí iye tí a rí bá dé iye yìí."
+
+#: syslog_alerts.php
+msgid "Threshold Window"
+msgstr "Fèrèsé Àlà"
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr "Ka àwọn ìbámu káàkiri àwọn ìyípo olùkójọ láàárín fèrèsé yíyí yìí, ní lílo àkókò ìṣiṣẹ́ olùkójọ. Tẹ 0 láti ka ìyípo lọ́wọ́lọ́wọ́ nìkan."
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr "Gba Padà Lẹ́yìn Àkókò Ìdákẹ́jẹ́ẹ́"
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
+msgstr "Àkókò láìsí àwọn ìfiránṣẹ́ tó bá a mu kí a tó pa ìrékọjá rẹ́, kí a tún kíkà bẹ̀rẹ̀, kí a sì tún òfin yìí múlẹ̀. Gbogbo ìfiránṣẹ́ tó bá a mu ni yóò tún aago yìí bẹ̀rẹ̀."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match Type"
+msgstr "Irú Ìbámu"
+
+#: syslog_alerts.php
+msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
+msgstr "Yan Olùkọ́ Àlẹ̀mọ́ fún ìlànà ìtànijí oní-ipò-púpọ̀ tí ó ní ààbò. A pa Ìsọ̀rọ̀ SQL mọ́ fún àwọn òfin àtijọ́."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Message Match String"
+msgstr "Okùn Ìbámu Ìfiranṣẹ́"
+
+#: syslog_alerts.php
+msgid "Build filter conditions or enter an SQL expression to match syslog messages."
+msgstr "Kọ àwọn ipò àlẹ̀mọ́ tàbí tẹ àpèjúwe SQL kan síi láti bá àwọn ìránṣẹ́ syslog mu."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_removal.php
+#: syslog_reports.php
+msgid "Enabled"
+msgstr "Ṣiṣẹ́"
+
+#: syslog_alerts.php
+msgid "Is this Alert Enabled?"
+msgstr "Ṣé Ìtanijí yìí ti Ṣiṣẹ́?"
+
+#: syslog_alerts.php
+msgid "Re-Alert Cycle"
+msgstr "Ìyípo Àtún-Ìtànjí"
+
+#: syslog_alerts.php
+msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
+msgstr "Má ṣe tún ìtanijí yìí fi ránṣẹ́ fún olùgbàlejò kan náà títí àkókò yìí yóò fi kọjá. Fún àwọn ìkìlọ̀ tó dá lórí àlà, èyí kan gbogbo àwọn olùgbàlejò."
+
+#: syslog_alerts.php
+msgid "Notification Cooldown"
+msgstr "Àkókò Ìsinmi Ìfitọ́nilétí"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
+msgstr "Ìṣẹ́jú láti dènà gbogbo ìfitónilétí tí ó tẹ̀lé e láti inú òfin yìí àti àgbègbè ìjábọ̀."
+
+#: syslog_alerts.php
+msgid "1 day"
+msgstr "Ọjọ́ 1"
+
+#: syslog_alerts.php
+msgid "1 hour"
+msgstr "Wákàtí 1"
+
+#: syslog_alerts.php
+msgid "1 minute"
+msgstr "Ìṣẹ́jú 1"
+
+#: syslog_alerts.php
+msgid "15 minutes"
+msgstr "Ìṣẹ́jú 15"
+
+#: syslog_alerts.php
+msgid "30 minutes"
+msgstr "Ìṣẹ́jú 30"
+
+#: syslog_alerts.php
+msgid "4 hours"
+msgstr "Wákàtí 4"
+
+#: syslog_alerts.php
+msgid "5 minutes"
+msgstr "Ìṣẹ́jú 5"
+
+#: syslog_alerts.php
+msgid "Use global setting"
+msgstr "Lo ètò gbogboogbò"
+
+#: syslog_alerts.php
+msgid "Duplicate Suppression"
+msgstr "Ìdènà Ẹ̀dà"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress the same matched message set."
+msgstr "Ìṣẹ́jú láti dènà àkójọ ìránṣẹ́ kan náà tí ó báramu."
+
+#: syslog_alerts.php
+msgid "Maintenance Window"
+msgstr "Àkókò Ìtọ́jú"
+
+#: syslog_alerts.php
+msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
+msgstr "Yan bóyá òfin yìí ń lo àkókò ìtọ́jú àgbáyé tàbí àkókò tirẹ̀ fúnra rẹ̀."
+
+#: syslog_alerts.php
+msgid "Do not mute this rule"
+msgstr "Má ṣe pa òfin yìí lẹ́nu mọ́"
+
+#: syslog_alerts.php
+msgid "Use global timeframe"
+msgstr "Lo àkókò gbogboogbò"
+
+#: syslog_alerts.php
+msgid "Use rule timeframe"
+msgstr "Lo àkókò òfin"
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Days"
+msgstr "Àwọn Ọjọ́ Ìtọ́jú Òfin"
+
+#: syslog_alerts.php
+msgid "Days for this rule timeframe, when Use rule timeframe is selected."
+msgstr "Àwọn ọjọ́ fún àkókò òfin yìí, nígbà tí a bá yan Lo àkókò òfin."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Starts"
+msgstr "Ìtọ́jú Òfin Bẹ̀rẹ̀"
+
+#: syslog_alerts.php
+msgid "Local start time for this rule timeframe."
+msgstr "Àkókò ìbẹ̀rẹ̀ abẹ́lé fún àkókò òfin yìí."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Ends"
+msgstr "Ìtọ́jú Òfin Parí"
+
+#: syslog_alerts.php
+msgid "Local end time for this rule timeframe."
+msgstr "Àkókò ìparí abẹ́lé fún àkókò òfin yìí."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Starts"
+msgstr "Àtúnṣe Òfin Lẹ́ẹ̀kan Péré Bẹ̀rẹ̀"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Ọjọ́ àti àkókò àdúgbò àṣàyàn láti bẹ̀rẹ̀ sí í pa òfin yìí lẹ́nu mọ́. Ìrísí: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Ends"
+msgstr "Àtúnṣe Òfin Lẹ́ẹ̀kan Péré Parí"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Ọjọ́ àti àkókò àdúgbò àṣàyàn láti dá pípa òfin yìí lẹ́nu mọ́ dúró. Ìrísí: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_reports.php
+msgid "Notes"
+msgstr "Àwọn Àkọsílẹ̀"
+
+#: syslog_alerts.php
+msgid "Space for Notes on the Alert"
+msgstr "Ààyè fún Àwọn Àkọsílẹ̀ lórí Ìtanijí"
+
+#: syslog_alerts.php
+msgid "Email Options"
+msgstr "Àwọn Àṣàyàn Ímeèlì"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Notification List"
+msgstr "Àtòjọ Ìfitónilétí"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "Lo àwọn àkóónú Àtòjọ Ìfitọ́nilétí yìí láti pinnu ẹni tí a ó fi tó létí àti bí a ó ṣe ṣe é."
+
+#: syslog_alerts.php
+msgid "Emails to Notify"
+msgstr "Àwọn Ímeèlì láti Fitónilétí"
+
+#: syslog_alerts.php
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "Jọ̀wọ́ tẹ àtòjọ àwọn àdírẹ́sì Ímeèlì tí a fi kọ́mà pín láti fi tó létí.  Bí o bá fẹ́ fi Ímeèlì ránṣẹ́ sí olùgbà kan ní ìrísí SMS, jọ̀wọ́ fi <b>'sms@'</b> ṣáájú àdírẹ́sì Ímeèlì olùgbà náà.  Fún àpẹẹrẹ, bí àdírẹ́sì SMS olùgbà náà bá jẹ́ <b>'2485551212@mycarrier.net'</b>, o máa tẹ̀ ẹ́ bíi <b>'sms@2485551212@mycarrier.net'</b> yóò sì di ìrísí ìfiranṣẹ́ SMS."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Body Text"
+msgstr "Ọ̀rọ̀ Ara Ímeèlì"
+
+#: syslog_alerts.php
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "Àlàyé yìí yóò hàn nínú ara Ìkìlọ̀ náà ní kíkán ṣáájú àwọn kúlẹ̀kúlẹ̀ Ìkìlọ̀."
+
+#: syslog_alerts.php
+msgid "Open Ticket"
+msgstr "Ṣí Tíkẹ́ẹ̀tì"
+
+#: syslog_alerts.php
+msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
+msgstr "Ṣé kí a ṣí Tíkẹ́ẹ̀tì Ìrànlọ́wọ́ fún Ìfitónilétí yìí.  ÀKÍYÈSÍ: A ó fi ọ̀pọ̀ àwọn onírúurú àyíká 'ALERT_' kún ìwé-àṣẹ Tíkẹ́ẹ̀tì fún ìrọ̀rùn."
+
+#: syslog_alerts.php
+msgid "Alert command"
+msgstr "Àṣẹ Ìfiyèsí"
+
+#: syslog_alerts.php
+msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
+msgstr "Nígbà tí Ìtanijí bá ṣẹlẹ̀, ṣiṣẹ́ àṣẹ ìsàlẹ̀ yìí.  Àwọn onírúurú ìyípadà wọ̀nyí wà ní àrọ́wọ́tó <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Jọ̀wọ́ kíyè sí i pé <b>'&lt;HOSTNAME&gt;'</b> wà fún àwọn àlà kọ̀ọ̀kan nìkan.  Àwọn iye ìyípadà wọ̀nyí lè hàn lórí ìlà àṣẹ, tàbí kí a kó wọn jọ láti àyíká ìwé àṣẹ náà.  Nígbà tí a bá lò wọ́n láti àyíká, a óò fi 'ALERT_' síwájú àwọn onírúurú náà."
+
+#: syslog_alerts.php
+msgid "Recovery command"
+msgstr "Àṣẹ ìgba-padà"
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgstr "Àṣẹ àṣàyàn láti ṣiṣẹ́ nígbà tí àlà yìí bá padà bọ̀ sípò lẹ́yìn àkókò ìdákẹ́jẹ́ẹ́ rẹ̀. Ó ń lo àwọn onírúurú ìyípadà kan náà bí àṣẹ Ìkìlọ̀. SYSLOG_EVENT wà ní mímọ́; SYSLOG_BREACH_ID bá àṣẹ ìrúfin mu. A ó tún àwọn àṣẹ tí ó kùnà gbìyànjú. Fi sílẹ̀ ní òfo láti ṣe é ní àìṣiṣẹ́."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Test rule"
+msgstr "Ṣe àyẹ̀wò òfin"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Rule Test Preview"
+msgstr "Àwòkọ́ Ìdánwò Òfin"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Value"
+msgstr "Iye"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a value"
+msgstr "Tẹ iye kan"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match"
+msgstr "Ìbámu"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Exclude"
+msgstr "Yọ kúrò"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a nonnegative integer"
+msgstr "Tẹ nọ́mbà odidi tí kò dín sí òdo"
+
+#: syslog_alerts.php
+msgid "Alarm filter conditions"
+msgstr "Àwọn ipò àlẹ̀mọ́ Ìtanijì"
+
+#: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php
+msgid "All"
+msgstr "Gbogbo"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Go"
+msgstr "Lọ"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+msgid "Import"
+msgstr "Kó Wọlé"
+
+#: syslog_alerts.php
+msgid "Syslog Alert Filters"
+msgstr "Àwọn Àlẹ̀mọ́ Ìtanijí Syslog"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Method"
+msgstr "Ọ̀nà"
+
+#: syslog_alerts.php
+msgid "Threshold Count"
+msgstr "Ìka Àlà"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Search String"
+msgstr "Ọ̀rọ̀ Ìwádìí"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Addresses"
+msgstr "Àwọn Àdírẹ́sì Ímeèlì"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Last Modified"
+msgstr "Àtúnṣe Tí Ó Kẹ́yìn"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "By User"
+msgstr "Nípa Olùlò"
+
+#: syslog_alerts.php
+msgid "Alerts"
+msgstr "Àwọn Ìfiyèsí"
+
+#: syslog_alerts.php
+msgid "Multiple"
+msgstr "Ọ̀pọ̀lọpọ̀"
+
+#: syslog_alerts.php
+msgid "No Syslog Alerts Defined"
+msgstr "Kò sí Àwọn Ìkìlọ̀-pàjáwìrì Syslog tí a Tọ́ka sí"
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Local File"
+msgstr "Gbé Òfin Ìtanijí Wọlé láti Fáìlì Abẹ́lé"
+
+#: syslog_alerts.php
+msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
+msgstr "Tí fáìlì XML tí ó ní dátà ìtumọ̀ Òfin Ìtanijí bá wà lórí ẹ̀rọ abẹ́lé rẹ, yàn án níbí."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Text"
+msgstr "Gbé Òfin Ìtanijí Wọlé láti Ọ̀rọ̀"
+
+#: syslog_alerts.php
+msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
+msgstr "Tí o bá ní fáìlì XML tí ó ní dátà ìtumọ̀ Òfin Ìtanijí gẹ́gẹ́ bí ọ̀rọ̀, o lè lẹ̀ ẹ́ sínú àpótí yìí láti gbé e wọlé."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule"
+msgstr "Gbé Òfin Ìtanijí Wọlé"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_saved_searches.php
+msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
+msgstr "A kọ ìkówọlé: fáìlì náà ṣófo, kò tọ́, tàbí ó ní irú ohun Syslog mìíràn nínú."
+
+#: syslog_alerts.php
+msgid "Import rejected: invalid alarm destination."
+msgstr "A kọ ìkówọlé: ibi ìfọkànsí ìtanijí kò tọ́."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Imported"
+msgstr "Ti gbé wọlé"
+
+#: syslog_alerts.php
+#, php-format
+msgid "NOTE: Alert '%s' %s!"
+msgstr "ÀKÍYÈSÍ: Ìkìlọ̀ '%s' %s!"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_reports.php
+msgid "Updated"
+msgstr "Ti ṣe ìmúdójúìwọ̀n"
+
+#: syslog_alerts.php
+#, php-format
+msgid "ERROR: Alert '%s' %s Failed!"
+msgstr "ÀṢÌṢE: Ìtanijí '%s' %s Kùnà!"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Update"
+msgstr "Ìmúdójúìwọ̀n"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Select a valid owner."
+msgstr "Yan olùní tó tọ́."
+
+#: syslog_dashboards.php
+msgid "Unable to save the dashboard. Please try again."
+msgstr "Kò le fi dasibọ́ọ̀dù pamọ́. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i."
+
+#: syslog_dashboards.php
+msgid "Enter a dashboard name between 1 and 128 characters."
+msgstr "Tẹ orúkọ pátákó ìṣàkóso tí ó wà láàárín àmì 1 sí 128."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Owner"
+msgstr "Olùní"
+
+#: syslog_dashboards.php
+msgid "Shared"
+msgstr "Ti Pín"
+
+#: syslog_dashboards.php
+msgid "Panels"
+msgstr "Àwọn Pánẹ́lì"
+
+#: syslog_dashboards.php
+msgid "deleted user"
+msgstr "olùlò tí a pa rẹ́"
+
+#: syslog_dashboards.php
+msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
+msgstr "Kò sí pátákó ìṣàkóso síbẹ̀. Àwọn olùlò máa ń ṣẹ̀dá wọn láti taábù Pátákó Ìṣàkóso ti Syslog."
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
+msgstr "Tẹ 'Tẹ̀síwájú' láti Pa Pátákó-ìṣàkóso wọ̀nyí àti gbogbo àwọn Pánẹ́lì wọn rẹ́."
+
+#: syslog_dashboards.php
+msgid "Delete Dashboard(s)"
+msgstr "Pa (Àwọn) Pátákó Ìwòran Rẹ́"
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Export the following Dashboard(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti kó àwọn Pátákó Àfihàn wọ̀nyí jáde."
+
+#: syslog_dashboards.php
+msgid "Export Dashboard(s)"
+msgstr "Kó Àwọn Pátákó Ìṣàkóso Jáde"
+
+#: syslog_dashboards.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Dashboard(s)."
+msgstr "ÀKÍYÈSÍ: A kó %d wọlé, a sì ṣe àtúnṣe Àwọn Pátákó Àfihàn %d."
+
+#: syslog_dashboards.php
+#, php-format
+msgid "ERROR: %d Dashboard(s) failed to import."
+msgstr "ÀṢÌṢE: %d Pátákó Ìṣàkóso kùnà láti kó wọlé."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Local File"
+msgstr "Gbé Pátákó Ìṣàkóso Wọlé láti Fáìlì Abẹ́lé"
+
+#: syslog_dashboards.php
+msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
+msgstr "Tí fáìlì JSON tí ó ní dátà ìtumọ̀ Pátákó Ìṣàkóso bá wà lórí ẹ̀rọ abẹ́lé rẹ, yàn án níbí."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Text"
+msgstr "Gbé Pátákó Ìṣàkóso Wọlé láti Ọ̀rọ̀"
+
+#: syslog_dashboards.php
+msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
+msgstr "Tí o bá ní fáìlì JSON tí ó ní dátà ìtumọ̀ Pátákó Ìṣàkóso gẹ́gẹ́ bí ọ̀rọ̀, o lè lẹ̀ ẹ́ sínú àpótí yìí láti gbé e wọlé."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard"
+msgstr "Gbé Pátákó Ìṣàkóso Wọlé"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Users"
+msgstr "Gbogbo Àwọn Olùlò"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Groups"
+msgstr "Gbogbo Àwọn Ẹgbẹ́"
+
+#: syslog_dashboards.php
+msgid "Edit Dashboard"
+msgstr "Ṣàtúnṣe Pátákó Ìṣàkóso"
+
+#: syslog_dashboards.php
+msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
+msgstr "Orúkọ tí ó hàn nínú àṣàyàn Dashboards ti taabu Syslog Dashboard."
+
+#: syslog_dashboards.php
+msgid "The account that owns this dashboard and can manage its panels."
+msgstr "Àkọọ́lẹ̀ tí ó ni pátákó ìṣàkóso yìí tí ó sì lè ṣàkóso àwọn pánẹ́lì rẹ̀."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Users"
+msgstr "Ti Pín Pẹ̀lú Àwọn Olùlò"
+
+#: syslog_dashboards.php
+msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
+msgstr "Àwọn olùlò tí ó lè wo pátákó yìí ní àfikún sí olówó rẹ̀ àti ìpínkiri gbogboogbò èyíkéyìí. Gbogbo Àwọn Olùlò máa ń pín in fún gbogbo ènìyàn."
+
+#: syslog_dashboards.php
+msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
+msgstr "Àwọn ẹgbẹ́ tí ó lè wo pátákó ìṣàkóso yìí ní àfikún sí olùní rẹ̀ àti ìpínkiri gbogbogbò èyíkéyìí. Gbogbo Àwọn Ẹgbẹ́ ń pín in pẹ̀lú gbogbo ènìyàn."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Groups"
+msgstr "Ti Pín Pẹ̀lú Àwọn Ẹgbẹ́"
+
+#: syslog_dashboards.php
+msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
+msgstr "Ìtúnsọlórúkọ kan gbogbo olùwòran pátákó ìṣàkóso yìí. Àwọn oní wọn ni ó ń ṣàkóso àwọn pánẹ́lì láti inú táàbù Pátákó Ìṣàkóso Syslog."
+
+#: syslog_device_rules.php
+msgid "Choose a future pause end date and time."
+msgstr "Yan déètì àti àkókò ìparí ìdádúró ọjọ́ iwájú."
+
+#: syslog_device_rules.php
+msgid "A device name is required."
+msgstr "Orúkọ ẹ̀rọ kan pọndandan."
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Click Continue to %s the following Device Alert Rule(s)."
+msgstr "Tẹ Tẹ̀síwájú láti %s àwọn Òfin Ìkìlọ̀ Ẹ̀rọ wọ̀nyí."
+
+#: syslog_device_rules.php
+msgid "Do not pass any priority"
+msgstr "Má ṣe fi ìṣáájú kankan ránṣẹ́"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "%s and more urgent"
+msgstr "%s àti èyí tí ó kánjú jù bẹ́ẹ̀ lọ"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule"
+msgstr "Òfin Ìtanijí Ẹ̀rọ"
+
+#: syslog_device_rules.php
+msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
+msgstr "Ṣàwárí àwọn ẹ̀rọ Syslog lọ́wọ́lọ́wọ́ bí o ṣe ń tẹ̀, tàbí tẹ àdírẹ́ẹ̀sì IP tàbí orúkọ olùgbàlejò èyíkéyìí."
+
+#: syslog_device_rules.php
+msgid "Alert Handling"
+msgstr "Ìtọ́jú Ìfiyèsí"
+
+#: syslog_device_rules.php
+msgid "Do not pause"
+msgstr "Má ṣe dá dúró"
+
+#: syslog_device_rules.php
+msgid "Pause all non-exempt alerts until a date, or indefinitely."
+msgstr "Dá gbogbo ìtànijí tí kò ní ìyọ̀ǹda dúró títí di ọjọ́ kan, tàbí láìlópin."
+
+#: syslog_device_rules.php
+msgid "Pause indefinitely"
+msgstr "Dádúró láìlópin"
+
+#: syslog_device_rules.php
+msgid "Pause until"
+msgstr "Dádúró títí di"
+
+#: syslog_device_rules.php
+msgid "Local date and time, YYYY-MM-DD HH:MM."
+msgstr "Ọjọ́ àti àkókò abẹ́lé, YYYY-MM-DD HH:MM."
+
+#: syslog_device_rules.php
+msgid "Pause Ends"
+msgstr "Ìdádúró Parí"
+
+#: syslog_device_rules.php
+msgid "Always Allow Priority"
+msgstr "Máa Gba Ohun Àkọ́kọ́ Láàyè Nígbà Gbogbo"
+
+#: syslog_device_rules.php
+msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
+msgstr "Àwọn ohun àkọ́kọ́ wọ̀nyí ń kọjá láàárín ìdádúró ẹ̀rọ yìí àti àwọn àsìkò àtúnṣe. Ohun pàtàkì jù àti èyí tó yára jù jẹ́ àṣàyàn ẹ̀rọ-platinum tí ó wọ́pọ̀."
+
+#: syslog_device_rules.php
+msgid "Allow During Maintenance"
+msgstr "Gba Láàyè Ní Àkókò Ìtọ́jú"
+
+#: syslog_device_rules.php
+msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
+msgstr "Gba gbogbo àwọn ohun àkọ́kọ́ láti orí ẹ̀rọ yìí láàyè ní àkókò ìtọ́jú ìkìlọ̀. Àṣàyàn ohun àkọ́kọ́ lókè yóò ṣì ṣiṣẹ́ nígbà tí èyí bá jẹ́ Rárá."
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [edit]"
+msgstr "Òfin Ìtanijí Ẹ̀rọ [ṣàtúnṣe]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [new]"
+msgstr "Òfin Ìtanijí Ẹ̀rọ [tuntun]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule Filters"
+msgstr "Àwọn Àlẹ̀mọ́ Òfin Ìtanijí Ẹ̀rọ"
+
+#: syslog_device_rules.php syslog_removal.php
+msgid "Rules"
+msgstr "Àwọn Òfin"
+
+#: syslog_device_rules.php
+msgid "Handling"
+msgstr "Ìtọ́jú"
+
+#: syslog_device_rules.php
+msgid "Maintenance"
+msgstr "Ìtọ́jú"
+
+#: syslog_device_rules.php
+msgid "Pass Through"
+msgstr "Ìkọjá Tààrà"
+
+#: syslog_device_rules.php
+msgid "No device alert rules found."
+msgstr "Kò sí òfin ìtànìjí ẹ̀rọ kankan tí a rí."
+
+#: syslog_device_rules.php
+msgid "Not paused"
+msgstr "Kò dá dúró"
+
+#: syslog_device_rules.php
+msgid "Paused indefinitely"
+msgstr "Ti dádúró láìlópin"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Paused until %s"
+msgstr "Ti dádúró títí di %s"
+
+#: syslog_device_rules.php
+msgid "and more urgent"
+msgstr "àti èyí tó kánjú jù"
+
+#: syslog_device_rules.php
+msgid "Allow all"
+msgstr "Gba gbogbo rẹ̀ láàyè"
+
+#: syslog_device_rules.php
+msgid "Use priority exception"
+msgstr "Lo ìyọkúrò ìṣáájú"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
+msgstr "A kò fi àbá náà pamọ́ nítorí %s. Tẹ ìdánimọ̀ kan láìsí àyè àti ó kéré jù àlàyé kan tàbí ìgbésẹ̀ tí a dábàá."
+
+#: syslog_recommendations.php
+msgid "A recommendation for this vendor and identifier already exists."
+msgstr "Ìmọ̀ràn kan fún olùtajà àti olùdámọ̀ yìí ti wà tẹ́lẹ̀."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
+msgstr "ÀKÍYÈSÍ: Olùdámọ̀ %s ní àwọn àmì míràn yàtọ̀ sí àwọn lẹ́tà, àwọn nọ́mbà, _ . - / àti %% ìbẹ̀rẹ̀ gangan tí ó jẹ́ àṣàyàn, nítorí náà kò lè báramu pẹ̀lú ìránṣẹ́ syslog rárá. Rọ́pò àwọn ààyè-ìdúró bíi # tàbí àwọn àṣàyàn bíi A|B pẹ̀lú kóòdù gangan."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Export the following Recommendation(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti kó àwọn Àbá wọ̀nyí jáde."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Delete the following Recommendation(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti Pa Ìmọ̀ràn wọ̀nyí rẹ́."
+
+#: syslog_recommendations.php
+msgid "Export requires the PHP zlib extension to create a JSON gzip file."
+msgstr "Ìkójáde nílò àfikún PHP zlib láti ṣẹ̀dá fáìlì JSON gzip kan."
+
+#: syslog_recommendations.php
+msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
+msgstr "A kọ ìkówọlé: fáìlì náà ṣófo, ó tóbi jù, tàbí kì í ṣe àkọsílẹ̀ JSON ìmọ̀ràn tó tọ́."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
+msgstr "ÀKÍYÈSÍ: A fi %d kún un, a ṣe àtúnṣe %d, a sì fi Àwọn Ìmọ̀ràn %d tí ó wà tẹ́lẹ̀ sílẹ̀ láìyípadà."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
+msgstr "ÀṢÌṢE: A kọ %d Ìmọ̀ràn sílẹ̀ (fún àpẹẹrẹ %s). A ti kọ ọ̀kọ̀ọ̀kan pẹ̀lú ìdí rẹ̀ sínú àkọsílẹ̀ Cacti."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
+msgstr "ÀṢÌṢE: %d Ìmọ̀ràn kò lè fi pamọ́. A ti kọ ọ̀kọ̀ọ̀kan wọn sínú àkọsílẹ̀ Cacti."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
+msgstr "ÀKÍYÈSÍ: Àwọn Ìmọ̀ràn %d tí a kó wọlé ní àwọn olùdámọ̀ tí ó ní àwọn àmì bíi | tàbí # tí kì í farahàn nínú ọ̀rọ̀ ìránṣẹ́ rárá, nítorí náà wọn kò lè báramu títí a ó fi ṣàtúnṣe wọn. Ṣètò Lè Báramu sí Rárá láti tò wọ́n sílẹ̀."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Local File"
+msgstr "Kó Àwọn Ìmọ̀ràn Wọlé láti Fáìlì Abẹ́lé"
+
+#: syslog_recommendations.php
+msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
+msgstr "Yan fáìlì .json tàbí .json.gz kan lórí ẹ̀rọ ìbílẹ̀ rẹ. Lo iṣẹ́ Ìgbéjáde láti rí ìṣètò tí a retí: àtòjọ àwọn àkọsílẹ̀ pẹ̀lú vendor, identifier, component, severity, message, explanation, recommended_action àti reference."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Text"
+msgstr "Kó Àwọn Ìmọ̀ràn Wọlé láti Ọ̀rọ̀"
+
+#: syslog_recommendations.php
+msgid "Alternatively, paste the JSON document into this box."
+msgstr "Lọ́nà mìíràn, lẹ àkọsílẹ̀ JSON sínú àpótí yìí."
+
+#: syslog_recommendations.php
+msgid "Existing Recommendations"
+msgstr "Àwọn Ìmọ̀ràn Tó Wà Tẹ́lẹ̀"
+
+#: syslog_recommendations.php
+msgid "A recommendation is the same as an existing one when its vendor and identifier match."
+msgstr "Ìmọ̀ràn kan jẹ́ bákan náà pẹ̀lú èyí tó wà tẹ́lẹ̀ nígbà tí olùtajà àti olùdámọ̀ rẹ̀ bá báramu."
+
+#: syslog_recommendations.php
+msgid "Keep the existing recommendation"
+msgstr "Pa ìmọ̀ràn tó wà tẹ́lẹ̀ mọ́"
+
+#: syslog_recommendations.php
+msgid "Replace it with the imported one"
+msgstr "Rọ́pò rẹ̀ pẹ̀lú èyí tí a kó wọlé"
+
+#: syslog_recommendations.php
+msgid "Import Recommendations"
+msgstr "Kó Àwọn Ìmọ̀ràn Wọlé"
+
+#: syslog_recommendations.php
+msgid "Importing, please wait..."
+msgstr "Ó ń kó wọlé, jọ̀wọ́ dúró..."
+
+#: syslog_recommendations.php
+msgid "Not specified"
+msgstr "Kò sí ìpàtó"
+
+#: syslog_recommendations.php
+msgid "Recommendation"
+msgstr "Ìmọ̀ràn"
+
+#: syslog_recommendations.php
+msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
+msgstr "Olùpèsè ẹ̀rọ tàbí sọ́fítíwè tí ó ń ṣàkọsílẹ̀ ìránṣẹ́ yìí, fún àpẹẹrẹ Cisco tàbí Juniper."
+
+#: syslog_recommendations.php
+msgid "Vendor"
+msgstr "Olùpèsè"
+
+#: syslog_recommendations.php
+msgid "Identifier"
+msgstr "Ohun Ìdámọ̀"
+
+#: syslog_recommendations.php
+msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
+msgstr "Kóòdù ìránṣẹ́ láti wá, fún àpẹẹrẹ %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN tàbí 4625. Ó gbọ́dọ̀ dọ́gba pẹ̀lú odidi ọ̀rọ̀ kan nínú ìránṣẹ́ syslog (àwọn lẹ́tà, nọ́ńbà àti _ . - /); àmì % ní ìbẹ̀rẹ̀ jẹ́ gangan ó sì gbọ́dọ̀ bá a mu bí a ṣe kọ ọ́. Ìbáramu náà kò ka lẹ́tà ńlá tàbí kékeré sí. Wo Bí A Ṣe Ń Bá Àwọn Ìmọ̀ràn Mu lórí ojú-ìwé àtòjọ."
+
+#: syslog_recommendations.php
+msgid "Component"
+msgstr "Èròjà"
+
+#: syslog_recommendations.php
+msgid "The facility, module or subsystem that raises the message."
+msgstr "Ohun èlò, apá ètò tàbí ẹ̀ka ètò tí ó gbé ìránṣẹ́ náà jáde."
+
+#: syslog_recommendations.php
+msgid "The severity the vendor documents for this message."
+msgstr "Ìwọ̀n ìle tí olùtajà ṣàkọsílẹ̀ fún ìránṣẹ́ yìí."
+
+#: syslog_recommendations.php
+msgid "The message format as documented, including its variable placeholders."
+msgstr "Ọ̀nà ìkọ̀wé ìránṣẹ́ bí a ṣe kọ ọ́ sílẹ̀, pẹ̀lú àwọn ibi ìdúró oníyípadà rẹ̀."
+
+#: syslog_recommendations.php
+msgid "What the message means."
+msgstr "Ohun tí ìránṣẹ́ náà túmọ̀ sí."
+
+#: syslog_recommendations.php
+msgid "What an operator should do about it."
+msgstr "Ohun tí olùṣiṣẹ́ yẹ kí ó ṣe nípa rẹ̀."
+
+#: syslog_recommendations.php
+msgid "Links to the vendor documentation, one per line."
+msgstr "Àwọn ìjápọ̀ sí ìwé àkọsílẹ̀ olùtajà, ọ̀kan lórí ìlà kọ̀ọ̀kan."
+
+#: syslog_recommendations.php
+msgid "Recommendation [edit]"
+msgstr "Ìmọ̀ràn [ṣàtúnṣe]"
+
+#: syslog_recommendations.php
+msgid "Recommendation [new]"
+msgstr "Ìmọ̀ràn [tuntun]"
+
+#: syslog_recommendations.php
+msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
+msgstr "Fìtílà kan ṣáájú ìfiranṣẹ́ ń fi àmì sí àwọn ìmọ̀ràn tó báramu lórí àwọn táàbù Àkọsílẹ̀ Ètò àti Àkọsílẹ̀ Ìtànijì. Tẹ ìfiranṣẹ́ náà láti kà wọ́n nínú àpótí àlàyé tó ń jáde. Fífà kọ́sọ̀ lé e kì í béèrè lọ́wọ́ olùpèsè."
+
+#: syslog_recommendations.php
+msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
+msgstr "Òpó <b>Olùdámọ̀</b> nìkan ni a ń lò fún ìbámu. A máa ń fi olùtajà, ẹ̀yà, ìlepa, ìfiranṣẹ́ àti àlàyé hàn nínú àpótí àlàyé kíkún ṣùgbọ́n a kì í wá wọn."
+
+#: syslog_recommendations.php
+msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
+msgstr "Àwọn lẹ́tà 2,048 àkọ́kọ́ nínú ìránṣẹ́ náà ni a pín sí ọ̀rọ̀. Ọ̀rọ̀ jẹ́ ìtẹ̀léra àwọn lẹ́tà, nọ́ńbà àti àmì _ . - / tí ó lè bẹ̀rẹ̀ pẹ̀lú %. Gbogbo àmì mìíràn, bíi ààyè, àmì méjì, kọ́mà tàbí àkámọ́, máa ń fòpin sí ọ̀rọ̀ kan. Nínú <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> àwọn ọ̀rọ̀ náà ni <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> àti <code>down</code>."
+
+#: syslog_recommendations.php
+msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
+msgstr "Olùdámọ̀ kan máa ń báramu nígbà tí ó bá <b>dọ́gba pẹ̀lú ọ̀rọ̀ kan lódindi pátápátá</b>, láìka lẹ́tà ńlá tàbí kékeré sí. Kì í ṣe ìṣàwárí \"ní nínú\", \"bẹ̀rẹ̀ pẹ̀lú\" tàbí \"parí pẹ̀lú\", kò sì sí àwọn àmì àyọ̀rọ̀ kankan: <code>LINK-3-UPDOWN</code> kò bá ọ̀rọ̀ náà <code>LINK-3-UPDOWN-EXT</code> mu, bẹ́ẹ̀ ni <code>UPDOWN</code> kò bá <code>%LINK-3-UPDOWN</code> mu."
+
+#: syslog_recommendations.php
+msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
+msgstr "Àmì <b>%</b> ní ìbẹ̀rẹ̀ jẹ́ gangan, kì í ṣe àmì gbogboogbò, ó sì gbọ́dọ̀ bá ọ̀rọ̀ ìfiranṣẹ́ mu bí a ṣe kọ ọ́. Olùdámọ̀ <code>%LINK-3-UPDOWN</code> bá ọ̀rọ̀ ìfiranṣẹ́ <code>%LINK-3-UPDOWN</code> mu, kì í ṣe <code>LINK-3-UPDOWN</code>; olùdámọ̀ tí kò ní ìbẹ̀rẹ̀ náà yóò bá ọ̀rọ̀ tí kò ní ìbẹ̀rẹ̀ nìkan mu."
+
+#: syslog_recommendations.php
+msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
+msgstr "Nígbà tí olùgbàlejò syslog bá jẹ́ ẹ̀rọ Cacti tí a mọ olùtajà rẹ̀ láti inú àpèjúwe ètò SNMP rẹ̀ tàbí àdàkọ ẹ̀rọ, tí àwọn àbá sì wà fún olùtajà yẹn, àwọn àbá olùtajà yẹn nìkan àti àwọn tí kò ní olùtajà ni a óò ṣàyẹ̀wò. Bí bẹ́ẹ̀ kọ́, gbogbo olùtajà ni a óò ṣàyẹ̀wò, ṣùgbọ́n ohun ìdánimọ̀ tí a ṣe pẹ̀lú nọ́mbà nìkan yóò bá àwọn àbá tí kò ní olùtajà nìkan mu. Nígbà tí ọ̀pọ̀ àbá bá bá a mu, àwọn ohun ìdánimọ̀ tó gùn jùlọ ni a óò fi hàn lákọ̀ọ́kọ́, títí dé mẹ́ta."
+
+#: syslog_recommendations.php
+msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
+msgstr "Àwọn ohun ìdámọ̀ tí ó ní àwọn lẹ́tà tàbí àmì mìíràn, bíi ààyè ìdúró <code>#</code> tàbí àwọn àṣàyàn <code>|</code> nínú àwọn ìwé àkọsílẹ̀ olùtajà kan (fún àpẹẹrẹ <code>%ASA|PIX-3-331001</code>), ni a tọ́jú tí a sì kó jáde ṣùgbọ́n wọn kò lè báramu láé. Ṣètò <b>Lè Báramu</b> sí Rárá láti tò wọ́n sílẹ̀, kí o sì ṣàtúnṣe wọn sí kóòdù pàtó, fún àpẹẹrẹ <code>%ASA-3-331001</code>."
+
+#: syslog_recommendations.php
+msgid "How Recommendations Are Matched"
+msgstr "Bí A Ṣe Ń Bá Àwọn Ìmọ̀ràn Mu"
+
+#: syslog_recommendations.php
+msgid "Can Match"
+msgstr "Lè Báramu"
+
+#: syslog_recommendations.php
+msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
+msgstr "Bóyá ohun ìdánimọ̀ náà ní ìrísí ọ̀rọ̀ ìfọ̀rọ̀wérọ̀, kí ìwádìí ìfọ̀rọ̀wérọ̀ lè rí i lákòókò kankan"
+
+#: syslog_recommendations.php
+msgid "Export every recommendation that matches the filters"
+msgstr "Kó gbogbo àbá tí ó bá àwọn àlẹ̀mọ́ mu jáde"
+
+#: syslog_recommendations.php
+msgid "No recommendations found."
+msgstr "Kò sí àwọn àbá kankan tí a rí."
+
+#: syslog_removal.php
+msgid "Reprocess"
+msgstr "Tún ṣiṣẹ́ rẹ̀"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti Pa Òfin Ìyọkúrò Syslog wọ̀nyí rẹ́."
+
+#: syslog_removal.php
+msgid "Delete Syslog Removal Rule(s)"
+msgstr "Pa (Àwọn) Òfin Ìyọkúrò Syslog Rẹ́"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti Mú Òfin Ìyọkúrò Syslog wọ̀nyí di àìṣiṣẹ́."
+
+#: syslog_removal.php
+msgid "Disable Syslog Removal Rule(s)"
+msgstr "Ṣe àìṣiṣẹ́ Òfin Ìyọkúrò Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti Mú Òfin Ìyọkúrò Syslog wọ̀nyí ṣiṣẹ́."
+
+#: syslog_removal.php
+msgid "Enable Syslog Removal Rule(s)"
+msgstr "Mú Àwọn Òfin Ìyọkúrò Syslog ṣiṣẹ́"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti tún ṣàtúnṣe àwọn Òfin Ìyọkúrò Syslog wọ̀nyí."
+
+#: syslog_removal.php
+msgid "Retroactively Process Syslog Removal Rule(s)"
+msgstr "Ṣe Ìṣiṣẹ́ Àwọn Òfin Ìyọkúrò Syslog Látẹ̀yìnwá"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti kó àwọn Òfin Ìyọkúrò Syslog wọ̀nyí jáde."
+
+#: syslog_removal.php
+msgid "Export Syslog Removal Rule(s)"
+msgstr "Kó Àwọn Òfin Ìyọkúrò Syslog Jáde"
+
+#: syslog_removal.php
+#, php-format
+msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
+msgstr "Òfin '%s' yọrí sí yíyọ/fífiránṣẹ́ %s/%s àwọn ìránṣẹ́"
+
+#: syslog_removal.php
+#, php-format
+msgid "Removal Rule Edit [edit: %s]"
+msgstr "Ṣàtúnṣe Òfin Ìyọkúrò [ṣàtúnṣe: %s]"
+
+#: syslog_removal.php
+msgid "Removal Rule Edit [new]"
+msgstr "Ṣàtúnṣe Òfin Ìyọkúrò [tuntun]"
+
+#: syslog_removal.php
+msgid "New Removal Record"
+msgstr "Àkọsílẹ̀ Ìyọkúrò Tuntun"
+
+#: syslog_removal.php
+msgid "New Removal Rule"
+msgstr "Òfin Ìyọkúrò Tuntun"
+
+#: syslog_removal.php
+msgid "Removal Rule Details"
+msgstr "Àwọn Àlàyé Òfin Ìyọkúrò"
+
+#: syslog_removal.php
+msgid "Removal Rule Name"
+msgstr "Orúkọ Òfin Ìyọkúrò"
+
+#: syslog_removal.php
+msgid "Please describe this Removal Rule."
+msgstr "Jọ̀wọ́ ṣàpèjúwe Òfin Ìyọkúrò yìí."
+
+#: syslog_removal.php syslog_reports.php
+msgid "Enabled?"
+msgstr "Ṣiṣẹ́?"
+
+#: syslog_removal.php
+msgid "Is this Removal Rule Enabled?"
+msgstr "Ṣé Òfin Ìyọkúrò yìí ti Ṣiṣẹ́?"
+
+#: syslog_removal.php syslog_reports.php
+msgid "String Match Type"
+msgstr "Irú Ìbámu Ọ̀rọ̀"
+
+#: syslog_removal.php
+msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
+msgstr "Ṣàlàyé bí o ṣe fẹ́ kí a ṣe ìbámu okùn-ọ̀rọ̀ yìí.  Tí o bá ń lo irú Ìsọ SQL o lè lo èyíkéyìí ìsọ SQL tí ó péye láti mú ìtanijì jáde.  Àwọn pápá tí ó wà níbẹ̀ pẹ̀lú 'message', 'facility', 'priority', àti 'host'."
+
+#: syslog_removal.php
+msgid "Syslog Message Match String"
+msgstr "Okùn Ìbámu Ìránṣẹ́ Syslog"
+
+#: syslog_removal.php
+msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
+msgstr "Tẹ apá tí ó bá mu ti ìránṣẹ́ Syslog, ohun èlò tàbí orúkọ olùgbàlejò, tàbí gbólóhùn SQL where bí o bá ń lo Irú Ìbámu Àpèjúwe SQL."
+
+#: syslog_removal.php
+msgid "Method of Removal"
+msgstr "Ọ̀nà Ìyọkúrò"
+
+#: syslog_removal.php
+msgid "Deletion"
+msgstr "Píparẹ́"
+
+#: syslog_removal.php
+msgid "Transferal"
+msgstr "Ìgbéránṣẹ́"
+
+#: syslog_removal.php
+msgid "Removal Rule Notes"
+msgstr "Àwọn Àkọsílẹ̀ Òfin Ìyọkúrò"
+
+#: syslog_removal.php
+msgid "Space for Notes on the Removal rule"
+msgstr "Ààyè fún Àwọn Àkọsílẹ̀ lórí Òfin Ìyọkúrò"
+
+#: syslog_removal.php
+msgid "Removal filter conditions"
+msgstr "Àwọn ìpò àlẹ̀mọ́ ìyọkúrò"
+
+#: syslog_removal.php
+msgid "Syslog Removal Rule Filters"
+msgstr "Àwọn Àlẹ̀mọ́ Òfin Ìyọkúrò Syslog"
+
+#: syslog_removal.php
+msgid "Removal Name"
+msgstr "Orúkọ Ìyọkúrò"
+
+#: syslog_removal.php
+msgid "Transfer"
+msgstr "Ìgbéránṣẹ́"
+
+#: syslog_removal.php
+msgid "No Syslog Removal Rules Defined"
+msgstr "Kò sí Àwọn Òfin Ìyọkúrò Syslog tí a Tọ́ka sí"
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Local File"
+msgstr "Kó Òfin Ìyọkúrò Wọlé láti Fáìlì Abẹ́lé"
+
+#: syslog_removal.php
+msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
+msgstr "Tí fáìlì XML tí ó ní dátà ìtumọ̀ Òfin Ìyọkúrò bá wà lórí ẹ̀rọ abẹ́lé rẹ, yàn án níbí."
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Text"
+msgstr "Kó Òfin Ìyọkúrò Wọlé láti Ọ̀rọ̀"
+
+#: syslog_removal.php
+msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
+msgstr "Tí o bá ní fáìlì XML tí ó ní dátà ìtumọ̀ Òfin Ìyọkúrò gẹ́gẹ́ bí ọ̀rọ̀, o lè lẹ̀ ẹ́ sínú àpótí yìí láti gbé e wọlé."
+
+#: syslog_removal.php
+msgid "Import Removal Rule"
+msgstr "Kó Òfin Ìyọkúrò Wọlé"
+
+#: syslog_removal.php
+#, php-format
+msgid "NOTE: Removal Rule '%s' %s!"
+msgstr "ÀKÍYÈSÍ: Òfin Ìyọkúrò '%s' %s!"
+
+#: syslog_removal.php
+#, php-format
+msgid "ERROR: Removal Rule '%s' %s Failed!"
+msgstr "ÀṢÌṢE: Òfin Ìyọkúrò '%s' %s Kùnà!"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Delete the following Syslog Report(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti Pa Ìròyìn Syslog wọ̀nyí rẹ́."
+
+#: syslog_reports.php
+msgid "Delete Syslog Report(s)"
+msgstr "Pa (Àwọn) Ìròyìn Syslog Rẹ́"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Disable the following Syslog Report(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti Mú Ìròyìn Syslog wọ̀nyí di àìṣiṣẹ́."
+
+#: syslog_reports.php
+msgid "Disable Syslog Report(s)"
+msgstr "Ṣe àìṣiṣẹ́ Ìròyìn Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Enable the following Syslog Report(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti Mú Ìròyìn Syslog wọ̀nyí ṣiṣẹ́."
+
+#: syslog_reports.php
+msgid "Enable Syslog Report(s)"
+msgstr "Mú Àwọn Ìròyìn Syslog ṣiṣẹ́"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti kó àwọn Òfin Ìròyìn Syslog wọ̀nyí jáde."
+
+#: syslog_reports.php
+msgid "Export Syslog Report Rule(s)"
+msgstr "Kó Àwọn Òfin Ìjábọ̀ Syslog Jáde"
+
+#: syslog_reports.php
+msgid "You must select at least one Syslog Report."
+msgstr "O gbọ́dọ̀ yan ó kéré jù Ìròyìn Syslog kan."
+
+#: syslog_reports.php
+msgid "Return"
+msgstr "Padà"
+
+#: syslog_reports.php
+#, php-format
+msgid "Report Edit [edit: %s]"
+msgstr "Ṣàtúnṣe Ìròyìn [ṣàtúnṣe: %s]"
+
+#: syslog_reports.php
+msgid "Report Edit [new]"
+msgstr "Ṣàtúnṣe Ìròyìn [tuntun]"
+
+#: syslog_reports.php
+msgid "New Report Record"
+msgstr "Àkọsílẹ̀ Ìròyìn Tuntun"
+
+#: syslog_reports.php
+msgid "Please describe this Report."
+msgstr "Jọ̀wọ́ ṣàpèjúwe Ìròyìn yìí."
+
+#: syslog_reports.php
+msgid "Is this Report Enabled?"
+msgstr "Ṣé Ìròyìn yìí ti Ṣiṣẹ́?"
+
+#: syslog_reports.php
+msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
+msgstr "Ṣàlàyé bí o ṣe fẹ́ kí a ṣe ìbámu okùn-ọ̀rọ̀ yìí. Olùkọ́ Àlẹ̀mọ́ máa ń da àwọn ipò pọ̀ lórí ìfiránṣẹ́, olùgbàlejò, ètò, ẹ̀ka àti ìṣàájú."
+
+#: syslog_reports.php
+msgid "Frequency"
+msgstr "Ìgbàgbà"
+
+#: syslog_reports.php
+msgid "How often should this Report be sent to the distribution list?"
+msgstr "Ìgbà mélòó ni ó yẹ kí a máa fi Ìròyìn yìí ránṣẹ́ sí àtòjọ ìpínkiri?"
+
+#: syslog_reports.php
+msgid "Send Time"
+msgstr "Àkókò Ìfiranṣẹ́"
+
+#: syslog_reports.php
+msgid "What time of day should this report be sent?"
+msgstr "Àkókò wo ní ọjọ́ ni a yẹ kí a fi ìròyìn yìí ránṣẹ́?"
+
+#: syslog_reports.php
+msgid "Report Format"
+msgstr "Ọ̀nà Ìròyìn"
+
+#: syslog_reports.php
+msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
+msgstr "Kọ àwọn ipò àlẹ̀mọ́, tàbí tẹ ọ̀rọ̀ náà tàbí àpèjúwe SQL síi láti bá àwọn ìránṣẹ́ syslog mu."
+
+#: syslog_reports.php
+msgid "The information that will be contained in the body of the Report."
+msgstr "Àlàyé tí yóò wà nínú ara Ìjábọ̀ náà."
+
+#: syslog_reports.php
+msgid "Comma delimited list of Email addresses to send the report to."
+msgstr "Àtòjọ àwọn àdírẹ́sì Ímeèlì tí a fi kọ́mà yà sọ́tọ̀ láti fi ìròyìn ránṣẹ́ sí."
+
+#: syslog_reports.php
+msgid "Space for Notes on the Report"
+msgstr "Ààyè fún Àwọn Àkọsílẹ̀ lórí Ìròyìn"
+
+#: syslog_reports.php
+msgid "Report Test Preview"
+msgstr "Àwòtẹ́lẹ̀ Ìdánwò Ìròyìn"
+
+#: syslog_reports.php
+msgid "Report filter conditions"
+msgstr "Àwọn ipò àlẹ̀mọ́ ìròyìn"
+
+#: syslog_reports.php
+msgid "Syslog Report Filters"
+msgstr "Àwọn Àlẹ̀mọ́ Ìjábọ̀ Syslog"
+
+#: syslog_reports.php
+msgid "Report Name"
+msgstr "Orúkọ Ìròyìn"
+
+#: syslog_reports.php
+msgid "Last Sent"
+msgstr "Ìfìránṣẹ́ Tó Kẹ́yìn"
+
+#: syslog_reports.php
+msgid "Reports"
+msgstr "Àwọn Ìròyìn"
+
+#: syslog_reports.php
+msgid "No Syslog Reports Defined"
+msgstr "Kò sí Àwọn Ìròyìn Syslog tí a Tọ́ka sí"
+
+#: syslog_reports.php
+msgid "Import Report Rule from Local File"
+msgstr "Kó Òfin Ìròyìn Wọlé láti Fáìlì Abẹ́lé"
+
+#: syslog_reports.php
+msgid "If the XML file containing the Report Rule definition data is located on your local machine, select it here."
+msgstr "Tí fáìlì XML tí ó ní dátà ìtumọ̀ Òfin Ìròyìn bá wà lórí ẹ̀rọ abẹ́lé rẹ, yàn án níbí."
+
+#: syslog_reports.php
+msgid "Import Report Rule from Text"
+msgstr "Kó Òfin Ìròyìn Wọlé láti Ọ̀rọ̀"
+
+#: syslog_reports.php
+msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
+msgstr "Tí o bá ní fáìlì XML tí ó ní dátà ìtumọ̀ Òfin Ìròyìn gẹ́gẹ́ bí ọ̀rọ̀, o lè lẹ̀ ẹ́ sínú àpótí yìí láti gbé e wọlé."
+
+#: syslog_reports.php
+msgid "Import Report Data"
+msgstr "Kó Dátà Ìròyìn Wọlé"
+
+#: syslog_reports.php
+#, php-format
+msgid "NOTE: Report Rule '%s' %s!"
+msgstr "ÀKÍYÈSÍ: Òfin Ìjábọ̀ '%s' %s!"
+
+#: syslog_reports.php
+#, php-format
+msgid "ERROR: Report Rule '%s' %s Failed!"
+msgstr "ÀṢÌṢE: Òfin Ìròyìn '%s' %s Kùnà!"
+
+#: syslog_saved_searches.php
+msgid "Unable to save the template. Please try again."
+msgstr "Kò le fi àdàkọ pamọ́. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i."
+
+#: syslog_saved_searches.php
+msgid "Enter a template name between 1 and 128 characters."
+msgstr "Tẹ orúkọ àdàkọ tí ó wà láàárín àmì 1 sí 128."
+
+#: syslog_saved_searches.php
+msgid "Templates"
+msgstr "Àwọn Àdàkọ"
+
+#: syslog_saved_searches.php
+msgid "Query"
+msgstr "Ìbéèrè"
+
+#: syslog_saved_searches.php
+msgid "No shared search templates. Save a search for all users from Syslog to create one."
+msgstr "Kò sí àwọn àdàkọ ìwádìí tí a pín. Fipamọ́ ìwádìí kan fún gbogbo àwọn olùlò láti Syslog láti ṣẹ̀dá ọ̀kan."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Export the following Saved Search Template(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti kó àwọn Àdàkọ Àwárí Tí A Fipamọ́ wọ̀nyí jáde."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
+msgstr "Tẹ 'Tẹ̀síwájú' láti Pa Àdàkọ Ìwádìí Tí A Fipamọ́ wọ̀nyí rẹ́."
+
+#: syslog_saved_searches.php
+msgid "Delete Saved Search Template(s)"
+msgstr "Pa (Àwọn) Àdàkọ Ìwádìí Tí A Fipamọ́ Rẹ́"
+
+#: syslog_saved_searches.php
+msgid "Export Saved Search Template(s)"
+msgstr "Kó Àwọn Àdàkọ Ìwádìí Tí A Fipamọ́ Jáde"
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
+msgstr "ÀKÍYÈSÍ: A kó %d wọlé, a sì ṣe àtúnṣe Àwọn Àdàkọ Ìwádìí Tí A Fipamọ́ %d."
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "ERROR: %d Saved Search Template(s) failed to import."
+msgstr "ÀṢÌṢE: %d Àdàkọ Ìwádìí Tí A Fipamọ́ kùnà láti kó wọlé."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Local File"
+msgstr "Kó Àdàkọ Ìwádìí Tí A Fipamọ́ Wọlé láti Fáìlì Abẹ́lé"
+
+#: syslog_saved_searches.php
+msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
+msgstr "Tí fáìlì JSON tí ó ní dátà ìtumọ̀ Àdàkọ Ìwádìí Tí A Fipamọ́ bá wà lórí ẹ̀rọ abẹ́lé rẹ, yàn án níbí."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Text"
+msgstr "Kó Àdàkọ Ìwádìí Tí A Fipamọ́ Wọlé láti Ọ̀rọ̀"
+
+#: syslog_saved_searches.php
+msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
+msgstr "Tí o bá ní fáìlì JSON tí ó ní dátà ìtumọ̀ Àdàkọ Ìwádìí Tí A Fipamọ́ gẹ́gẹ́ bí ọ̀rọ̀, o lè lẹ̀ ẹ́ sínú àpótí yìí láti gbé e wọlé."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template"
+msgstr "Kó Àdàkọ Ìwádìí Tí A Fipamọ́ Wọlé"
+
+#: syslog_saved_searches.php
+msgid "Edit Saved Search Template"
+msgstr "Ṣàtúnṣe Àdàkọ Ìwádìí Tí A Fipamọ́"
+
+#: syslog_saved_searches.php
+msgid "The name shown to all users in Saved Searches."
+msgstr "Orúkọ tí ó hàn sí gbogbo àwọn olùlò nínú Àwọn Ìwádìí Tí A Fipamọ́."
+
+#: syslog_saved_searches.php
+msgid "The account that owns this template and can manage it in Saved Searches."
+msgstr "Àkọọ́lẹ̀ tí ó ni àdàkọ yìí tí ó sì lè ṣàkóso rẹ̀ nínú Àwọn Ìwádìí Tí a Fipamọ́."
+
+#: syslog_saved_searches.php
+msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
+msgstr "Àwọn olùlò tí ó lè lo àdàkọ yìí ní àfikún sí olówó rẹ̀. Gbogbo Àwọn Olùlò máa ń pín in fún gbogbo ènìyàn."
+
+#: syslog_saved_searches.php
+msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
+msgstr "Àwọn ẹgbẹ́ tí ó lè lo àdàkọ yìí ní àfikún sí olùní rẹ̀. Gbogbo Àwọn Ẹgbẹ́ ń pín in pẹ̀lú gbogbo ènìyàn."
+
+#: syslog_saved_searches.php
+msgid "Search Query"
+msgstr "Ìbéèrè Ìwádìí"
+
+#: syslog_saved_searches.php
+msgid "Correct the query syntax to use the query builder."
+msgstr "Tún sínítáàsì ìbéèrè ṣe láti lo olùkọ́ ìbéèrè."
+
+#: syslog_saved_searches.php
+msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
+msgstr "Yan pápá kan, olùṣiṣẹ́, àti iye. Lo AND, OR, NOT, tàbí Group láti kọ ìbéèrè náà. Àwọn àyípadà wúlò fún Àdàkọ tí a pín yìí fún gbogbo àwọn olùlò."
+

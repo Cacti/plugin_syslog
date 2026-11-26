@@ -1,0 +1,4091 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-20 14:13-0500\n"
+"PO-Revision-Date: 2026-11-24 19:00+0000\n"
+"Last-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\n"
+"Language-Team: Arabic (Morocco)\n"
+"Language: ar-MA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d minutes"
+msgstr "%d دقيقة (دقائق)"
+
+#: includes/functions.php
+#, php-format
+msgid "%d hour"
+msgstr "%d ساعة"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d hours"
+msgstr "%d ساعات"
+
+#: includes/functions.php
+#, php-format
+msgid "%d day"
+msgstr "%d يوم"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d days"
+msgstr "%d من الأيام"
+
+#: includes/functions.php
+#, php-format
+msgid "%d week"
+msgstr "%d أسبوع"
+
+#: includes/functions.php
+#, php-format
+msgid "%d weeks"
+msgstr "%d أسابيع"
+
+#: includes/functions.php
+#, php-format
+msgid "%d month"
+msgstr "%d شهر"
+
+#: includes/functions.php
+#, php-format
+msgid "%d months"
+msgstr "%d أشهر"
+
+#: includes/functions.php
+#, php-format
+msgid "%d year"
+msgstr "%d سنة"
+
+#: includes/functions.php
+#, php-format
+msgid "%d years"
+msgstr "%d سنوات"
+
+#: includes/functions.php
+msgid "Day Shift"
+msgstr "وردية نهارية"
+
+#: includes/functions.php
+msgid "This Day"
+msgstr "كل يوم"
+
+#: includes/functions.php
+msgid "This Week"
+msgstr "هذا الأسبوع"
+
+#: includes/functions.php
+msgid "This Month"
+msgstr "هذا الشهر"
+
+#: includes/functions.php
+msgid "This Year"
+msgstr "العام الحالي"
+
+#: includes/functions.php
+msgid "Previous Day"
+msgstr "اليوم السابق"
+
+#: includes/functions.php
+msgid "Previous Week"
+msgstr "الأسبوع السابق"
+
+#: includes/functions.php
+msgid "Previous Month"
+msgstr "الشهر الماضى"
+
+#: includes/functions.php
+msgid "Previous Year"
+msgstr "السنة السابقة"
+
+#: includes/functions.php
+msgid "Syslog download"
+msgstr "تنزيل Syslog"
+
+#: includes/functions.php
+msgid "Share with users…"
+msgstr "مشاركة مع المستخدمين…"
+
+#: includes/functions.php
+msgid "Share with groups…"
+msgstr "مشاركة مع المجموعات…"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Emergency"
+msgstr "الطوارئ"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Critical"
+msgstr "حرجة"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Alert"
+msgstr "إشعار"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Error"
+msgstr "خطأ"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Warning"
+msgstr "تحذير"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Notice"
+msgstr "تنبيه"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "معلومات"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Debug"
+msgstr "التصحيح"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Informational"
+msgstr "اعلاميه"
+
+#: includes/functions.php
+msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
+msgstr "فشل الحفظ.  لا يسمح لجامعي البيانات عن بعد في وضع المزامنة بحفظ القواعد.  احفظ من خادم الصبار الرئيسي بدلا من ذلك."
+
+#: includes/functions.php
+msgid "Please use an HTML Email Client"
+msgstr "يرجى استخدام عميل بريد إلكتروني HTML"
+
+#: includes/functions.php
+msgid "Text import payload exceeds the maximum size"
+msgstr "تتجاوز حمولة استيراد النص الحد الأقصى للحجم"
+
+#: includes/functions.php
+msgid "Unable to read the uploaded import file. Check the file and upload size limit."
+msgstr "تعذر قراءة ملف الاستيراد المرفوع. تحقق من الملف وحد حجم الرفع."
+
+#: includes/functions.php
+msgid "Select an import file or paste its contents before importing."
+msgstr "اختر ملف استيراد أو الصق محتوياته قبل الاستيراد."
+
+#: includes/functions.php
+msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
+msgstr "جداول Syslog غير مقسمة. الجداول التقليدية (غير المقسمة) مهملة، والجداول المقسمة مطلوبة لعمليات التثبيت الجديدة. سيستمر جمع بياناتك، ولكن يجب عليك ترحيل جدول syslog إلى بنية مقسمة."
+
+#: includes/functions.php
+msgid "Waiting for a completed processing run."
+msgstr "في انتظار اكتمال دورة المعالجة."
+
+#: includes/functions.php
+msgid "Processing is completing within the allowed delay."
+msgstr "تكتمل المعالجة ضمن التأخير المسموح به."
+
+#: includes/functions.php
+#, php-format
+msgid "No processing run has completed for more than %d seconds."
+msgstr "لم تكتمل أي دورة معالجة منذ أكثر من %d ثانية."
+
+#: includes/functions.php
+msgid "Incoming messages are within the configured limits."
+msgstr "الرسائل الواردة ضمن الحدود المكوّنة."
+
+#: includes/functions.php
+msgid "Incoming queue metrics are unavailable."
+msgstr "مقاييس قائمة الانتظار الواردة غير متاحة."
+
+#: includes/functions.php
+#, php-format
+msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
+msgstr "تراكم الرسائل الواردة الذي لا يقل عن %s رسالة يتجاوز الحد البالغ %s."
+
+#: includes/functions.php
+msgid "The oldest incoming message timestamp is unavailable."
+msgstr "الطابع الزمني لأقدم رسالة واردة غير متوفر."
+
+#: includes/functions.php
+#, php-format
+msgid "Unprocessed messages are older than %d seconds."
+msgstr "الرسائل غير المعالجة أقدم من %d ثانية."
+
+#: includes/functions.php
+msgid "Synchronization is not enabled on this collector."
+msgstr "المزامنة غير مفعلة على هذا المجمّع."
+
+#: includes/functions.php
+msgid "Synchronization is within the allowed delay."
+msgstr "المزامنة ضمن التأخير المسموح به."
+
+#: includes/functions.php
+msgid "Synchronization queue metrics are unavailable."
+msgstr "مقاييس قائمة انتظار المزامنة غير متوفرة."
+
+#: includes/functions.php
+msgid "The oldest synchronization record timestamp is unavailable."
+msgstr "الطابع الزمني لأقدم سجل مزامنة غير متوفر."
+
+#: includes/functions.php
+msgid "Synchronization has failed or queued records exceed the allowed delay."
+msgstr "فشلت المزامنة أو أن السجلات في قائمة الانتظار تتجاوز التأخير المسموح به."
+
+#: includes/functions.php
+msgid "Partition maintenance is not blocked."
+msgstr "صيانة الأقسام غير محظورة."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition maintenance is blocked: %s"
+msgstr "صيانة الأقسام محظورة: %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Syslog pipeline health - collector %d"
+msgstr "سلامة مسار معالجة Syslog - المجمّع %d"
+
+#: includes/functions.php
+msgid "The Syslog pipeline has recovered."
+msgstr "تمت استعادة مسار معالجة Syslog."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
+msgstr "تخطيط الأقسام لـ %s غير صالح أو غير مكتمل؛ توقفت صيانة الأقسام. تحقق من البيانات الوصفية للأقسام باستخدام SHOW CREATE TABLE، وإذا لزم الأمر، أعد بناء الأقسام؛ تستمر عمليات الكتابة في قسم الأمان dMaxValue."
+
+#: includes/functions.php
+#, php-format
+msgid "remaining partition gap: %d partition(s)"
+msgstr "فجوة الأقسام المتبقية: %d قسم"
+
+#: includes/functions.php
+msgid "no retention deferral"
+msgstr "لا يوجد تأجيل للاحتفاظ"
+
+#: includes/functions.php
+msgid "retention pruning deferred until the future horizon is restored"
+msgstr "تم تأجيل تقليم الاحتفاظ حتى استعادة الأفق المستقبلي"
+
+#: includes/functions.php
+msgid "new records are accumulating in the dMaxValue safety partition"
+msgstr "تتراكم السجلات الجديدة في قسم الأمان dMaxValue"
+
+#: includes/functions.php
+msgid "per run recovery limit reached"
+msgstr "تم الوصول إلى حد الاسترداد لكل تشغيل"
+
+#: includes/functions.php
+msgid "partition creation failed"
+msgstr "فشل إنشاء القسم"
+
+#: includes/functions.php
+msgid "Unknown partitioning level; choose Hourly or Daily."
+msgstr "مستوى تقسيم غير معروف؛ اختر كل ساعة أو يومي."
+
+#: includes/functions.php
+msgid "The Syslog retention is invalid."
+msgstr "فترة الاحتفاظ ببيانات Syslog غير صالحة."
+
+#: includes/functions.php
+msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
+msgstr "لا يمكن استخدام التقسيم بالساعة مع الاحتفاظ غير المحدود، إذ سيتطلب ذلك عدداً غير محدود من الأقسام. اختر مدة احتفاظ محددة أو التقسيم اليومي."
+
+#: includes/functions.php
+#, php-format
+msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
+msgstr "التقسيم %s مع الاحتفاظ لمدة %s يومًا ونافذة إنشاء مسبق لمدة %s يومًا يتطلب %s أقسام لكل جدول، وهو ما يتجاوز حد خادم قاعدة البيانات هذا البالغ %s قسمًا. قلّل مدة الاحتفاظ، أو قصّر نافذة الإنشاء المسبق، أو اختر التقسيم اليومي."
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Daily"
+msgstr "يومي"
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Hourly"
+msgstr "كل ساعة"
+
+#: includes/functions.php
+#, php-format
+msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
+msgstr "لا تزال الجداول تستخدم أقسام %s حتى يعيد cli/upgrade_partitioning.php بناءها."
+
+#: includes/functions.php
+msgid "The partitioning level of the existing Syslog tables could not be read."
+msgstr "تعذر قراءة مستوى التقسيم لجداول Syslog الحالية."
+
+#: includes/functions.php
+msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
+msgstr "تم تأجيل الاسترداد التلقائي للقسم: حجم dMaxValue غير متوفر؛ يلزم تدخل المشغّل."
+
+#: includes/functions.php
+#, php-format
+msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
+msgstr "تم تأجيل الاسترداد التلقائي للقسم: يحتوي dMaxValue على ما يُقدّر بـ %s صفًا و%s بايت؛ الحدود هي 100000 صف و134217728 بايت. يلزم تدخل المشغّل."
+
+#: includes/functions.php
+msgid "Unknown rule type."
+msgstr "نوع القاعدة غير معروف."
+
+#: includes/functions.php
+msgid "The configured incoming field mapping is invalid."
+msgstr "تعيين الحقل الوارد المكون غير صالح."
+
+#: includes/functions.php
+msgid "The facility of this rule is not in the reference table yet."
+msgstr "مرفق (Facility) هذه القاعدة غير موجود في الجدول المرجعي بعد."
+
+#: includes/functions.php
+msgid "Unknown rule match type."
+msgstr "نوع مطابقة القاعدة غير معروف."
+
+#: includes/functions.php
+msgid "The rule did not compile to a query."
+msgstr "لم تتم ترجمة القاعدة إلى استعلام."
+
+#: includes/functions.php
+msgid "The preview query could not be evaluated."
+msgstr "تعذر تقييم استعلام المعاينة."
+
+#: includes/functions.php
+msgid "The historical preview filter could not be compiled."
+msgstr "تعذر ترجمة فلتر المعاينة التاريخية."
+
+#: includes/functions.php
+msgid "The historical preview query could not be evaluated."
+msgstr "تعذر تقييم استعلام المعاينة التاريخية."
+
+#: includes/functions.php
+msgid "The preview sample could not be read."
+msgstr "تعذر قراءة عينة المعاينة."
+
+#: includes/functions.php
+msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
+msgstr "تتحقق معاينات تعبيرات SQL من الرسائل الواردة الموجودة في قائمة الانتظار فقط. لا يتم البحث في الرسائل التي تمت معالجتها بالفعل. لا يرسل الاختبار تنبيهات."
+
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Permission denied."
+msgstr "تم رفض الإذن."
+
+#: includes/functions.php includes/utilities.php syslog.php
+msgid "Invalid request. Please try again."
+msgstr "طلب غير صالح. يرجى المحاولة مرة أخرى."
+
+#: includes/functions.php
+msgid "The rule has no match expression to test."
+msgstr "لا تحتوي القاعدة على تعبير مطابقة لاختباره."
+
+#: includes/functions.php
+msgid "The match expression is too long to test."
+msgstr "تعبير المطابقة طويل جدًا بحيث لا يمكن اختباره."
+
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
+msgid "Unknown"
+msgstr "غير معروف"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
+msgstr "تنبيه عتبة Cacti Syslog '%s' للمضيف '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "تنبيه عتبة Cacti Syslog '%s'"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+msgid "Alert Name"
+msgstr "اسم التنبيه"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+#: syslog_recommendations.php
+msgid "Severity"
+msgstr "حدة، وخامة"
+
+#: includes/functions.php syslog_alerts.php
+msgid "Threshold"
+msgstr "العتبة"
+
+#: includes/functions.php syslog.php
+msgid "Count"
+msgstr "عدد"
+
+#: includes/functions.php
+msgid "Match String"
+msgstr "مطابقة السلسلة"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s' for Host '%s'"
+msgstr "تنبيه Cacti Syslog '%s' للمضيف '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s'"
+msgstr "تنبيه Cacti Syslog '%s'"
+
+#: includes/functions.php
+msgid "Hostname"
+msgstr "اسم الخادم"
+
+#: includes/functions.php syslog.php
+msgid "Date"
+msgstr "التاريخ"
+
+#: includes/functions.php
+msgid "Level"
+msgstr "نوع الاشتراك"
+
+#: includes/functions.php includes/recommendations.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Message"
+msgstr "الرسالة"
+
+#: includes/functions.php
+#, php-format
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
+msgstr "تحذير: تم تشغيل تنبيه عتبة syslog للمضيف \"%s\""
+
+#: includes/functions.php
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
+msgstr "تحذير: تم تشغيل تنبيه عتبة syslog"
+
+#: includes/functions.php
+msgid "Name:"
+msgstr "الاسم:"
+
+#: includes/functions.php
+msgid "Severity:"
+msgstr "حدة، وخامة"
+
+#: includes/functions.php
+msgid "Threshold:"
+msgstr "العتبة"
+
+#: includes/functions.php
+msgid "Count:"
+msgstr "عدد"
+
+#: includes/functions.php
+msgid "Message String:"
+msgstr "سلسلة الرسالة:"
+
+#: includes/functions.php
+msgid "Hostname:"
+msgstr "أسم المضيف:"
+
+#: includes/functions.php
+msgid "Date:"
+msgstr "تاريخ:"
+
+#: includes/functions.php
+msgid "Level:"
+msgstr "الباقة:"
+
+#: includes/functions.php
+msgid "Message:"
+msgstr "الرسالة:"
+
+#: includes/functions.php
+msgid ", Host:"
+msgstr "المضيف:"
+
+#: includes/functions.php
+msgid ", URL:"
+msgstr "، URL:"
+
+#: includes/functions.php
+msgid "Sev:"
+msgstr "سيف:"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Alert - %s"
+msgstr "تنبيه الحدث - %s"
+
+#: includes/functions.php
+msgid ", Count:"
+msgstr "عدد"
+
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php syslog_reports.php
+msgid "Host"
+msgstr "المستضيف Host"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Report - %s"
+msgstr "تقرير الحدث - %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
+msgstr "تبحث معاينات التقارير في أحدث %d رسالة مخزنة؛ بينما يغطي التقرير نفسه كامل الإطار الزمني الخاص به. لا يرسل الاختبار بريدًا إلكترونيًا."
+
+#: includes/functions.php
+msgid "Grouped results are unavailable or expired. Refresh the results and try again."
+msgstr "النتائج المجمّعة غير متاحة أو منتهية الصلاحية. حدّث النتائج وحاول مرة أخرى."
+
+#: includes/functions.php syslog.php
+msgid "Group messages could not be loaded."
+msgstr "تعذر تحميل رسائل المجموعة."
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "No"
+msgstr "لا"
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "Yes"
+msgstr "نعم"
+
+#: includes/functions.php
+msgid "All Text"
+msgstr "كل النص"
+
+#: includes/functions.php
+msgid "Fit Column"
+msgstr "ملاءمة العمود"
+
+#: includes/functions.php
+#, php-format
+msgid "%d Chars"
+msgstr "%d حرف"
+
+#: includes/installer.php
+msgid "Syslog Upgrade Advisor"
+msgstr "مستشار ترقية Syslog"
+
+#: includes/installer.php
+#, php-format
+msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
+msgstr "ترقية Syslog من %s إلى %s؟ سيتم الحفاظ على الرسائل والقواعد الحالية. قد تستغرق تغييرات المخطط بعض الوقت."
+
+#: includes/installer.php
+msgid "What upgrade/install type do you wish to use"
+msgstr "ما نوع الترقية/التثبيت الذي ترغب في استخدامه"
+
+#: includes/installer.php
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
+msgstr "عندما تكون لديك جداول كبيرة جدًا، سيكون تنفيذ التفريغ (Truncate) أسرع بكثير. إذا كنت مهتمًا ببيانات الأرشيف، يمكنك اختيار إما مضمّن (Inline)، والذي سيجمد متصفحك طوال فترة هذه الترقية، أو في الخلفية (background)، والذي سينشئ عملية في الخلفية لنقل بيانات syslog القديمة من جدول النسخ الاحتياطي إلى تنسيق syslog الجديد. ومرة أخرى، قد تستغرق هذه العملية عدة ساعات. يتجاهل التفريغ (Truncate) رسائل syslog المخزنة والرسائل المزالة فقط؛ أما قواعد التنبيه والإزالة والتقارير فيتم الاحتفاظ بها دائمًا."
+
+#: includes/installer.php
+msgid "Truncate Syslog Table"
+msgstr "اقتطاع جدول Syslog"
+
+#: includes/installer.php
+msgid "Inline Upgrade"
+msgstr "الترقية المضمنة"
+
+#: includes/installer.php
+msgid "Background Upgrade"
+msgstr "ترقية الخلفية"
+
+#: includes/installer.php
+msgid "Database Storage Engine"
+msgstr "محرك تخزين قاعدة البيانات"
+
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
+msgstr "محرك التخزين للجداول التحليلية. يتم دعم محركات التخزين InnoDB فقط، وAria على MariaDB. يتطلب أي خيار لمجمّع البيانات البعيد (Remote Data Collector) محرك InnoDB؛ ولا يمكن إرسال التركيبات غير المتوافقة."
+
+#: includes/installer.php
+msgid "InnoDB Storage"
+msgstr "تخزين InnoDB"
+
+#: includes/installer.php
+msgid "Aria Storage"
+msgstr "تخزين Aria"
+
+#: includes/installer.php
+msgid "Timestamp Precision"
+msgstr "دقة الطابع الزمني"
+
+#: includes/installer.php
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
+msgstr "تخزّن دقة الملي ثانية الطوابع الزمنية لـ Syslog الأقل من ثانية في عمود TIMESTAMP(3) وهي متاحة فقط على MariaDB. تستخدم دقة الثانية عمود TIMESTAMP قياسيًا. في بيئة الإنتاج، استخدم cli/upgrade_partitioning.php --convert-ms خلال نافذة الصيانة لتحويل الرسائل الحالية دون تجاهلها."
+
+#: includes/installer.php
+msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
+msgstr "ملي ثانية - TIMESTAMP(3) (MariaDB فقط)"
+
+#: includes/installer.php
+msgid "Second - TIMESTAMP"
+msgstr "الثانية - TIMESTAMP"
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Message Processing"
+msgstr "معالجة الرسائل عن بعد"
+
+#: includes/installer.php includes/settings.php
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "تمكين معالجة رسائل مجمع البيانات عن بعد"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "إذا كان لدى مجمعي البيانات عن بعد قواعد بيانات Syslog الخاصة بهم ويعالجون رسائلهم بشكل مستقل، فحدد خانة الاختيار هذه.  من خلال تحديد خانة الاختيار هذه، سيحتاج جامعو البيانات عن بعد إلى الاحتفاظ بملف \"config_local.php\" الخاص بهم من أجل إبلاغ Syslog باستخدام قاعدة بيانات مستقلة لعرض الرسائل ومعالجتها.  يرجى استخدام ملف القالب \"config_local.php.dist\" لهذا الغرض.  تحذير: سيتم إنشاء جداول Syslog تلقائيا بمجرد تمكين هذا الخيار."
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Data Collector Rules Sync"
+msgstr "مزامنة قواعد جامع البيانات عن بعد"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "إذا كان لدى جامعي البيانات البعيدة قواعد بيانات Syslog الخاصة بهم ويعالجون الرسائل الثلاث بشكل مستقل ، فحدد خانة الاختيار هذه إذا كنت ترغب في إرسال قواعد التنبيهات والإزالة والإبلاغ لقواعد بيانات الصبار الرئيسية إلى نظام الصبار البعيد."
+
+#: includes/installer.php includes/settings.php
+msgid "Store Records on Remote Collector"
+msgstr "تخزين السجلات على المجمّع البعيد"
+
+#: includes/installer.php includes/settings.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr "الاحتفاظ بالرسائل المعالجة في جدول Syslog للمجمّع البعيد بعد تسليمها إلى المجمّع الرئيسي. عند التعطيل، يتم الاحتفاظ بالسجلات محلياً فقط أثناء عدم توفر المجمّع الرئيسي وتتم إزالتها بعد تأكيد تسليم الاسترداد."
+
+#: includes/installer.php
+msgid "Retention Policy"
+msgstr "سياسة الاحتفاظ"
+
+#: includes/installer.php
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "اختر عدد أيام قيم Syslog التي ترغب في الاحتفاظ بها في قاعدة البيانات."
+
+#: includes/installer.php includes/settings.php
+msgid "Partitioning Level"
+msgstr "مستوى التقسيم"
+
+#: includes/installer.php
+msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
+msgstr "حجم كل قسم في جدولي syslog وsyslog_removed. يُنصح بالتقسيم اليومي. يتطلب التقسيم بالساعة مدة احتفاظ محدودة، ويجب أن يتناسب كل من مدة الاحتفاظ ومستوى التقسيم معًا مع حد الأقسام في خادم قاعدة البيانات. لتغيير المستوى لاحقًا، قم بتغييره في إعدادات وشغّل cli/upgrade_partitioning.php."
+
+#: includes/installer.php
+msgid "Upgrade"
+msgstr "ترقية"
+
+#: includes/installer.php
+msgid "Install"
+msgstr "تثبيت"
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Advisor"
+msgstr "مستشار %s Syslog"
+
+#: includes/installer.php
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "تحذير: تستغرق ترقية Syslog وقتا طويلا!!"
+
+#: includes/installer.php
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
+msgstr "قد تستغرق ترقية جدول syslog الرئيسي ('main') وقتًا طويلاً جدًا. ولذلك، يُنصح إما بتقليل حجم جدول syslog قبل الترقية، أو اختيار خيار التشغيل في الخلفية."
+
+#: includes/installer.php
+msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
+msgstr "إذا اخترت خيار الخلفية، فسيتم إعادة تسمية جدول Syslog القديم الخاص بك، وسيتم إنشاء جدول Syslog جديد. بعد ذلك، سيتم بدء عملية ترقية في الخلفية. مرة أخرى، قد تستغرق عملية الخلفية هذه وقتاً طويلاً جداً لتكتمل. ومع ذلك، سيتم الحفاظ على بياناتك."
+
+#: includes/installer.php
+msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
+msgstr "بغض النظر عن اختيارك، سيتم الحفاظ على جميع قواعد الإزالة والتنبيه الحالية أثناء عملية الترقية."
+
+#: includes/installer.php
+msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "اضغط على <b>'ترقية'</b> لمتابعة الترقية، أو <b>'إلغاء'</b> للعودة إلى قائمة الإضافات."
+
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
+msgstr "يمكنك أيضًا تعيين محرك تخزين قاعدة البيانات للجداول التحليلية syslog وsyslog_remove. يدعم فقط محرك التخزين InnoDB، وعلى MariaDB محرك التخزين Aria. في حال استخدام MariaDB، نوصي بمحرك التخزين Aria عندما لا تكون خيارات مجمّع البيانات البعيد (Remote Data Collector) مفعلة؛ حيث تتطلب خيارات المجمّع محرك InnoDB."
+
+#: includes/installer.php
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "لديك عدة خيارات للاختيار من بينها عند تثبيت Syslog. الخيار الأول هو بنية قاعدة البيانات. الجداول المقسّمة هي البنية الوحيدة المدعومة لأنها تمنع تضخم حجم الجداول بشكل مفرط مما يبطئ الاستعلامات. الجداول التقليدية غير المقسّمة أصبحت مهملة ولم تعد متاحة للتثبيتات الجديدة."
+
+#: includes/installer.php
+msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
+msgstr "يمكنك أيضًا اختيار دقة الطابع الزمني. تحافظ دقة المللي ثانية (TIMESTAMP(3)) على ترتيب أجزاء الثانية للرسائل الواردة وهي متاحة على MariaDB فقط؛ بينما تستخدم تثبيتات MySQL دقة الثواني. لا يمكن تغيير ذلك لاحقًا في مكانه دون إتلاف الرسائل المخزنة."
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr "تخزين Aria غير متاح بينما يكون أي خيار لمجمع البيانات البعيد مفعلًا. تم تحديد InnoDB."
+
+#: includes/installer.php
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "يمكنك أيضًا تحديد مدة الاحتفاظ. يرجى مراعاة أنه إذا كان لديك عدة مستضيفين (Hosts) يسجلون في syslog، فقد يصبح هذا الجدول كبيرًا جدًا."
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Settings"
+msgstr "إعدادات Syslog %s"
+
+#: includes/installer.php
+msgid "What uninstall method do you want to use?"
+msgstr "ما هي طريقة إلغاء التثبيت التي تريد استخدامها؟"
+
+#: includes/installer.php
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "عند إلغاء تثبيت syslog ، يمكنك إزالة كل شيء ، أو المكونات فقط ، فقط في حالة التخطيط لإعادة التثبيت في المستقبل."
+
+#: includes/installer.php
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "إزالة كل شيء (السجلات والجداول والإعدادات)"
+
+#: includes/installer.php
+msgid "Syslog Data Only"
+msgstr "بيانات Syslog فقط"
+
+#: includes/installer.php
+msgid "Syslog Uninstall Preferences"
+msgstr "تفضيلات إلغاء تثبيت Syslog"
+
+#: includes/installer.php
+msgid "Uninstall"
+msgstr "الغاء التثبيت"
+
+#: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: includes/navigation.php includes/settings.php
+msgid "Syslog"
+msgstr "Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Removals"
+msgstr "عمليات إزالة Syslog"
+
+#: includes/navigation.php
+msgid "(Edit)"
+msgstr "(تعديل)"
+
+#: includes/navigation.php
+msgid "(Actions)"
+msgstr "أفعال"
+
+#: includes/navigation.php
+msgid "Syslog Alerts"
+msgstr "تنبيهات Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Reports"
+msgstr "تقارير Syslog"
+
+#: includes/navigation.php includes/settings.php syslog_saved_searches.php
+msgid "Saved Search Templates"
+msgstr "قوالب البحث المحفوظة"
+
+#: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
+#: syslog_dashboards.php
+msgid "Dashboards"
+msgstr "لوحات"
+
+#: includes/navigation.php syslog_recommendations.php
+msgid "Syslog Recommendations"
+msgstr "توصيات Syslog"
+
+#: includes/navigation.php
+msgid "(Import)"
+msgstr "استيراد"
+
+#: includes/navigation.php
+msgid "Display Syslog in Range"
+msgstr "عرض Syslog في النطاق"
+
+#: includes/recommendations.php
+msgid "the identifier is empty"
+msgstr "المعرف فارغ"
+
+#: includes/recommendations.php
+msgid "the identifier is longer than 190 characters"
+msgstr "المعرف أطول من 190 حرفًا"
+
+#: includes/recommendations.php
+msgid "the identifier contains spaces or line breaks"
+msgstr "يحتوي المعرف على مسافات أو فواصل أسطر"
+
+#: includes/recommendations.php
+msgid "it has neither an explanation nor a recommended action"
+msgstr "لا يحتوي على شرح ولا على إجراء موصى به"
+
+#: includes/recommendations.php
+msgid "it is not a JSON object"
+msgstr "ليس كائن JSON"
+
+#: includes/recommendations.php syslog.php
+msgid "Recommendations could not be loaded."
+msgstr "تعذر تحميل التوصيات."
+
+#: includes/recommendations.php
+msgid "Recommendation available - click the message for details"
+msgstr "توجد توصية متاحة - انقر على الرسالة لمزيد من التفاصيل"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Explanation"
+msgstr "التفسير"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Recommended Action"
+msgstr "الإجراء الموصى به"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Reference"
+msgstr "مرجع"
+
+#: includes/settings.php
+msgid "Monday"
+msgstr "الاثنين"
+
+#: includes/settings.php
+msgid "Tuesday"
+msgstr "الثلاثاء"
+
+#: includes/settings.php
+msgid "Wednesday"
+msgstr "الأربعاء"
+
+#: includes/settings.php
+msgid "Friday"
+msgstr "الجمعة"
+
+#: includes/settings.php
+msgid "Saturday"
+msgstr "السبت"
+
+#: includes/settings.php
+msgid "Sunday"
+msgstr "الأحد"
+
+#: includes/settings.php
+msgid "Thursday"
+msgstr "الخميس"
+
+#: includes/settings.php
+msgid "Monday through Friday"
+msgstr "من الإثنين إلى الجمعة"
+
+#: includes/settings.php
+msgid "Saturday and Sunday"
+msgstr "السبت والأحد"
+
+#: includes/settings.php
+msgid "Every day"
+msgstr "كل يوم"
+
+#: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Disabled"
+msgstr "معطل"
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_reports.php
+msgid "None"
+msgstr "لا شيء"
+
+#: includes/settings.php
+msgid "General Settings"
+msgstr "الاعدادات العامة"
+
+#: includes/settings.php
+msgid "Syslog Enabled"
+msgstr "تمكين Syslog"
+
+#: includes/settings.php
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "إذا تم تعيين خانة الاختيار هذه، نقل السجلات من جدول Syslog Incoming إلى جدول syslog الرئيسي وسيتم تمكين التنبيهات والتقارير.  يرجى أن تضع في اعتبارك أنه إذا تم تعطيل النظام، ستظل إدخالات السجل تتراكم في جدول Syslog Incoming كما يتم تحديد ذلك بواسطة عملية rsyslog أو syslog-ng."
+
+#: includes/settings.php
+msgid "Forward alarms to Alarm Manager"
+msgstr "إعادة توجيه الإنذارات إلى مدير الإنذارات"
+
+#: includes/settings.php
+msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
+msgstr "السماح للقواعد المضبوطة على مدير الإنذارات بتمرير الإنذارات. يظل البريد الإلكتروني الخاص بـ Syslog هو الخيار الاحتياطي؛ وتعمل إجراءات الأوامر فقط لقواعد إنذار Syslog."
+
+#: includes/settings.php
+msgid "Strip Domains"
+msgstr "Strip Domains"
+
+#: includes/settings.php
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "قائمة محددة بفواصل من المجالات التي ترغب في إزالتها من اسم مضيف syslog ، ستكون الأمثلة على ذلك هي \"mydomain.com ، otherdomain.com\""
+
+#: includes/settings.php
+msgid "Refresh Interval"
+msgstr "الفاصل الزمني للتحديث"
+
+#: includes/settings.php
+msgid "This is the time in seconds before the page refreshes."
+msgstr "هذا هو الوقت بالثواني قبل تحديث الصفحة."
+
+#: includes/settings.php
+msgid "Skip Total Row Count"
+msgstr "تخطي حساب إجمالي الصفوف"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
+msgstr "إذا تم تحديد مربع الاختيار هذا، فلن تقوم علامتا تبويب سجلات النظام وسجلات التنبيهات بعدّ كل سجل مطابق، مما قد يكون مكلفاً جداً في التثبيتات الكبيرة. تعرض الصفحة روابط السابق والتالي بدلاً من الإجمالي وقائمة الصفحات، ويتم عرض التالي طالما بقيت سجلات أخرى."
+
+#: includes/settings.php
+msgid "Max Report Records"
+msgstr "سجلات تقرير ماكس"
+
+#: includes/settings.php
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "بالنسبة إلى التنبيهات المستندة إلى الحد، ما هو الحد الأقصى للعدد الذي ترغب في إظهاره في التقرير.  يستخدم هذا للحد من حجم سجل html والبريد الإلكتروني."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Records"
+msgstr "سجلات %d"
+
+#: includes/settings.php
+msgid "Maximum Syslog Processing Processes"
+msgstr "الحد الأقصى لعمليات معالجة Syslog"
+
+#: includes/settings.php
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr "عند تعيينه أعلى من 1، يتم توزيع معالجة الرسائل الواردة عبر عمليات عاملة متوازية. تتولى كل عملية عاملة نطاقًا منفصلًا من الرسائل الواردة، مما يسرّع تحليل أسماء المستضيفين ونقل الرسائل تحت الأحمال الثقيلة. يعالج الإعداد 1 جميع الرسائل في عملية واحدة. العمليات العاملة غير مدعومة على Windows أو عندما تكون إضافات PHP pcntl وPOSIX غير متوفرة، وفي هذه الحالة تعود المعالجة إلى عملية واحدة."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Process"
+msgstr "%d عملية عاملة"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Processes"
+msgstr "%d عمليات عاملة"
+
+#: includes/settings.php
+msgid "Command for Opening Tickets"
+msgstr "أمر فتح التذاكر"
+
+#: includes/settings.php
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "سيتم تنفيذ هذا الأمر لفتح تذاكر مكتب المساعدة.  سيكون الأمر مطلوبا لتحليل معلمات إدخال متعددة على النحو التالي: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  ستكون قائمة المضيفين عبارة عن قائمة محددة بفواصل للمضيفين المتأثرين بالتنبيه."
+
+#: includes/settings.php
+msgid "Host Discovery Options"
+msgstr "خيارات اكتشاف المستضيف Host"
+
+#: includes/settings.php
+msgid "Enable Hostname Resolution"
+msgstr "تفعيل تحليل أسماء المستضيفين"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr "إذا تم تحديد مربع الاختيار هذا، فسيتم تحليل جميع أسماء المستضيفين عبر بحث DNS أولاً (إذا كان مفعلاً)، باستخدام سجلات A و AAAA. لا تحتاج عناوين IPv4 و IPv6 إلى بحث، ويتم تخزين عناوين IPv6 بصيغة مضغوطة وبأحرف صغيرة. إذا فشل بحث DNS، فسيحاول النظام تحليل اسم المستضيف مقابل جدول المستضيف Host في Cacti واستبداله بوصف المستضيف Host في Cacti. وإذا فشل كل من بحث DNS و Cacti، فسيتم تعيين البادئة 'unresolved-Original_hostname' للسجلات."
+
+#: includes/settings.php
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr "تخطي تحليل DNS للمستضيفين الواردين"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr "إذا تم تحديد مربع الاختيار هذا، فلن يحاول النظام تحليل المستضيفين عبر عمليات بحث DNS. هذا مفيد للبيئات التي لا يكون فيها تحليل DNS ممكناً أو مرغوباً."
+
+#: includes/settings.php
+msgid "HTML Notification Settings"
+msgstr "إعدادات إعلام HTML"
+
+#: includes/settings.php
+msgid "Enable HTML Based Email"
+msgstr "تمكين البريد الإلكتروني المستند إلى HTML"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "إذا تم تعيين مربع الاختيار هذا، إرسال جميع رسائل البريد الإلكتروني بتنسيق HTML.  خلاف ذلك ، سيتم إرسال رسائل البريد الإلكتروني بنص عادي."
+
+#: includes/settings.php
+msgid "Format File to Use"
+msgstr "تنسيق ملف للاستخدام"
+
+#: includes/settings.php
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr "اختر ملف html المخصص وملف CSS لاستخدامه. يحتوي هذا الملف على كل من html و CSS للتفاف حول تقريرك. إذا كان يحتوي على أكثر من مجرد CSS ، فستحتاج إلى وضع خاص <REPORT> علامة داخل الملف. سيتم استبدال علامة التنسيق هذه بمحتوى التقرير. توجد هذه الملفات في دليل &quot;التنسيقات&quot;."
+
+#: includes/settings.php
+msgid "Data Retention and Partitioning"
+msgstr "الاحتفاظ بالبيانات وتقسيمها"
+
+#: includes/settings.php
+msgid "Syslog Retention"
+msgstr "الاحتفاظ بنظام التشغيل"
+
+#: includes/settings.php
+msgid "This is the number of days to keep events."
+msgstr "هذا هو عدد الأيام للاحتفاظ بالأحداث."
+
+#: includes/settings.php
+msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
+msgstr "حجم كل قسم في جدولي syslog وsyslog_removed. يتم حفظ التغيير هنا ولكن لا يسري مفعوله إلا عندما يعيد cli/upgrade_partitioning.php بناء كلا الجدولين؛ وحتى ذلك الحين، تحافظ صيانة الأقسام على الحجم الحالي. يتطلب التقسيم بالساعة مدة احتفاظ محدودة. يجب أن تتناسب مدة الاحتفاظ ونافذة الإنشاء المسبق ومستوى التقسيم معًا مع حد الأقسام في خادم قاعدة البيانات، وإلا فلن يتم حفظ الإعدادات."
+
+#: includes/settings.php
+msgid "Partition Pre-create Window"
+msgstr "نافذة الإنشاء المسبق للأقسام"
+
+#: includes/settings.php
+msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
+msgstr "هذا هو عدد أيام الأقسام المستقبلية المطلوب الاحتفاظ بها لجداول Syslog المقسمة، بحيث يتم دائمًا تقسيم الأقسام الجديدة من قسم dMaxValue فارغ. يحتفظ التقسيم بالساعة دائمًا بيومين على الأقل."
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Day"
+msgstr "يوم %d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Days"
+msgstr "%d من الأيام"
+
+#: includes/settings.php
+msgid "Partition Recovery Limit"
+msgstr "حد استرداد الأقسام"
+
+#: includes/settings.php
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr "عند فقدان أقسام (على سبيل المثال بعد توقف الصيانة)، يتم إنشاء هذا العدد كحد أقصى من الأقسام المفقودة لكل جدول في كل تشغيل للمستفتي. وتُستكمل الفجوة المتبقية عبر التشغيلات اللاحقة؛ ويبقى تقليم الاحتفاظ مؤجلًا حتى تتم استعادة أفق الأقسام المستقبلية بالكامل. ينطبق على جداول Syslog المقسّمة فقط."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partition per run"
+msgstr "%d قسم في كل تشغيل"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partitions per run"
+msgstr "%d أقسام في كل تشغيل"
+
+#: includes/settings.php
+msgid "Collector Staleness Threshold"
+msgstr "عتبة تقادم المجمّع"
+
+#: includes/settings.php
+msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
+msgstr "تحذّر تنبيهات صحة خط المعالجة عندما تتجاوز الرسائل غير المعالجة، أو إتمام المعالجة، أو المزامنة في قائمة الانتظار هذا التأخير. يبلغ التأخير الفعلي ثلاث فترات مستفتي على الأقل و300 ثانية. اضبطه على 0 لاستخدام 300 ثانية."
+
+#: includes/settings.php
+msgid "Default (300 seconds)"
+msgstr "الافتراضي (300 ثانية)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d seconds"
+msgstr "%d ثواني"
+
+#: includes/settings.php
+msgid "Collector Backlog Threshold"
+msgstr "عتبة تراكم المجمّع"
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr "تعرض صفحة حالة Syslog تحذيرًا عندما يتجاوز عدد الرسائل غير المعالجة في جدول رسائل Syslog الواردة هذا العدد. اضبطه على 0 لاستخدام القيمة الافتراضية البالغة 10000 رسالة."
+
+#: includes/settings.php
+msgid "Default (10000 messages)"
+msgstr "الافتراضي (10000 رسالة)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Messages"
+msgstr "%d رسائل"
+
+#: includes/settings.php
+msgid "Pipeline Health Alerts"
+msgstr "تنبيهات صحة خط المعالجة"
+
+#: includes/settings.php
+msgid "Pipeline Health Notification List"
+msgstr "قائمة إشعارات صحة خط المعالجة"
+
+#: includes/settings.php
+msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
+msgstr "اختر قائمة إشعارات Thold موجودة لتنبيهات سلامة مسار المعالجة (pipeline). يتم دمج مستلمي القائمة المفعلة مع عناوين البريد الإلكتروني أدناه مع الحفاظ على مستلمي النسخة المخفية (BCC). تتطلب القوائم جدول قوائم إشعارات Thold."
+
+#: includes/settings.php
+msgid "Pipeline Health Email Recipients"
+msgstr "مستلمو البريد الإلكتروني لصحة خط المعالجة"
+
+#: includes/settings.php
+msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
+msgstr "مستلمو البريد الإلكتروني مفصولون بفواصل لإخفاقات مسار المعالجة واستعادته. اتركه فارغاً ولا تحدد أي قائمة إشعارات لتعطيل البريد الإلكتروني؛ تظل السلامة مرئية في علامة تبويب الحالة ويتم تسجيل تغييرات الحالة. تتطلب الفحوصات تشغيل المستفتي في Cacti."
+
+#: includes/settings.php
+msgid "Pipeline Health Reminder Interval"
+msgstr "الفاصل الزمني لتذكير صحة خط المعالجة"
+
+#: includes/settings.php
+msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
+msgstr "تكرار الإشعارات لمشكلات المسار المستمرة بعد هذا الفاصل الزمني. لا تتم إعادة محاولة رسائل البريد الإلكتروني الفاشلة أكثر من مرة واحدة كل خمس دقائق."
+
+#: includes/settings.php
+msgid "Syslog Alert Retention"
+msgstr "الاحتفاظ بتنبيه Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep alert logs."
+msgstr "هذا هو عدد الأيام للاحتفاظ بسجلات التنبيه."
+
+#: includes/settings.php
+msgid "Alert Suppression and Maintenance"
+msgstr "كتم التنبيهات والصيانة"
+
+#: includes/settings.php
+msgid "Maintenance Window Days"
+msgstr "أيام نافذة الصيانة"
+
+#: includes/settings.php
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr "الأيام التي يتم فيها كتم جميع إشعارات التنبيهات خلال الإطار الزمني للصيانة المُعدّ."
+
+#: includes/settings.php
+msgid "Maintenance Window Starts"
+msgstr "بداية نافذة الصيانة"
+
+#: includes/settings.php
+msgid "Local start time for the global maintenance window."
+msgstr "وقت البدء المحلي لفترة الصيانة العامة."
+
+#: includes/settings.php
+msgid "Maintenance Window Ends"
+msgstr "نهاية نافذة الصيانة"
+
+#: includes/settings.php
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr "وقت الانتهاء المحلي لفترة الصيانة العامة. يمتد وقت الانتهاء الأبكر إلى اليوم التالي."
+
+#: includes/settings.php
+msgid "One-time Maintenance Starts"
+msgstr "بداية الصيانة لمرة واحدة"
+
+#: includes/settings.php
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr "تاريخ ووقت محلي اختياري لبدء نافذة الصيانة العامة لمرة واحدة."
+
+#: includes/settings.php
+msgid "One-time Maintenance Ends"
+msgstr "نهاية الصيانة لمرة واحدة"
+
+#: includes/settings.php
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr "تاريخ ووقت محلي اختياري لإنهاء نافذة الصيانة العامة لمرة واحدة. التنسيق: YYYY-MM-DD HH:MM."
+
+#: includes/settings.php
+msgid "Default Alert Cooldown"
+msgstr "فترة التهدئة الافتراضية للتنبيه"
+
+#: includes/settings.php
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "كتم أي إشعار متكرر لنفس القاعدة ونطاق الإبلاغ لهذا العدد من الدقائق. تتجاوز القيم الخاصة بكل قاعدة هذا الإعداد. اضبط على 0 للتعطيل."
+
+#: includes/settings.php
+msgid "Default Duplicate Suppression"
+msgstr "كتم التكرار الافتراضي"
+
+#: includes/settings.php
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "كتم الإشعار الذي يحتوي على نفس مجموعة الرسائل المطابقة لهذا العدد من الدقائق. تتجاوز القيم الخاصة بكل قاعدة هذا الإعداد. اضبط على 0 للتعطيل."
+
+#: includes/settings.php
+msgid "Remote Syslog Recovery"
+msgstr "استرداد Syslog البعيد"
+
+#: includes/settings.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr "الحد الأقصى لسجلات الاسترداد لكل تنفيذ"
+
+#: includes/settings.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr "الحد الأقصى لعدد أحداث Syslog البعيدة المحتفظ بها والمُرسَلة إلى المُجمِّع الرئيسي في تنفيذ واحد لعامل الاسترداد. تظل كل معاملة في قاعدة البيانات المركزية محدودة بـ 100 سجل. قم بالزيادة تدريجيًا مع مراقبة حمل المُجمِّع الرئيسي وأوقات انتظار الأقفال."
+
+#: includes/settings.php
+msgid "Recovery Pause Between Batches"
+msgstr "فترة التوقف للاسترداد بين الدفعات"
+
+#: includes/settings.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr "فترة التوقف المؤقت بين كل معاملة تسليم لـ 100 سجل إلى المجمع الرئيسي. التوقف الأطول يقلل الضغط على المجمع الرئيسي؛ والتوقف الأقصر يسرّع تقارب التراكم."
+
+#: includes/settings.php
+msgid "No pause"
+msgstr "بدون إيقاف مؤقت"
+
+#: includes/settings.php
+#, php-format
+msgid "%d milliseconds"
+msgstr "%d مللي ثانية"
+
+#: includes/settings.php
+#, php-format
+msgid "%d second"
+msgstr "%d ثانية"
+
+#: includes/settings.php
+msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
+msgstr "قاعدة بيانات Syslog غير متاحة، لذا يتعذر التحقق من إعدادات التقسيم مقابل حد الأقسام وجداولها."
+
+#: includes/settings.php
+msgid "The Syslog settings were not saved."
+msgstr "لم يتم حفظ إعدادات Syslog."
+
+#: includes/settings.php
+#, php-format
+msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
+msgstr "معلق: لا يزال جدول الرسائل يستخدم %s من الأقسام. شغّل cli/upgrade_partitioning.php لتطبيق المستوى المحدد."
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_saved_searches.php
+msgid "Delete"
+msgstr "حذف"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Disable"
+msgstr "تعطيل"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Enable"
+msgstr "تفعيل"
+
+#: includes/settings.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_saved_searches.php
+msgid "Export"
+msgstr "تصدير"
+
+#: includes/settings.php
+msgid "Indefinite"
+msgstr "إلى أجل غير مسمى"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Week"
+msgstr "%d أسبوع"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Weeks"
+msgstr "%d أسابيع"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Month"
+msgstr "%d شهر"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Months"
+msgstr "%d أشهر"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Year"
+msgstr "%d سنة"
+
+#: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
+msgid "Never"
+msgstr "أبدا"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Minute"
+msgstr "دقيقة %d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d دقيقة (دقائق)"
+
+#: includes/settings.php
+msgid "Begins with"
+msgstr "يبدأ مع"
+
+#: includes/settings.php
+msgid "Contains"
+msgstr "يحتوي"
+
+#: includes/settings.php
+msgid "Ends with"
+msgstr "ينتهي مع"
+
+#: includes/settings.php
+msgid "Hostname is"
+msgstr "أسم المضيف:"
+
+#: includes/settings.php
+msgid "Program is"
+msgstr "البرنامج هو"
+
+#: includes/settings.php
+msgid "Facility is"
+msgstr "المرافق"
+
+#: includes/settings.php syslog_alerts.php
+msgid "Filter Builder"
+msgstr "منشئ الفلتر"
+
+#: includes/settings.php syslog_alerts.php
+msgid "SQL Expression"
+msgstr "تعبير SQL"
+
+#: includes/settings.php
+msgid "Weekly"
+msgstr "أسبوعي"
+
+#: includes/settings.php
+msgid "Import/Export"
+msgstr "استيراد و تصدير"
+
+#: includes/settings.php
+msgid "Alert Rules"
+msgstr "قواعد التنبيه"
+
+#: includes/settings.php
+msgid "Syslog Settings"
+msgstr "إعدادات Syslog"
+
+#: includes/settings.php syslog_device_rules.php
+msgid "Device Alert Rules"
+msgstr "قواعد تنبيه الجهاز"
+
+#: includes/settings.php
+msgid "Removal Rules"
+msgstr "قواعد الإزالة"
+
+#: includes/settings.php
+msgid "Report Rules"
+msgstr "قواعد التقرير"
+
+#: includes/settings.php syslog.php syslog_recommendations.php
+msgid "Recommendations"
+msgstr "التوصيات"
+
+#: includes/utilities.php
+msgid "Unable to connect to the Syslog database. No Device records were removed."
+msgstr "تعذر الاتصال بقاعدة بيانات Syslog. لم تتم إزالة أي سجلات جهاز."
+
+#: includes/utilities.php
+#, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "تمت إزالة سجلات الجهاز %s من قاعدة بيانات Syslog"
+
+#: includes/utilities.php
+msgid "Syslog Utilities"
+msgstr "أدوات Syslog"
+
+#: includes/utilities.php
+msgid "Purge Syslog Devices"
+msgstr "تطهير أجهزة Syslog"
+
+#: includes/utilities.php
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr "هل أنت متأكد من أنك تريد إزالة أجهزة Syslog القديمة؟"
+
+#: includes/utilities.php
+msgid "Confirm Purge"
+msgstr "تأكيد التطهير"
+
+#: includes/utilities.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Continue"
+msgstr "إستمرار"
+
+#: includes/utilities.php
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "يوفر اختيار القائمة هذا وسيلة لإزالة الأجهزة التي لم تعد تقدم تقارير إلى خادم syslog الخاص ب Cacti."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel source."
+msgstr "مصدر اللوحة في لوحة المعلومات غير صالح."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel type."
+msgstr "نوع اللوحة في لوحة المعلومات غير صالح."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard chart type."
+msgstr "نوع مخطط لوحة المعلومات غير صالح."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard breakdown field."
+msgstr "حقل تفصيل لوحة المعلومات غير صالح."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard interval."
+msgstr "الفاصل الزمني للوحة المعلومات غير صالح."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard timespan."
+msgstr "النطاق الزمني للوحة المعلومات غير صالح."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard record type."
+msgstr "نوع سجل لوحة المعلومات غير صالح."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard top count."
+msgstr "عدد العناصر الأعلى في لوحة المعلومات غير صالح."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel width."
+msgstr "عرض اللوحة في لوحة المعلومات غير صالح."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel height."
+msgstr "ارتفاع اللوحة في لوحة المعلومات غير صالح."
+
+#: lib/syslog_dashboard.php syslog.php
+#, php-format
+msgid "Invalid logical search: %s"
+msgstr "بحث منطقي غير صالح: %s"
+
+#: lib/syslog_dashboard.php
+msgid "Other"
+msgstr "أخرى"
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard panel is required."
+msgstr "مطلوب لوحة صالحة في لوحة المعلومات."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard panel not found."
+msgstr "لم يتم العثور على لوحة في لوحة المعلومات."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "A name of up to 128 characters is required."
+msgstr "مطلوب اسم لا يتجاوز 128 حرفًا."
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard is required."
+msgstr "مطلوب لوحة معلومات صالحة."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard not found."
+msgstr "لم يتم العثور على لوحة المعلومات."
+
+#: lib/syslog_dashboard.php syslog_dashboards.php
+msgid "Unable to save dashboard changes."
+msgstr "تعذر حفظ تغييرات لوحة المعلومات."
+
+#: lib/syslog_dashboard.php
+msgid "You may only share your own dashboards."
+msgstr "يُسمح لك بمشاركة لوحات التحكم الخاصة بك فقط."
+
+#: lib/syslog_dashboard.php
+msgid "copy"
+msgstr "نسخ"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard could not be copied."
+msgstr "تعذر نسخ لوحة المعلومات."
+
+#: lib/syslog_dashboard.php
+msgid "A valid panel position is required."
+msgstr "مطلوب موضع لوحة صالح."
+
+#: lib/syslog_dashboard.php
+msgid "A title of up to 128 characters is required."
+msgstr "مطلوب عنوان لا يتجاوز 128 حرفًا."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Drag to reorder card"
+msgstr "اسحب لإعادة ترتيب البطاقة"
+
+#: lib/syslog_dashboard.php
+msgid "Refresh Panel"
+msgstr "تحديث اللوحة"
+
+#: lib/syslog_dashboard.php
+msgid "Total messages"
+msgstr "إجمالي الرسائل"
+
+#: lib/syslog_dashboard.php
+msgid "Chart library unavailable on this Cacti installation."
+msgstr "مكتبة المخططات البيانية غير متوفرة في تثبيت Cacti هذا."
+
+#: lib/syslog_dashboard.php
+msgid "Edit Panel"
+msgstr "تحرير اللوحة"
+
+#: lib/syslog_dashboard.php
+msgid "New Panel"
+msgstr "لوحة جديدة"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Save"
+msgstr "حفظ"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Apply"
+msgstr "تطبيق"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard panel?"
+msgstr "هل تريد حذف هذه اللوحة من لوحة المعلومات؟"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard and all of its panels?"
+msgstr "هل تريد حذف لوحة المعلومات هذه وجميع لوحاتها؟"
+
+#: lib/syslog_dashboard.php
+msgid "Name your dashboard"
+msgstr "سمِّ لوحة المعلومات الخاصة بك"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Make Private"
+msgstr "جعله خاصًا"
+
+#: lib/syslog_dashboard.php
+msgid "Share with all"
+msgstr "مشاركة مع الجميع"
+
+#: lib/syslog_dashboard.php
+msgid "Save as my copy"
+msgstr "حفظ كنسختي"
+
+#: lib/syslog_dashboard.php
+msgid "Syslog Dashboards"
+msgstr "لوحات معلومات Syslog"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Dashboard"
+msgstr "لوحة المؤشرات"
+
+#: lib/syslog_dashboard.php
+msgid "Time Range"
+msgstr "النطاق الزمني"
+
+#: lib/syslog_dashboard.php
+msgid "Last Hour"
+msgstr "آخر ساعة"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Hours"
+msgstr "آخر %d ساعة"
+
+#: lib/syslog_dashboard.php
+msgid "Last Day"
+msgstr "اليوم الآخير"
+
+#: lib/syslog_dashboard.php
+msgid "Last Week"
+msgstr "الاسبوع الماضى"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Weeks"
+msgstr "آخر %d أسابيع"
+
+#: lib/syslog_dashboard.php
+msgid "Last Month"
+msgstr "الشهر الماضي"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Months"
+msgstr "آخر %d شهر"
+
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
+msgid "Refresh"
+msgstr "تحديث"
+
+#: lib/syslog_dashboard.php
+msgid "My Dashboards"
+msgstr "لوحات المعلومات الخاصة بي"
+
+#: lib/syslog_dashboard.php
+msgid "Global Dashboards"
+msgstr "لوحات المعلومات العامة"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Shared With Me"
+msgstr "مشتركة معي"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "New"
+msgstr "جديد"
+
+#: lib/syslog_dashboard.php
+msgid "Rename"
+msgstr "إعادة التسمية"
+
+#: lib/syslog_dashboard.php
+msgid "Add Panel"
+msgstr "إضافة لوحة"
+
+#: lib/syslog_dashboard.php
+msgid "Create your first dashboard to visualize syslog trends."
+msgstr "أنشئ لوحة المعلومات الأولى لديك لعرض اتجاهات Syslog بشكل مرئي."
+
+#: lib/syslog_dashboard.php
+msgid "Add a panel to start charting.  Panels can use your saved searches."
+msgstr "أضف لوحة لبدء إنشاء الرسوم البيانية.  يمكن للوحات استخدام عمليات البحث المحفوظة الخاصة بك."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Panel"
+msgstr "لوحة في لوحة المعلومات"
+
+#: lib/syslog_dashboard.php
+msgid "Title"
+msgstr "العنوان"
+
+#: lib/syslog_dashboard.php
+msgid "Log Source"
+msgstr "مصدر السجل"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "System Logs"
+msgstr "سجلات النظام"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Alert Logs"
+msgstr "سجلات التنبيه"
+
+#: lib/syslog_dashboard.php
+msgid "Panel Type"
+msgstr "نوع اللوحة"
+
+#: lib/syslog_dashboard.php
+msgid "Time Series"
+msgstr "السلاسل الزمنية"
+
+#: lib/syslog_dashboard.php
+msgid "Breakdown"
+msgstr "التفصيل"
+
+#: lib/syslog_dashboard.php
+msgid "Chart"
+msgstr "مخطط بياني"
+
+#: lib/syslog_dashboard.php
+msgid "Line"
+msgstr "البحث الخط"
+
+#: lib/syslog_dashboard.php
+msgid "Area"
+msgstr "المساحة"
+
+#: lib/syslog_dashboard.php
+msgid "Bar"
+msgstr "شريط"
+
+#: lib/syslog_dashboard.php
+msgid "Interval"
+msgstr "الفترة"
+
+#: lib/syslog_dashboard.php
+msgid "Auto"
+msgstr "تلقاءي"
+
+#: lib/syslog_dashboard.php
+msgid "Minute"
+msgstr "دقيقة"
+
+#: lib/syslog_dashboard.php
+msgid "10 Minutes"
+msgstr "10 دقائق"
+
+#: lib/syslog_dashboard.php
+msgid "Hour"
+msgstr "ساعة"
+
+#: lib/syslog_dashboard.php
+msgid "Day"
+msgstr "يوم"
+
+#: lib/syslog_dashboard.php
+msgid "Field"
+msgstr "حقل"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Program"
+msgstr "برنامج"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Facility"
+msgstr "المرافق"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Priority"
+msgstr "الأولوية"
+
+#: lib/syslog_dashboard.php
+msgid "Top Count"
+msgstr "العدد الأعلى"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Record Type"
+msgstr "نوع السجل"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "All Records"
+msgstr "جميع السجلات"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Main Records"
+msgstr "السجلات الرئيسية"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Removed Records"
+msgstr "السجلات التي تمت إزالتها"
+
+#: lib/syslog_dashboard.php
+msgid "Start from Saved Search"
+msgstr "البدء من بحث محفوظ"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Enter message text…"
+msgstr "أدخل نص الرسالة…"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Remove condition"
+msgstr "إزالة الشرط"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Match group"
+msgstr "مجموعة المطابقة"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Exclude group"
+msgstr "استبعاد المجموعة"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Name"
+msgstr "اسم لوحة المعلومات"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Name"
+msgstr "الاسم"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Breached Thresholds"
+msgstr "العتبات المتجاوزة"
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr "متجاوزة منذ"
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr "المُجمِّع"
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr "جهاز"
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr "آخر رسالة مطابقة"
+
+#: lib/syslog_thresholds.php
+msgid "Recovers After"
+msgstr "يسترد بعد"
+
+#: lib/syslog_thresholds.php
+msgid "Rule"
+msgstr "القاعدة"
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr "جميع الأجهزة المطابقة"
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr "لا توجد عتبات متجاوزة حالياً."
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr "يتطلب الاسترداد عدم وجود رسائل مطابقة حتى الوقت المعروض. كل مطابقة تعيد تشغيل فترة الهدوء."
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Previous"
+msgstr "السابق"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Next"
+msgstr "التالي"
+
+#: setup.php
+msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
+msgstr "يرجى إعادة تسمية ملفات config.php.dist أو config_local.php.dist في دليل syslog ، وتغيير إعداد قاعدة البيانات الخاصة بك قبل التثبيت."
+
+#: setup.php
+msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
+msgstr "الطوابع الزمنية بدقة الملي ثانية (TIMESTAMP(3)) مدعومة فقط على MariaDB. هذا الخادم يعمل بـ MySQL، لذا ثبّت باستخدام طوابع زمنية بدقة الثانية بدلاً من ذلك."
+
+#: setup.php
+msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
+msgstr "لا يمكن استخدام تخزين Aria عندما يكون أي خيار لمجمع البيانات البعيد مفعلًا. حدد InnoDB أو عطل جميع خيارات مجمع البيانات البعيد."
+
+#: setup.php
+msgid "Top 10 Hosts"
+msgstr "أعلى 10 مستضيفين"
+
+#: setup.php
+msgid "Syslog Messages - Past Hour"
+msgstr "رسائل Syslog - الساعة الماضية"
+
+#: setup.php
+msgid "Messages by Severity"
+msgstr "الرسائل حسب الخطورة"
+
+#: setup.php
+msgid "Top 10 Programs"
+msgstr "أعلى 10 برامج"
+
+#: setup.php
+msgid "Alert Activity"
+msgstr "نشاط التنبيهات"
+
+#: syslog.php
+msgid "Syslog Viewer"
+msgstr "عارض Syslog"
+
+#: syslog.php
+msgid "Syslog Status"
+msgstr "حالة Syslog"
+
+#: syslog.php
+msgid "Selected Alert"
+msgstr "التنبيه المحدد"
+
+#: syslog.php
+msgid "seconds"
+msgstr "ثواني"
+
+#: syslog.php
+msgid "Unavailable"
+msgstr "غير متاح"
+
+#: syslog.php
+#, php-format
+msgid "unprocessed messages are %s old"
+msgstr "عمر الرسائل غير المعالجة %s"
+
+#: syslog.php
+#, php-format
+msgid "incoming backlog of %s messages"
+msgstr "تراكم وارد من %s رسالة"
+
+#: syslog.php
+msgid "day"
+msgstr "يوم"
+
+#: syslog.php
+msgid "days"
+msgstr "أيام"
+
+#: syslog.php
+msgid "hour"
+msgstr "ساعة"
+
+#: syslog.php
+msgid "hours"
+msgstr "ساعات"
+
+#: syslog.php
+msgid "minute"
+msgstr "دقيقة"
+
+#: syslog.php
+msgid "minutes"
+msgstr "دقيقة"
+
+#: syslog.php
+msgid "Rows in syslog_incoming"
+msgstr "الصفوف في syslog_incoming"
+
+#: syslog.php
+msgid "Syslog table size (data + indexes)"
+msgstr "حجم جدول Syslog (البيانات + الفهارس)"
+
+#: syslog.php
+msgid "Syslog retention"
+msgstr "فترة الاحتفاظ ببيانات Syslog"
+
+#: syslog.php
+msgid "Alert retention"
+msgstr "الاحتفاظ بالتنبيهات"
+
+#: syslog.php
+msgid "No recovery activity recorded yet."
+msgstr "لم يتم تسجيل أي نشاط استرداد بعد."
+
+#: syslog.php
+msgid "created"
+msgstr "تم الإنشاء"
+
+#: syslog.php
+msgid "remaining"
+msgstr "متبقٍ"
+
+#: syslog.php
+msgid "retention deferred"
+msgstr "تم تأجيل الاحتفاظ"
+
+#: syslog.php
+msgid "Latest processing run"
+msgstr "أحدث تشغيل معالجة"
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr "المزامنة الموزعة"
+
+#: syslog.php
+msgid "Remote collector receipts"
+msgstr "إيصالات المجمع البعيد"
+
+#: syslog.php
+msgid "Storage and retention"
+msgstr "التخزين والاحتفاظ"
+
+#: syslog.php
+msgid "Partition health"
+msgstr "صحة الأقسام"
+
+#: syslog.php
+msgid "Partition maintenance activity"
+msgstr "نشاط صيانة الأقسام"
+
+#: syslog.php
+msgid "Recent partition maintenance activity"
+msgstr "نشاط صيانة الأقسام الأخير"
+
+#: syslog.php
+msgid "Pipeline health"
+msgstr "صحة خط المعالجة"
+
+#: syslog.php
+msgid "Parallel workers"
+msgstr "العمليات العاملة المتوازية"
+
+#: syslog.php
+msgid "Worker processes"
+msgstr "العمليات العاملة"
+
+#: syslog.php
+msgid "Processing phases"
+msgstr "مراحل المعالجة"
+
+#: syslog.php
+msgid "Rule activity"
+msgstr "نشاط القاعدة"
+
+#: syslog.php
+msgid "Records processed"
+msgstr "السجلات المعالجة"
+
+#: syslog.php
+msgid "Polling runtime"
+msgstr "مدة تشغيل الاستفتاء"
+
+#: syslog.php
+msgid "Started"
+msgstr "بدأت"
+
+#: syslog.php
+msgid "Finished"
+msgstr "مكتمل"
+
+#: syslog.php
+msgid "Minimum runtime"
+msgstr "الحد الأدنى لوقت التشغيل"
+
+#: syslog.php
+msgid "Average runtime"
+msgstr "متوسط وقت التشغيل"
+
+#: syslog.php
+msgid "Maximum runtime"
+msgstr "الحد الأقصى لوقت التشغيل"
+
+#: syslog.php
+msgid "State"
+msgstr "الحالة"
+
+#: syslog.php
+msgid "Queued Recovery Records"
+msgstr "سجلات الاسترداد في قائمة الانتظار"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr "أقدم عنصر معلق"
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr "آخر مزامنة ناجحة"
+
+#: syslog.php
+msgid "Active"
+msgstr "نشط"
+
+#: syslog.php
+msgid "Inactive"
+msgstr "غير نشط"
+
+#: syslog.php
+msgid "Recovery worker"
+msgstr "عامل الاسترداد"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr "آخر خطأ في المزامنة"
+
+#: syslog.php
+msgid "Last Batch Count"
+msgstr "عدد الدفعة الأخيرة"
+
+#: syslog.php
+msgid "Last Record Received"
+msgstr "آخر سجل مستلم"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr "المستفتي البعيد"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr "المستفتي البعيد غير معروف"
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
+msgstr "لم يتم استلام أي سجلات من المجمّع البعيد بعد."
+
+#: syslog.php
+msgid "Partition maintenance blocked"
+msgstr "صيانة الأقسام محظورة"
+
+#: syslog.php
+msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
+msgstr "صيانة الأقسام متوقفة؛ تستمر عمليات الكتابة في قسم الأمان dMaxValue."
+
+#: syslog.php
+msgid "Date coverage"
+msgstr "تغطية التاريخ"
+
+#: syslog.php
+msgid "Table"
+msgstr "جدول"
+
+#: syslog.php
+msgid "dMaxValue rows (estimated)"
+msgstr "صفوف dMaxValue (تقديري)"
+
+#: syslog.php
+msgid "dMaxValue size"
+msgstr "حجم dMaxValue"
+
+#: syslog.php
+msgid "Partitioning level"
+msgstr "مستوى التقسيم"
+
+#: syslog.php
+#, php-format
+msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
+msgstr "تم تحديد %s في الإعدادات وسيسري مفعوله بعد أن يعيد cli/upgrade_partitioning.php بناء الجداول."
+
+#: syslog.php
+msgid "Last attempt"
+msgstr "آخر محاولة"
+
+#: syslog.php
+msgid "Last successful maintenance"
+msgstr "آخر صيانة ناجحة"
+
+#: syslog.php
+msgid "Complete"
+msgstr "مكتمّل"
+
+#: syslog.php
+msgid "Deferred"
+msgstr "مؤجل"
+
+#: syslog.php
+msgid "Latest outcome"
+msgstr "أحدث نتيجة"
+
+#: syslog.php
+msgid "Recovery progress"
+msgstr "تقدم الاسترداد"
+
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "التفاصيل"
+
+#: syslog.php
+msgid "Outcome"
+msgstr "النتيجة"
+
+#: syslog.php
+msgid "Recovery"
+msgstr "الاسترداد"
+
+#: syslog.php
+msgid "When"
+msgstr "متى"
+
+#: syslog.php
+msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
+msgstr "لم يتم تسجيل أي نشاط لصيانة الأقسام بعد. يظهر النشاط بعد تشغيل المستفتي التالي."
+
+#: syslog.php
+#, php-format
+msgid "%d created, %d remaining, %d pruned"
+msgstr "تم إنشاء %d، المتبقي %d، المحذوف %d"
+
+#: syslog.php
+msgid "No action required."
+msgstr "لا يلزم اتخاذ أي إجراء."
+
+#: syslog.php
+msgid "Incoming backlog"
+msgstr "تراكم الرسائل الواردة"
+
+#: syslog.php
+msgid "Processing"
+msgstr "جارٍ المعالجة"
+
+#: syslog.php
+msgid "Partition maintenance"
+msgstr "صيانة الأقسام"
+
+#: syslog.php
+msgid "Synchronization"
+msgstr "المزامنة"
+
+#: syslog.php
+msgid "Attention required"
+msgstr "يلزم الانتباه"
+
+#: syslog.php
+msgid "Healthy"
+msgstr "سليم"
+
+#: syslog.php
+msgid "Processing disabled"
+msgstr "المعالجة معطلة"
+
+#: syslog.php
+msgid "Waiting for processing"
+msgstr "في انتظار المعالجة"
+
+#: syslog.php
+msgid "Health"
+msgstr "الحالة الصحية"
+
+#: syslog.php
+msgid "Ready"
+msgstr "جاهز"
+
+#: syslog.php
+msgid "Sent"
+msgstr "تم الإرسال"
+
+#: syslog.php
+msgid "Failed; retry pending"
+msgstr "فشل؛ إعادة المحاولة قيد الانتظار"
+
+#: syslog.php
+msgid "Pending; next poller check"
+msgstr "معلق؛ فحص المستفتي التالي"
+
+#: syslog.php
+msgid "Last health check"
+msgstr "آخر فحص سلامة"
+
+#: syslog.php
+msgid "Email notifications"
+msgstr "إشعارات البريد الإلكتروني"
+
+#: syslog.php
+msgid "Not checked yet"
+msgstr "لم يتم الفحص بعد"
+
+#: syslog.php
+msgid "Last notification sent"
+msgstr "آخر إشعار مرسل"
+
+#: syslog.php
+msgid "Last received log"
+msgstr "آخر سجل مستلم"
+
+#: syslog.php
+msgid "Oldest unprocessed message"
+msgstr "أقدم رسالة غير معالجة"
+
+#: syslog.php
+msgid "Records processed in latest run"
+msgstr "السجلات المعالجة في أحدث تشغيل"
+
+#: syslog.php
+msgid "Worker processes running"
+msgstr "العمليات العاملة قيد التشغيل"
+
+#: syslog.php
+msgid "Configured worker processes"
+msgstr "عمليات العامل المكوّنة"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr "المستضيفات التي تم تحليل أسمائها"
+
+#: syslog.php
+msgid "Process"
+msgstr "عملية"
+
+#: syslog.php
+msgid "Records handled"
+msgstr "السجلات التي تمت معالجتها"
+
+#: syslog.php
+msgid "Runtime"
+msgstr "المدة"
+
+#: syslog.php
+msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
+msgstr "لم يتم تسجيل إحصائيات لكل عملية بعد. تظهر إحصائيات العمال بعد أول تشغيل متوازٍ."
+
+#: syslog.php
+msgid "Duration"
+msgstr "المدة الزمنية"
+
+#: syslog.php
+msgid "Phase"
+msgstr "المرحلة"
+
+#: syslog.php
+msgid "Records"
+msgstr "المواد"
+
+#: syslog.php
+msgid "Reference updates"
+msgstr "تحديثات المرجع"
+
+#: syslog.php
+msgid "Removal rules"
+msgstr "قواعد الإزالة"
+
+#: syslog.php
+msgid "Alert evaluation"
+msgstr "تقييم التنبيه"
+
+#: syslog.php
+msgid "Incoming transfer"
+msgstr "النقل الوارد"
+
+#: syslog.php
+msgid "Report processing"
+msgstr "معالجة التقرير"
+
+#: syslog.php
+msgid "slowest"
+msgstr "الأبطأ"
+
+#: syslog.php
+msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
+msgstr "لم يتم تسجيل أوقات المراحل بعد. تظهر أوقات المراحل بعد تشغيل المستفتي التالي."
+
+#: syslog.php
+msgid "Last run"
+msgstr "آخر تشغيل"
+
+#: syslog.php
+msgid "Rules processed"
+msgstr "القواعد المعالجة"
+
+#: syslog.php
+msgid "Total"
+msgstr "الإجمالي"
+
+#: syslog.php
+msgid "Alert rules"
+msgstr "قواعد التنبيه"
+
+#: syslog.php
+msgid "Delete rules"
+msgstr "حذف القواعد"
+
+#: syslog.php
+msgid "Fired last run"
+msgstr "أُطلق في آخر تشغيل"
+
+#: syslog.php
+msgid "Show more"
+msgstr "عرض المزيد"
+
+#: syslog.php
+msgid "Show less"
+msgstr "عرض أقل"
+
+#: syslog.php
+msgid "Open in a dialog"
+msgstr "فتح في مربع حوار"
+
+#: syslog.php
+msgid "Remove from page"
+msgstr "إزالة من الصفحة"
+
+#: syslog.php
+msgid "Invalid refresh interval."
+msgstr "فاصل التحديث غير صالح."
+
+#: syslog.php
+msgid "Unknown card."
+msgstr "بطاقة غير معروفة."
+
+#: syslog.php
+msgid "Add card"
+msgstr "إضافة بطاقة"
+
+#: syslog.php
+msgid "Add a status card…"
+msgstr "إضافة بطاقة حالة…"
+
+#: syslog.php
+msgid "Syslog Alert View"
+msgstr "عرض تنبيه Syslog"
+
+#: syslog.php
+msgid "A valid saved search is required."
+msgstr "مطلوب بحث محفوظ صالح."
+
+#: syslog.php
+msgid "Saved search not found."
+msgstr "لم يتم العثور على البحث المحفوظ."
+
+#: syslog.php
+msgid "You may only share your own saved searches."
+msgstr "يُسمح لك بمشاركة عمليات البحث المحفوظة الخاصة بك فقط."
+
+#: syslog.php
+#, php-format
+msgid "[ Unprocessed Messages: %s ]"
+msgstr "[ الرسائل غير المعالجة: %s ]"
+
+#: syslog.php syslog_device_rules.php
+msgid "Enter a search term"
+msgstr "أدخل مصطلح البحث"
+
+#: syslog.php
+msgid "Select Device(s)"
+msgstr "حدد الجهاز (الأجهزة)"
+
+#: syslog.php
+msgid "Devices Selected"
+msgstr "الأجهزة المحددة"
+
+#: syslog.php
+msgid "All Devices Selected"
+msgstr "جميع الأجهزة المحددة"
+
+#: syslog.php
+#, php-format
+msgid "Syslog Message Filter %s"
+msgstr "%s عامل تصفية رسائل Syslog"
+
+#: syslog.php
+msgid "Search messages"
+msgstr "البحث في الرسائل"
+
+#: syslog.php
+msgid "Collapse filters"
+msgstr "طي الفلاتر"
+
+#: syslog.php
+msgid "Edit filters"
+msgstr "تحرير الفلاتر"
+
+#: syslog.php
+msgid "Saved Searches"
+msgstr "عمليات البحث المحفوظة"
+
+#: syslog.php
+msgid "My Searches"
+msgstr "عمليات البحث الخاصة بي"
+
+#: syslog.php
+msgid "Global Searches"
+msgstr "عمليات البحث العامة"
+
+#: syslog.php
+#, php-format
+msgid "%s (Default)"
+msgstr "%s (افتراضي)"
+
+#: syslog.php
+msgid "Manage"
+msgstr "إدارة"
+
+#: syslog.php
+msgid "Manage saved searches"
+msgstr "إدارة عمليات البحث المحفوظة"
+
+#: syslog.php
+msgid "Save search"
+msgstr "حفظ البحث"
+
+#: syslog.php
+msgid "Edit"
+msgstr "تحرير"
+
+#: syslog.php
+msgid "Save for all"
+msgstr "حفظ للجميع"
+
+#: syslog.php
+msgid "contains"
+msgstr "يحتوي"
+
+#: syslog.php
+msgid "does not contain"
+msgstr "لا يحتوي"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Rows"
+msgstr "الصفوف"
+
+#: syslog.php
+msgid "Display Rows"
+msgstr "عرض الصفوف"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Default"
+msgstr "الافتراضي"
+
+#: syslog.php
+msgid "View options"
+msgstr "خيارات العرض"
+
+#: syslog.php
+msgid "Trim"
+msgstr "اقتضب"
+
+#: syslog.php
+msgid "Message Trim"
+msgstr "قص الرسائل"
+
+#: syslog.php
+msgid "Removal Handling"
+msgstr "معالجة الإزالة"
+
+#: syslog.php
+msgid "Display"
+msgstr "عرض"
+
+#: syslog.php
+msgid "Group Duplicate Messages"
+msgstr "تجميع الرسائل المكررة"
+
+#: syslog.php
+msgid "Individual Messages"
+msgstr "الرسائل الفردية"
+
+#: syslog.php
+msgid "Grouped Messages"
+msgstr "الرسائل المجمّعة"
+
+#: syslog.php
+#, no-php-format
+msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
+msgstr "اختر حقلًا وعاملًا وقيمة. تأخذ AND الأولوية على OR؛ وتستبعد NOT الشرط. يستخدم LIKE الرمز % لأي عدد من الأحرف والرمز _ لحرف واحد. تستخدم التواريخ الصيغة YYYY-MM-DD HH:MM:SS. وتستخدم المعرّفات أعدادًا صحيحة غير سالبة. افتراضيًا، يتم عرض سجلات آخر يوم ما لم يتم تعديل النطاق الزمني."
+
+#: syslog.php
+msgid "Search help"
+msgstr "مساعدة البحث"
+
+#: syslog.php
+msgid "New Saved Search"
+msgstr "بحث محفوظ جديد"
+
+#: syslog.php
+msgid "Edit Saved Search"
+msgstr "تحرير البحث المحفوظ"
+
+#: syslog.php
+msgid "Save As"
+msgstr "حفظ باسم"
+
+#: syslog.php
+msgid "Delete the selected saved search?"
+msgstr "هل تريد حذف البحث المحفوظ المحدد؟"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Search"
+msgstr "بحث"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Clear"
+msgstr "مسح"
+
+#: syslog.php
+msgid "Return filter values to their user defined defaults"
+msgstr "إرجاع قيم عامل التصفية إلى الإعدادات الافتراضية التي يحددها المستخدم"
+
+#: syslog.php
+msgid "Refresh Results"
+msgstr "تحديث النتائج"
+
+#: syslog.php
+msgid "Export Records to CSV"
+msgstr "تصدير السجلات إلى CSV"
+
+#: syslog.php
+msgid "Save Default Settings"
+msgstr "حفظ الإعدادات الافتراضية"
+
+#: syslog.php
+msgid "Save view defaults"
+msgstr "حفظ الإعدادات الافتراضية للعرض"
+
+#: syslog.php
+msgid "Save Search As"
+msgstr "حفظ البحث باسم"
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
+msgstr "تطبيق هذا البحث عند فتح هذه الصفحة وعدم وجود بحث نشط بعد"
+
+#: syslog.php
+msgid "Breach"
+msgstr "تجاوز"
+
+#: syslog.php
+msgid "Threshold breached"
+msgstr "تم تجاوز العتبة"
+
+#: syslog.php
+msgid "Messages"
+msgstr "رسائل"
+
+#: syslog.php
+msgid "Empty message"
+msgstr "رسالة فارغة"
+
+#: syslog.php
+msgid "Toggle group messages"
+msgstr "تبديل تجميع الرسائل"
+
+#: syslog.php
+msgid "Loading group messages..."
+msgstr "جارٍ تحميل رسائل المجموعة..."
+
+#: syslog.php
+msgid "No matching messages."
+msgstr "لا توجد رسائل مطابقة."
+
+#: syslog.php
+msgid "No Syslog Messages"
+msgstr "لا توجد رسائل Syslog"
+
+#: syslog.php
+msgid "Alert Log Rows"
+msgstr "صفوف سجل التنبيه"
+
+#: syslog.php
+msgid "Alert Removed"
+msgstr "تمت إزالة التنبيه"
+
+#: syslog.php
+msgid "No Alert Log Messages"
+msgstr "لا توجد رسائل سجل تنبيه"
+
+#: syslog.php
+msgid "Close message details"
+msgstr "إغلاق تفاصيل الرسالة"
+
+#: syslog.php
+msgid "Message details"
+msgstr "تفاصيل الرسالة"
+
+#: syslog.php
+msgid "General"
+msgstr "عام"
+
+#: syslog.php
+msgid "Alert Rule"
+msgstr "قاعدة التنبيه"
+
+#: syslog.php
+msgid "Sequence"
+msgstr "تسلسل، تتابع، متوالية"
+
+#: syslog.php
+msgid "Copied"
+msgstr "تم النسخ"
+
+#: syslog.php
+msgid "Copy link"
+msgstr "نسخ الرابط"
+
+#: syslog.php
+msgid "Copy message"
+msgstr "نسخ الرسالة"
+
+#: syslog.php
+msgid "Copy unavailable. Select and copy the message text."
+msgstr "النسخ غير متاح. حدد نص الرسالة وانسخه."
+
+#: syslog.php
+msgid "Looking up recommendations…"
+msgstr "جارٍ البحث عن التوصيات…"
+
+#: syslog.php
+msgid "No recommendation matches this message."
+msgstr "لا توجد توصية تطابق هذه الرسالة."
+
+#: syslog.php syslog_alerts.php
+msgid "Actions"
+msgstr "أفعال"
+
+#: syslog.php
+msgid "Create Alarm Rule"
+msgstr "إنشاء قاعدة تنبيه"
+
+#: syslog.php
+msgid "Create Device Alert Rule"
+msgstr "إنشاء قاعدة تنبيه جهاز"
+
+#: syslog.php
+msgid "Create Removal Rule"
+msgstr "إنشاء قاعدة إزالة"
+
+#: syslog.php
+msgid "Filter by device"
+msgstr "فلترة حسب الجهاز"
+
+#: syslog.php
+msgid "Filter by program"
+msgstr "فلترة حسب البرنامج"
+
+#: syslog.php
+msgid "All Programs"
+msgstr "جميع البرامج"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
+msgstr "انقر فوق \"متابعة\" لحذف قاعدة (قواعد) تنبيه syslog التالية."
+
+#: syslog_alerts.php
+msgid "Delete Syslog Alert Rule(s)"
+msgstr "حذف قاعدة (قواعد) تنبيه Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
+msgstr "انقر فوق \"متابعة\" لتعطيل قاعدة (قواعد) تنبيه syslog التالية."
+
+#: syslog_alerts.php
+msgid "Disable Syslog Alert Rule(s)"
+msgstr "تعطيل قاعدة (قواعد) تنبيه Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
+msgstr "انقر فوق \"متابعة\" لتمكين قاعدة (قواعد) تنبيه Syslog التالية."
+
+#: syslog_alerts.php
+msgid "Enable Syslog Alert Rule(s)"
+msgstr "تمكين قاعدة (قواعد) تنبيه Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
+msgstr "انقر فوق \"متابعة\" لتصدير قاعدة (قواعد) تنبيه Syslog التالية."
+
+#: syslog_alerts.php
+msgid "Export Syslog Alert Rule(s)"
+msgstr "تصدير قاعدة (قواعد) تنبيه Syslog"
+
+#: syslog_alerts.php
+msgid "Select Syslog Alarming or Alarm Manager."
+msgstr "اختر تنبيهات Syslog أو مدير التنبيهات."
+
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr "أدخل عدداً صحيحاً من الدقائق أو الساعات أو الأيام لنافذة العتبة."
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr "أدخل عددًا صحيحًا موجبًا من الدقائق أو الساعات أو الأيام لاسترداد العتبة."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
+msgstr "بناء جملة SQL الذي تم إدخاله غير صالح.  يرجى تصحيح SQL الخاص بك.<br>"
+
+#: syslog_alerts.php syslog_reports.php
+#, php-format
+msgid "The Pre-processed SQL is:<br><br> %s"
+msgstr "SQL المعالجة مسبقا هي:<br><br> %s"
+
+#: syslog_alerts.php syslog_removal.php
+#, php-format
+msgid "The filter is invalid: %s"
+msgstr "الفلتر غير صالح: %s"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The processed SQL was invalid.  Please correct your SQL"
+msgstr "كانت SQL التي تمت معالجتها غير صالحة.  يرجى تصحيح SQL الخاص بك"
+
+#: syslog_alerts.php
+msgid "Not Set"
+msgstr "غير معيّن"
+
+#: syslog_alerts.php
+msgid "1 Minute"
+msgstr "1 دقيقة"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hour"
+msgstr "%d ساعة"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hours"
+msgstr "%d ساعات"
+
+#: syslog_alerts.php
+msgid "1 Month"
+msgstr "1 شهر"
+
+#: syslog_alerts.php
+#, php-format
+msgid "Alert Edit [edit: %s]"
+msgstr "تحرير التنبيه [عدل: %s]"
+
+#: syslog_alerts.php
+msgid "Alert Edit [new]"
+msgstr "تحرير التنبيه [جديد]"
+
+#: syslog_alerts.php
+msgid "New Alert Rule"
+msgstr "قاعدة تنبيه جديدة"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "N/A"
+msgstr "N/A"
+
+#: syslog_alerts.php
+msgid "Time unit"
+msgstr "وحدة الوقت"
+
+#: syslog_alerts.php
+msgid "Days"
+msgstr "أيام"
+
+#: syslog_alerts.php
+msgid "Hours"
+msgstr "ساعات"
+
+#: syslog_alerts.php
+msgid "Minutes"
+msgstr "دقائق"
+
+#: syslog_alerts.php
+msgid "Please describe this Alert."
+msgstr "يرجى وصف هذا التنبيه."
+
+#: syslog_alerts.php
+msgid "Alarm Destination"
+msgstr "وجهة التنبيه"
+
+#: syslog_alerts.php
+msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
+msgstr "اختر تنبيهات Syslog أو مدير الإنذارات. يتطلب مدير الإنذارات أيضًا تفعيل إعادة التوجيه في إعدادات Syslog. يتم الاحتفاظ بالبريد الإلكتروني كخيار احتياطي؛ لا يتم تشغيل إجراءات الأوامر لقواعد مدير الإنذارات."
+
+#: syslog_alerts.php
+msgid "Alarm Manager"
+msgstr "مدير التنبيهات"
+
+#: syslog_alerts.php
+msgid "Syslog Alarming"
+msgstr "تنبيهات Syslog"
+
+#: syslog_alerts.php
+msgid "What is the Severity Level of this Alert?"
+msgstr "ما هو مستوى خطورة هذا التنبيه؟"
+
+#: syslog_alerts.php
+msgid "Reporting Level"
+msgstr "مستوى الإبلاغ"
+
+#: syslog_alerts.php
+msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
+msgstr "لتسجيل دورات إعادة التنبيه، يجب تعقب التنبيه على مستوى النظام أو الجهاز."
+
+#: syslog_alerts.php
+msgid "System"
+msgstr "النظام"
+
+#: syslog_alerts.php
+msgid "Reporting Method"
+msgstr "طريقة الإبلاغ"
+
+#: syslog_alerts.php
+msgid "Define how to Alert on the syslog messages."
+msgstr "حدد كيفية التنبيه على رسائل syslog."
+
+#: syslog_alerts.php
+msgid "Individual"
+msgstr "فرد"
+
+#: syslog_alerts.php
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
+msgstr "بالنسبة لطريقة 'العتبة'، يتم تشغيل تنبيه عندما يصل العدد المرصود إلى هذه القيمة."
+
+#: syslog_alerts.php
+msgid "Threshold Window"
+msgstr "نافذة العتبة"
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr "احسب التطابقات عبر دورات المجمّع ضمن هذه النافذة المتحركة باستخدام وقت معالجة المجمّع. أدخل 0 لحساب الدورة الحالية فقط."
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr "الاسترداد بعد فترة الهدوء"
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
+msgstr "المدة التي لا ترد خلالها رسائل مطابقة قبل مسح التجاوز وإعادة ضبط العدّاد وإعادة تفعيل هذه القاعدة. كل رسالة مطابقة تعيد تشغيل هذا المؤقت."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match Type"
+msgstr "نوع المطابقة"
+
+#: syslog_alerts.php
+msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
+msgstr "اختر منشئ الفلتر لمنطق إنذار آمن متعدد الشروط. تم الاحتفاظ بتعبير SQL للقواعد القديمة."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Message Match String"
+msgstr "سلسلة مطابقة الرسالة"
+
+#: syslog_alerts.php
+msgid "Build filter conditions or enter an SQL expression to match syslog messages."
+msgstr "أنشئ شروط الفلتر أو أدخل تعبير SQL لمطابقة رسائل syslog."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_removal.php
+#: syslog_reports.php
+msgid "Enabled"
+msgstr "مفعل"
+
+#: syslog_alerts.php
+msgid "Is this Alert Enabled?"
+msgstr "هل تم تمكين هذا التنبيه؟"
+
+#: syslog_alerts.php
+msgid "Re-Alert Cycle"
+msgstr "دورة إعادة التنبيه"
+
+#: syslog_alerts.php
+msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
+msgstr "لا تقم بإعادة إرسال هذا التنبيه مرة أخرى لنفس المضيف، حتى انقضاء هذا القدر من الوقت. بالنسبة للإنذارات المستندة إلى العتبة، ينطبق هذا على جميع المضيفين."
+
+#: syslog_alerts.php
+msgid "Notification Cooldown"
+msgstr "فترة تهدئة الإشعارات"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
+msgstr "عدد الدقائق لكتم كل إشعار لاحق من هذه القاعدة ونطاق التقارير."
+
+#: syslog_alerts.php
+msgid "1 day"
+msgstr "يوم 1"
+
+#: syslog_alerts.php
+msgid "1 hour"
+msgstr "ساعة"
+
+#: syslog_alerts.php
+msgid "1 minute"
+msgstr "دقيقة واحدة"
+
+#: syslog_alerts.php
+msgid "15 minutes"
+msgstr "15 دقيقة"
+
+#: syslog_alerts.php
+msgid "30 minutes"
+msgstr "30 دقيقة"
+
+#: syslog_alerts.php
+msgid "4 hours"
+msgstr "4 ساعات"
+
+#: syslog_alerts.php
+msgid "5 minutes"
+msgstr "5 دقائق"
+
+#: syslog_alerts.php
+msgid "Use global setting"
+msgstr "استخدام الإعداد العام"
+
+#: syslog_alerts.php
+msgid "Duplicate Suppression"
+msgstr "منع التكرار"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress the same matched message set."
+msgstr "عدد الدقائق لكتم نفس مجموعة الرسائل المطابقة."
+
+#: syslog_alerts.php
+msgid "Maintenance Window"
+msgstr "نافذة الصيانة"
+
+#: syslog_alerts.php
+msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
+msgstr "اختر ما إذا كانت هذه القاعدة تستخدم الإطار الزمني العام للصيانة أم إطارها الزمني الخاص."
+
+#: syslog_alerts.php
+msgid "Do not mute this rule"
+msgstr "عدم كتم هذه القاعدة"
+
+#: syslog_alerts.php
+msgid "Use global timeframe"
+msgstr "استخدام الإطار الزمني العام"
+
+#: syslog_alerts.php
+msgid "Use rule timeframe"
+msgstr "استخدام الإطار الزمني للقاعدة"
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Days"
+msgstr "أيام صيانة القاعدة"
+
+#: syslog_alerts.php
+msgid "Days for this rule timeframe, when Use rule timeframe is selected."
+msgstr "أيام الإطار الزمني لهذه القاعدة، عند تحديد «استخدام الإطار الزمني للقاعدة»."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Starts"
+msgstr "بداية صيانة القاعدة"
+
+#: syslog_alerts.php
+msgid "Local start time for this rule timeframe."
+msgstr "وقت البدء المحلي للإطار الزمني لهذه القاعدة."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Ends"
+msgstr "نهاية صيانة القاعدة"
+
+#: syslog_alerts.php
+msgid "Local end time for this rule timeframe."
+msgstr "وقت الانتهاء المحلي للإطار الزمني لهذه القاعدة."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Starts"
+msgstr "بداية صيانة القاعدة لمرة واحدة"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "تاريخ ووقت محلي اختياري لبدء كتم هذه القاعدة. التنسيق: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Ends"
+msgstr "نهاية صيانة القاعدة لمرة واحدة"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "تاريخ ووقت محلي اختياري لإيقاف كتم هذه القاعدة. التنسيق: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_reports.php
+msgid "Notes"
+msgstr "الملاحظات"
+
+#: syslog_alerts.php
+msgid "Space for Notes on the Alert"
+msgstr "مساحة للملاحظات على التنبيه"
+
+#: syslog_alerts.php
+msgid "Email Options"
+msgstr "خيارات البريد الكتروني"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Notification List"
+msgstr "قائمة الإشعارات"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "استخدم محتويات قائمة الإشعارات هذه لإملاء من يجب إعلامه وكيف."
+
+#: syslog_alerts.php
+msgid "Emails to Notify"
+msgstr "رسائل البريد الإلكتروني للإخطار"
+
+#: syslog_alerts.php
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "يرجى إدخال قائمة محددة بفواصل لعناوين البريد الإلكتروني لإعلامها.  إذا كنت ترغب في إرسال بريد إلكتروني إلى مستلم بتنسيق SMS، فيرجى بادئة عنوان البريد الإلكتروني لهذا المستلم <b>ب \"sms@\".</b>  على سبيل المثال، إذا كان عنوان SMS الخاص بالمستلمين <b>هو \"2485551212@mycarrier.net\"</b>، فيمكنك إدخاله ك <b>\"sms@2485551212@mycarrier.net\"</b> وسيتم تنسيقه كرسالة SMS."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Body Text"
+msgstr "نص البريد الإلكتروني"
+
+#: syslog_alerts.php
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "ستظهر هذه المعلومات في نص التنبيه قبل تفاصيل التنبيه مباشرة."
+
+#: syslog_alerts.php
+msgid "Open Ticket"
+msgstr "افتح التذكرة"
+
+#: syslog_alerts.php
+msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
+msgstr "في حالة فتح تذكرة مكتب المساعدة لهذا التنبيه.  ملاحظة: سيتم ملء البرنامج النصي لأمر التذكرة بالعديد من متغيرات البيئة \"ALERT_\" للراحة."
+
+#: syslog_alerts.php
+msgid "Alert command"
+msgstr "أمر التنبيه"
+
+#: syslog_alerts.php
+msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
+msgstr "عند تشغيل تنبيه، قم بتشغيل الأمر التالي.  تتوفر متغيرات الاستبدال التالية <b>\"&lt;HOSTNAME&gt;\"</b> و <b>\"&lt;ALERTID&gt;\"</b> و <b>\"&lt;MESSAGE&gt;\"</b> و <b>\"&lt;FACILITY&gt;\"</b> و <b>\"&lt;PRIORITY&gt;\"</b> و <b>\"&lt;SEVERITY&gt;\".</b>  يرجى ملاحظة أن <b>\"&lt;HOSTNAME&gt;\"</b> متاح فقط على الحدود الفردية.  يمكن أن تظهر قيم الاستبدال هذه في سطر الأوامر، أو يتم تجميعها من بيئة البرنامج النصي.  عند استخدامها من البيئة ، سيتم مسبوقة هذه المتغيرات ب \"ALERT_\"."
+
+#: syslog_alerts.php
+msgid "Recovery command"
+msgstr "أمر الاسترداد"
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgstr "أمر اختياري يُشغَّل عندما تتعافى هذه العتبة بعد فترة الهدوء الخاصة بها. يستخدم نفس متغيرات الاستبدال الخاصة بأمر التنبيه. تكون قيمة SYSLOG_EVENT هي clear؛ ويتطابق SYSLOG_BREACH_ID مع أمر الانتهاك. تُعاد محاولة الأوامر الفاشلة. اتركه فارغًا للتعطيل."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Test rule"
+msgstr "اختبار القاعدة"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Rule Test Preview"
+msgstr "معاينة اختبار القاعدة"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Value"
+msgstr "القيمة"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a value"
+msgstr "أدخل قيمة"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match"
+msgstr "مطابقة"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Exclude"
+msgstr "استبعد"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a nonnegative integer"
+msgstr "أدخل عددًا صحيحًا غير سالب"
+
+#: syslog_alerts.php
+msgid "Alarm filter conditions"
+msgstr "شروط فلتر الإنذار"
+
+#: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php
+msgid "All"
+msgstr "الكل"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Go"
+msgstr "انتقال"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+msgid "Import"
+msgstr "استيراد"
+
+#: syslog_alerts.php
+msgid "Syslog Alert Filters"
+msgstr "عوامل تصفية تنبيه Syslog"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Method"
+msgstr "طريقة"
+
+#: syslog_alerts.php
+msgid "Threshold Count"
+msgstr "عدد العتبات"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Search String"
+msgstr "سلسلة البحث"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Addresses"
+msgstr "عنواين البريد الالكترونى"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Last Modified"
+msgstr "آخر تعديل"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "By User"
+msgstr "المستخدم.:"
+
+#: syslog_alerts.php
+msgid "Alerts"
+msgstr "تنبيهات"
+
+#: syslog_alerts.php
+msgid "Multiple"
+msgstr "متعدد"
+
+#: syslog_alerts.php
+msgid "No Syslog Alerts Defined"
+msgstr "لم يتم تعريف تنبيهات Syslog"
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Local File"
+msgstr "استيراد قاعدة التنبيه من الملف المحلي"
+
+#: syslog_alerts.php
+msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
+msgstr "إذا كان ملف XML الذي يحتوي على بيانات تعريف قاعدة التنبيه موجودا على جهازك المحلي، فحدده هنا."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Text"
+msgstr "استيراد قاعدة التنبيه من النص"
+
+#: syslog_alerts.php
+msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
+msgstr "إذا كان لديك ملف XML الذي يحتوي على بيانات تعريف قاعدة التنبيه كنص، فيمكنك لصقه في هذا المربع لاستيراده."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule"
+msgstr "استيراد قاعدة التنبيه"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_saved_searches.php
+msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
+msgstr "تم رفض الاستيراد: الملف فارغ أو غير صالح أو يحتوي على نوع مختلف من كائنات Syslog."
+
+#: syslog_alerts.php
+msgid "Import rejected: invalid alarm destination."
+msgstr "تم رفض الاستيراد: وجهة التنبيه غير صالحة."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Imported"
+msgstr "تم الاستيراد"
+
+#: syslog_alerts.php
+#, php-format
+msgid "NOTE: Alert '%s' %s!"
+msgstr "ملاحظة: تنبيه \"%s\" %s!"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_reports.php
+msgid "Updated"
+msgstr "تم التحديث"
+
+#: syslog_alerts.php
+#, php-format
+msgid "ERROR: Alert '%s' %s Failed!"
+msgstr "خطأ: التنبيه \"%s\" %s فشل!"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Update"
+msgstr "تحديث"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Select a valid owner."
+msgstr "اختر مالكًا صالحًا."
+
+#: syslog_dashboards.php
+msgid "Unable to save the dashboard. Please try again."
+msgstr "تعذر حفظ لوحة المعلومات. يرجى المحاولة مرة أخرى."
+
+#: syslog_dashboards.php
+msgid "Enter a dashboard name between 1 and 128 characters."
+msgstr "أدخل اسم لوحة معلومات يتراوح بين 1 و128 حرفًا."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Owner"
+msgstr "المشارك"
+
+#: syslog_dashboards.php
+msgid "Shared"
+msgstr "مشتركة"
+
+#: syslog_dashboards.php
+msgid "Panels"
+msgstr "اللوحات"
+
+#: syslog_dashboards.php
+msgid "deleted user"
+msgstr "مستخدم محذوف"
+
+#: syslog_dashboards.php
+msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
+msgstr "لا توجد لوحات معلومات بعد. يقوم المستخدمون بإنشائها من علامة تبويب لوحة المعلومات في Syslog."
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
+msgstr "انقر على 'إستمرار' لحذف لوحة/لوحات المعلومات التالية وجميع لوحاتها الفرعية."
+
+#: syslog_dashboards.php
+msgid "Delete Dashboard(s)"
+msgstr "حذف لوحة (لوحات) المعلومات"
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Export the following Dashboard(s)."
+msgstr "انقر على 'إستمرار' لتصدير لوحة (لوحات) المعلومات التالية."
+
+#: syslog_dashboards.php
+msgid "Export Dashboard(s)"
+msgstr "تصدير لوحة (لوحات) المعلومات"
+
+#: syslog_dashboards.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Dashboard(s)."
+msgstr "ملاحظة: تم استيراد %d وتحديث %d لوحة معلومات."
+
+#: syslog_dashboards.php
+#, php-format
+msgid "ERROR: %d Dashboard(s) failed to import."
+msgstr "خطأ: فشل استيراد %d لوحة (لوحات) معلومات."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Local File"
+msgstr "استيراد لوحة المعلومات من ملف محلي"
+
+#: syslog_dashboards.php
+msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
+msgstr "إذا كان ملف JSON الذي يحتوي على بيانات تعريف لوحة المعلومات موجوداً على جهازك المحلي، فحدده هنا."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Text"
+msgstr "استيراد لوحة المعلومات من نص"
+
+#: syslog_dashboards.php
+msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
+msgstr "إذا كان لديك ملف JSON الذي يحتوي على بيانات تعريف لوحة المعلومات كنص، فيمكنك لصقه في هذا المربع لاستيراده."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard"
+msgstr "استيراد لوحة المعلومات"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Users"
+msgstr "جميع المستخدمين"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Groups"
+msgstr "جميع المجموعات"
+
+#: syslog_dashboards.php
+msgid "Edit Dashboard"
+msgstr "تحرير لوحة المعلومات"
+
+#: syslog_dashboards.php
+msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
+msgstr "الاسم المعروض في قائمة اختيار لوحات المعلومات ضمن علامة تبويب لوحة معلومات Syslog."
+
+#: syslog_dashboards.php
+msgid "The account that owns this dashboard and can manage its panels."
+msgstr "الحساب الذي يمتلك لوحة المعلومات هذه ويمكنه إدارة لوحاتها."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Users"
+msgstr "مشتركة مع المستخدمين"
+
+#: syslog_dashboards.php
+msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
+msgstr "المستخدمون الذين يمكنهم عرض لوحة المعلومات هذه بالإضافة إلى مالكها وأي مشاركة عامة. خيار جميع المستخدمين يشاركه مع الجميع."
+
+#: syslog_dashboards.php
+msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
+msgstr "المجموعات التي يمكنها عرض لوحة المعلومات هذه بالإضافة إلى مالكها وأي مشاركة عامة. خيار «كل المجموعات» يشاركه مع الجميع."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Groups"
+msgstr "مشتركة مع المجموعات"
+
+#: syslog_dashboards.php
+msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
+msgstr "تنطبق إعادة التسمية على كل مشاهد للوحة المعلومات هذه. تتم إدارة اللوحات بواسطة مالكيها من علامة تبويب لوحة معلومات Syslog."
+
+#: syslog_device_rules.php
+msgid "Choose a future pause end date and time."
+msgstr "اختر تاريخًا ووقتًا مستقبليين لانتهاء الإيقاف المؤقت."
+
+#: syslog_device_rules.php
+msgid "A device name is required."
+msgstr "اسم الجهاز مطلوب."
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Click Continue to %s the following Device Alert Rule(s)."
+msgstr "انقر على إستمرار لـ %s قاعدة (قواعد) تنبيه الجهاز التالية."
+
+#: syslog_device_rules.php
+msgid "Do not pass any priority"
+msgstr "عدم تمرير أي أولوية"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "%s and more urgent"
+msgstr "%s والأكثر إلحاحًا"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule"
+msgstr "قاعدة تنبيه الجهاز"
+
+#: syslog_device_rules.php
+msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
+msgstr "ابحث في أجهزة Syslog الحالية أثناء الكتابة، أو أدخل أي عنوان IP أو اسم مستضيف."
+
+#: syslog_device_rules.php
+msgid "Alert Handling"
+msgstr "معالجة التنبيهات"
+
+#: syslog_device_rules.php
+msgid "Do not pause"
+msgstr "عدم الإيقاف المؤقت"
+
+#: syslog_device_rules.php
+msgid "Pause all non-exempt alerts until a date, or indefinitely."
+msgstr "إيقاف جميع التنبيهات غير المستثناة مؤقتًا حتى تاريخ محدد، أو إلى أجل غير مسمى."
+
+#: syslog_device_rules.php
+msgid "Pause indefinitely"
+msgstr "إيقاف مؤقت إلى أجل غير مسمى"
+
+#: syslog_device_rules.php
+msgid "Pause until"
+msgstr "إيقاف مؤقت حتى"
+
+#: syslog_device_rules.php
+msgid "Local date and time, YYYY-MM-DD HH:MM."
+msgstr "التاريخ والوقت المحليان، YYYY-MM-DD HH:MM."
+
+#: syslog_device_rules.php
+msgid "Pause Ends"
+msgstr "ينتهي الإيقاف المؤقت"
+
+#: syslog_device_rules.php
+msgid "Always Allow Priority"
+msgstr "السماح بالأولوية دائمًا"
+
+#: syslog_device_rules.php
+msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
+msgstr "تتجاوز هذه الأولويات فترات الإيقاف المؤقت والصيانة لهذا الجهاز. يُعد مستوى «حرج» وما هو أكثر إلحاحًا اختيارًا نموذجيًا للأجهزة البلاتينية."
+
+#: syslog_device_rules.php
+msgid "Allow During Maintenance"
+msgstr "السماح أثناء الصيانة"
+
+#: syslog_device_rules.php
+msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
+msgstr "السماح بجميع الأولويات من هذا الجهاز خلال فترة صيانة التنبيهات. يظل استثناء الأولوية أعلاه ساريًا عندما يكون هذا الخيار «لا»."
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [edit]"
+msgstr "قاعدة تنبيه الجهاز [تحرير]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [new]"
+msgstr "قاعدة تنبيه الجهاز [جديد]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule Filters"
+msgstr "فلاتر قاعدة تنبيه الجهاز"
+
+#: syslog_device_rules.php syslog_removal.php
+msgid "Rules"
+msgstr "القواعد"
+
+#: syslog_device_rules.php
+msgid "Handling"
+msgstr "المعالجة"
+
+#: syslog_device_rules.php
+msgid "Maintenance"
+msgstr "الصيانة"
+
+#: syslog_device_rules.php
+msgid "Pass Through"
+msgstr "تمرير مباشر"
+
+#: syslog_device_rules.php
+msgid "No device alert rules found."
+msgstr "لم يتم العثور على قواعد تنبيه للجهاز."
+
+#: syslog_device_rules.php
+msgid "Not paused"
+msgstr "غير متوقف مؤقتاً"
+
+#: syslog_device_rules.php
+msgid "Paused indefinitely"
+msgstr "متوقف مؤقتًا إلى أجل غير مسمى"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Paused until %s"
+msgstr "متوقف مؤقتًا حتى %s"
+
+#: syslog_device_rules.php
+msgid "and more urgent"
+msgstr "وأكثر إلحاحًا"
+
+#: syslog_device_rules.php
+msgid "Allow all"
+msgstr "السماح للكل"
+
+#: syslog_device_rules.php
+msgid "Use priority exception"
+msgstr "استخدام استثناء الأولوية"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
+msgstr "لم يتم حفظ التوصية بسبب %s. أدخل معرفًا بدون مسافات وشرحًا أو إجراءً موصى به على الأقل."
+
+#: syslog_recommendations.php
+msgid "A recommendation for this vendor and identifier already exists."
+msgstr "توجد توصية لهذا المورّد والمعرّف بالفعل."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
+msgstr "ملاحظة: يحتوي المعرف %s على أحرف أخرى غير الحروف والأرقام و _ . - / وعلامة %% اختيارية في البداية، ولذلك لا يمكن أن يتطابق أبدًا مع رسالة syslog. استبدل العناصر النائبة مثل # أو البدائل مثل A|B بالرمز الدقيق."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Export the following Recommendation(s)."
+msgstr "انقر على 'إستمرار' لتصدير التوصية (التوصيات) التالية."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Delete the following Recommendation(s)."
+msgstr "انقر على 'إستمرار' لحذف التوصية (التوصيات) التالية."
+
+#: syslog_recommendations.php
+msgid "Export requires the PHP zlib extension to create a JSON gzip file."
+msgstr "يتطلب التصدير امتداد PHP zlib لإنشاء ملف JSON مضغوط بصيغة gzip."
+
+#: syslog_recommendations.php
+msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
+msgstr "تم رفض الاستيراد: الملف فارغ أو كبير جداً أو ليس مستند JSON صالحاً للتوصيات."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
+msgstr "ملاحظة: تمت إضافة %d، وتحديث %d، وترك %d توصية حالية دون تغيير."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
+msgstr "خطأ: تم رفض %d توصية (توصيات) (على سبيل المثال %s). كل منها مدرج مع سببه في سجل Cacti."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
+msgstr "خطأ: تعذر تخزين %d توصية (توصيات). كل منها مدرج في سجل Cacti."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
+msgstr "ملاحظة: يحتوي %d من التوصيات المستوردة على معرّفات تتضمن أحرفًا مثل | أو # لا تظهر أبدًا في كلمة رسالة، لذا لا يمكن مطابقتها حتى يتم تحريرها. اضبط «يمكن المطابقة» على «لا» لعرضها."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Local File"
+msgstr "استيراد التوصيات من ملف محلي"
+
+#: syslog_recommendations.php
+msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
+msgstr "اختر ملف .json أو .json.gz على جهازك المحلي. استخدم وظيفة التصدير لمعرفة التنسيق المتوقع: قائمة من السجلات تحتوي على vendor و identifier و component و severity و message و explanation و recommended_action و reference."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Text"
+msgstr "استيراد التوصيات من نص"
+
+#: syslog_recommendations.php
+msgid "Alternatively, paste the JSON document into this box."
+msgstr "بدلًا من ذلك، الصق مستند JSON في هذا المربع."
+
+#: syslog_recommendations.php
+msgid "Existing Recommendations"
+msgstr "التوصيات الحالية"
+
+#: syslog_recommendations.php
+msgid "A recommendation is the same as an existing one when its vendor and identifier match."
+msgstr "تُعد التوصية مطابقة لتوصية حالية عندما يتطابق المورّد والمعرّف الخاصان بها."
+
+#: syslog_recommendations.php
+msgid "Keep the existing recommendation"
+msgstr "الإبقاء على التوصية الحالية"
+
+#: syslog_recommendations.php
+msgid "Replace it with the imported one"
+msgstr "استبداله بالمستورد"
+
+#: syslog_recommendations.php
+msgid "Import Recommendations"
+msgstr "استيراد التوصيات"
+
+#: syslog_recommendations.php
+msgid "Importing, please wait..."
+msgstr "جارٍ الاستيراد، يرجى الانتظار..."
+
+#: syslog_recommendations.php
+msgid "Not specified"
+msgstr "غير محدد"
+
+#: syslog_recommendations.php
+msgid "Recommendation"
+msgstr "توصية"
+
+#: syslog_recommendations.php
+msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
+msgstr "مورّد الجهاز أو البرنامج الذي يسجل هذه الرسالة، على سبيل المثال Cisco أو Juniper."
+
+#: syslog_recommendations.php
+msgid "Vendor"
+msgstr "بائع"
+
+#: syslog_recommendations.php
+msgid "Identifier"
+msgstr "المعرف"
+
+#: syslog_recommendations.php
+msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
+msgstr "رمز الرسالة المراد البحث عنه، على سبيل المثال %LINK-3-UPDOWN أو RPD_OSPF_NBRDOWN أو 4625. يجب أن يساوي كلمة كاملة من رسالة Syslog (أحرف وأرقام و_ . - /)؛ العلامة % البادئة حرفية ويجب أن تتطابق كما هي مكتوبة. المطابقة غير حساسة لحالة الأحرف. راجع «كيفية مطابقة التوصيات» في صفحة القائمة."
+
+#: syslog_recommendations.php
+msgid "Component"
+msgstr "المكون"
+
+#: syslog_recommendations.php
+msgid "The facility, module or subsystem that raises the message."
+msgstr "المرفق (Facility) أو الوحدة النمطية أو النظام الفرعي الذي يطلق الرسالة."
+
+#: syslog_recommendations.php
+msgid "The severity the vendor documents for this message."
+msgstr "مستوى الخطورة الذي يوثقه المورّد لهذه الرسالة."
+
+#: syslog_recommendations.php
+msgid "The message format as documented, including its variable placeholders."
+msgstr "تنسيق الرسالة كما هو موثق، بما في ذلك العناصر النائبة للمتغيرات."
+
+#: syslog_recommendations.php
+msgid "What the message means."
+msgstr "ما تعنيه الرسالة."
+
+#: syslog_recommendations.php
+msgid "What an operator should do about it."
+msgstr "ما يجب على المشغّل فعله حيال ذلك."
+
+#: syslog_recommendations.php
+msgid "Links to the vendor documentation, one per line."
+msgstr "روابط لوثائق المورد، رابط واحد في كل سطر."
+
+#: syslog_recommendations.php
+msgid "Recommendation [edit]"
+msgstr "توصية [تحرير]"
+
+#: syslog_recommendations.php
+msgid "Recommendation [new]"
+msgstr "توصية [جديد]"
+
+#: syslog_recommendations.php
+msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
+msgstr "تُشير أيقونة المصباح قبل الرسالة إلى التوصيات المطابقة في علامتي تبويب سجلات النظام وسجلات التنبيهات. انقر على الرسالة لقراءتها في لوحة التفاصيل المنبثقة. التمرير بالمؤشر لا يرسل أي طلبات إلى الخادم."
+
+#: syslog_recommendations.php
+msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
+msgstr "يُستخدم عمود <b>المعرّف</b> فقط للمطابقة. يتم عرض الشركة المصنّعة والمكوّن والخطورة والرسالة والشرح في قائمة التفاصيل المنبثقة ولكن لا يتم البحث فيها أبدًا."
+
+#: syslog_recommendations.php
+msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
+msgstr "يتم تقسيم أول 2,048 حرفًا من الرسالة إلى كلمات. الكلمة هي سلسلة من الأحرف والأرقام والرموز _ . - / والتي قد تبدأ بالرمز %. أي حرف آخر، مثل المسافة أو النقطتين أو الفاصلة أو القوس، ينهي الكلمة. في <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> الكلمات هي <code>%LINK-3-UPDOWN</code> و<code>Interface</code> و<code>Gi0/1</code> و<code>changed</code> و<code>state</code> و<code>to</code> و<code>down</code>."
+
+#: syslog_recommendations.php
+msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
+msgstr "يتطابق المعرف عندما يكون <b>مساويًا تمامًا لكلمة واحدة كاملة</b>، مع تجاهل حالة الأحرف. هذا ليس بحث «يحتوي على» أو «يبدأ بـ» أو «ينتهي بـ»، ولا توجد أحرف بدل: لا تتطابق <code>LINK-3-UPDOWN</code> مع الكلمة <code>LINK-3-UPDOWN-EXT</code>، ولا تتطابق <code>UPDOWN</code> مع <code>%LINK-3-UPDOWN</code>."
+
+#: syslog_recommendations.php
+msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
+msgstr "الرمز <b>%</b> في البداية حرفي وليس حرف بدل، ويجب أن يطابق كلمة الرسالة كما هي مكتوبة. المعرّف <code>%LINK-3-UPDOWN</code> يطابق كلمة الرسالة <code>%LINK-3-UPDOWN</code>، وليس <code>LINK-3-UPDOWN</code>؛ أما المعرّف الذي بدون البادئة فيطابق الكلمة التي بدون بادئة فقط."
+
+#: syslog_recommendations.php
+msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
+msgstr "عندما يكون المستضيف Host الخاص بـ syslog جهاز Cacti تم التعرف على الشركة المصنّعة له من وصف نظام SNMP أو قالب الجهاز، وتوجد توصيات لتلك الشركة المصنّعة، يتم فحص توصيات تلك الشركة المصنّعة والتوصيات التي بدون شركة مصنّعة فقط. وإلا يتم فحص جميع الشركات المصنّعة، ولكن المعرّف المكوّن من أرقام فقط يطابق التوصيات التي بدون شركة مصنّعة فقط. وعند تطابق عدة توصيات، تُعرض أطول المعرّفات أولًا، بحد أقصى ثلاث توصيات."
+
+#: syslog_recommendations.php
+msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
+msgstr "يتم الاحتفاظ بالمعرفات التي تحتوي على أحرف أخرى، مثل العنصر النائب للفتحة <code>#</code> أو البدائل <code>|</code> في بعض وثائق الشركات المصنعة (على سبيل المثال <code>%ASA|PIX-3-331001</code>)، ويتم تصديرها ولكن لا يمكن مطابقتها أبداً. اضبط <b>قابل للمطابقة</b> على لا لعرضها، وقم بتحريرها إلى الكود الدقيق، على سبيل المثال <code>%ASA-3-331001</code>."
+
+#: syslog_recommendations.php
+msgid "How Recommendations Are Matched"
+msgstr "كيفية مطابقة التوصيات"
+
+#: syslog_recommendations.php
+msgid "Can Match"
+msgstr "يمكن المطابقة"
+
+#: syslog_recommendations.php
+msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
+msgstr "ما إذا كان المعرّف يتخذ شكل كلمة رسالة، بحيث يمكن للبحث في الرسائل العثور عليه"
+
+#: syslog_recommendations.php
+msgid "Export every recommendation that matches the filters"
+msgstr "تصدير كل توصية تطابق الفلاتر"
+
+#: syslog_recommendations.php
+msgid "No recommendations found."
+msgstr "لم يتم العثور على توصيات."
+
+#: syslog_removal.php
+msgid "Reprocess"
+msgstr "إعادة المعالجة"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
+msgstr "انقر فوق \"متابعة\" لحذف قاعدة (قواعد) إزالة syslog التالية."
+
+#: syslog_removal.php
+msgid "Delete Syslog Removal Rule(s)"
+msgstr "حذف قاعدة (قواعد) إزالة Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
+msgstr "انقر فوق \"متابعة\" لتعطيل قاعدة (قواعد) إزالة syslog التالية."
+
+#: syslog_removal.php
+msgid "Disable Syslog Removal Rule(s)"
+msgstr "تعطيل قاعدة (قواعد) إزالة Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
+msgstr "انقر فوق \"متابعة\" لتمكين قاعدة (قواعد) إزالة syslog التالية."
+
+#: syslog_removal.php
+msgid "Enable Syslog Removal Rule(s)"
+msgstr "تمكين قاعدة (قواعد) إزالة Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
+msgstr "انقر فوق \"متابعة\" لإعادة معالجة قاعدة (قواعد) إزالة syslog التالية."
+
+#: syslog_removal.php
+msgid "Retroactively Process Syslog Removal Rule(s)"
+msgstr "معالجة قاعدة (قواعد) إزالة syslog بأثر رجعي"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
+msgstr "انقر فوق \"متابعة\" لتصدير قاعدة (قواعد) إزالة syslog التالية."
+
+#: syslog_removal.php
+msgid "Export Syslog Removal Rule(s)"
+msgstr "تصدير قاعدة (قواعد) إزالة Syslog"
+
+#: syslog_removal.php
+#, php-format
+msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
+msgstr "أدت القاعدة \"%s\" إلى إزالة / نقل رسائل %s / %s"
+
+#: syslog_removal.php
+#, php-format
+msgid "Removal Rule Edit [edit: %s]"
+msgstr "تحرير قاعدة الإزالة [عدل: %s]"
+
+#: syslog_removal.php
+msgid "Removal Rule Edit [new]"
+msgstr "تحرير قاعدة الإزالة [جديد]"
+
+#: syslog_removal.php
+msgid "New Removal Record"
+msgstr "سجل إزالة جديد"
+
+#: syslog_removal.php
+msgid "New Removal Rule"
+msgstr "قاعدة الإزالة الجديدة"
+
+#: syslog_removal.php
+msgid "Removal Rule Details"
+msgstr "تفاصيل قاعدة الإزالة"
+
+#: syslog_removal.php
+msgid "Removal Rule Name"
+msgstr "اسم قاعدة الإزالة"
+
+#: syslog_removal.php
+msgid "Please describe this Removal Rule."
+msgstr "يرجى وصف قاعدة الإزالة هذه."
+
+#: syslog_removal.php syslog_reports.php
+msgid "Enabled?"
+msgstr "مفعل"
+
+#: syslog_removal.php
+msgid "Is this Removal Rule Enabled?"
+msgstr "هل تم تمكين قاعدة الإزالة هذه؟"
+
+#: syslog_removal.php syslog_reports.php
+msgid "String Match Type"
+msgstr "نوع مطابقة السلسلة"
+
+#: syslog_removal.php
+msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
+msgstr "حدد الطريقة التي تريد بها مطابقة هذه السلسلة.  إذا كنت تستخدم نوع تعبير SQL ، فيمكنك استخدام أي تعبير SQL صالح لإنشاء التنبيه.  تتضمن الحقول المتوفرة \"رسالة\" و\"منشأة\" و\"أولوية\" و\"مضيف\"."
+
+#: syslog_removal.php
+msgid "Syslog Message Match String"
+msgstr "سلسلة مطابقة رسالة Syslog"
+
+#: syslog_removal.php
+msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
+msgstr "أدخل المكون المطابق لرسالة syslog أو اسم المنشأة أو المضيف أو عبارة SQL where إذا كنت تستخدم نوع مطابقة تعبير SQL."
+
+#: syslog_removal.php
+msgid "Method of Removal"
+msgstr "طريقة الإزالة"
+
+#: syslog_removal.php
+msgid "Deletion"
+msgstr "حذف"
+
+#: syslog_removal.php
+msgid "Transferal"
+msgstr "التحويل"
+
+#: syslog_removal.php
+msgid "Removal Rule Notes"
+msgstr "ملاحظات قاعدة الإزالة"
+
+#: syslog_removal.php
+msgid "Space for Notes on the Removal rule"
+msgstr "مساحة للملاحظات حول قاعدة الإزالة"
+
+#: syslog_removal.php
+msgid "Removal filter conditions"
+msgstr "شروط فلتر الإزالة"
+
+#: syslog_removal.php
+msgid "Syslog Removal Rule Filters"
+msgstr "عوامل تصفية قاعدة إزالة Syslog"
+
+#: syslog_removal.php
+msgid "Removal Name"
+msgstr "اسم الإزالة"
+
+#: syslog_removal.php
+msgid "Transfer"
+msgstr "نقل"
+
+#: syslog_removal.php
+msgid "No Syslog Removal Rules Defined"
+msgstr "لم يتم تعريف قواعد إزالة syslog"
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Local File"
+msgstr "استيراد قاعدة إزالة من ملف محلي"
+
+#: syslog_removal.php
+msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
+msgstr "إذا كان ملف XML الذي يحتوي على بيانات تعريف قاعدة الإزالة موجودا على جهازك المحلي، فحدده هنا."
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Text"
+msgstr "استيراد قاعدة الإزالة من النص"
+
+#: syslog_removal.php
+msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
+msgstr "إذا كان لديك ملف XML الذي يحتوي على بيانات تعريف قاعدة الإزالة كنص، فيمكنك لصقه في هذا المربع لاستيراده."
+
+#: syslog_removal.php
+msgid "Import Removal Rule"
+msgstr "قاعدة إزالة الاستيراد"
+
+#: syslog_removal.php
+#, php-format
+msgid "NOTE: Removal Rule '%s' %s!"
+msgstr "ملاحظة: %s %s القاعدة للإزالة"
+
+#: syslog_removal.php
+#, php-format
+msgid "ERROR: Removal Rule '%s' %s Failed!"
+msgstr "خطأ: %s %sفشل  قاعدة الإزالة!"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Delete the following Syslog Report(s)."
+msgstr "انقر فوق \"متابعة\" لحذف تقرير (تقارير) Syslog التالية."
+
+#: syslog_reports.php
+msgid "Delete Syslog Report(s)"
+msgstr "حذف تقرير (تقارير) Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Disable the following Syslog Report(s)."
+msgstr "انقر فوق \"متابعة\" لتعطيل تقرير (تقارير) Syslog التالية."
+
+#: syslog_reports.php
+msgid "Disable Syslog Report(s)"
+msgstr "تعطيل تقرير (تقارير) Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Enable the following Syslog Report(s)."
+msgstr "انقر فوق \"متابعة\" لتمكين تقرير (تقارير) Syslog التالية."
+
+#: syslog_reports.php
+msgid "Enable Syslog Report(s)"
+msgstr "تمكين تقرير (تقارير) Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
+msgstr "انقر فوق \"متابعة\" لتصدير قاعدة (قواعد) تقرير Syslog التالية."
+
+#: syslog_reports.php
+msgid "Export Syslog Report Rule(s)"
+msgstr "تصدير قاعدة (قواعد) تقرير Syslog"
+
+#: syslog_reports.php
+msgid "You must select at least one Syslog Report."
+msgstr "يجب تحديد تقرير Syslog واحد على الأقل."
+
+#: syslog_reports.php
+msgid "Return"
+msgstr "عودة"
+
+#: syslog_reports.php
+#, php-format
+msgid "Report Edit [edit: %s]"
+msgstr "تحرير التقرير [عدل: %s]"
+
+#: syslog_reports.php
+msgid "Report Edit [new]"
+msgstr "تحرير التقرير [جديد]"
+
+#: syslog_reports.php
+msgid "New Report Record"
+msgstr "سجل تقرير جديد"
+
+#: syslog_reports.php
+msgid "Please describe this Report."
+msgstr "يرجى وصف هذا التقرير."
+
+#: syslog_reports.php
+msgid "Is this Report Enabled?"
+msgstr "هل تم تمكين هذا التقرير؟"
+
+#: syslog_reports.php
+msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
+msgstr "حدّد كيف تريد مطابقة هذه السلسلة النصية. يجمع منشئ الفلتر الشروط على الرسالة، والمستضيف Host، والبرنامج، والمرفق، والأولوية."
+
+#: syslog_reports.php
+msgid "Frequency"
+msgstr "التكرار"
+
+#: syslog_reports.php
+msgid "How often should this Report be sent to the distribution list?"
+msgstr "كم مرة يجب إرسال هذا التقرير إلى قائمة التوزيع؟"
+
+#: syslog_reports.php
+msgid "Send Time"
+msgstr "إرسال الوقت"
+
+#: syslog_reports.php
+msgid "What time of day should this report be sent?"
+msgstr "في أي وقت من اليوم يجب إرسال هذا التقرير؟"
+
+#: syslog_reports.php
+msgid "Report Format"
+msgstr "شكل التقرير"
+
+#: syslog_reports.php
+msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
+msgstr "أنشئ شروط الفلتر، أو أدخل النص أو تعبير SQL لمطابقة رسائل syslog."
+
+#: syslog_reports.php
+msgid "The information that will be contained in the body of the Report."
+msgstr "المعلومات التي ستتضمن في متن التقرير."
+
+#: syslog_reports.php
+msgid "Comma delimited list of Email addresses to send the report to."
+msgstr "قائمة محددة بفواصل لعناوين البريد الإلكتروني لإرسال التقرير إليها."
+
+#: syslog_reports.php
+msgid "Space for Notes on the Report"
+msgstr "حيز للملاحظات على التقرير"
+
+#: syslog_reports.php
+msgid "Report Test Preview"
+msgstr "معاينة اختبار التقرير"
+
+#: syslog_reports.php
+msgid "Report filter conditions"
+msgstr "شروط فلتر التقرير"
+
+#: syslog_reports.php
+msgid "Syslog Report Filters"
+msgstr "عوامل تصفية تقرير Syslog"
+
+#: syslog_reports.php
+msgid "Report Name"
+msgstr "اسم التقرير"
+
+#: syslog_reports.php
+msgid "Last Sent"
+msgstr "آخر إرسال"
+
+#: syslog_reports.php
+msgid "Reports"
+msgstr "التقارير"
+
+#: syslog_reports.php
+msgid "No Syslog Reports Defined"
+msgstr "لم يتم تحديد تقارير Syslog"
+
+#: syslog_reports.php
+msgid "Import Report Rule from Local File"
+msgstr "استيراد قاعدة التقرير من الملف المحلي"
+
+#: syslog_reports.php
+msgid "If the XML file containing the Report Rule definition data is located on your local machine, select it here."
+msgstr "إذا كان ملف XML الذي يحتوي على بيانات تعريف قاعدة التقرير موجودا على جهازك المحلي، فحدده هنا."
+
+#: syslog_reports.php
+msgid "Import Report Rule from Text"
+msgstr "استيراد قاعدة التقرير من النص"
+
+#: syslog_reports.php
+msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
+msgstr "إذا كان لديك ملف XML الذي يحتوي على بيانات تعريف قاعدة التقرير كنص، فيمكنك لصقه في هذا المربع لاستيراده."
+
+#: syslog_reports.php
+msgid "Import Report Data"
+msgstr "استيراد بيانات التقرير"
+
+#: syslog_reports.php
+#, php-format
+msgid "NOTE: Report Rule '%s' %s!"
+msgstr "ملاحظة: الإبلاغ عن القاعدة \"%s\" %s!"
+
+#: syslog_reports.php
+#, php-format
+msgid "ERROR: Report Rule '%s' %s Failed!"
+msgstr "خطأ: %s فشل الإبلاغ عن قاعدة \"%s\"!"
+
+#: syslog_saved_searches.php
+msgid "Unable to save the template. Please try again."
+msgstr "تعذر حفظ القالب. يرجى المحاولة مرة أخرى."
+
+#: syslog_saved_searches.php
+msgid "Enter a template name between 1 and 128 characters."
+msgstr "أدخل اسم قالب يتراوح بين 1 و128 حرفًا."
+
+#: syslog_saved_searches.php
+msgid "Templates"
+msgstr "القوالب"
+
+#: syslog_saved_searches.php
+msgid "Query"
+msgstr "استعلام"
+
+#: syslog_saved_searches.php
+msgid "No shared search templates. Save a search for all users from Syslog to create one."
+msgstr "لا توجد قوالب بحث مشتركة. احفظ بحثاً لجميع المستخدمين من Syslog لإنشاء واحد."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Export the following Saved Search Template(s)."
+msgstr "انقر على 'إستمرار' لتصدير قالب (قوالب) البحث المحفوظة التالية."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
+msgstr "انقر على 'إستمرار' لحذف قالب (قوالب) البحث المحفوظة التالية."
+
+#: syslog_saved_searches.php
+msgid "Delete Saved Search Template(s)"
+msgstr "حذف قالب (قوالب) البحث المحفوظ"
+
+#: syslog_saved_searches.php
+msgid "Export Saved Search Template(s)"
+msgstr "تصدير قالب (قوالب) البحث المحفوظة"
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
+msgstr "ملاحظة: تم استيراد %d وتحديث %d من قوالب البحث المحفوظة."
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "ERROR: %d Saved Search Template(s) failed to import."
+msgstr "خطأ: فشل استيراد %d قالب (قوالب) بحث محفوظ."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Local File"
+msgstr "استيراد قالب البحث المحفوظ من ملف محلي"
+
+#: syslog_saved_searches.php
+msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
+msgstr "إذا كان ملف JSON الذي يحتوي على بيانات تعريف قالب البحث المحفوظ موجوداً على جهازك المحلي، فحدده هنا."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Text"
+msgstr "استيراد قالب البحث المحفوظ من نص"
+
+#: syslog_saved_searches.php
+msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
+msgstr "إذا كان لديك ملف JSON الذي يحتوي على بيانات تعريف قالب البحث المحفوظ كنص، فيمكنك لصقه في هذا المربع لاستيراده."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template"
+msgstr "استيراد قالب البحث المحفوظ"
+
+#: syslog_saved_searches.php
+msgid "Edit Saved Search Template"
+msgstr "تحرير قالب البحث المحفوظ"
+
+#: syslog_saved_searches.php
+msgid "The name shown to all users in Saved Searches."
+msgstr "الاسم المعروض لجميع المستخدمين في عمليات البحث المحفوظة."
+
+#: syslog_saved_searches.php
+msgid "The account that owns this template and can manage it in Saved Searches."
+msgstr "الحساب الذي يمتلك هذا القالب ويمكنه إدارته في عمليات البحث المحفوظة."
+
+#: syslog_saved_searches.php
+msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
+msgstr "المستخدمون الذين يمكنهم استخدام هذا القالب بالإضافة إلى مالكه. خيار جميع المستخدمين يشاركه مع الجميع."
+
+#: syslog_saved_searches.php
+msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
+msgstr "المجموعات التي يمكنها استخدام هذا القالب بالإضافة إلى مالكه. خيار «كل المجموعات» يشاركه مع الجميع."
+
+#: syslog_saved_searches.php
+msgid "Search Query"
+msgstr "استعلام البحث"
+
+#: syslog_saved_searches.php
+msgid "Correct the query syntax to use the query builder."
+msgstr "صحح صيغة الاستعلام لاستخدام منشئ الاستعلامات."
+
+#: syslog_saved_searches.php
+msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
+msgstr "اختر حقلًا وعاملًا وقيمة. استخدم AND أو OR أو NOT أو Group لبناء الاستعلام. تنطبق التغييرات على هذا القالب المشترك لجميع المستخدمين."
+

@@ -1,0 +1,4091 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-20 14:13-0500\n"
+"PO-Revision-Date: 2026-11-24 19:00+0000\n"
+"Last-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\n"
+"Language-Team: Hausa\n"
+"Language: ha-NG\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d minutes"
+msgstr "minti %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d hour"
+msgstr "sa'a %d"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d hours"
+msgstr "sa'o'i %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d day"
+msgstr "kwana %d"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d days"
+msgstr "kwanaki %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d week"
+msgstr "mako %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d weeks"
+msgstr "makonni %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d month"
+msgstr "wata %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d months"
+msgstr "watanni %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d year"
+msgstr "shekara %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d years"
+msgstr "shekaru %d"
+
+#: includes/functions.php
+msgid "Day Shift"
+msgstr "Lokacin Aikin Rana"
+
+#: includes/functions.php
+msgid "This Day"
+msgstr "Wannan Rana"
+
+#: includes/functions.php
+msgid "This Week"
+msgstr "Wannan Mako"
+
+#: includes/functions.php
+msgid "This Month"
+msgstr "Wannan Wata"
+
+#: includes/functions.php
+msgid "This Year"
+msgstr "Wannan Shekara"
+
+#: includes/functions.php
+msgid "Previous Day"
+msgstr "Ranar da ta Gabata"
+
+#: includes/functions.php
+msgid "Previous Week"
+msgstr "Makon da ya Gabata"
+
+#: includes/functions.php
+msgid "Previous Month"
+msgstr "Watan da ya Gabata"
+
+#: includes/functions.php
+msgid "Previous Year"
+msgstr "Shekarar da ta Gabata"
+
+#: includes/functions.php
+msgid "Syslog download"
+msgstr "Sauke Syslog"
+
+#: includes/functions.php
+msgid "Share with users…"
+msgstr "Raba da masu amfani…"
+
+#: includes/functions.php
+msgid "Share with groups…"
+msgstr "Raba da ƙungiyoyi…"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Emergency"
+msgstr "Gaggawa"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Critical"
+msgstr "Mai Tsanani"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Alert"
+msgstr "Faɗakarwa"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Error"
+msgstr "Kuskure"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Warning"
+msgstr "Gargaɗi"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Notice"
+msgstr "Sanarwa"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "Bayani"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Debug"
+msgstr "Binciken Kuskure"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Informational"
+msgstr "Na bayani"
+
+#: includes/functions.php
+msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
+msgstr "Ajiyewa ta gaza. Ba a yarda Masu Tattara Bayanai na Nesa a Yanayin Daidaitawa su Ajiye Dokoki ba. Ajiye daga Babbar Sabar Cacti maimakon haka."
+
+#: includes/functions.php
+msgid "Please use an HTML Email Client"
+msgstr "Da fatan za a yi amfani da Manhajar Imel ta HTML"
+
+#: includes/functions.php
+msgid "Text import payload exceeds the maximum size"
+msgstr "Girman rubutun da za a shigar ya wuce mafi girman da aka ƙayyade"
+
+#: includes/functions.php
+msgid "Unable to read the uploaded import file. Check the file and upload size limit."
+msgstr "An kasa karanta fayil ɗin shigarwa da aka ɗora. Duba fayil ɗin da iyakar girman ɗorawa."
+
+#: includes/functions.php
+msgid "Select an import file or paste its contents before importing."
+msgstr "Zaɓi fayil ɗin shigowa ko liƙa abubuwan cikinsa kafin shigowa."
+
+#: includes/functions.php
+msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
+msgstr "Teburan Syslog ba su da rarrabawa (partitioned).  Teburan gargajiya (marasa rarrabawa) an daina amfani da su, kuma ana buƙatar teburan da aka rarraba don sabbin shigarwa.  Za a ci gaba da tattara bayananka, amma ya kamata ka mayar da teburin syslog zuwa tsarin rarrabawa."
+
+#: includes/functions.php
+msgid "Waiting for a completed processing run."
+msgstr "Ana jiran kammala gudanar da aikin sarrafawa."
+
+#: includes/functions.php
+msgid "Processing is completing within the allowed delay."
+msgstr "Sarrafawa yana kammala cikin jinkirin da aka yarda da shi."
+
+#: includes/functions.php
+#, php-format
+msgid "No processing run has completed for more than %d seconds."
+msgstr "Babu wata gudanarwar sarrafawa da ta kammala fiye da daƙiƙa %d."
+
+#: includes/functions.php
+msgid "Incoming messages are within the configured limits."
+msgstr "Saƙonni masu shigowa suna cikin iyakokin da aka saita."
+
+#: includes/functions.php
+msgid "Incoming queue metrics are unavailable."
+msgstr "Ba a sami ma'aunin layin jira mai shigowa ba."
+
+#: includes/functions.php
+#, php-format
+msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
+msgstr "Tarin saƙonni masu shigowa na aƙalla saƙonni %s ya wuce iyakar %s."
+
+#: includes/functions.php
+msgid "The oldest incoming message timestamp is unavailable."
+msgstr "Tambarin lokaci na saƙon da ya shigo mafi tsufa ba ya samuwa."
+
+#: includes/functions.php
+#, php-format
+msgid "Unprocessed messages are older than %d seconds."
+msgstr "Saƙonnin da ba a sarrafa su ba sun fi daƙiƙa %d tsufa."
+
+#: includes/functions.php
+msgid "Synchronization is not enabled on this collector."
+msgstr "Ba a kunna daidaitawa a kan wannan mai tattarawa ba."
+
+#: includes/functions.php
+msgid "Synchronization is within the allowed delay."
+msgstr "Daidaitawa tana cikin jinkirin da aka yarda da shi."
+
+#: includes/functions.php
+msgid "Synchronization queue metrics are unavailable."
+msgstr "Ma'aunin layin daidaitawa ba ya samuwa."
+
+#: includes/functions.php
+msgid "The oldest synchronization record timestamp is unavailable."
+msgstr "Tambarin lokaci na rikodin daidaitawa mafi tsufa ba ya samuwa."
+
+#: includes/functions.php
+msgid "Synchronization has failed or queued records exceed the allowed delay."
+msgstr "Daidaitawa ta gaza ko kuma bayanan da ke layi sun wuce jinkirin da aka yarda da shi."
+
+#: includes/functions.php
+msgid "Partition maintenance is not blocked."
+msgstr "Ba a toshe kula da ɓangare ba."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition maintenance is blocked: %s"
+msgstr "An toshe kula da ɓangare: %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Syslog pipeline health - collector %d"
+msgstr "Lafiyar hanyar Syslog - mai tattarawa %d"
+
+#: includes/functions.php
+msgid "The Syslog pipeline has recovered."
+msgstr "Hanyar aikin Syslog ta farfaɗo."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
+msgstr "Tsarin ɓangare na %s ba daidai ba ne ko bai cika ba; an dakatar da kula da ɓangare. Tabbatar da bayanan ɓangaren tare da SHOW CREATE TABLE kuma, idan an buƙata, sake gina ɓangarorin; rubutu zai ci gaba zuwa ɓangaren tsaro na dMaxValue."
+
+#: includes/functions.php
+#, php-format
+msgid "remaining partition gap: %d partition(s)"
+msgstr "tazarar sashi da ta rage: sashi %d"
+
+#: includes/functions.php
+msgid "no retention deferral"
+msgstr "babu jinkirin riƙewa"
+
+#: includes/functions.php
+msgid "retention pruning deferred until the future horizon is restored"
+msgstr "an jinkirta yanke riƙewa har sai an dawo da hangen gaba"
+
+#: includes/functions.php
+msgid "new records are accumulating in the dMaxValue safety partition"
+msgstr "sabbin bayanai suna taruwa a cikin sashin kariya na dMaxValue"
+
+#: includes/functions.php
+msgid "per run recovery limit reached"
+msgstr "an kai iyakar farfaɗowa a kowane gudu"
+
+#: includes/functions.php
+msgid "partition creation failed"
+msgstr "ƙirƙirar sashi ta gaza"
+
+#: includes/functions.php
+msgid "Unknown partitioning level; choose Hourly or Daily."
+msgstr "Matakin raba sashe da ba a sani ba; zaɓi Na Sa'a ko Na Kullum."
+
+#: includes/functions.php
+msgid "The Syslog retention is invalid."
+msgstr "Adadin lokacin adana Syslog ba daidai ba ne."
+
+#: includes/functions.php
+msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
+msgstr "Ba za a iya amfani da raba bayanai na kowace sa'a tare da riƙewa na har abada ba, domin hakan zai buƙaci ɓangarori marasa iyaka. Zaɓi lokacin riƙewa ko raba bayanai na kullum."
+
+#: includes/functions.php
+#, php-format
+msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
+msgstr "Rarraba %s tare da kwanakin riƙewa %s da tagar ƙirƙira kafin lokaci ta kwana %s yana buƙatar sassa %s a kowane teburi, wanda ya wuce iyakar sassa %s na wannan sabar rumbun bayanai. Rage lokacin riƙewa, gajarta tagar ƙirƙira kafin lokaci, ko zaɓi rarraba na Kullum."
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Daily"
+msgstr "Kullum"
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Hourly"
+msgstr "Kowace Sa'a"
+
+#: includes/functions.php
+#, php-format
+msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
+msgstr "Teburan har yanzu suna amfani da rarrabawar %s har sai cli/upgrade_partitioning.php ya sake gina su."
+
+#: includes/functions.php
+msgid "The partitioning level of the existing Syslog tables could not be read."
+msgstr "Ba a iya karanta matakin rarraba teburin Syslog da ke akwai ba."
+
+#: includes/functions.php
+msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
+msgstr "An jinkirta dawo da rukunin bayanai da kansa: girman dMaxValue ba ya samuwa; ana buƙatar shigar mai gudanarwa."
+
+#: includes/functions.php
+#, php-format
+msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
+msgstr "An jinkirta dawo da rukunin bayanai da kansa: dMaxValue yana da kimanin layuka %s da bait %s; iyakokin su ne layuka 100000 da bait 134217728. Ana buƙatar shigar mai gudanarwa."
+
+#: includes/functions.php
+msgid "Unknown rule type."
+msgstr "Nau'in ƙa'ida da ba a sani ba."
+
+#: includes/functions.php
+msgid "The configured incoming field mapping is invalid."
+msgstr "Tsarin daidaita filin shigowa da aka saita ba daidai ba ne."
+
+#: includes/functions.php
+msgid "The facility of this rule is not in the reference table yet."
+msgstr "Sashen wannan ƙa'idar ba ya cikin teburin tunani tukuna."
+
+#: includes/functions.php
+msgid "Unknown rule match type."
+msgstr "Nau'in dacewar ƙa'ida da ba a sani ba."
+
+#: includes/functions.php
+msgid "The rule did not compile to a query."
+msgstr "Ƙa'idar ba ta haɗu ta zama tambaya ba."
+
+#: includes/functions.php
+msgid "The preview query could not be evaluated."
+msgstr "Ba a iya kimanta tambayar kallo na samfoti ba."
+
+#: includes/functions.php
+msgid "The historical preview filter could not be compiled."
+msgstr "Ba a iya haɗa tacewar duba tarihi ba."
+
+#: includes/functions.php
+msgid "The historical preview query could not be evaluated."
+msgstr "Ba a iya tantance tambayar duba tarihi ba."
+
+#: includes/functions.php
+msgid "The preview sample could not be read."
+msgstr "Ba a iya karanta samfurin kallo na samfoti ba."
+
+#: includes/functions.php
+msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
+msgstr "Samfotocin Jimlar SQL suna duba saƙonni masu shigowa da ke cikin layi kawai. Ba a bincika saƙonnin da aka riga aka sarrafa. Gwaji ba ya aika ƙararrawa."
+
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Permission denied."
+msgstr "An hana izini."
+
+#: includes/functions.php includes/utilities.php syslog.php
+msgid "Invalid request. Please try again."
+msgstr "Buƙata ba daidai ba ce. Da fatan za a sake gwadawa."
+
+#: includes/functions.php
+msgid "The rule has no match expression to test."
+msgstr "Ƙa'idar ba ta da jumlar daidaitawa da za a gwada."
+
+#: includes/functions.php
+msgid "The match expression is too long to test."
+msgstr "Kalmomin daidaitawa sun yi tsawo da yawa don gwadawa."
+
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
+msgid "Unknown"
+msgstr "Ba a sani ba"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
+msgstr "Faɗakarwar Iyakar Syslog ta Cacti '%s' don Mai Masauki '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "Faɗakarwar Iyakar Syslog ta Cacti '%s'"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+msgid "Alert Name"
+msgstr "Sunan Faɗakarwa"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+#: syslog_recommendations.php
+msgid "Severity"
+msgstr "Tsanani"
+
+#: includes/functions.php syslog_alerts.php
+msgid "Threshold"
+msgstr "Iyaka"
+
+#: includes/functions.php syslog.php
+msgid "Count"
+msgstr "Ƙidaya"
+
+#: includes/functions.php
+msgid "Match String"
+msgstr "Rubutun Daidaitawa"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s' for Host '%s'"
+msgstr "Faɗakarwar Syslog ta Cacti '%s' don Mai Masauki '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s'"
+msgstr "Faɗakarwar Syslog ta Cacti '%s'"
+
+#: includes/functions.php
+msgid "Hostname"
+msgstr "Sunan Mai Masauki"
+
+#: includes/functions.php syslog.php
+msgid "Date"
+msgstr "Kwanan Wata"
+
+#: includes/functions.php
+msgid "Level"
+msgstr "Mataki"
+
+#: includes/functions.php includes/recommendations.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Message"
+msgstr "Saƙo"
+
+#: includes/functions.php
+#, php-format
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
+msgstr "GARGAƊI: An tayar da Faɗakarwar Iyaka ta Syslog don Mai Masauki '%s'"
+
+#: includes/functions.php
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
+msgstr "GARGAƊI: An tayar da Faɗakarwar Iyaka ta Syslog"
+
+#: includes/functions.php
+msgid "Name:"
+msgstr "Suna:"
+
+#: includes/functions.php
+msgid "Severity:"
+msgstr "Tsanani:"
+
+#: includes/functions.php
+msgid "Threshold:"
+msgstr "Iyaka:"
+
+#: includes/functions.php
+msgid "Count:"
+msgstr "Ƙidaya:"
+
+#: includes/functions.php
+msgid "Message String:"
+msgstr "Rubutun Saƙo:"
+
+#: includes/functions.php
+msgid "Hostname:"
+msgstr "Sunan Mai Masauki:"
+
+#: includes/functions.php
+msgid "Date:"
+msgstr "Kwanan wata:"
+
+#: includes/functions.php
+msgid "Level:"
+msgstr "Mataki:"
+
+#: includes/functions.php
+msgid "Message:"
+msgstr "Saƙo:"
+
+#: includes/functions.php
+msgid ", Host:"
+msgstr ", Mai Masauki:"
+
+#: includes/functions.php
+msgid ", URL:"
+msgstr ", URL:"
+
+#: includes/functions.php
+msgid "Sev:"
+msgstr "Tsanani:"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Alert - %s"
+msgstr "Faɗakarwar Lamari - %s"
+
+#: includes/functions.php
+msgid ", Count:"
+msgstr ", Adadi:"
+
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php syslog_reports.php
+msgid "Host"
+msgstr "Mai Masauki"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Report - %s"
+msgstr "Rahoton Lamari - %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
+msgstr "Duban gwajin rahoto yana bincika saƙonni %d da aka ajiye kwanan nan; rahoton kansa ya ƙunshi dukkan lokacinsa. Gwaji ba ya aika imel."
+
+#: includes/functions.php
+msgid "Grouped results are unavailable or expired. Refresh the results and try again."
+msgstr "Sakamakon da aka haɗa ba ya samuwa ko ya ƙare. Sake sabunta sakamakon sannan ka sake gwadawa."
+
+#: includes/functions.php syslog.php
+msgid "Group messages could not be loaded."
+msgstr "Ba a iya loda saƙonnin ƙungiya ba."
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "No"
+msgstr "A'a"
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "Yes"
+msgstr "Eh"
+
+#: includes/functions.php
+msgid "All Text"
+msgstr "Duk Rubutu"
+
+#: includes/functions.php
+msgid "Fit Column"
+msgstr "Daidaita Ginshiƙi"
+
+#: includes/functions.php
+#, php-format
+msgid "%d Chars"
+msgstr "Haruffa %d"
+
+#: includes/installer.php
+msgid "Syslog Upgrade Advisor"
+msgstr "Mai Shawarar Ɗaukaka Syslog"
+
+#: includes/installer.php
+#, php-format
+msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
+msgstr "A haɓaka Syslog daga %s zuwa %s? Za a kiyaye saƙonni da ƙa'idojin da ke akwai. Sauye-sauyen tsarin bayanai na iya ɗaukar lokaci."
+
+#: includes/installer.php
+msgid "What upgrade/install type do you wish to use"
+msgstr "Wane irin nau'in haɓakawa/shigarwa kake son amfani da shi"
+
+#: includes/installer.php
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
+msgstr "Lokacin da kake da manyan tebura sosai, yin Truncate zai fi sauri sosai. Idan kana damuwa da bayanan ajiya, za ka iya zaɓar ko dai Inline, wanda zai dakatar da mai binciken gidan yanar gizonka na tsawon lokacin wannan haɓakawa, ko kuma bango, wanda zai ƙirƙiri aikin bango don kawo tsoffin bayanan syslog ɗinka daga teburin madadin zuwa sabon tsarin syslog. Sake, wannan tsarin na iya ɗaukar sa'o'i da yawa. Truncate yana zubar da bayanan syslog da aka adana da saƙonnin da aka cire ne kawai; ana riƙe ƙa'idodin faɗakarwa, cirewa da rahoto koyaushe."
+
+#: includes/installer.php
+msgid "Truncate Syslog Table"
+msgstr "Share Teburin Syslog"
+
+#: includes/installer.php
+msgid "Inline Upgrade"
+msgstr "Haɓakawa kai tsaye"
+
+#: includes/installer.php
+msgid "Background Upgrade"
+msgstr "Haɓakawa a Baya"
+
+#: includes/installer.php
+msgid "Database Storage Engine"
+msgstr "Injin Ajiyar Rumbun Bayanai"
+
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
+msgstr "Injin ajiya na teburan nazari.  Injunan ajiya na InnoDB kawai da, a kan MariaDB, Aria ake goyon baya.  Kowane zaɓi na Mai Tattara Bayanai na Nesa yana buƙatar InnoDB; ba za a iya ƙaddamar da haɗin da ba su dace ba."
+
+#: includes/installer.php
+msgid "InnoDB Storage"
+msgstr "Ma'ajiyar InnoDB"
+
+#: includes/installer.php
+msgid "Aria Storage"
+msgstr "Ma'ajiyar Aria"
+
+#: includes/installer.php
+msgid "Timestamp Precision"
+msgstr "Daidaiton Tambarin Lokaci"
+
+#: includes/installer.php
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
+msgstr "Daidaiton milisakan yana adana tambarin lokaci na Syslog ƙasa da daƙiƙa a cikin rukunin TIMESTAMP(3) kuma yana samuwa ne kawai akan MariaDB.  Daidaiton daƙiƙa yana amfani da daidaitaccen rukunin TIMESTAMP.  A kan tsarin aiki na ainihi, yi amfani da cli/upgrade_partitioning.php --convert-ms a lokacin gyara don sauya saƙonnin da ke akwai ba tare da zubar da su ba."
+
+#: includes/installer.php
+msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
+msgstr "Milisakan - TIMESTAMP(3) (MariaDB kaɗai)"
+
+#: includes/installer.php
+msgid "Second - TIMESTAMP"
+msgstr "Daƙiƙa - TIMESTAMP"
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Message Processing"
+msgstr "Sarrafa Saƙonni na Nesa"
+
+#: includes/installer.php includes/settings.php
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "Kunna Sarrafa Saƙonnin Mai Tattara Bayanai na Nesa"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "Idan Masu Tattara Bayanai na Nesa naka suna da nasu rumbunan adana bayanai na Syslog kuma suna sarrafa saƙonninsu daban-daban, zaɓi wannan akwatin zaɓi. Ta zaɓar wannan Akwatin Zaɓi, Masu Tattara Bayanai na Nesa naka za su buƙaci kula da nasu fayil ɗin 'config_local.php' don sanar da Syslog ya yi amfani da rumbun adana bayanai mai zaman kansa don nuna saƙo da sarrafawa. Da fatan za a yi amfani da fayil ɗin samfuri 'config_local.php.dist' don wannan manufa. GARGAƊI: Za a ƙirƙiri teburan Syslog ta atomatik da zarar an kunna wannan zaɓin."
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Data Collector Rules Sync"
+msgstr "Daidaita Ƙa'idojin Mai Tattara Bayanai na Nesa"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "Idan Masu Tattara Bayanai na Nesa naka suna da nasu rumbunan adana bayanai na Syslog kuma suna sarrafa saƙonninsu daban-daban, zaɓi wannan akwatin zaɓi idan kana son a tura dokokin Faɗakarwa, Cirewa da Rahoto na babban rumbun adana bayanai na Cacti zuwa Tsarin Cacti na Nesa."
+
+#: includes/installer.php includes/settings.php
+msgid "Store Records on Remote Collector"
+msgstr "Ajiye Bayanai a Mai Tattara na Nesa"
+
+#: includes/installer.php includes/settings.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr "Ajiye saƙonnin da aka sarrafa a cikin teburin syslog na mai tattarawa na nesa bayan an isar da su zuwa Babban Mai Tattarawa. Idan an kashe, ana riƙe bayanai a gida ne kawai yayin da Babban Mai Tattarawa ba ya samuwa kuma ana cire su bayan an tabbatar da isar da su bayan dawowa."
+
+#: includes/installer.php
+msgid "Retention Policy"
+msgstr "Manufar Riƙewa"
+
+#: includes/installer.php
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "Zaɓi kwanaki nawa na ƙimar Syslog kake son adanawa a cikin rumbun adana bayanai."
+
+#: includes/installer.php includes/settings.php
+msgid "Partitioning Level"
+msgstr "Matakin Rarraba Ɓangarori"
+
+#: includes/installer.php
+msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
+msgstr "Girman kowane rabo na teburan syslog da syslog_removed.  An ba da shawarar na Kullum.  Na Sa'a-sa'a yana buƙatar iyakataccen lokacin ajiya, kuma lokacin ajiya da matakin rarrabawa tare dole ne su dace da iyakar rabon uwar garken bayanai.  Don canza matakin daga baya, canza shi a Saituna kuma gudanar da cli/upgrade_partitioning.php."
+
+#: includes/installer.php
+msgid "Upgrade"
+msgstr "Haɓaka"
+
+#: includes/installer.php
+msgid "Install"
+msgstr "Saka"
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Advisor"
+msgstr "Mai Shawarar Syslog %s"
+
+#: includes/installer.php
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "GARGAƊI: Haɓaka Syslog yana ɗaukar lokaci mai tsawo!!!"
+
+#: includes/installer.php
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
+msgstr "Haɓaka teburin syslog na 'main' na iya ɗaukar lokaci mai tsawo sosai. Saboda haka, ana ba da shawarar ku rage girman teburin syslog ɗinku kafin haɓakawa, ko ku zaɓi zaɓin aiki a baya."
+
+#: includes/installer.php
+msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
+msgstr "Idan ka zaɓi zaɓin aiki a baya (background), za a sake sunan tsohon teburinka na syslog, kuma za a ƙirƙiri sabon teburin syslog. Sa'annan, za a ƙaddamar da tsarin haɓakawa a baya. Har ila yau, wannan tsarin na baya zai iya ɗaukar ɗan lokaci kafin ya kammala. Duk da haka, za a adana bayananka."
+
+#: includes/installer.php
+msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
+msgstr "Ko da mene ne zaɓinka, za a kiyaye dukkan ƙa'idojin cirewa da na faɗakarwa da ke akwai yayin aikin haɓakawa."
+
+#: includes/installer.php
+msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Danna <b>'Haɓaka'</b> don ci gaba da haɓakawa, ko <b>'Soke'</b> don komawa menu na Manhajojin ƙari."
+
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
+msgstr "Haka kuma za ka iya saita injin ajiyar rumbun adana bayanai don teburan nazari na syslog da syslog_remove. Injin ajiya na InnoDB ne kawai da kuma, akan MariaDB, injin ajiya na Aria ake tallafawa. Idan kana amfani da MariaDB, muna ba da shawarar Injin Ajiya na Aria lokacin da ba a kunna zaɓuɓɓukan Mai Tattara Bayanai na Nesa ba; zaɓuɓɓukan mai tattarawa suna buƙatar InnoDB."
+
+#: includes/installer.php
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "Kana da zaɓuɓɓuka da dama da za ka zaɓa lokacin shigar da Syslog.  Na farko shi ne Tsarin Rumbun Bayanai.  Teburan da aka raba (partitioned) su kaɗai ne tsarin da ake goyon baya saboda suna hana girman teburan yin yawa wanda ke rage saurin bincike.  Teburan gargajiya da ba a raba su ba sun tsufa kuma ba a ƙara bayar da su ga sababbin shigarwa."
+
+#: includes/installer.php
+msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
+msgstr "Haka kuma za ka iya zaɓar daidaiton tambarin lokaci. Daidaiton millisekon (TIMESTAMP(3)) yana kiyaye jerin saƙonnin da ke shigowa ƙasa da daƙiƙa guda kuma yana samuwa ne kawai akan MariaDB; shigarwar MySQL suna amfani da daidaiton daƙiƙa. Ba za a iya canza wannan a wurin ba daga baya ba tare da lalata saƙonnin da aka adana ba."
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr "Ma'ajiyar Aria ba ta samuwa yayin da aka kunna wani zaɓin Mai Tattara Bayanai na Nesa. An zaɓi InnoDB."
+
+#: includes/installer.php
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "Haka kuma za ka iya zaɓar tsawon lokacin ajiya. Da fatan za a tuna cewa idan kana da masu masauki da yawa da ke rubutawa zuwa syslog, wannan teburin na iya zama babba sosai."
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Settings"
+msgstr "Saitunan Syslog %s"
+
+#: includes/installer.php
+msgid "What uninstall method do you want to use?"
+msgstr "Wace hanyar cirewa kake son amfani da ita?"
+
+#: includes/installer.php
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "Lokacin cire syslog, za ka iya cire komai, ko kuma sassa kawai, idan kana da shirin sake girkawa a nan gaba."
+
+#: includes/installer.php
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "Cire Komai (Rajistan Ayyuka, Tebura, Saituna)"
+
+#: includes/installer.php
+msgid "Syslog Data Only"
+msgstr "Bayanan Syslog Kaɗai"
+
+#: includes/installer.php
+msgid "Syslog Uninstall Preferences"
+msgstr "Zaɓuɓɓukan Cire Syslog"
+
+#: includes/installer.php
+msgid "Uninstall"
+msgstr "Cirewa"
+
+#: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Cancel"
+msgstr "Soke"
+
+#: includes/navigation.php includes/settings.php
+msgid "Syslog"
+msgstr "Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Removals"
+msgstr "Cirewar Syslog"
+
+#: includes/navigation.php
+msgid "(Edit)"
+msgstr "(Gyara)"
+
+#: includes/navigation.php
+msgid "(Actions)"
+msgstr "(Ayyuka)"
+
+#: includes/navigation.php
+msgid "Syslog Alerts"
+msgstr "Faɗakarwar Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Reports"
+msgstr "Rahotannin Syslog"
+
+#: includes/navigation.php includes/settings.php syslog_saved_searches.php
+msgid "Saved Search Templates"
+msgstr "Samfuran Bincike da aka Ajiye"
+
+#: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
+#: syslog_dashboards.php
+msgid "Dashboards"
+msgstr "Allunan Kulawa"
+
+#: includes/navigation.php syslog_recommendations.php
+msgid "Syslog Recommendations"
+msgstr "Shawarwarin Syslog"
+
+#: includes/navigation.php
+msgid "(Import)"
+msgstr "(Shigo da)"
+
+#: includes/navigation.php
+msgid "Display Syslog in Range"
+msgstr "Nuna Syslog a cikin Zango"
+
+#: includes/recommendations.php
+msgid "the identifier is empty"
+msgstr "mai ganowa ba shi da komai"
+
+#: includes/recommendations.php
+msgid "the identifier is longer than 190 characters"
+msgstr "mai ganowa ya fi haruffa 190 tsawo"
+
+#: includes/recommendations.php
+msgid "the identifier contains spaces or line breaks"
+msgstr "mai ganowa yana ɗauke da sarari ko katsewar layi"
+
+#: includes/recommendations.php
+msgid "it has neither an explanation nor a recommended action"
+msgstr "ba shi da bayani ko matakin da aka ba da shawarar"
+
+#: includes/recommendations.php
+msgid "it is not a JSON object"
+msgstr "ba abin JSON ba ne"
+
+#: includes/recommendations.php syslog.php
+msgid "Recommendations could not be loaded."
+msgstr "Ba a iya loda shawarwari ba."
+
+#: includes/recommendations.php
+msgid "Recommendation available - click the message for details"
+msgstr "Akwai shawara - danna saƙon don cikakkun bayanai"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Explanation"
+msgstr "Bayani"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Recommended Action"
+msgstr "Matakin da aka ba da shawara"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Reference"
+msgstr "Madogara"
+
+#: includes/settings.php
+msgid "Monday"
+msgstr "Litinin"
+
+#: includes/settings.php
+msgid "Tuesday"
+msgstr "Talata"
+
+#: includes/settings.php
+msgid "Wednesday"
+msgstr "Laraba"
+
+#: includes/settings.php
+msgid "Friday"
+msgstr "Juma'a"
+
+#: includes/settings.php
+msgid "Saturday"
+msgstr "Asabar"
+
+#: includes/settings.php
+msgid "Sunday"
+msgstr "Lahadi"
+
+#: includes/settings.php
+msgid "Thursday"
+msgstr "Alhamis"
+
+#: includes/settings.php
+msgid "Monday through Friday"
+msgstr "Litinin zuwa Juma'a"
+
+#: includes/settings.php
+msgid "Saturday and Sunday"
+msgstr "Asabar da Lahadi"
+
+#: includes/settings.php
+msgid "Every day"
+msgstr "Kowace rana"
+
+#: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Disabled"
+msgstr "An kashe"
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_reports.php
+msgid "None"
+msgstr "Babu"
+
+#: includes/settings.php
+msgid "General Settings"
+msgstr "Saitunan Gabaɗaya"
+
+#: includes/settings.php
+msgid "Syslog Enabled"
+msgstr "An kunna Syslog"
+
+#: includes/settings.php
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "Idan an zaɓi wannan akwatin zaɓi, za a tura bayanai daga teburin Syslog Incoming zuwa babban teburin syslog kuma za a kunna Faɗakarwa da Rahotanni. Ka tuna cewa idan an kashe tsarin, shigarwar log za su ci gaba da taruwa a cikin teburin Syslog Incoming kamar yadda tsarin rsyslog ko syslog-ng ya ayyana."
+
+#: includes/settings.php
+msgid "Forward alarms to Alarm Manager"
+msgstr "Tura ƙararrawa zuwa Mai Kula da Ƙararrawa"
+
+#: includes/settings.php
+msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
+msgstr "Ba da izin ƙa'idodin da aka saita zuwa Mai Kula da Ƙararrawa su tura ƙararrawa. Imel ɗin Syslog yana zama madadin ƙarshe; ayyukan umarni suna gudana ne kawai don ƙa'idodin Ƙararrawar Syslog."
+
+#: includes/settings.php
+msgid "Strip Domains"
+msgstr "Cire Yankuna"
+
+#: includes/settings.php
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "Jerin yankuna (domains) da aka raba da waƙafi waɗanda kuke son cirewa daga sunan mai masauki na Syslog, Misalai su ne 'mydomain.com, otherdomain.com'"
+
+#: includes/settings.php
+msgid "Refresh Interval"
+msgstr "Tazarar Sabuntawa"
+
+#: includes/settings.php
+msgid "This is the time in seconds before the page refreshes."
+msgstr "Wannan shi ne lokaci a cikin daƙiƙa kafin shafin ya sabunta kansa."
+
+#: includes/settings.php
+msgid "Skip Total Row Count"
+msgstr "Tsallake Ƙididdigar Jimillar Layuka"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
+msgstr "Idan an zaɓi wannan akwatin zaɓi, shafukan System Logs da Alert Logs ba sa ƙidaya kowane bayani da ya dace, abin da zai iya cin lokaci mai yawa a manyan tsare-tsare. Shafin yana nuna hanyoyin Na Baya da Na Gaba maimakon jimilla da jerin shafuka, kuma ana ba da Na Gaba yayin da ƙarin bayanai suka rage."
+
+#: includes/settings.php
+msgid "Max Report Records"
+msgstr "Mafi Yawan Bayanan Rahoto"
+
+#: includes/settings.php
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "Don Faɗakarwa masu tushen Iyaka, menene mafi girman lambar da kake son nunawa a cikin rahoton.  Ana amfani da wannan don iyakance girman rajistar HTML da Imel."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Records"
+msgstr "Rikodai %d"
+
+#: includes/settings.php
+msgid "Maximum Syslog Processing Processes"
+msgstr "Mafi Yawan Tsarin Gudanar da Syslog"
+
+#: includes/settings.php
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr "Idan aka saita sama da 1, ana rarraba sarrafa saƙonnin da ke shigowa a tsakanin ayyukan ma'aikata masu tafiya tare. Kowanne ma'aikaci yana kula da ɓangaren saƙonnin da ke shigowa daban, wanda ke hanzarta warware sunan mai masauki da tura saƙo lokacin cunkoso mai yawa. Saiti na 1 yana sarrafa dukkan saƙonni a cikin aiki guda ɗaya. Ba a tallafawa ayyukan ma'aikata akan Windows ko lokacin da ƙarin PHP pcntl da POSIX ba su samuwa ba, inda sarrafawa zai koma zuwa aiki guda ɗaya."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Process"
+msgstr "Tsarin Aiki %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Processes"
+msgstr "Tsare-tsaren Aiki %d"
+
+#: includes/settings.php
+msgid "Command for Opening Tickets"
+msgstr "Umarni don Buɗe Tikiti"
+
+#: includes/settings.php
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "Za a aiwatar da wannan umarni don buɗe Tikitin Taimako (Help Desk). Za a buƙaci umarnin ya tantance sigogin shigarwa da yawa kamar haka: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>. Jerin masu masauki zai zama jeri da aka raba da waƙafi na masu masauki da faɗakarwar ta shafa."
+
+#: includes/settings.php
+msgid "Host Discovery Options"
+msgstr "Zaɓuɓɓukan Gano Mai Masauki"
+
+#: includes/settings.php
+msgid "Enable Hostname Resolution"
+msgstr "Kunna Fassarar Sunan Mai Masauki"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr "Idan an zaɓi wannan akwatin zaɓi, za a fara warware dukkan sunayen mai masauki ta hanyar binciken DNS (Idan an kunna), ta amfani da bayanan A da AAAA. Adiresoshin IPv4 da IPv6 ba sa buƙatar bincike, kuma ana adana adiresoshin IPv6 a cikin matsattsen tsarin ƙananan haruffa. Idan binciken DNS ya gaza, tsarin zai yi ƙoƙarin warware sunan mai masauki a teburin mai masauki na Cacti kuma ya maye gurbinsa da bayanin mai masauki na Cacti. Idan duka binciken DNS da Cacti suka gaza, ana sanya wa bayanan prefix 'unresolved-Original_hostname'."
+
+#: includes/settings.php
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr "Tsallake Fassarar DNS don masu masauki masu shigowa"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr "Idan an zaɓi wannan akwatin zaɓi, tsarin ba zai yi ƙoƙarin warware masu masauki ta hanyar binciken DNS ba. Wannan yana da amfani ga wuraren da warware DNS ba zai yiwu ba ko ba a buƙata."
+
+#: includes/settings.php
+msgid "HTML Notification Settings"
+msgstr "Saitunan Sanarwar HTML"
+
+#: includes/settings.php
+msgid "Enable HTML Based Email"
+msgstr "Kunna Imel Mai Tushen HTML"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "Idan an zaɓi wannan akwatin zaɓi, za a aika dukkan Imel a cikin tsarin HTML. In ba haka ba, za a aika Imel a cikin rubutu tsantsa."
+
+#: includes/settings.php
+msgid "Format File to Use"
+msgstr "Fayil ɗin Tsari da Za a Yi Amfani da Shi"
+
+#: includes/settings.php
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr "Zaɓi fayil ɗin murfin html da CSS na musamman da za a yi amfani da shi. Wannan fayil ɗin yana ƙunshe da html da CSS don kewaye rahotonku. Idan ya ƙunshi fiye da CSS kawai, kuna buƙatar sanya alamar <REPORT> ta musamman a cikin fayil ɗin. Za a maye gurbin wannan alamar tsarin da abun cikin rahoton. Waɗannan fayilolin suna cikin kundin 'formats'."
+
+#: includes/settings.php
+msgid "Data Retention and Partitioning"
+msgstr "Ajiyar Bayanai da Rarrabawa"
+
+#: includes/settings.php
+msgid "Syslog Retention"
+msgstr "Adana Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep events."
+msgstr "Wannan shi ne adadin kwanakin da za a adana abubuwan da suka faru."
+
+#: includes/settings.php
+msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
+msgstr "Girman kowane rabo na teburan syslog da syslog_removed. Ana ajiye canji a nan amma yana fara aiki ne kawai lokacin da cli/upgrade_partitioning.php ya sake gina dukkan teburan biyu; har zuwa lokacin, kulawar rarrabawa tana riƙe da girman da ke akwai. Rarrabawa ta sa'a-sa'a tana buƙatar iyakataccen lokacin ajiya. Lokacin ajiya, tagar kafin ƙirƙira da matakin rarrabawa tare dole ne su dace da iyakar rabon uwar garken bayanai, ko kuma ba za a ajiye saitunan ba."
+
+#: includes/settings.php
+msgid "Partition Pre-create Window"
+msgstr "Tazarar Ƙirƙirar Ɓangare da Wuri"
+
+#: includes/settings.php
+msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
+msgstr "Wannan shi ne adadin kwanakin rabe-raben gaba da za a kiyaye don teburan Syslog da aka rarraba, ta yadda za a riƙa raba sabbin rabe-rabe daga rabo mara komai na dMaxValue. Rarrabawa ta sa'a-sa'a koyaushe tana adana aƙalla kwanaki 2."
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Day"
+msgstr "Kwana %d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Days"
+msgstr "Kwanaki %d"
+
+#: includes/settings.php
+msgid "Partition Recovery Limit"
+msgstr "Iyakar Farfaɗo da Ɓangare"
+
+#: includes/settings.php
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr "Lokacin da rabe-raben tebur suka ɓace (misali bayan lokacin dakatarwa don gyara), aƙalla wannan adadin rabe-raben da suka ɓace a kowane tebur ne za a ƙirƙira a kowane gudanar da Mai Tattara Bayanai. Ragowar giɓin zai cike a gudanarwa na gaba; ragewar ajiya zai ci gaba da jinkiri har sai an dawo da tsarin rabe-raben gaba gaba ɗaya. Yana aiki ne kawai ga teburan Syslog masu rabe-rabe."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partition per run"
+msgstr "%d Ɓangare a kowane gudanarwa"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partitions per run"
+msgstr "%d Ɓangarori a kowane gudanarwa"
+
+#: includes/settings.php
+msgid "Collector Staleness Threshold"
+msgstr "Iyakar Tsufan Bayanin Mai Tattarawa"
+
+#: includes/settings.php
+msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
+msgstr "Faɗakarwar lafiyar pipeline tana gargaɗi lokacin da saƙonnin da ba a sarrafa ba, kammala sarrafawa, ko daidaitawar da ke cikin layi suka wuce wannan jinkirin. Jinkirin da ke aiki ya ƙunshi aƙalla tazara uku na Mai Tattara Bayanai da sakan 300. Saita zuwa 0 don amfani da sakan 300."
+
+#: includes/settings.php
+msgid "Default (300 seconds)"
+msgstr "Na asali (daƙiƙa 300)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d seconds"
+msgstr "daƙiƙa %d"
+
+#: includes/settings.php
+msgid "Collector Backlog Threshold"
+msgstr "Iyakar Ragowar Aikin Mai Tattarawa"
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr "Shafin Matsayin Syslog yana nuna gargaɗi lokacin da saƙonni fiye da wannan adadin suka zauna ba a sarrafa su ba a teburin Syslog Incoming.  Saita zuwa 0 don amfani da tsohon adadi na saƙonni 10000."
+
+#: includes/settings.php
+msgid "Default (10000 messages)"
+msgstr "Na asali (saƙonni 10000)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Messages"
+msgstr "%d Saƙonni"
+
+#: includes/settings.php
+msgid "Pipeline Health Alerts"
+msgstr "Faɗakarwar Lafiyar Pipeline"
+
+#: includes/settings.php
+msgid "Pipeline Health Notification List"
+msgstr "Jerin Sanarwar Lafiyar Pipeline"
+
+#: includes/settings.php
+msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
+msgstr "Zaɓi jerin sanarwar Thold da ke akwai don faɗakarwar lafiyar hanyar aiki. Masu karɓa na jerin da aka kunna ana haɗa su da adiresoshin imel na ƙasa, tare da kiyaye masu karɓa na BCC. Jerin suna buƙatar teburin jerin sanarwar Thold."
+
+#: includes/settings.php
+msgid "Pipeline Health Email Recipients"
+msgstr "Masu Karɓar Imel na Lafiyar Pipeline"
+
+#: includes/settings.php
+msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
+msgstr "Masu karɓar imel da aka raba da waƙafi don gazawar bututun aiki da farfaɗowa. Bar shi fanko kuma kar ka zaɓi jerin sanarwa don kashe imel; lafiyar tana ci gaba da kasancewa a bayyane a shafin Matsayi kuma ana adana bayanan canje-canjen yanayi. Binciken yana buƙatar Mai Tattara Bayanai na Cacti ya yi aiki."
+
+#: includes/settings.php
+msgid "Pipeline Health Reminder Interval"
+msgstr "Tazarar Tunatarwa ta Lafiyar Pipeline"
+
+#: includes/settings.php
+msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
+msgstr "Maimaita sanarwa don matsalolin bututun aiki da ke ci gaba bayan wannan tazara. Ana sake gwada yunƙurin imel da suka gaza ba fiye da sau ɗaya a kowane mintuna biyar ba."
+
+#: includes/settings.php
+msgid "Syslog Alert Retention"
+msgstr "Adana Faɗakarwar Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep alert logs."
+msgstr "Wannan shi ne adadin kwanakin da za a adana rajistan faɗakarwa."
+
+#: includes/settings.php
+msgid "Alert Suppression and Maintenance"
+msgstr "Dakatar da Faɗakarwa da Gyara"
+
+#: includes/settings.php
+msgid "Maintenance Window Days"
+msgstr "Kwanakin Lokacin Kulawa"
+
+#: includes/settings.php
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr "Kwanakin da aka kashe duk sanarwar faɗakarwa yayin lokacin kulawa da aka saita."
+
+#: includes/settings.php
+msgid "Maintenance Window Starts"
+msgstr "Farkon Lokacin Kulawa"
+
+#: includes/settings.php
+msgid "Local start time for the global maintenance window."
+msgstr "Lokacin farawa na gida don tagar kulawa ta gabaɗaya."
+
+#: includes/settings.php
+msgid "Maintenance Window Ends"
+msgstr "Ƙarshen Lokacin Kulawa"
+
+#: includes/settings.php
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr "Lokacin ƙarewa na gida don tagar kulawa ta gabaɗaya. Idan lokacin ƙarewa ya riga na farawa, zai ci gaba zuwa rana mai zuwa."
+
+#: includes/settings.php
+msgid "One-time Maintenance Starts"
+msgstr "Farkon Gyara na Sau Ɗaya"
+
+#: includes/settings.php
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr "Kwanan wata da lokaci na gida na zaɓi don fara tagar gyara ta gama-gari ta sau ɗaya."
+
+#: includes/settings.php
+msgid "One-time Maintenance Ends"
+msgstr "Ƙarshen Gyara na Sau Ɗaya"
+
+#: includes/settings.php
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr "Kwanan wata da lokaci na gida na zaɓi don ƙare tagar gyara ta gama-gari ta sau ɗaya. Tsari: YYYY-MM-DD HH:MM."
+
+#: includes/settings.php
+msgid "Default Alert Cooldown"
+msgstr "Lokacin Hutun Faɗakarwa na Asali"
+
+#: includes/settings.php
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Dakatar da duk wata sanarwa da aka maimaita don ƙa'ida ɗaya da fannin rahoto na wannan adadin mintuna. Ƙimomin kowace ƙa'ida suna rinjayar wannan saitin. Sanya zuwa 0 don kashewa."
+
+#: includes/settings.php
+msgid "Default Duplicate Suppression"
+msgstr "Hana Maimaituwa na Asali"
+
+#: includes/settings.php
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Dakatar da sanarwa mai kama da irin saƙon da aka daidaita na wannan adadin mintuna. Ƙimomin kowace ƙa'ida suna rinjayar wannan saitin. Sanya zuwa 0 don kashewa."
+
+#: includes/settings.php
+msgid "Remote Syslog Recovery"
+msgstr "Farfaɗo da Syslog na Nesa"
+
+#: includes/settings.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr "Mafi Yawan Bayanan Farfadowa a Kowane Gudanarwa"
+
+#: includes/settings.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr "Mafi yawan abubuwan da suka faru na Syslog na nesa da aka riƙe waɗanda ake aikawa zuwa Babban Mai Tattara Bayanai ta hanyar gudanar da aikin farfadowa guda ɗaya. Kowace mu'amalar babban rumbun bayanai tana da iyaka a bayanai 100. Ƙara a hankali yayin lura da nauyin Babban Mai Tattara Bayanai da jiran kullewa."
+
+#: includes/settings.php
+msgid "Recovery Pause Between Batches"
+msgstr "Dakatar da farfaɗowa tsakanin rukuni"
+
+#: includes/settings.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr "Dakata tsakanin kowace mu'amalar isar da bayanai mai rikodi 100 ta Babban Mai Tattarawa. Tsawaita dakatarwar yana rage nauyin Babban Mai Tattarawa; gajeruwar dakatarwa tana hanzarta kammala tarin aiki."
+
+#: includes/settings.php
+msgid "No pause"
+msgstr "Babu dakatawa"
+
+#: includes/settings.php
+#, php-format
+msgid "%d milliseconds"
+msgstr "milisakan %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d second"
+msgstr "daƙiƙa %d"
+
+#: includes/settings.php
+msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
+msgstr "Ba a samun rumbun adana bayanai na Syslog, don haka ba za a iya duba saitunan rarrabawa dangane da iyakar rarrabawarsa da teburansa ba."
+
+#: includes/settings.php
+msgid "The Syslog settings were not saved."
+msgstr "Ba a ajiye saitunan Syslog ba."
+
+#: includes/settings.php
+#, php-format
+msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
+msgstr "Ana jira: teburin saƙo har yanzu yana amfani da rabe-raben %s. Gudanar da cli/upgrade_partitioning.php don amfani da matakin da aka zaɓa."
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_saved_searches.php
+msgid "Delete"
+msgstr "Share"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Disable"
+msgstr "Kashe"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Enable"
+msgstr "Kunna"
+
+#: includes/settings.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_saved_searches.php
+msgid "Export"
+msgstr "Fitarwa"
+
+#: includes/settings.php
+msgid "Indefinite"
+msgstr "Marar iyaka"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Week"
+msgstr "Mako %d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Weeks"
+msgstr "Makonni %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Month"
+msgstr "Wata %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Months"
+msgstr "Watanni %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Year"
+msgstr "Shekara %d"
+
+#: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
+msgid "Never"
+msgstr "Ba a Taɓa Ba"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Minute"
+msgstr "Minti %d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Minutes"
+msgstr "Mintuna %d"
+
+#: includes/settings.php
+msgid "Begins with"
+msgstr "Yana fara da"
+
+#: includes/settings.php
+msgid "Contains"
+msgstr "Ya ƙunshi"
+
+#: includes/settings.php
+msgid "Ends with"
+msgstr "Yana ƙarewa da"
+
+#: includes/settings.php
+msgid "Hostname is"
+msgstr "Sunan Mai Masauki shi ne"
+
+#: includes/settings.php
+msgid "Program is"
+msgstr "Shiri yana"
+
+#: includes/settings.php
+msgid "Facility is"
+msgstr "Cibiya ita ce"
+
+#: includes/settings.php syslog_alerts.php
+msgid "Filter Builder"
+msgstr "Mai Gina Tacewa"
+
+#: includes/settings.php syslog_alerts.php
+msgid "SQL Expression"
+msgstr "Jimlar SQL"
+
+#: includes/settings.php
+msgid "Weekly"
+msgstr "Mako-mako"
+
+#: includes/settings.php
+msgid "Import/Export"
+msgstr "Shigarwa/Fitarwa"
+
+#: includes/settings.php
+msgid "Alert Rules"
+msgstr "Dokokin Faɗakarwa"
+
+#: includes/settings.php
+msgid "Syslog Settings"
+msgstr "Saitunan Syslog"
+
+#: includes/settings.php syslog_device_rules.php
+msgid "Device Alert Rules"
+msgstr "Dokokin Faɗakarwar Na'ura"
+
+#: includes/settings.php
+msgid "Removal Rules"
+msgstr "Ƙa'idojin Cirewa"
+
+#: includes/settings.php
+msgid "Report Rules"
+msgstr "Dokokin Rahoto"
+
+#: includes/settings.php syslog.php syslog_recommendations.php
+msgid "Recommendations"
+msgstr "Shawarwari"
+
+#: includes/utilities.php
+msgid "Unable to connect to the Syslog database. No Device records were removed."
+msgstr "An kasa haɗawa da rumbun bayanan Syslog. Ba a cire bayanan Na'ura ko ɗaya ba."
+
+#: includes/utilities.php
+#, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "An cire bayanan Na'ura %s daga rumbun adana bayanai na Syslog"
+
+#: includes/utilities.php
+msgid "Syslog Utilities"
+msgstr "Kayan Aikin Syslog"
+
+#: includes/utilities.php
+msgid "Purge Syslog Devices"
+msgstr "Share Na'urorin Syslog"
+
+#: includes/utilities.php
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr "Ka tabbata kana son tsaftace tsofaffin na'urorin Syslog?"
+
+#: includes/utilities.php
+msgid "Confirm Purge"
+msgstr "Tabbatar da Sharewa Gaba Ɗaya"
+
+#: includes/utilities.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Continue"
+msgstr "Ci gaba"
+
+#: includes/utilities.php
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "Wannan zaɓin menu yana ba da hanyar cire Na'urori waɗanda ba sa ƙara aika rahoto zuwa uwar garken Syslog na Cacti."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel source."
+msgstr "Tushen ɓangaren allon sarrafawa ba daidai ba ne."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel type."
+msgstr "Nau'in ɓangaren allon sarrafawa ba daidai ba ne."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard chart type."
+msgstr "Nau'in jadawalin allon sarrafawa ba daidai ba ne."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard breakdown field."
+msgstr "Filin rarraba bayanan allon sarrafawa ba daidai ba ne."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard interval."
+msgstr "Tazarar lokacin allon sarrafawa ba daidai ba ce."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard timespan."
+msgstr "Tsawon lokacin allon sarrafawa ba daidai ba ne."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard record type."
+msgstr "Nau'in rikodin allon sarrafawa ba daidai ba ne."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard top count."
+msgstr "Adadin saman allon sarrafawa ba daidai ba ne."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel width."
+msgstr "Faɗin ɓangaren allon sarrafawa ba daidai ba ne."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel height."
+msgstr "Tsayin ɓangaren allon sarrafawa ba daidai ba ne."
+
+#: lib/syslog_dashboard.php syslog.php
+#, php-format
+msgid "Invalid logical search: %s"
+msgstr "Binciken dabaru ba daidai ba ne: %s"
+
+#: lib/syslog_dashboard.php
+msgid "Other"
+msgstr "Sauran"
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard panel is required."
+msgstr "Ana buƙatar ingantaccen bangon dashboard."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard panel not found."
+msgstr "Ba a sami fanel na Allon Kulawa ba."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "A name of up to 128 characters is required."
+msgstr "Ana buƙatar suna mai haruffa har zuwa 128."
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard is required."
+msgstr "Ana buƙatar ingantaccen dashboard."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard not found."
+msgstr "Ba a sami Allon Kulawa ba."
+
+#: lib/syslog_dashboard.php syslog_dashboards.php
+msgid "Unable to save dashboard changes."
+msgstr "An kasa ajiye sauye-sauyen dashboard."
+
+#: lib/syslog_dashboard.php
+msgid "You may only share your own dashboards."
+msgstr "Za ka iya raba allunan bayanai naka kaɗai."
+
+#: lib/syslog_dashboard.php
+msgid "copy"
+msgstr "kwafi"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard could not be copied."
+msgstr "Ba a iya kwafin Allon Kulawa ba."
+
+#: lib/syslog_dashboard.php
+msgid "A valid panel position is required."
+msgstr "Ana buƙatar ingantaccen matsayin bango (panel)."
+
+#: lib/syslog_dashboard.php
+msgid "A title of up to 128 characters is required."
+msgstr "Ana buƙatar take mai haruffa har zuwa 128."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Drag to reorder card"
+msgstr "Ja don sake tsara katin"
+
+#: lib/syslog_dashboard.php
+msgid "Refresh Panel"
+msgstr "Sabunta Rukunin Allo"
+
+#: lib/syslog_dashboard.php
+msgid "Total messages"
+msgstr "Jimillar saƙonni"
+
+#: lib/syslog_dashboard.php
+msgid "Chart library unavailable on this Cacti installation."
+msgstr "Ɗakin karatun ginshiƙi ba ya samuwa a wannan shigarwar Cacti."
+
+#: lib/syslog_dashboard.php
+msgid "Edit Panel"
+msgstr "Gyara Fanel"
+
+#: lib/syslog_dashboard.php
+msgid "New Panel"
+msgstr "Sabon Fanel"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Save"
+msgstr "Ajiye"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Apply"
+msgstr "Aiwatar"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard panel?"
+msgstr "A share wannan ɓangaren allon bayani?"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard and all of its panels?"
+msgstr "A share wannan allon bayani da dukkan ɓangarorinsa?"
+
+#: lib/syslog_dashboard.php
+msgid "Name your dashboard"
+msgstr "Sanya wa allon kulawarka suna"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Make Private"
+msgstr "Sanya ya Zama na Sirri"
+
+#: lib/syslog_dashboard.php
+msgid "Share with all"
+msgstr "Raba da kowa"
+
+#: lib/syslog_dashboard.php
+msgid "Save as my copy"
+msgstr "Ajiye a matsayin kwafina"
+
+#: lib/syslog_dashboard.php
+msgid "Syslog Dashboards"
+msgstr "Allunan Syslog"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Dashboard"
+msgstr "Allon Kulawa"
+
+#: lib/syslog_dashboard.php
+msgid "Time Range"
+msgstr "Zangon Lokaci"
+
+#: lib/syslog_dashboard.php
+msgid "Last Hour"
+msgstr "Sa'a da Ta Wuce"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Hours"
+msgstr "Sa'o'i %d da Suka Wuce"
+
+#: lib/syslog_dashboard.php
+msgid "Last Day"
+msgstr "Rana da Ta Wuce"
+
+#: lib/syslog_dashboard.php
+msgid "Last Week"
+msgstr "Makon da Ya Wuce"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Weeks"
+msgstr "Makonni %d da Suka Wuce"
+
+#: lib/syslog_dashboard.php
+msgid "Last Month"
+msgstr "Watan da Ya Wuce"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Months"
+msgstr "Watanni %d da Suka Wuce"
+
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
+msgid "Refresh"
+msgstr "Sabunta"
+
+#: lib/syslog_dashboard.php
+msgid "My Dashboards"
+msgstr "Allunan Bayanai Na"
+
+#: lib/syslog_dashboard.php
+msgid "Global Dashboards"
+msgstr "Allunan Kulawa na Gabaɗaya"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Shared With Me"
+msgstr "An Raba da Ni"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "New"
+msgstr "Sabo"
+
+#: lib/syslog_dashboard.php
+msgid "Rename"
+msgstr "Sake Suna"
+
+#: lib/syslog_dashboard.php
+msgid "Add Panel"
+msgstr "Ƙara Fanel"
+
+#: lib/syslog_dashboard.php
+msgid "Create your first dashboard to visualize syslog trends."
+msgstr "Ƙirƙiri allon dubawa na farko don ganin yanayin syslog."
+
+#: lib/syslog_dashboard.php
+msgid "Add a panel to start charting.  Panels can use your saved searches."
+msgstr "Ƙara fanel don fara zana jadawali.  Faneloli za su iya amfani da bincikenka da aka ajiye."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Panel"
+msgstr "Fanel na Allon Kulawa"
+
+#: lib/syslog_dashboard.php
+msgid "Title"
+msgstr "Take"
+
+#: lib/syslog_dashboard.php
+msgid "Log Source"
+msgstr "Tushen Rajista"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "System Logs"
+msgstr "Rajistan Ayyukan Tsari"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Alert Logs"
+msgstr "Rajistar Faɗakarwa"
+
+#: lib/syslog_dashboard.php
+msgid "Panel Type"
+msgstr "Nau'in Allo"
+
+#: lib/syslog_dashboard.php
+msgid "Time Series"
+msgstr "Jerin Lokaci"
+
+#: lib/syslog_dashboard.php
+msgid "Breakdown"
+msgstr "Rarrabuwa"
+
+#: lib/syslog_dashboard.php
+msgid "Chart"
+msgstr "Ginshiƙi"
+
+#: lib/syslog_dashboard.php
+msgid "Line"
+msgstr "Layi"
+
+#: lib/syslog_dashboard.php
+msgid "Area"
+msgstr "Yanki"
+
+#: lib/syslog_dashboard.php
+msgid "Bar"
+msgstr "Sanda"
+
+#: lib/syslog_dashboard.php
+msgid "Interval"
+msgstr "Tazara"
+
+#: lib/syslog_dashboard.php
+msgid "Auto"
+msgstr "Atomatik"
+
+#: lib/syslog_dashboard.php
+msgid "Minute"
+msgstr "Minti"
+
+#: lib/syslog_dashboard.php
+msgid "10 Minutes"
+msgstr "Minti 10"
+
+#: lib/syslog_dashboard.php
+msgid "Hour"
+msgstr "Sa'a"
+
+#: lib/syslog_dashboard.php
+msgid "Day"
+msgstr "Rana"
+
+#: lib/syslog_dashboard.php
+msgid "Field"
+msgstr "Fili"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Program"
+msgstr "Shiri"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Facility"
+msgstr "Cibiya"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Priority"
+msgstr "Fifiko"
+
+#: lib/syslog_dashboard.php
+msgid "Top Count"
+msgstr "Ƙidaya ta Sama"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Record Type"
+msgstr "Nau'in rikodi"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "All Records"
+msgstr "Dukkan Bayanai"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Main Records"
+msgstr "Manyan Rikodi"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Removed Records"
+msgstr "Bayanan da Aka Cire"
+
+#: lib/syslog_dashboard.php
+msgid "Start from Saved Search"
+msgstr "Fara daga Binciken da Aka Ajiye"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Enter message text…"
+msgstr "Shigar da rubutun saƙo…"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Remove condition"
+msgstr "Cire sharaɗi"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Match group"
+msgstr "Rukunin daidaitawa"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Exclude group"
+msgstr "Ware rukuni"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Name"
+msgstr "Sunan Allon Kulawa"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Name"
+msgstr "Suna"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Breached Thresholds"
+msgstr "Iyakokin da Aka Keta"
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr "An Keta Tun"
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr "Mai Tattarawa"
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr "Na'ura"
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr "Saƙo Mai Dacewa Na Ƙarshe"
+
+#: lib/syslog_thresholds.php
+msgid "Recovers After"
+msgstr "Yana farfaɗowa bayan"
+
+#: lib/syslog_thresholds.php
+msgid "Rule"
+msgstr "Ƙa'ida"
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr "Duk na'urori da suka dace"
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr "Babu iyakoki da aka karya a halin yanzu."
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr "Farfaɗowa na buƙatar kada a sami saƙonni masu dacewa har zuwa lokacin da aka nuna. Kowane dacewa yana sake fara lokacin shiru."
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Previous"
+msgstr "Na baya"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Next"
+msgstr "Na gaba"
+
+#: setup.php
+msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
+msgstr "Da fatan za a sake sunan fayilolinku na config.php.dist ko config_local.php.dist a cikin babban fayil ɗin syslog, kuma ku gyara saitin rumbun bayananku kafin shigarwa."
+
+#: setup.php
+msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
+msgstr "Ana goyan bayan tambarin lokaci na milisakan (TIMESTAMP(3)) ne kawai akan MariaDB. Wannan sabar MySQL ce, don haka ka shigar da tambarin lokaci mai daidaiton daƙiƙa a maimakon haka."
+
+#: setup.php
+msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
+msgstr "Ba za a iya amfani da ma'ajiyar Aria ba lokacin da aka kunna wani zaɓin Mai Tattara Bayanai na Nesa. Zaɓi InnoDB ko kashe duk zaɓuɓɓukan Mai Tattara Bayanai na Nesa."
+
+#: setup.php
+msgid "Top 10 Hosts"
+msgstr "Masu Masauki 10 na Gaba"
+
+#: setup.php
+msgid "Syslog Messages - Past Hour"
+msgstr "Saƙonnin Syslog - Sa'ar da ta Gabata"
+
+#: setup.php
+msgid "Messages by Severity"
+msgstr "Saƙonni bisa Muni"
+
+#: setup.php
+msgid "Top 10 Programs"
+msgstr "Shirye-shirye 10 na Gaba"
+
+#: setup.php
+msgid "Alert Activity"
+msgstr "Ayyukan Faɗakarwa"
+
+#: syslog.php
+msgid "Syslog Viewer"
+msgstr "Mai Duba Syslog"
+
+#: syslog.php
+msgid "Syslog Status"
+msgstr "Matsayin Syslog"
+
+#: syslog.php
+msgid "Selected Alert"
+msgstr "Faɗakarwar Da Aka Zaɓa"
+
+#: syslog.php
+msgid "seconds"
+msgstr "daƙiƙu"
+
+#: syslog.php
+msgid "Unavailable"
+msgstr "Ba Ya Samuwa"
+
+#: syslog.php
+#, php-format
+msgid "unprocessed messages are %s old"
+msgstr "saƙonnin da ba a sarrafa ba sun kai tsawon %s"
+
+#: syslog.php
+#, php-format
+msgid "incoming backlog of %s messages"
+msgstr "tarin saƙonni masu shigowa guda %s"
+
+#: syslog.php
+msgid "day"
+msgstr "rana"
+
+#: syslog.php
+msgid "days"
+msgstr "kwanaki"
+
+#: syslog.php
+msgid "hour"
+msgstr "sa'a"
+
+#: syslog.php
+msgid "hours"
+msgstr "sa'o'i"
+
+#: syslog.php
+msgid "minute"
+msgstr "minti"
+
+#: syslog.php
+msgid "minutes"
+msgstr "mintuna"
+
+#: syslog.php
+msgid "Rows in syslog_incoming"
+msgstr "Layuka a cikin syslog_incoming"
+
+#: syslog.php
+msgid "Syslog table size (data + indexes)"
+msgstr "Girman teburin Syslog (bayanai + fihirisa)"
+
+#: syslog.php
+msgid "Syslog retention"
+msgstr "Adana Syslog"
+
+#: syslog.php
+msgid "Alert retention"
+msgstr "Adana faɗakarwa"
+
+#: syslog.php
+msgid "No recovery activity recorded yet."
+msgstr "Ba a yi rikodin wani aikin farfaɗowa tukuna ba."
+
+#: syslog.php
+msgid "created"
+msgstr "an ƙirƙira"
+
+#: syslog.php
+msgid "remaining"
+msgstr "saura"
+
+#: syslog.php
+msgid "retention deferred"
+msgstr "an jinkirta riƙewa"
+
+#: syslog.php
+msgid "Latest processing run"
+msgstr "Gudanarwar sarrafawa ta baya-bayan nan"
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr "Daidaitawa mai rarrabuwa"
+
+#: syslog.php
+msgid "Remote collector receipts"
+msgstr "Rasitocin mai tattara bayanai na nesa"
+
+#: syslog.php
+msgid "Storage and retention"
+msgstr "Ma'ajiya da riƙewa"
+
+#: syslog.php
+msgid "Partition health"
+msgstr "Lafiyar ɓangare"
+
+#: syslog.php
+msgid "Partition maintenance activity"
+msgstr "Aikin kula da ɓangare"
+
+#: syslog.php
+msgid "Recent partition maintenance activity"
+msgstr "Ayyukan kula da ɓangare na baya-bayan nan"
+
+#: syslog.php
+msgid "Pipeline health"
+msgstr "Lafiyar Pipeline"
+
+#: syslog.php
+msgid "Parallel workers"
+msgstr "Masu aiki a lokaci guda"
+
+#: syslog.php
+msgid "Worker processes"
+msgstr "Ayyukan ma'aikata"
+
+#: syslog.php
+msgid "Processing phases"
+msgstr "Matakan sarrafawa"
+
+#: syslog.php
+msgid "Rule activity"
+msgstr "Ayyukan ƙa'ida"
+
+#: syslog.php
+msgid "Records processed"
+msgstr "Rikodin da aka aiwatar"
+
+#: syslog.php
+msgid "Polling runtime"
+msgstr "Lokacin aikin tattara bayanai"
+
+#: syslog.php
+msgid "Started"
+msgstr "An Fara"
+
+#: syslog.php
+msgid "Finished"
+msgstr "An gama"
+
+#: syslog.php
+msgid "Minimum runtime"
+msgstr "Mafi ƙarancin lokacin gudanarwa"
+
+#: syslog.php
+msgid "Average runtime"
+msgstr "Matsakaicin lokacin aiki"
+
+#: syslog.php
+msgid "Maximum runtime"
+msgstr "Mafi tsawon lokacin aiki"
+
+#: syslog.php
+msgid "State"
+msgstr "Jiha"
+
+#: syslog.php
+msgid "Queued Recovery Records"
+msgstr "Bayanan Farfaɗowa da ke Cikin Jeri"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr "Mafi tsufan da ke jira"
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr "Daidaitawa ta ƙarshe da ta yi nasara"
+
+#: syslog.php
+msgid "Active"
+msgstr "Yana Aiki"
+
+#: syslog.php
+msgid "Inactive"
+msgstr "Ba ya aiki"
+
+#: syslog.php
+msgid "Recovery worker"
+msgstr "Ma'aikacin farfaɗowa"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr "Kuskuren daidaitawa na ƙarshe"
+
+#: syslog.php
+msgid "Last Batch Count"
+msgstr "Adadin Rukuni Na Ƙarshe"
+
+#: syslog.php
+msgid "Last Record Received"
+msgstr "Bayanin Da Aka Karɓa Na Ƙarshe"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr "Mai Tattara Bayanai na Nesa"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr "Mai tattara bayanai na nesa da ba a sani ba"
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
+msgstr "Ba a karɓi bayanan mai tattarawa na nesa tukuna ba."
+
+#: syslog.php
+msgid "Partition maintenance blocked"
+msgstr "An toshe kula da ɓangare"
+
+#: syslog.php
+msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
+msgstr "An dakatar da kula da ɓangare; rubutu zai ci gaba zuwa ɓangaren tsaro na dMaxValue."
+
+#: syslog.php
+msgid "Date coverage"
+msgstr "Iyakar kwanan wata"
+
+#: syslog.php
+msgid "Table"
+msgstr "Tebur"
+
+#: syslog.php
+msgid "dMaxValue rows (estimated)"
+msgstr "layukan dMaxValue (ƙiyasi)"
+
+#: syslog.php
+msgid "dMaxValue size"
+msgstr "girman dMaxValue"
+
+#: syslog.php
+msgid "Partitioning level"
+msgstr "Matakin rarraba ɓangarori"
+
+#: syslog.php
+#, php-format
+msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
+msgstr "An zaɓi %s a cikin Saituna kuma zai fara aiki bayan cli/upgrade_partitioning.php ya sake gina teburan."
+
+#: syslog.php
+msgid "Last attempt"
+msgstr "Gwaji na ƙarshe"
+
+#: syslog.php
+msgid "Last successful maintenance"
+msgstr "Kulawa ta ƙarshe da ta yi nasara"
+
+#: syslog.php
+msgid "Complete"
+msgstr "An Kammala"
+
+#: syslog.php
+msgid "Deferred"
+msgstr "An jinkirta"
+
+#: syslog.php
+msgid "Latest outcome"
+msgstr "Sakamako na baya-bayan nan"
+
+#: syslog.php
+msgid "Recovery progress"
+msgstr "Ci gaban farfaɗowa"
+
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "Cikakkun Bayanai"
+
+#: syslog.php
+msgid "Outcome"
+msgstr "Sakamako"
+
+#: syslog.php
+msgid "Recovery"
+msgstr "Farfaɗowa"
+
+#: syslog.php
+msgid "When"
+msgstr "Yaushe"
+
+#: syslog.php
+msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
+msgstr "Ba a yi rikodin wani aikin kula da rabe-raben rumbun bayanai tukuna ba. Ayyukan za su bayyana bayan gudanarwar mai tattara bayanai na gaba."
+
+#: syslog.php
+#, php-format
+msgid "%d created, %d remaining, %d pruned"
+msgstr "An ƙirƙira %d, saura %d, an rage %d"
+
+#: syslog.php
+msgid "No action required."
+msgstr "Ba a buƙatar wani mataki."
+
+#: syslog.php
+msgid "Incoming backlog"
+msgstr "Tarin saƙonni masu shigowa"
+
+#: syslog.php
+msgid "Processing"
+msgstr "Ana sarrafawa"
+
+#: syslog.php
+msgid "Partition maintenance"
+msgstr "Kula da ɓangare"
+
+#: syslog.php
+msgid "Synchronization"
+msgstr "Daidaitawa"
+
+#: syslog.php
+msgid "Attention required"
+msgstr "Ana buƙatar kulawa"
+
+#: syslog.php
+msgid "Healthy"
+msgstr "Lafiya lau"
+
+#: syslog.php
+msgid "Processing disabled"
+msgstr "An kashe sarrafawa"
+
+#: syslog.php
+msgid "Waiting for processing"
+msgstr "Ana jiran sarrafawa"
+
+#: syslog.php
+msgid "Health"
+msgstr "Lafiya"
+
+#: syslog.php
+msgid "Ready"
+msgstr "A shirye"
+
+#: syslog.php
+msgid "Sent"
+msgstr "An aika"
+
+#: syslog.php
+msgid "Failed; retry pending"
+msgstr "Ya kasa; ana jiran sake gwadawa"
+
+#: syslog.php
+msgid "Pending; next poller check"
+msgstr "Ana jira; binciken Mai Tattara Bayanai na gaba"
+
+#: syslog.php
+msgid "Last health check"
+msgstr "Duba lafiya na ƙarshe"
+
+#: syslog.php
+msgid "Email notifications"
+msgstr "Sanarwoyin imel"
+
+#: syslog.php
+msgid "Not checked yet"
+msgstr "Ba a duba ba tukuna"
+
+#: syslog.php
+msgid "Last notification sent"
+msgstr "Sanarwa ta ƙarshe da aka aika"
+
+#: syslog.php
+msgid "Last received log"
+msgstr "Rajista na ƙarshe da aka karɓa"
+
+#: syslog.php
+msgid "Oldest unprocessed message"
+msgstr "Saƙon da ba a sarrafa ba mafi tsufa"
+
+#: syslog.php
+msgid "Records processed in latest run"
+msgstr "Rikodin da aka aiwatar a gudu na baya-bayan nan"
+
+#: syslog.php
+msgid "Worker processes running"
+msgstr "Ayyukan ma'aikata da ke gudana"
+
+#: syslog.php
+msgid "Configured worker processes"
+msgstr "Tsare-tsaren ma'aikata da aka saita"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr "Masu Masauki da aka fassara"
+
+#: syslog.php
+msgid "Process"
+msgstr "Tsari"
+
+#: syslog.php
+msgid "Records handled"
+msgstr "Rikodin da aka sarrafa"
+
+#: syslog.php
+msgid "Runtime"
+msgstr "Lokacin gudanarwa"
+
+#: syslog.php
+msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
+msgstr "Ba a yi rikodin ƙididdigar kowane tsari tukuna ba. Ƙididdigar ma'aikata za su bayyana bayan gudanarwar aiki tare ta farko."
+
+#: syslog.php
+msgid "Duration"
+msgstr "Tsawon Lokaci"
+
+#: syslog.php
+msgid "Phase"
+msgstr "Mataki"
+
+#: syslog.php
+msgid "Records"
+msgstr "Rikodi"
+
+#: syslog.php
+msgid "Reference updates"
+msgstr "Sabuntawar madogara"
+
+#: syslog.php
+msgid "Removal rules"
+msgstr "Ƙa'idojin cirewa"
+
+#: syslog.php
+msgid "Alert evaluation"
+msgstr "Tantancewar faɗakarwa"
+
+#: syslog.php
+msgid "Incoming transfer"
+msgstr "Canja wuri mai shigowa"
+
+#: syslog.php
+msgid "Report processing"
+msgstr "Ana sarrafa rahoto"
+
+#: syslog.php
+msgid "slowest"
+msgstr "mafi jinkiri"
+
+#: syslog.php
+msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
+msgstr "Ba a yi rikodin lokutan matakai tukuna ba. Lokutan matakai za su bayyana bayan gudanarwar mai tattara bayanai na gaba."
+
+#: syslog.php
+msgid "Last run"
+msgstr "Gudanarwa ta ƙarshe"
+
+#: syslog.php
+msgid "Rules processed"
+msgstr "Ƙa'idodin da aka sarrafa"
+
+#: syslog.php
+msgid "Total"
+msgstr "Jimla"
+
+#: syslog.php
+msgid "Alert rules"
+msgstr "Dokokin faɗakarwa"
+
+#: syslog.php
+msgid "Delete rules"
+msgstr "Share dokoki"
+
+#: syslog.php
+msgid "Fired last run"
+msgstr "An kunna a gudu na ƙarshe"
+
+#: syslog.php
+msgid "Show more"
+msgstr "Nuna ƙari"
+
+#: syslog.php
+msgid "Show less"
+msgstr "Nuna ƙasa da haka"
+
+#: syslog.php
+msgid "Open in a dialog"
+msgstr "Buɗe a cikin tagar tattaunawa"
+
+#: syslog.php
+msgid "Remove from page"
+msgstr "Cire daga shafi"
+
+#: syslog.php
+msgid "Invalid refresh interval."
+msgstr "Tazarar sabuntawa ba daidai ba ce."
+
+#: syslog.php
+msgid "Unknown card."
+msgstr "Kati da ba a sani ba."
+
+#: syslog.php
+msgid "Add card"
+msgstr "Ƙara kati"
+
+#: syslog.php
+msgid "Add a status card…"
+msgstr "Ƙara katin matsayi…"
+
+#: syslog.php
+msgid "Syslog Alert View"
+msgstr "Duba Faɗakarwar Syslog"
+
+#: syslog.php
+msgid "A valid saved search is required."
+msgstr "Ana buƙatar ingantaccen binciken da aka ajiye."
+
+#: syslog.php
+msgid "Saved search not found."
+msgstr "Ba a sami binciken da aka ajiye ba."
+
+#: syslog.php
+msgid "You may only share your own saved searches."
+msgstr "Za ka iya raba binciken da ka ajiye naka kaɗai."
+
+#: syslog.php
+#, php-format
+msgid "[ Unprocessed Messages: %s ]"
+msgstr "[ Saƙonnin da ba a sarrafa ba: %s ]"
+
+#: syslog.php syslog_device_rules.php
+msgid "Enter a search term"
+msgstr "Shigar da kalmar bincike"
+
+#: syslog.php
+msgid "Select Device(s)"
+msgstr "Zaɓi Na'ura/Na'urori"
+
+#: syslog.php
+msgid "Devices Selected"
+msgstr "Na'urorin da aka Zaɓa"
+
+#: syslog.php
+msgid "All Devices Selected"
+msgstr "An Zaɓi Dukkan Na'urori"
+
+#: syslog.php
+#, php-format
+msgid "Syslog Message Filter %s"
+msgstr "Tacewar Saƙon Syslog %s"
+
+#: syslog.php
+msgid "Search messages"
+msgstr "Bincika saƙonni"
+
+#: syslog.php
+msgid "Collapse filters"
+msgstr "Nannaɗe tacewa"
+
+#: syslog.php
+msgid "Edit filters"
+msgstr "Gyara tacewa"
+
+#: syslog.php
+msgid "Saved Searches"
+msgstr "Binciken da aka Ajiye"
+
+#: syslog.php
+msgid "My Searches"
+msgstr "Bincike Na"
+
+#: syslog.php
+msgid "Global Searches"
+msgstr "Bincike na Gabaɗaya"
+
+#: syslog.php
+#, php-format
+msgid "%s (Default)"
+msgstr "%s (Na asali)"
+
+#: syslog.php
+msgid "Manage"
+msgstr "Sarrafa"
+
+#: syslog.php
+msgid "Manage saved searches"
+msgstr "Sarrafa binciken da aka ajiye"
+
+#: syslog.php
+msgid "Save search"
+msgstr "Ajiye bincike"
+
+#: syslog.php
+msgid "Edit"
+msgstr "Gyara"
+
+#: syslog.php
+msgid "Save for all"
+msgstr "Ajiye wa kowa"
+
+#: syslog.php
+msgid "contains"
+msgstr "ya ƙunshi"
+
+#: syslog.php
+msgid "does not contain"
+msgstr "bai ƙunshi ba"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Rows"
+msgstr "Layuka"
+
+#: syslog.php
+msgid "Display Rows"
+msgstr "Nuna Layuka"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Default"
+msgstr "Na Asali"
+
+#: syslog.php
+msgid "View options"
+msgstr "Duba zaɓuɓɓuka"
+
+#: syslog.php
+msgid "Trim"
+msgstr "Yanke"
+
+#: syslog.php
+msgid "Message Trim"
+msgstr "Yanke Saƙo"
+
+#: syslog.php
+msgid "Removal Handling"
+msgstr "Sarrafa Cirewa"
+
+#: syslog.php
+msgid "Display"
+msgstr "Nuni"
+
+#: syslog.php
+msgid "Group Duplicate Messages"
+msgstr "Haɗa Saƙonnin da Suka Maimaitu"
+
+#: syslog.php
+msgid "Individual Messages"
+msgstr "Saƙonni Ɗaya-ɗaya"
+
+#: syslog.php
+msgid "Grouped Messages"
+msgstr "Saƙonnin da Aka Haɗa"
+
+#: syslog.php
+#, no-php-format
+msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
+msgstr "Zaɓi fili, mai sarrafa aiki, da ƙima. AND yana da fifiko kan OR; NOT yana cire sharaɗi. LIKE yana amfani da % don kowane adadin haruffa da _ don harafi ɗaya. Kwanan wata suna amfani da YYYY-MM-DD HH:MM:SS. IDs suna amfani da lambobi masu kyau ko sifili. A bisa tsoho, ana nuna ranar ƙarshe ta rajistoci sai dai idan an gyara kewayon kwanan wata."
+
+#: syslog.php
+msgid "Search help"
+msgstr "Taimakon bincike"
+
+#: syslog.php
+msgid "New Saved Search"
+msgstr "Sabon Binciken da Aka Ajiye"
+
+#: syslog.php
+msgid "Edit Saved Search"
+msgstr "Gyara Binciken da Aka Ajiye"
+
+#: syslog.php
+msgid "Save As"
+msgstr "Ajiye A Matsayin"
+
+#: syslog.php
+msgid "Delete the selected saved search?"
+msgstr "A share binciken da aka ajiye wanda aka zaɓa?"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Search"
+msgstr "Bincika"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Clear"
+msgstr "Share"
+
+#: syslog.php
+msgid "Return filter values to their user defined defaults"
+msgstr "Mayar da ƙimar tacewa zuwa tsoffin saitunan da mai amfani ya ayyana"
+
+#: syslog.php
+msgid "Refresh Results"
+msgstr "Sabunta Sakamako"
+
+#: syslog.php
+msgid "Export Records to CSV"
+msgstr "Fitar da Bayanai zuwa CSV"
+
+#: syslog.php
+msgid "Save Default Settings"
+msgstr "Ajiye Saitunan Asali"
+
+#: syslog.php
+msgid "Save view defaults"
+msgstr "Ajiye saitunan kallo na asali"
+
+#: syslog.php
+msgid "Save Search As"
+msgstr "Ajiye Bincike A Matsayin"
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
+msgstr "Aiwatar da wannan binciken lokacin da ka buɗe wannan shafin kuma babu wani bincike da ke aiki tukuna"
+
+#: syslog.php
+msgid "Breach"
+msgstr "Keta Iyaka"
+
+#: syslog.php
+msgid "Threshold breached"
+msgstr "An keta iyaka"
+
+#: syslog.php
+msgid "Messages"
+msgstr "Saƙonni"
+
+#: syslog.php
+msgid "Empty message"
+msgstr "Saƙo mara komai"
+
+#: syslog.php
+msgid "Toggle group messages"
+msgstr "Kunna/Kashe saƙonnin rukuni"
+
+#: syslog.php
+msgid "Loading group messages..."
+msgstr "Ana loda saƙonnin rukuni..."
+
+#: syslog.php
+msgid "No matching messages."
+msgstr "Babu saƙonni masu dacewa."
+
+#: syslog.php
+msgid "No Syslog Messages"
+msgstr "Babu Saƙonnin Syslog"
+
+#: syslog.php
+msgid "Alert Log Rows"
+msgstr "Layukan Rajistar Faɗakarwa"
+
+#: syslog.php
+msgid "Alert Removed"
+msgstr "An Cire Faɗakarwa"
+
+#: syslog.php
+msgid "No Alert Log Messages"
+msgstr "Babu Saƙonnin Rajistar Faɗakarwa"
+
+#: syslog.php
+msgid "Close message details"
+msgstr "Rufe cikakkun bayanan saƙo"
+
+#: syslog.php
+msgid "Message details"
+msgstr "Cikakkun bayanai na saƙo"
+
+#: syslog.php
+msgid "General"
+msgstr "Gabaɗaya"
+
+#: syslog.php
+msgid "Alert Rule"
+msgstr "Dokar Faɗakarwa"
+
+#: syslog.php
+msgid "Sequence"
+msgstr "Jeri"
+
+#: syslog.php
+msgid "Copied"
+msgstr "An kwafa"
+
+#: syslog.php
+msgid "Copy link"
+msgstr "Kwafi hanyar haɗi"
+
+#: syslog.php
+msgid "Copy message"
+msgstr "Kwafi saƙo"
+
+#: syslog.php
+msgid "Copy unavailable. Select and copy the message text."
+msgstr "Kwafa ba ya samuwa. Zaɓi ka kwafi rubutun saƙon."
+
+#: syslog.php
+msgid "Looking up recommendations…"
+msgstr "Ana neman shawarwari…"
+
+#: syslog.php
+msgid "No recommendation matches this message."
+msgstr "Babu wata shawara da ta dace da wannan saƙon."
+
+#: syslog.php syslog_alerts.php
+msgid "Actions"
+msgstr "Ayyuka"
+
+#: syslog.php
+msgid "Create Alarm Rule"
+msgstr "Ƙirƙiri Ƙa'idar Ƙararrawa"
+
+#: syslog.php
+msgid "Create Device Alert Rule"
+msgstr "Ƙirƙiri Ƙa'idar Faɗakarwar Na'ura"
+
+#: syslog.php
+msgid "Create Removal Rule"
+msgstr "Ƙirƙiri Ƙa'idar Cirewa"
+
+#: syslog.php
+msgid "Filter by device"
+msgstr "Tace ta na'ura"
+
+#: syslog.php
+msgid "Filter by program"
+msgstr "Tace ta shiri"
+
+#: syslog.php
+msgid "All Programs"
+msgstr "Dukkan Shirye-shirye"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
+msgstr "Danna 'Ci gaba' don Share waɗannan Ƙa'idar/Ƙa'idojin Faɗakarwa na Syslog na gaba."
+
+#: syslog_alerts.php
+msgid "Delete Syslog Alert Rule(s)"
+msgstr "Share Dokar/Dokokin Faɗakarwar Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
+msgstr "Danna 'Ci gaba' don Kashe waɗannan Ƙa'idar/Ƙa'idojin Faɗakarwa na Syslog na gaba."
+
+#: syslog_alerts.php
+msgid "Disable Syslog Alert Rule(s)"
+msgstr "Kashe Ƙa'idar/Ƙa'idojin Faɗakarwar Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
+msgstr "Danna 'Ci gaba' don Kunna waɗannan Ƙa'idar/Ƙa'idojin Faɗakarwa na Syslog na gaba."
+
+#: syslog_alerts.php
+msgid "Enable Syslog Alert Rule(s)"
+msgstr "Kunna Dokar/Dokokin Faɗakarwar Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
+msgstr "Danna 'Ci gaba' don Fitar da Ƙa'idar/Ƙa'idojin Faɗakarwar Syslog masu zuwa."
+
+#: syslog_alerts.php
+msgid "Export Syslog Alert Rule(s)"
+msgstr "Fitar da Dokokin Faɗakarwa na Syslog"
+
+#: syslog_alerts.php
+msgid "Select Syslog Alarming or Alarm Manager."
+msgstr "Zaɓi Sanarwar Gaggawa ta Syslog ko Mai Sarrafa Sanarwar Gaggawa."
+
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr "Shigar da lamba guda ta mintuna, sa'o'i, ko kwanaki don tagar iyaka."
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr "Shigar da lamba guda mai kyau ta mintuna, sa'o'i, ko kwanaki don farfaɗowar iyaka."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
+msgstr "Tsarin SQL da aka shigar ba daidai ba ne.  Da fatan za a gyara SQL ɗinka.<br>"
+
+#: syslog_alerts.php syslog_reports.php
+#, php-format
+msgid "The Pre-processed SQL is:<br><br> %s"
+msgstr "SQL ɗin da aka riga aka sarrafa shi ne:<br><br> %s"
+
+#: syslog_alerts.php syslog_removal.php
+#, php-format
+msgid "The filter is invalid: %s"
+msgstr "Tacewar ba ta da inganci: %s"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The processed SQL was invalid.  Please correct your SQL"
+msgstr "SQL da aka sarrafa ba daidai ba ne.  Da fatan za a gyara SQL ɗinku"
+
+#: syslog_alerts.php
+msgid "Not Set"
+msgstr "Ba a Saita Ba"
+
+#: syslog_alerts.php
+msgid "1 Minute"
+msgstr "Minti 1"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hour"
+msgstr "Sa'a %d"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hours"
+msgstr "Sa'o'i %d"
+
+#: syslog_alerts.php
+msgid "1 Month"
+msgstr "Wata 1"
+
+#: syslog_alerts.php
+#, php-format
+msgid "Alert Edit [edit: %s]"
+msgstr "Gyaran Faɗakarwa [gyara: %s]"
+
+#: syslog_alerts.php
+msgid "Alert Edit [new]"
+msgstr "Gyaran Faɗakarwa [sabo]"
+
+#: syslog_alerts.php
+msgid "New Alert Rule"
+msgstr "Sabuwar Dokar Faɗakarwa"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "N/A"
+msgstr "Babu"
+
+#: syslog_alerts.php
+msgid "Time unit"
+msgstr "Rukunin lokaci"
+
+#: syslog_alerts.php
+msgid "Days"
+msgstr "Kwanaki"
+
+#: syslog_alerts.php
+msgid "Hours"
+msgstr "Sa'o'i"
+
+#: syslog_alerts.php
+msgid "Minutes"
+msgstr "Mintuna"
+
+#: syslog_alerts.php
+msgid "Please describe this Alert."
+msgstr "Da fatan za a bayyana wannan Faɗakarwar."
+
+#: syslog_alerts.php
+msgid "Alarm Destination"
+msgstr "Makomar Ƙararrawa"
+
+#: syslog_alerts.php
+msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
+msgstr "Zaɓi Ƙararrawar Syslog ko Mai Kula da Ƙararrawa. Mai Kula da Ƙararrawa kuma yana buƙatar a kunna tura saƙo a cikin saitunan Syslog. An riƙe Imel a matsayin madogara; ayyukan umarni ba sa gudu ga ƙa'idodin Mai Kula da Ƙararrawa."
+
+#: syslog_alerts.php
+msgid "Alarm Manager"
+msgstr "Mai Gudanar da Ƙararrawa"
+
+#: syslog_alerts.php
+msgid "Syslog Alarming"
+msgstr "Faɗakarwar Syslog"
+
+#: syslog_alerts.php
+msgid "What is the Severity Level of this Alert?"
+msgstr "Menene Matakin Tsanani na wannan Faɗakarwar?"
+
+#: syslog_alerts.php
+msgid "Reporting Level"
+msgstr "Matakin Rahoto"
+
+#: syslog_alerts.php
+msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
+msgstr "Don yin rikodin Zagayen Sake Faɗakarwa, ya kamata a bi diddigin Faɗakarwar a matakin Tsari ko Na'ura."
+
+#: syslog_alerts.php
+msgid "System"
+msgstr "Tsarin Na'ura"
+
+#: syslog_alerts.php
+msgid "Reporting Method"
+msgstr "Hanyar Rahoto"
+
+#: syslog_alerts.php
+msgid "Define how to Alert on the syslog messages."
+msgstr "Bayyana yadda za a yi Faɗakarwa kan saƙonnin syslog."
+
+#: syslog_alerts.php
+msgid "Individual"
+msgstr "Ɗaya-ɗaya"
+
+#: syslog_alerts.php
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
+msgstr "Don hanyar 'Iyaka', ana kunna Faɗakarwa lokacin da adadin da aka gani ya kai wannan daraja."
+
+#: syslog_alerts.php
+msgid "Threshold Window"
+msgstr "Tagar Iyaka"
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr "Ƙidaya abubuwan da suka dace a duk zagayowar mai tattara bayanai a cikin wannan taga mai juyawa, ta amfani da lokacin sarrafawar mai tattara bayanai. Shigar da 0 don ƙidaya zagayowar yanzu kaɗai."
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr "Farfaɗo bayan lokacin shiru"
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
+msgstr "Lokacin da babu saƙonnin da suka dace kafin a share ketarewar, a sake saita ƙidayar, kuma a sake kunna wannan ƙa'idar. Kowanne saƙo mai dacewa yana sake kunna wannan agogon lokaci."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match Type"
+msgstr "Nau'in Daidaitawa"
+
+#: syslog_alerts.php
+msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
+msgstr "Zaɓi Mai Gina Tacewa don tsarin ƙararrawa mai sharuɗɗa da yawa cikin aminci. An riƙe SQL Expression don tsofaffin ƙa'idodi."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Message Match String"
+msgstr "Rubutun Daidaita Saƙo"
+
+#: syslog_alerts.php
+msgid "Build filter conditions or enter an SQL expression to match syslog messages."
+msgstr "Gina sharuɗɗan tacewa ko shigar da furucin SQL don dacewa da saƙonnin syslog."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_removal.php
+#: syslog_reports.php
+msgid "Enabled"
+msgstr "An kunna"
+
+#: syslog_alerts.php
+msgid "Is this Alert Enabled?"
+msgstr "Shin an kunna wannan Faɗakarwar?"
+
+#: syslog_alerts.php
+msgid "Re-Alert Cycle"
+msgstr "Zagayen sake faɗakarwa"
+
+#: syslog_alerts.php
+msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
+msgstr "Kada a sake aika wannan faɗakarwar don wannan mai masaukin, har sai wannan lokacin ya wuce. Ga ƙararrawa bisa iyaka, wannan yana shafar dukkan masu masauki."
+
+#: syslog_alerts.php
+msgid "Notification Cooldown"
+msgstr "Lokacin Hutu na Sanarwa"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
+msgstr "Mintuna don danne duk wata sanarwa mai zuwa daga wannan ƙa'ida da iyakar rahoto."
+
+#: syslog_alerts.php
+msgid "1 day"
+msgstr "Kwana 1"
+
+#: syslog_alerts.php
+msgid "1 hour"
+msgstr "Sa'a 1"
+
+#: syslog_alerts.php
+msgid "1 minute"
+msgstr "Minti 1"
+
+#: syslog_alerts.php
+msgid "15 minutes"
+msgstr "Minti 15"
+
+#: syslog_alerts.php
+msgid "30 minutes"
+msgstr "Minti 30"
+
+#: syslog_alerts.php
+msgid "4 hours"
+msgstr "Sa'o'i 4"
+
+#: syslog_alerts.php
+msgid "5 minutes"
+msgstr "Minti 5"
+
+#: syslog_alerts.php
+msgid "Use global setting"
+msgstr "Yi amfani da saitin gaba ɗaya"
+
+#: syslog_alerts.php
+msgid "Duplicate Suppression"
+msgstr "Hana Maimaita Kwafi"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress the same matched message set."
+msgstr "Mintuna don danne saitin saƙonni guda da suka dace."
+
+#: syslog_alerts.php
+msgid "Maintenance Window"
+msgstr "Lokacin Kulawa"
+
+#: syslog_alerts.php
+msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
+msgstr "Zaɓi ko wannan ƙa'idar za ta yi amfani da lokacin kulawa na gaba ɗaya ne ko nata lokacin."
+
+#: syslog_alerts.php
+msgid "Do not mute this rule"
+msgstr "Kada a yi shiru da wannan ƙa'idar"
+
+#: syslog_alerts.php
+msgid "Use global timeframe"
+msgstr "Yi amfani da lokacin gaba ɗaya"
+
+#: syslog_alerts.php
+msgid "Use rule timeframe"
+msgstr "Yi amfani da lokacin ƙa'ida"
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Days"
+msgstr "Kwanakin Gyaran Ƙa'ida"
+
+#: syslog_alerts.php
+msgid "Days for this rule timeframe, when Use rule timeframe is selected."
+msgstr "Kwanaki don wannan tsarin lokacin ƙa'ida, idan an zaɓi Yi amfani da tsarin lokacin ƙa'ida."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Starts"
+msgstr "Farkon Gyaran Ƙa'ida"
+
+#: syslog_alerts.php
+msgid "Local start time for this rule timeframe."
+msgstr "Lokacin farawa na gida don wannan lokacin ƙa'ida."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Ends"
+msgstr "Ƙarshen Gyaran Ƙa'ida"
+
+#: syslog_alerts.php
+msgid "Local end time for this rule timeframe."
+msgstr "Lokacin ƙarewa na gida don wannan lokacin ƙa'ida."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Starts"
+msgstr "Farkon Gyaran Doka na Sau Ɗaya"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Kwanan wata da lokaci na gida na zaɓi don fara yin shiru ga wannan doka. Tsari: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Ends"
+msgstr "Ƙarshen Gyaran Doka na Sau Ɗaya"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Kwanan wata da lokaci na gida na zaɓi don dakatar da yin shiru ga wannan doka. Tsari: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_reports.php
+msgid "Notes"
+msgstr "Bayanai"
+
+#: syslog_alerts.php
+msgid "Space for Notes on the Alert"
+msgstr "Wurin Bayanan Kula akan Faɗakarwa"
+
+#: syslog_alerts.php
+msgid "Email Options"
+msgstr "Zaɓuɓɓukan Imel"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Notification List"
+msgstr "Jerin Sanarwa"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "Yi amfani da abubuwan da ke cikin wannan Jerin Sanarwa don tantance wa za a sanar da shi da kuma yadda za a yi hakan."
+
+#: syslog_alerts.php
+msgid "Emails to Notify"
+msgstr "Adiresoshin Imel da za a Sanar"
+
+#: syslog_alerts.php
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "Da fatan za a shigar da jerin adiresoshin Imel da aka raba da waƙafi don sanarwa.  Idan kana son aika Imel zuwa ga mai karɓa a tsarin SMS, da fatan za a sanya <b>'sms@'</b> a gaban adireshin Imel na mai karɓar.  Misali, idan adireshin SMS na mai karɓa shi ne <b>'2485551212@mycarrier.net'</b>, za ka shigar da shi a matsayin <b>'sms@2485551212@mycarrier.net'</b> kuma za a tsara shi a matsayin saƙon SMS."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Body Text"
+msgstr "Rubutun Jikin Imel"
+
+#: syslog_alerts.php
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "Wannan bayanin zai bayyana a cikin jikin Faɗakarwar kafin cikakken bayanin Faɗakarwar."
+
+#: syslog_alerts.php
+msgid "Open Ticket"
+msgstr "Buɗe Tikiti"
+
+#: syslog_alerts.php
+msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
+msgstr "Shin a buɗe Tikitin Taimako don wannan Faɗakarwa.  LURA: Za a cika rubutun umarnin Tikiti da ma'aunan muhalli na 'ALERT_' da dama don sauƙi."
+
+#: syslog_alerts.php
+msgid "Alert command"
+msgstr "Umarnin faɗakarwa"
+
+#: syslog_alerts.php
+msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
+msgstr "Lokacin da aka kunna Faɗakarwa, gudanar da wannan umarnin. Waɗannan masu canjin maye gurbi suna samuwa <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>. Da fatan za a lura cewa <b>'&lt;HOSTNAME&gt;'</b> yana samuwa ne kawai akan iyakoki ɗaiɗaiku. Waɗannan ƙimar maye gurbi na iya bayyana akan layin umarni, ko a tattara su daga muhallin rubutun. Lokacin da aka yi amfani da su daga muhallin, waɗannan masu canjin za su kasance da gabatarwa 'ALERT_'."
+
+#: syslog_alerts.php
+msgid "Recovery command"
+msgstr "Umarnin farfaɗowa"
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgstr "Umarni na zaɓi da za a gudanar lokacin da wannan iyaka ta farfaɗo bayan lokacin shirunta. Yana amfani da masu canjin maye gurbi iri ɗaya da umarnin Faɗakarwa. SYSLOG_EVENT yana a sarari; SYSLOG_BREACH_ID ya yi daidai da umarnin keta iyaka. Ana sake gwada umarnin da suka gaza. Bar shi fanko don kashewa."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Test rule"
+msgstr "Gwada doka"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Rule Test Preview"
+msgstr "Samfotin Gwajin Ƙa'ida"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Value"
+msgstr "Ƙima"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a value"
+msgstr "Shigar da ƙima"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match"
+msgstr "Daidaita"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Exclude"
+msgstr "Ware"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a nonnegative integer"
+msgstr "Shigar da lamba guda marar korau"
+
+#: syslog_alerts.php
+msgid "Alarm filter conditions"
+msgstr "Sharuɗɗan tacewar ƙararrawa"
+
+#: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php
+msgid "All"
+msgstr "Duka"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Go"
+msgstr "Tafi"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+msgid "Import"
+msgstr "Shigowa"
+
+#: syslog_alerts.php
+msgid "Syslog Alert Filters"
+msgstr "Tacewar Faɗakarwar Syslog"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Method"
+msgstr "Hanya"
+
+#: syslog_alerts.php
+msgid "Threshold Count"
+msgstr "Adadin Iyaka"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Search String"
+msgstr "Kalmomin Bincike"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Addresses"
+msgstr "Adiresoshin Imel"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Last Modified"
+msgstr "Gyara na Ƙarshe"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "By User"
+msgstr "Ta Mai Amfani"
+
+#: syslog_alerts.php
+msgid "Alerts"
+msgstr "Faɗakarwowi"
+
+#: syslog_alerts.php
+msgid "Multiple"
+msgstr "Masu Yawa"
+
+#: syslog_alerts.php
+msgid "No Syslog Alerts Defined"
+msgstr "Babu Faɗakarwar Syslog da Aka Bayyana"
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Local File"
+msgstr "Shigo da Dokar Faɗakarwa daga Fayil na Gida"
+
+#: syslog_alerts.php
+msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
+msgstr "Idan fayil ɗin XML mai ɗauke da bayanan ma'anar Dokar Faɗakarwa yana kan na'urarka ta gida, zaɓe shi a nan."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Text"
+msgstr "Shigo da Dokar Faɗakarwa daga Rubutu"
+
+#: syslog_alerts.php
+msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
+msgstr "Idan kana da fayil ɗin XML mai ɗauke da bayanan ma'anar Dokar Faɗakarwa a matsayin rubutu, za ka iya liƙa shi a cikin wannan akwati don shigo da shi."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule"
+msgstr "Shigo da Dokar Faɗakarwa"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_saved_searches.php
+msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
+msgstr "An ƙi shigo da shi: fayil ɗin babu komai a ciki, ba daidai ba ne, ko yana ƙunshe da wani nau'in abu na Syslog daban."
+
+#: syslog_alerts.php
+msgid "Import rejected: invalid alarm destination."
+msgstr "An ƙi shigo da shi: wurin tura ƙararrawa ba daidai ba ne."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Imported"
+msgstr "An Shigo Da Shi"
+
+#: syslog_alerts.php
+#, php-format
+msgid "NOTE: Alert '%s' %s!"
+msgstr "LURA: Faɗakarwa '%s' %s!"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_reports.php
+msgid "Updated"
+msgstr "An Sabunta"
+
+#: syslog_alerts.php
+#, php-format
+msgid "ERROR: Alert '%s' %s Failed!"
+msgstr "KUSKURE: Faɗakarwa '%s' %s Ta Gaza!"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Update"
+msgstr "Sabunta"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Select a valid owner."
+msgstr "Zaɓi mai shi mai inganci."
+
+#: syslog_dashboards.php
+msgid "Unable to save the dashboard. Please try again."
+msgstr "An kasa ajiye dashboard ɗin. Da fatan za a sake gwadawa."
+
+#: syslog_dashboards.php
+msgid "Enter a dashboard name between 1 and 128 characters."
+msgstr "Shigar da sunan allon kulawa tsakanin haruffa 1 zuwa 128."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Owner"
+msgstr "Mai shi"
+
+#: syslog_dashboards.php
+msgid "Shared"
+msgstr "An raba"
+
+#: syslog_dashboards.php
+msgid "Panels"
+msgstr "Alluna"
+
+#: syslog_dashboards.php
+msgid "deleted user"
+msgstr "mai amfani da aka share"
+
+#: syslog_dashboards.php
+msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
+msgstr "Babu allon bayanai tukuna. Masu amfani suna ƙirƙirar su ne daga shafin Allon Bayanai na Syslog."
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
+msgstr "Danna 'Ci gaba' don Share waɗannan Allon Aiki (Dashboard) da duk Sassansu."
+
+#: syslog_dashboards.php
+msgid "Delete Dashboard(s)"
+msgstr "Share Allon/Allunan Aiki"
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Export the following Dashboard(s)."
+msgstr "Danna 'Ci gaba' don Fitar da Allon Bayani/Allunan Bayani masu zuwa."
+
+#: syslog_dashboards.php
+msgid "Export Dashboard(s)"
+msgstr "Fitar da Allon Bayanai"
+
+#: syslog_dashboards.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Dashboard(s)."
+msgstr "LURA: An shigo da Allon Bayanai %d kuma an sabunta %d."
+
+#: syslog_dashboards.php
+#, php-format
+msgid "ERROR: %d Dashboard(s) failed to import."
+msgstr "KUSKURE: Shigo da Allon Aiki %d ya gaza."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Local File"
+msgstr "Shigo da Allon Kulawa daga Fayil na Gida"
+
+#: syslog_dashboards.php
+msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
+msgstr "Idan fayil ɗin JSON mai ɗauke da bayanan ma'anar Allon Kulawa (Dashboard) yana kan na'urarka ta gida, zaɓe shi a nan."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Text"
+msgstr "Shigo da Allon Kulawa daga Rubutu"
+
+#: syslog_dashboards.php
+msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
+msgstr "Idan kana da fayil ɗin JSON mai ɗauke da bayanan ma'anar Allon Kulawa (Dashboard) a matsayin rubutu, za ka iya liƙa shi a cikin wannan akwati don shigo da shi."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard"
+msgstr "Shigo da Allon Kulawa"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Users"
+msgstr "Duk Masu Amfani"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Groups"
+msgstr "Dukkan Rukunai"
+
+#: syslog_dashboards.php
+msgid "Edit Dashboard"
+msgstr "Gyara Allon Kulawa"
+
+#: syslog_dashboards.php
+msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
+msgstr "Sunan da aka nuna a zaɓin Dashboards na shafin Syslog Dashboard."
+
+#: syslog_dashboards.php
+msgid "The account that owns this dashboard and can manage its panels."
+msgstr "Asusun da ya mallaki wannan allo kuma zai iya sarrafa fanel ɗinsa."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Users"
+msgstr "An Raba da Masu Amfani"
+
+#: syslog_dashboards.php
+msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
+msgstr "Masu amfani da za su iya duba wannan allon kulawar baya ga mai shi da duk wani rabawa na gaba ɗaya. Duk Masu Amfani yana raba shi da kowa."
+
+#: syslog_dashboards.php
+msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
+msgstr "Ƙungiyoyin da za su iya ganin wannan allon bayani ban da mai shi da duk wani raba na duniya baki ɗaya. Duk Ƙungiyoyi yana raba shi ga kowa."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Groups"
+msgstr "An Raba da Ƙungiyoyi"
+
+#: syslog_dashboards.php
+msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
+msgstr "Sake sanya suna ya shafi kowane mai kallon wannan allon bayanai. Masu su ne ke sarrafa rukunonin allo daga shafin Allon Bayanan Syslog."
+
+#: syslog_device_rules.php
+msgid "Choose a future pause end date and time."
+msgstr "Zaɓi kwanan wata da lokacin ƙarewar dakatarwa na gaba."
+
+#: syslog_device_rules.php
+msgid "A device name is required."
+msgstr "Ana buƙatar sunan na'ura."
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Click Continue to %s the following Device Alert Rule(s)."
+msgstr "Danna Ci gaba don %s Ƙa'idar/Ƙa'idojin Faɗakarwar Na'ura masu zuwa."
+
+#: syslog_device_rules.php
+msgid "Do not pass any priority"
+msgstr "Kada a aika wani fifiko"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "%s and more urgent"
+msgstr "%s da mafi gaggawa"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule"
+msgstr "Dokar Faɗakarwar Na'ura"
+
+#: syslog_device_rules.php
+msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
+msgstr "Bincika na'urorin Syslog na yanzu yayin da kake rubutu, ko shigar da kowane adireshin IP ko sunan mai masauki."
+
+#: syslog_device_rules.php
+msgid "Alert Handling"
+msgstr "Sarrafa Faɗakarwa"
+
+#: syslog_device_rules.php
+msgid "Do not pause"
+msgstr "Kada a dakata"
+
+#: syslog_device_rules.php
+msgid "Pause all non-exempt alerts until a date, or indefinitely."
+msgstr "Dakatar da duk faɗakarwar da ba a keɓe ba har zuwa wata rana, ko har abada."
+
+#: syslog_device_rules.php
+msgid "Pause indefinitely"
+msgstr "Dakatar har abada"
+
+#: syslog_device_rules.php
+msgid "Pause until"
+msgstr "Dakatar har zuwa"
+
+#: syslog_device_rules.php
+msgid "Local date and time, YYYY-MM-DD HH:MM."
+msgstr "Kwanan wata da lokacin gida, YYYY-MM-DD HH:MM."
+
+#: syslog_device_rules.php
+msgid "Pause Ends"
+msgstr "Ƙarshen Dakatarwa"
+
+#: syslog_device_rules.php
+msgid "Always Allow Priority"
+msgstr "Kullum Ba da Izin Fifiko"
+
+#: syslog_device_rules.php
+msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
+msgstr "Waɗannan fifikon suna wucewa ta lokutan dakatarwa da gyara na wannan na'ura. Mai tsanani da mafi gaggawa zaɓi ne da aka saba amfani da shi don na'ura mai darajar platinum."
+
+#: syslog_device_rules.php
+msgid "Allow During Maintenance"
+msgstr "Ba da Izin Lokacin Kulawa"
+
+#: syslog_device_rules.php
+msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
+msgstr "Ba da izin duk matakan fifiko daga wannan na'ura yayin lokacin kulawa na faɗakarwa. Keɓe fifikon da ke sama yana nan aiki idan wannan ya kasance A'a."
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [edit]"
+msgstr "Dokar Faɗakarwar Na'ura [gyara]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [new]"
+msgstr "Dokar Faɗakarwar Na'ura [sabo]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule Filters"
+msgstr "Tacewar Dokar Faɗakarwar Na'ura"
+
+#: syslog_device_rules.php syslog_removal.php
+msgid "Rules"
+msgstr "Dokoki"
+
+#: syslog_device_rules.php
+msgid "Handling"
+msgstr "Sarrafawa"
+
+#: syslog_device_rules.php
+msgid "Maintenance"
+msgstr "Gyara"
+
+#: syslog_device_rules.php
+msgid "Pass Through"
+msgstr "Wuce Kai Tsaye"
+
+#: syslog_device_rules.php
+msgid "No device alert rules found."
+msgstr "Ba a sami ƙa'idojin faɗakarwar na'ura ba."
+
+#: syslog_device_rules.php
+msgid "Not paused"
+msgstr "Ba a dakatar ba"
+
+#: syslog_device_rules.php
+msgid "Paused indefinitely"
+msgstr "An dakatar har abada"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Paused until %s"
+msgstr "An dakatar har zuwa %s"
+
+#: syslog_device_rules.php
+msgid "and more urgent"
+msgstr "da mafi gaggawa"
+
+#: syslog_device_rules.php
+msgid "Allow all"
+msgstr "Ba da izin duka"
+
+#: syslog_device_rules.php
+msgid "Use priority exception"
+msgstr "Yi amfani da keɓancewar fifiko"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
+msgstr "Ba a ajiye shawarar ba saboda %s. Shigar da mai ganowa ba tare da tazara ba kuma aƙalla bayani ko matakin da aka ba da shawara."
+
+#: syslog_recommendations.php
+msgid "A recommendation for this vendor and identifier already exists."
+msgstr "Shawarar wannan mai siyarwa da lambar shaida tana nan tuni."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
+msgstr "LURA: Mai gano %s yana ɗauke da haruffa banda baƙaƙe, lambobi, _ . - / da kuma alamar %% ta farko ta zaɓi, don haka ba zai taɓa dacewa da saƙon Syslog ba. Sauya masu riƙe wuri kamar # ko zaɓuɓɓuka kamar A|B da ainihin lambar."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Export the following Recommendation(s)."
+msgstr "Danna 'Ci gaba' don Fitar da Shawara/Shawarwari masu zuwa."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Delete the following Recommendation(s)."
+msgstr "Danna 'Ci gaba' don Share waɗannan Shawara(ori) na gaba."
+
+#: syslog_recommendations.php
+msgid "Export requires the PHP zlib extension to create a JSON gzip file."
+msgstr "Fitarwa na buƙatar ƙarin PHP zlib don ƙirƙirar fayil ɗin JSON gzip."
+
+#: syslog_recommendations.php
+msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
+msgstr "An ƙi shigo da shi: fayil ɗin babu komai a ciki, ya yi girma da yawa, ko ba ingantaccen takardar JSON na shawarwari ba ne."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
+msgstr "LURA: An ƙara %d, an sabunta %d kuma an bar Shawarwari %d da ke akwai ba tare da sauyi ba."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
+msgstr "KUSKURE: An ƙi amincewa da Shawara %d (misali %s). An jera kowanne tare da dalilinsa a cikin rajistar Cacti."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
+msgstr "KUSKURE: Ba a iya adana Shawara %d ba. An jera kowanne a cikin rajistar Cacti."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
+msgstr "LURA: Shawarwari %d da aka shigo da su suna da masu ganowa masu ɗauke da haruffa kamar | ko # waɗanda ba sa taɓa bayyana a kalmar saƙo, don haka ba za su iya dacewa ba har sai an gyara su. Saita Zai Iya Dacewa zuwa A'a don jero su."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Local File"
+msgstr "Shigo da Shawarwari daga Fayil na Gida"
+
+#: syslog_recommendations.php
+msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
+msgstr "Zaɓi fayil ɗin .json ko .json.gz a kan na'urarka. Yi amfani da aikin Fitarwa don ganin tsarin da ake tsammani: jerin bayanai masu ɗauke da vendor, identifier, component, severity, message, explanation, recommended_action da reference."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Text"
+msgstr "Shigo da Shawarwari daga Rubutu"
+
+#: syslog_recommendations.php
+msgid "Alternatively, paste the JSON document into this box."
+msgstr "A madadin haka, liƙa takardar JSON cikin wannan akwati."
+
+#: syslog_recommendations.php
+msgid "Existing Recommendations"
+msgstr "Shawarwarin da ke Akwai"
+
+#: syslog_recommendations.php
+msgid "A recommendation is the same as an existing one when its vendor and identifier match."
+msgstr "Shawara tana zama iri ɗaya da wadda ke akwai idan mai siyarwarta da lambar shaidarta suka yi daidai."
+
+#: syslog_recommendations.php
+msgid "Keep the existing recommendation"
+msgstr "Riƙe shawarar da ke akwai"
+
+#: syslog_recommendations.php
+msgid "Replace it with the imported one"
+msgstr "Sauya shi da wanda aka shigo da shi"
+
+#: syslog_recommendations.php
+msgid "Import Recommendations"
+msgstr "Shigo da Shawarwari"
+
+#: syslog_recommendations.php
+msgid "Importing, please wait..."
+msgstr "Ana shigo da shi, don Allah a jira..."
+
+#: syslog_recommendations.php
+msgid "Not specified"
+msgstr "Ba a bayyana ba"
+
+#: syslog_recommendations.php
+msgid "Recommendation"
+msgstr "Shawara"
+
+#: syslog_recommendations.php
+msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
+msgstr "Mai samar da na'urar ko manhajar da ke rubuta wannan saƙon, misali Cisco ko Juniper."
+
+#: syslog_recommendations.php
+msgid "Vendor"
+msgstr "Mai ƙera"
+
+#: syslog_recommendations.php
+msgid "Identifier"
+msgstr "Mai ganowa"
+
+#: syslog_recommendations.php
+msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
+msgstr "Lambar saƙon da za a nema, misali %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN ko 4625. Dole ne ta yi daidai da cikakkiyar kalma ta saƙon syslog (haruffa, lambobi da _ . - /); % na farko na zahiri ne kuma dole ne ya dace kamar yadda aka rubuta. Daidaitawar ba ta damu da manya ko ƙananan haruffa ba. Duba Yadda Ake Daidaita Shawarwari a shafin jeri."
+
+#: syslog_recommendations.php
+msgid "Component"
+msgstr "Sashe"
+
+#: syslog_recommendations.php
+msgid "The facility, module or subsystem that raises the message."
+msgstr "Sashen, rukunin tsari ko ƙaramin tsarin da ke tayar da saƙon."
+
+#: syslog_recommendations.php
+msgid "The severity the vendor documents for this message."
+msgstr "Tsananin da mai siyarwa ya rubuta don wannan saƙon."
+
+#: syslog_recommendations.php
+msgid "The message format as documented, including its variable placeholders."
+msgstr "Tsarin saƙon kamar yadda aka rubuta a takardu, gami da wuraren adana masu canji nasa."
+
+#: syslog_recommendations.php
+msgid "What the message means."
+msgstr "Ma'anar saƙon."
+
+#: syslog_recommendations.php
+msgid "What an operator should do about it."
+msgstr "Abin da ya kamata mai gudanarwa ya yi game da shi."
+
+#: syslog_recommendations.php
+msgid "Links to the vendor documentation, one per line."
+msgstr "Hanyoyin haɗi zuwa takaddun mai siyarwa, ɗaya a kowane layi."
+
+#: syslog_recommendations.php
+msgid "Recommendation [edit]"
+msgstr "Shawara [gyara]"
+
+#: syslog_recommendations.php
+msgid "Recommendation [new]"
+msgstr "Shawara [sabo]"
+
+#: syslog_recommendations.php
+msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
+msgstr "Alamar kwan fitila kafin saƙon tana nuna shawarwarin da suka dace akan shafukan Rajistan Ayarin Tsari (System Logs) da Rajistan Faɗakarwa (Alert Logs). Danna saƙon don karanta su a cikin tagar bayani. Riƙe linzamin kwamfuta a kai ba ya taɓa tura buƙata ga sabar."
+
+#: syslog_recommendations.php
+msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
+msgstr "Ginshiƙin <b>Identifier</b> kaɗai ake amfani da shi wajen daidaitawa. Ana nuna mai ƙera, sashi, tsanani, saƙo da bayani a cikin tagar cikakken bayani amma ba a taɓa bincika su ba."
+
+#: syslog_recommendations.php
+msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
+msgstr "Ana raba haruffa 2,048 na farko na saƙon zuwa kalmomi. Kalma ita ce jerin haruffa, lambobi da alamomin _ . - / waɗanda za su iya farawa da %. Duk wani sauran harafi ko alama, kamar sarari, alamar biyu-biyu (:), waƙafi ko baka, na kawo ƙarshen kalma. A cikin <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> kalmomin su ne <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> da <code>down</code>."
+
+#: syslog_recommendations.php
+msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
+msgstr "Mai ganowa yana dacewa ne idan ya kasance <b>daidai yake da kalma guda ɗaya cikakke</b>, ba tare da la'akari da babba ko ƙaramin harafi ba. Ba bincike ba ne na \"ya ƙunshi\", \"yana farawa da\" ko \"yana ƙarewa da\", kuma babu alamomin maye (wildcards): <code>LINK-3-UPDOWN</code> ba ya dacewa da kalmar <code>LINK-3-UPDOWN-EXT</code>, kuma <code>UPDOWN</code> ba ya dacewa da <code>%LINK-3-UPDOWN</code>."
+
+#: syslog_recommendations.php
+msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
+msgstr "Alamar <b>%</b> a farko ta zahiri ce, ba alamar maye gurbi (wildcard) ba ce, kuma dole ne ta dace da kalmar saƙon kamar yadda aka rubuta ta. Alamar shaida <code>%LINK-3-UPDOWN</code> tana dacewa da kalmar saƙo <code>%LINK-3-UPDOWN</code>, ba <code>LINK-3-UPDOWN</code> ba; alamar shaida ba tare da gaba-gaba ba tana dacewa da kalmar da ba ta da gaba-gaba kawai."
+
+#: syslog_recommendations.php
+msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
+msgstr "Lokacin da mai masauki na Syslog na'ura ce ta Cacti wadda aka gane mai ƙera ta daga bayanin tsarin SNMP ko samfurin na'ura, kuma akwai shawarwari ga wannan mai ƙerar, shawarwarin wannan mai ƙerar da waɗanda ba su da mai ƙera ne kawai ake dubawa. In ba haka ba ana duba dukkan masu ƙera, amma mai ganowa wanda aka yi da lambobi kawai yana dacewa da shawarwarin da ba su da mai ƙera kawai. Lokacin da shawarwari da yawa suka dace, ana nuna mafi tsayin masu ganowa da farko, har zuwa uku."
+
+#: syslog_recommendations.php
+msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
+msgstr "Alamomin ganowa waɗanda ke ɗauke da wasu haruffa, kamar wurin ajiyar rami na <code>#</code> ko zaɓuɓɓukan <code>|</code> a cikin takardun wasu masu sayarwa (misali <code>%ASA|PIX-3-331001</code>), ana riƙe su kuma ana fitar da su amma ba za su taɓa dacewa ba. Saita <b>Zai Iya Dacewa</b> zuwa A'a don jero su, kuma ku gyara su zuwa ainihin lambar, misali <code>%ASA-3-331001</code>."
+
+#: syslog_recommendations.php
+msgid "How Recommendations Are Matched"
+msgstr "Yadda Ake Daidaita Shawarwari"
+
+#: syslog_recommendations.php
+msgid "Can Match"
+msgstr "Zai iya Daidaitawa"
+
+#: syslog_recommendations.php
+msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
+msgstr "Ko mai ganowa yana da siffar kalmar saƙo, domin binciken saƙo ya taɓa samunsa"
+
+#: syslog_recommendations.php
+msgid "Export every recommendation that matches the filters"
+msgstr "Fitar da kowace shawara da ta dace da tacewa"
+
+#: syslog_recommendations.php
+msgid "No recommendations found."
+msgstr "Ba a sami shawarwari ba."
+
+#: syslog_removal.php
+msgid "Reprocess"
+msgstr "Sake sarrafawa"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
+msgstr "Danna 'Ci gaba' don Share waɗannan Ƙa'idar/Ƙa'idojin Cirewa na Syslog na gaba."
+
+#: syslog_removal.php
+msgid "Delete Syslog Removal Rule(s)"
+msgstr "Share Dokar/Dokokin Cire Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
+msgstr "Danna 'Ci gaba' don Kashe waɗannan Ƙa'idar/Ƙa'idojin Cirewa na Syslog na gaba."
+
+#: syslog_removal.php
+msgid "Disable Syslog Removal Rule(s)"
+msgstr "Kashe Ƙa'idar/Ƙa'idojin Cirewar Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
+msgstr "Danna 'Ci gaba' don Kunna waɗannan Ƙa'idar/Ƙa'idojin Cirewa na Syslog na gaba."
+
+#: syslog_removal.php
+msgid "Enable Syslog Removal Rule(s)"
+msgstr "Kunna Dokar/Dokokin Cirewar Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
+msgstr "Danna 'Ci gaba' don Sake sarrafa Ƙa'idar/Ƙa'idojin Cirewar Syslog masu zuwa."
+
+#: syslog_removal.php
+msgid "Retroactively Process Syslog Removal Rule(s)"
+msgstr "Sarrafa Dokokin Cire Syslog na Baya"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
+msgstr "Danna 'Ci gaba' don Fitar da Ƙa'idar/Ƙa'idojin Cirewar Syslog masu zuwa."
+
+#: syslog_removal.php
+msgid "Export Syslog Removal Rule(s)"
+msgstr "Fitar da Dokokin Cirewa na Syslog"
+
+#: syslog_removal.php
+#, php-format
+msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
+msgstr "Ƙa'ida '%s' ta haifar da cire/canja wurin saƙonni %s/%s"
+
+#: syslog_removal.php
+#, php-format
+msgid "Removal Rule Edit [edit: %s]"
+msgstr "Gyara Ƙa'idar Cirewa [gyara: %s]"
+
+#: syslog_removal.php
+msgid "Removal Rule Edit [new]"
+msgstr "Gyara Ƙa'idar Cirewa [sabo]"
+
+#: syslog_removal.php
+msgid "New Removal Record"
+msgstr "Sabon Rikodin Cirewa"
+
+#: syslog_removal.php
+msgid "New Removal Rule"
+msgstr "Sabuwar Dokar Cirewa"
+
+#: syslog_removal.php
+msgid "Removal Rule Details"
+msgstr "Cikakken Bayanin Ƙa'idar Cirewa"
+
+#: syslog_removal.php
+msgid "Removal Rule Name"
+msgstr "Sunan Ƙa'idar Cirewa"
+
+#: syslog_removal.php
+msgid "Please describe this Removal Rule."
+msgstr "Da fatan za a bayyana wannan Ƙa'idar Cirewa."
+
+#: syslog_removal.php syslog_reports.php
+msgid "Enabled?"
+msgstr "An kunna?"
+
+#: syslog_removal.php
+msgid "Is this Removal Rule Enabled?"
+msgstr "Shin an kunna wannan Dokar Cirewa?"
+
+#: syslog_removal.php syslog_reports.php
+msgid "String Match Type"
+msgstr "Nau'in Daidaita Rubutu"
+
+#: syslog_removal.php
+msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
+msgstr "Bayyana yadda kake son a daidaita wannan jimlar.  Idan kana amfani da nau'in Furucin SQL za ka iya amfani da duk wani ingantaccen furucin SQL don samar da ƙararrawa.  Filayen da ke akwai sun haɗa da 'message', 'facility', 'priority', da 'host'."
+
+#: syslog_removal.php
+msgid "Syslog Message Match String"
+msgstr "Jimlar Daidaita Saƙon Syslog"
+
+#: syslog_removal.php
+msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
+msgstr "Shigar da ɓangaren daidaitawa na saƙon Syslog, sunan facility ko mai masauki, ko jumlar SQL where idan kana amfani da Nau'in Daidaitawar SQL Expression."
+
+#: syslog_removal.php
+msgid "Method of Removal"
+msgstr "Hanyar Cirewa"
+
+#: syslog_removal.php
+msgid "Deletion"
+msgstr "Sharewa"
+
+#: syslog_removal.php
+msgid "Transferal"
+msgstr "Canjawa"
+
+#: syslog_removal.php
+msgid "Removal Rule Notes"
+msgstr "Bayanin Ƙa'idar Cirewa"
+
+#: syslog_removal.php
+msgid "Space for Notes on the Removal rule"
+msgstr "Wurin Bayanan Kula akan Dokar Cirewa"
+
+#: syslog_removal.php
+msgid "Removal filter conditions"
+msgstr "Sharuɗɗan tacewar cirewa"
+
+#: syslog_removal.php
+msgid "Syslog Removal Rule Filters"
+msgstr "Tacewar Dokokin Cire Syslog"
+
+#: syslog_removal.php
+msgid "Removal Name"
+msgstr "Sunan Cirewa"
+
+#: syslog_removal.php
+msgid "Transfer"
+msgstr "Canjawa"
+
+#: syslog_removal.php
+msgid "No Syslog Removal Rules Defined"
+msgstr "Babu Dokokin Cire Syslog da Aka Bayyana"
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Local File"
+msgstr "Shigo da Ƙa'idar Cirewa daga Fayil na Gida"
+
+#: syslog_removal.php
+msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
+msgstr "Idan fayil ɗin XML mai ɗauke da bayanan ma'anar Dokar Cirewa yana kan na'urarka ta gida, zaɓe shi a nan."
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Text"
+msgstr "Shigo da Ƙa'idar Cirewa daga Rubutu"
+
+#: syslog_removal.php
+msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
+msgstr "Idan kana da fayil ɗin XML mai ɗauke da bayanan ma'anar Dokar Cirewa a matsayin rubutu, za ka iya liƙa shi a cikin wannan akwati don shigo da shi."
+
+#: syslog_removal.php
+msgid "Import Removal Rule"
+msgstr "Shigo da Ƙa'idar Cirewa"
+
+#: syslog_removal.php
+#, php-format
+msgid "NOTE: Removal Rule '%s' %s!"
+msgstr "LURA: Ƙa'idar Cirewa '%s' %s!"
+
+#: syslog_removal.php
+#, php-format
+msgid "ERROR: Removal Rule '%s' %s Failed!"
+msgstr "KUSKURE: Dokar Cirewa '%s' %s Ta Kasa!"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Delete the following Syslog Report(s)."
+msgstr "Danna 'Ci gaba' don Share waɗannan Rahoton/Rahotannin Syslog na gaba."
+
+#: syslog_reports.php
+msgid "Delete Syslog Report(s)"
+msgstr "Share Rahoton/Rahotannin Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Disable the following Syslog Report(s)."
+msgstr "Danna 'Ci gaba' don Kashe waɗannan Rahoton/Rahotannin Syslog na gaba."
+
+#: syslog_reports.php
+msgid "Disable Syslog Report(s)"
+msgstr "Kashe Rahoton/Rahotannin Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Enable the following Syslog Report(s)."
+msgstr "Danna 'Ci gaba' don Kunna waɗannan Rahoton/Rahotannin Syslog na gaba."
+
+#: syslog_reports.php
+msgid "Enable Syslog Report(s)"
+msgstr "Kunna Rahoton/Rahotannin Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
+msgstr "Danna 'Ci gaba' don Fitar da Ƙa'idar/Ƙa'idojin Rahoton Syslog masu zuwa."
+
+#: syslog_reports.php
+msgid "Export Syslog Report Rule(s)"
+msgstr "Fitar da Dokokin Rahoto na Syslog"
+
+#: syslog_reports.php
+msgid "You must select at least one Syslog Report."
+msgstr "Dole ne ka zaɓi aƙalla Rahoton Syslog guda ɗaya."
+
+#: syslog_reports.php
+msgid "Return"
+msgstr "Koma"
+
+#: syslog_reports.php
+#, php-format
+msgid "Report Edit [edit: %s]"
+msgstr "Gyara Rahoto [gyara: %s]"
+
+#: syslog_reports.php
+msgid "Report Edit [new]"
+msgstr "Gyara Rahoto [sabo]"
+
+#: syslog_reports.php
+msgid "New Report Record"
+msgstr "Sabon Rikodin Rahoto"
+
+#: syslog_reports.php
+msgid "Please describe this Report."
+msgstr "Da fatan za a bayyana wannan Rahoton."
+
+#: syslog_reports.php
+msgid "Is this Report Enabled?"
+msgstr "Shin an kunna wannan Rahoton?"
+
+#: syslog_reports.php
+msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
+msgstr "Bayyana yadda kake son a daidaita wannan jimlar. Mai Gina Tacewa yana haɗa sharuɗɗa kan saƙo, mai masauki, shiri, sashe da fifiko."
+
+#: syslog_reports.php
+msgid "Frequency"
+msgstr "Mita"
+
+#: syslog_reports.php
+msgid "How often should this Report be sent to the distribution list?"
+msgstr "Sau nawa ya kamata a aika wannan Rahoto zuwa jerin masu karɓa?"
+
+#: syslog_reports.php
+msgid "Send Time"
+msgstr "Lokacin Aikawa"
+
+#: syslog_reports.php
+msgid "What time of day should this report be sent?"
+msgstr "Wane lokaci na rana ya kamata a aika wannan rahoton?"
+
+#: syslog_reports.php
+msgid "Report Format"
+msgstr "Tsarin Rahoto"
+
+#: syslog_reports.php
+msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
+msgstr "Gina sharuɗɗan tacewa, ko shigar da rubutu ko furucin SQL don dacewa da saƙonnin syslog."
+
+#: syslog_reports.php
+msgid "The information that will be contained in the body of the Report."
+msgstr "Bayanin da zai kasance a cikin jikin Rahoton."
+
+#: syslog_reports.php
+msgid "Comma delimited list of Email addresses to send the report to."
+msgstr "Jerin adiresoshin Imel da aka raba da waƙafi don aika rahoton zuwa gare su."
+
+#: syslog_reports.php
+msgid "Space for Notes on the Report"
+msgstr "Wurin Bayanan Kula akan Rahoto"
+
+#: syslog_reports.php
+msgid "Report Test Preview"
+msgstr "Gwajin Duban Rahoto"
+
+#: syslog_reports.php
+msgid "Report filter conditions"
+msgstr "Sharuɗɗan tacewar rahoto"
+
+#: syslog_reports.php
+msgid "Syslog Report Filters"
+msgstr "Tacewar Rahoton Syslog"
+
+#: syslog_reports.php
+msgid "Report Name"
+msgstr "Sunan Rahoto"
+
+#: syslog_reports.php
+msgid "Last Sent"
+msgstr "Aikawa Ta Ƙarshe"
+
+#: syslog_reports.php
+msgid "Reports"
+msgstr "Rahotanni"
+
+#: syslog_reports.php
+msgid "No Syslog Reports Defined"
+msgstr "Babu Rahotannin Syslog da Aka Bayyana"
+
+#: syslog_reports.php
+msgid "Import Report Rule from Local File"
+msgstr "Shigo da Ƙa'idar Rahoto daga Fayil na Gida"
+
+#: syslog_reports.php
+msgid "If the XML file containing the Report Rule definition data is located on your local machine, select it here."
+msgstr "Idan fayil ɗin XML mai ɗauke da bayanan ma'anar Dokar Rahoto yana kan na'urarka ta gida, zaɓe shi a nan."
+
+#: syslog_reports.php
+msgid "Import Report Rule from Text"
+msgstr "Shigo da Ƙa'idar Rahoto daga Rubutu"
+
+#: syslog_reports.php
+msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
+msgstr "Idan kana da fayil ɗin XML mai ɗauke da bayanan ma'anar Dokar Rahoto a matsayin rubutu, za ka iya liƙa shi a cikin wannan akwati don shigo da shi."
+
+#: syslog_reports.php
+msgid "Import Report Data"
+msgstr "Shigo da Bayanan Rahoto"
+
+#: syslog_reports.php
+#, php-format
+msgid "NOTE: Report Rule '%s' %s!"
+msgstr "LURA: Ƙa'idar Rahoto '%s' %s!"
+
+#: syslog_reports.php
+#, php-format
+msgid "ERROR: Report Rule '%s' %s Failed!"
+msgstr "KUSKURE: Dokar Rahoto '%s' %s Ta Kasa!"
+
+#: syslog_saved_searches.php
+msgid "Unable to save the template. Please try again."
+msgstr "An kasa ajiye samfurin. Da fatan za a sake gwadawa."
+
+#: syslog_saved_searches.php
+msgid "Enter a template name between 1 and 128 characters."
+msgstr "Shigar da sunan samfuri tsakanin haruffa 1 zuwa 128."
+
+#: syslog_saved_searches.php
+msgid "Templates"
+msgstr "Samfura"
+
+#: syslog_saved_searches.php
+msgid "Query"
+msgstr "Tambaya"
+
+#: syslog_saved_searches.php
+msgid "No shared search templates. Save a search for all users from Syslog to create one."
+msgstr "Babu samfuran bincike da aka raba. Ajiye bincike ga duk masu amfani daga Syslog don ƙirƙirar guda."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Export the following Saved Search Template(s)."
+msgstr "Danna 'Ci gaba' don Fitar da Samfurin/Samfuran Binciken da aka Ajiye masu zuwa."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
+msgstr "Danna 'Ci gaba' don Share waɗannan Samfurin/Samfuran Bincike da Aka Ajiye na gaba."
+
+#: syslog_saved_searches.php
+msgid "Delete Saved Search Template(s)"
+msgstr "Share Samfurin/Samfuran Binciken da Aka Ajiye"
+
+#: syslog_saved_searches.php
+msgid "Export Saved Search Template(s)"
+msgstr "Fitar da Samfuran Bincike da Aka Ajiye"
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
+msgstr "LURA: An shigo da Samfuran Bincike da Aka Ajiye %d kuma an sabunta %d."
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "ERROR: %d Saved Search Template(s) failed to import."
+msgstr "KUSKURE: Shigo da Samfurin Binciken da Aka Adana %d ya gaza."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Local File"
+msgstr "Shigo da Samfurin Binciken da Aka Ajiye daga Fayil na Gida"
+
+#: syslog_saved_searches.php
+msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
+msgstr "Idan fayil ɗin JSON mai ɗauke da bayanan ma'anar Samfurin Binciken da Aka Ajiye yana kan na'urarka ta gida, zaɓe shi a nan."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Text"
+msgstr "Shigo da Samfurin Binciken da Aka Ajiye daga Rubutu"
+
+#: syslog_saved_searches.php
+msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
+msgstr "Idan kana da fayil ɗin JSON mai ɗauke da bayanan ma'anar Samfurin Binciken da Aka Ajiye a matsayin rubutu, za ka iya liƙa shi a cikin wannan akwati don shigo da shi."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template"
+msgstr "Shigo da Samfurin Binciken da Aka Ajiye"
+
+#: syslog_saved_searches.php
+msgid "Edit Saved Search Template"
+msgstr "Gyara Samfurin Binciken da Aka Ajiye"
+
+#: syslog_saved_searches.php
+msgid "The name shown to all users in Saved Searches."
+msgstr "Sunan da aka nuna ga duk masu amfani a cikin Binciken da Aka Ajiye."
+
+#: syslog_saved_searches.php
+msgid "The account that owns this template and can manage it in Saved Searches."
+msgstr "Asusun da ya mallaki wannan samfuri kuma zai iya sarrafa shi a cikin Binciken da aka Ajiye."
+
+#: syslog_saved_searches.php
+msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
+msgstr "Masu amfani da za su iya amfani da wannan samfurin baya ga mai shi. Duk Masu Amfani yana raba shi da kowa."
+
+#: syslog_saved_searches.php
+msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
+msgstr "Ƙungiyoyin da za su iya amfani da wannan samfuri ban da mai shi. Duk Ƙungiyoyi yana raba shi ga kowa."
+
+#: syslog_saved_searches.php
+msgid "Search Query"
+msgstr "Tambayar Bincike"
+
+#: syslog_saved_searches.php
+msgid "Correct the query syntax to use the query builder."
+msgstr "Gyara tsarin tambayar don amfani da mai gina tambaya."
+
+#: syslog_saved_searches.php
+msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
+msgstr "Zaɓi fili, mai sarrafa aiki, da ƙima. Yi amfani da AND, OR, NOT, ko Group don gina tambayar. Sauye-sauye suna shafar wannan samfurin da aka raba ga dukkan masu amfani."
+
