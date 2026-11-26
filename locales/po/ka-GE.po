@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: Cacti\nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Georgian <https://translate.cacti.net/projects/cacti/syslog/ka/>\nLanguage: ka-GE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: Cacti\nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 05:53+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Georgian <https://translate.cacti.net/projects/cacti/syslog/ka/>\nLanguage: ka-GE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -12,8 +12,7 @@ msgid "%d minutes"
 msgstr "%d წუთი"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d hours"
+#, php-format
 msgid "%d hour"
 msgstr "%d საათი"
 
@@ -23,8 +22,7 @@ msgid "%d hours"
 msgstr "%d საათი"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d days"
+#, php-format
 msgid "%d day"
 msgstr "%d დღე"
 
@@ -36,100 +34,80 @@ msgstr "%d დღე"
 #: includes/functions.php
 #, php-format
 msgid "%d week"
-msgstr ""
+msgstr "%d კვირა"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Weeks"
+#, php-format
 msgid "%d weeks"
 msgstr "%d კვირა"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Month"
+#, php-format
 msgid "%d month"
 msgstr "%d თვე"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Months"
+#, php-format
 msgid "%d months"
 msgstr "%d თვე"
 
 #: includes/functions.php
 #, php-format
 msgid "%d year"
-msgstr ""
+msgstr "%d წელი"
 
 #: includes/functions.php
 #, php-format
 msgid "%d years"
-msgstr ""
-
-#: includes/functions.php
-msgid "Day Shift"
-msgstr ""
-
-#: includes/functions.php
-#, fuzzy
-#| msgid "Last Day"
-msgid "This Day"
-msgstr "ბოლო დღე"
-
-#: includes/functions.php
-#, fuzzy
-#| msgid "Last Week"
-msgid "This Week"
-msgstr "ბოლო კვირა"
-
-#: includes/functions.php
-#, fuzzy
-#| msgid "1 Month"
-msgid "This Month"
-msgstr "1 თვე"
-
-#: includes/functions.php
-#, fuzzy
-#| msgid "%d Year"
-msgid "This Year"
 msgstr "%d წელი"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "Previous"
+msgid "Day Shift"
+msgstr "დღის ცვლა"
+
+#: includes/functions.php
+msgid "This Day"
+msgstr "ეს დღე"
+
+#: includes/functions.php
+msgid "This Week"
+msgstr "ამ კვირაში"
+
+#: includes/functions.php
+msgid "This Month"
+msgstr "ამ თვეში"
+
+#: includes/functions.php
+msgid "This Year"
+msgstr "წელს"
+
+#: includes/functions.php
 msgid "Previous Day"
-msgstr "წინა"
+msgstr "წინა დღე"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "Previous"
 msgid "Previous Week"
-msgstr "წინა"
+msgstr "წინა კვირა"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "Previous"
 msgid "Previous Month"
-msgstr "წინა"
+msgstr "წინა თვე"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "Previous"
 msgid "Previous Year"
-msgstr "წინა"
+msgstr "წინა წელი"
 
 #: includes/functions.php
-#, fuzzy
 msgid "Syslog download"
-msgstr "Syslog ჩართულია"
+msgstr "Syslog-ის ჩამოტვირთვა"
 
 #: includes/functions.php
 msgid "Share with users…"
-msgstr ""
+msgstr "მომხმარებლებისთვის გაზიარება…"
 
 #: includes/functions.php
 msgid "Share with groups…"
-msgstr ""
+msgstr "ჯგუფებისთვის გაზიარება…"
 
 #: includes/functions.php includes/recommendations.php
 msgid "Emergency"
@@ -169,82 +147,82 @@ msgstr "საინფორმაციო"
 
 #: includes/functions.php
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
-msgstr ""
+msgstr "შენახვა ვერ მოხერხდა. სინქრონიზაციის რეჟიმში მყოფ მონაცემთა დაშორებულ შემგროვებლებს წესების შენახვის უფლება არ აქვთ. ამის ნაცვლად შეინახეთ მთავარი Cacti სერვერიდან."
 
 #: includes/functions.php
 msgid "Please use an HTML Email Client"
-msgstr ""
+msgstr "გთხოვთ, გამოიყენოთ HTML ელფოსტის კლიენტი"
 
 #: includes/functions.php
 msgid "Text import payload exceeds the maximum size"
-msgstr ""
+msgstr "ტექსტის შემოტანის მონაცემები აღემატება მაქსიმალურ ზომას"
 
 #: includes/functions.php
 msgid "Unable to read the uploaded import file. Check the file and upload size limit."
-msgstr ""
+msgstr "ატვირთული საიმპორტო ფაილის წაკითხვა ვერ მოხერხდა. შეამოწმეთ ფაილი და ატვირთვის ზომის ლიმიტი."
 
 #: includes/functions.php
 msgid "Select an import file or paste its contents before importing."
-msgstr ""
+msgstr "შემოტანამდე აირჩიეთ საიმპორტო ფაილი ან ჩასვით მისი შიგთავსი."
 
 #: includes/functions.php
 msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
-msgstr ""
+msgstr "Syslog-ის ცხრილები დანაწევრებული არ არის. ტრადიციული (არადანაწევრებული) ცხრილები მოძველებულია, ხოლო ახალი ინსტალაციებისთვის აუცილებელია დანაწევრებული ცხრილები. თქვენი მონაცემების შეგროვება გაგრძელდება, მაგრამ syslog ცხრილი დანაწევრებულ არქიტექტურაზე უნდა გადაიტანოთ."
 
 #: includes/functions.php
 msgid "Waiting for a completed processing run."
-msgstr ""
+msgstr "დამუშავების დასრულებული გაშვების მოლოდინში."
 
 #: includes/functions.php
 msgid "Processing is completing within the allowed delay."
-msgstr ""
+msgstr "დამუშავება სრულდება დაშვებული დაყოვნების ფარგლებში."
 
 #: includes/functions.php
 #, php-format
 msgid "No processing run has completed for more than %d seconds."
-msgstr ""
+msgstr "დამუშავების არცერთი გაშვება არ დასრულებულა %d წამზე მეტი ხნის განმავლობაში."
 
 #: includes/functions.php
 msgid "Incoming messages are within the configured limits."
-msgstr ""
+msgstr "შემომავალი შეტყობინებები კონფიგურირებული ლიმიტების ფარგლებშია."
 
 #: includes/functions.php
 msgid "Incoming queue metrics are unavailable."
-msgstr ""
+msgstr "შემომავალი რიგის მეტრიკები მიუწვდომელია."
 
 #: includes/functions.php
 #, php-format
 msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
-msgstr ""
+msgstr "შემომავალ რიგში დაგროვილი სულ მცირე %s შეტყობინება აღემატება %s ლიმიტს."
 
 #: includes/functions.php
 msgid "The oldest incoming message timestamp is unavailable."
-msgstr ""
+msgstr "უძველესი შემომავალი შეტყობინების დროის ნიშნული მიუწვდომელია."
 
 #: includes/functions.php
 #, php-format
 msgid "Unprocessed messages are older than %d seconds."
-msgstr ""
+msgstr "დაუმუშავებელი შეტყობინებები %d წამზე ძველია."
 
 #: includes/functions.php
 msgid "Synchronization is not enabled on this collector."
-msgstr ""
+msgstr "ამ კოლექტორზე სინქრონიზაცია ჩართული არ არის."
 
 #: includes/functions.php
 msgid "Synchronization is within the allowed delay."
-msgstr ""
+msgstr "სინქრონიზაცია დაშვებული დაყოვნების ფარგლებშია."
 
 #: includes/functions.php
 msgid "Synchronization queue metrics are unavailable."
-msgstr ""
+msgstr "სინქრონიზაციის რიგის მეტრიკები მიუწვდომელია."
 
 #: includes/functions.php
 msgid "The oldest synchronization record timestamp is unavailable."
-msgstr ""
+msgstr "სინქრონიზაციის უძველესი ჩანაწერის დროის ნიშნული მიუწვდომელია."
 
 #: includes/functions.php
 msgid "Synchronization has failed or queued records exceed the allowed delay."
-msgstr ""
+msgstr "სინქრონიზაცია ჩავარდა ან რიგში მყოფი ჩანაწერები აღემატება დაშვებულ დაყოვნებას."
 
 #: includes/functions.php
 msgid "Partition maintenance is not blocked."
@@ -258,60 +236,58 @@ msgstr "დანაყოფის რემონტი დაბლოკი�
 #: includes/functions.php
 #, php-format
 msgid "Syslog pipeline health - collector %d"
-msgstr ""
+msgstr "Syslog კონვეიერის მდგომარეობა - კოლექტორი %d"
 
 #: includes/functions.php
 msgid "The Syslog pipeline has recovered."
-msgstr ""
+msgstr "Syslog კონვეიერი აღდგა."
 
 #: includes/functions.php
 #, php-format
 msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
-msgstr ""
+msgstr "%s-ის დანაყოფების განლაგება არასწორი ან არასრულია; დანაყოფების მომსახურება შეჩერდა. შეამოწმეთ დანაყოფების მეტამონაცემები SHOW CREATE TABLE-ით და საჭიროების შემთხვევაში ხელახლა ააგეთ დანაყოფები; ჩაწერა გრძელდება dMaxValue უსაფრთხოების დანაყოფში."
 
 #: includes/functions.php
 #, php-format
 msgid "remaining partition gap: %d partition(s)"
-msgstr ""
+msgstr "დარჩენილი დანაყოფების ხარვეზი: %d დანაყოფი"
 
 #: includes/functions.php
 msgid "no retention deferral"
-msgstr ""
+msgstr "შენახვის ვადის გადავადების გარეშე"
 
 #: includes/functions.php
 msgid "retention pruning deferred until the future horizon is restored"
-msgstr ""
+msgstr "შენახვის ვადის მიხედვით გასუფთავება გადავადებულია მომავალი ჰორიზონტის აღდგენამდე"
 
 #: includes/functions.php
 msgid "new records are accumulating in the dMaxValue safety partition"
-msgstr ""
+msgstr "ახალი ჩანაწერები გროვდება dMaxValue უსაფრთხოების დანაყოფში"
 
 #: includes/functions.php
 msgid "per run recovery limit reached"
-msgstr ""
+msgstr "თითო გაშვებაზე აღდგენის ლიმიტი მიღწეულია"
 
 #: includes/functions.php
-#, fuzzy
 msgid "partition creation failed"
-msgstr "დაყოფილი ცხრილი"
+msgstr "დანაყოფის შექმნა ვერ მოხერხდა"
 
 #: includes/functions.php
 msgid "Unknown partitioning level; choose Hourly or Daily."
-msgstr ""
+msgstr "დანაყოფებად დაყოფის უცნობი დონე; აირჩიეთ „საათობრივი“ ან „დღიური“."
 
 #: includes/functions.php
-#, fuzzy
 msgid "The Syslog retention is invalid."
-msgstr "Syslog-ის შენარჩუნება"
+msgstr "Syslog-ის შენახვის ვადა არასწორია."
 
 #: includes/functions.php
 msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
-msgstr ""
+msgstr "საათობრივი დანაყოფებად დაყოფა ვერ გამოიყენება უვადო შენახვასთან, რადგან ეს მოითხოვდა დანაყოფების შეუზღუდავ რაოდენობას. აირჩიეთ შენახვის პერიოდი ან დღიური დაყოფა."
 
 #: includes/functions.php
 #, php-format
 msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
-msgstr ""
+msgstr "%s დანაყოფებად დაყოფა %s დღიანი შენახვითა და %s დღიანი წინასწარი შექმნის ფანჯრით საჭიროებს %s დანაყოფს თითო ცხრილზე, რაც აღემატება ამ მონაცემთა ბაზის სერვერის %s დანაყოფის ლიმიტს. შეამცირეთ შენახვის ვადა, შეამოკლეთ წინასწარი შექმნის ფანჯარა ან აირჩიეთ დღიური დაყოფა."
 
 #: includes/functions.php includes/installer.php includes/settings.php
 #: syslog.php
@@ -320,86 +296,84 @@ msgstr "ყოველდღიური"
 
 #: includes/functions.php includes/installer.php includes/settings.php
 #: syslog.php
-#, fuzzy
-#| msgid "Hour"
 msgid "Hourly"
-msgstr "საათი"
+msgstr "საათში ერთხელ"
 
 #: includes/functions.php
 #, php-format
 msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
-msgstr ""
+msgstr "ცხრილები კვლავ იყენებს %s დანაყოფებს, სანამ cli/upgrade_partitioning.php არ ააგებს მათ ხელახლა."
 
 #: includes/functions.php
 msgid "The partitioning level of the existing Syslog tables could not be read."
-msgstr ""
+msgstr "არსებული Syslog ცხრილების დანაყოფებად დაყოფის დონის წაკითხვა ვერ მოხერხდა."
 
 #: includes/functions.php
 msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
-msgstr ""
+msgstr "დანაყოფის ავტომატური აღდგენა გადადებულია: dMaxValue ზომა მიუწვდომელია; საჭიროა ოპერატორის ჩარევა."
 
 #: includes/functions.php
 #, php-format
 msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
-msgstr ""
+msgstr "დანაყოფის ავტომატური აღდგენა გადადებულია: dMaxValue-ს აქვს დაახლოებით %s მწკრივი და %s ბაიტი; ლიმიტებია 100000 მწკრივი და 134217728 ბაიტი. საჭიროა ოპერატორის ჩარევა."
 
 #: includes/functions.php
 msgid "Unknown rule type."
-msgstr ""
+msgstr "წესის უცნობი ტიპი."
 
 #: includes/functions.php
 msgid "The configured incoming field mapping is invalid."
-msgstr ""
+msgstr "კონფიგურირებული შემომავალი ველების შესაბამისობა არასწორია."
 
 #: includes/functions.php
 msgid "The facility of this rule is not in the reference table yet."
-msgstr ""
+msgstr "ამ წესის კატეგორია (facility) ჯერ არ არის საცნობარო ცხრილში."
 
 #: includes/functions.php
 msgid "Unknown rule match type."
-msgstr ""
+msgstr "წესის დამთხვევის უცნობი ტიპი."
 
 #: includes/functions.php
 msgid "The rule did not compile to a query."
-msgstr ""
+msgstr "წესი მოთხოვნად ვერ კომპილირდა."
 
 #: includes/functions.php
 msgid "The preview query could not be evaluated."
-msgstr ""
+msgstr "წინასწარი ნახვის მოთხოვნის შეფასება ვერ მოხერხდა."
 
 #: includes/functions.php
 msgid "The historical preview filter could not be compiled."
-msgstr ""
+msgstr "ისტორიული წინასწარი ნახვის ფილტრის კომპილაცია ვერ მოხერხდა."
 
 #: includes/functions.php
 msgid "The historical preview query could not be evaluated."
-msgstr ""
+msgstr "ისტორიული წინასწარი ნახვის მოთხოვნის შეფასება ვერ მოხერხდა."
 
 #: includes/functions.php
 msgid "The preview sample could not be read."
-msgstr ""
+msgstr "წინასწარი ნახვის ნიმუშის წაკითხვა ვერ მოხერხდა."
 
 #: includes/functions.php
 msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
-msgstr ""
+msgstr "SQL გამოსახულების წინასწარი ნახვა ამოწმებს მხოლოდ რიგში მყოფ შემომავალ შეტყობინებებს. უკვე დამუშავებული შეტყობინებები არ იძებნება. ტესტირება არ აგზავნის განგაშებს."
 
 #: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
 #: syslog_reports.php syslog_saved_searches.php
 msgid "Permission denied."
-msgstr ""
+msgstr "წვდომა აკრძალულია."
 
 #: includes/functions.php includes/utilities.php syslog.php
 msgid "Invalid request. Please try again."
-msgstr ""
+msgstr "არასწორი მოთხოვნა. გთხოვთ, სცადოთ ხელახლა."
 
 #: includes/functions.php
 msgid "The rule has no match expression to test."
-msgstr ""
+msgstr "წესს არ აქვს შესამოწმებელი დამთხვევის გამოსახულება."
 
 #: includes/functions.php
 msgid "The match expression is too long to test."
-msgstr ""
+msgstr "დამთხვევის გამოსახულება ზედმეტად გრძელია შესამოწმებლად."
 
 #: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
 #: syslog.php
@@ -409,12 +383,12 @@ msgstr "უცნობი"
 #: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
-msgstr ""
+msgstr "Cacti Syslog ზღვრული გაფრთხილება '%s' ჰოსტისთვის '%s'"
 
 #: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
-msgstr ""
+msgstr "Cacti Syslog ზღვრული გაფრთხილება '%s'"
 
 #: includes/functions.php syslog.php syslog_alerts.php
 msgid "Alert Name"
@@ -440,12 +414,12 @@ msgstr "ემთხვევა სტრიქონს"
 #: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Alert '%s' for Host '%s'"
-msgstr ""
+msgstr "Cacti Syslog გაფრთხილება '%s' ჰოსტისთვის '%s'"
 
 #: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Alert '%s'"
-msgstr ""
+msgstr "Cacti Syslog გაფრთხილება '%s'"
 
 #: includes/functions.php
 msgid "Hostname"
@@ -468,11 +442,11 @@ msgstr "შეტყობინება"
 #: includes/functions.php
 #, php-format
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
-msgstr ""
+msgstr "გაფრთხილება: ჰოსტისთვის '%s' გააქტიურდა Syslog ზღვრული გაფრთხილება"
 
 #: includes/functions.php
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
-msgstr ""
+msgstr "გაფრთხილება: გააქტიურდა Syslog ზღვრული გაფრთხილება"
 
 #: includes/functions.php
 msgid "Name:"
@@ -525,7 +499,7 @@ msgstr "სიმძ:"
 #: includes/functions.php
 #, php-format
 msgid "Event Alert - %s"
-msgstr ""
+msgstr "მოვლენის გაფრთხილება - %s"
 
 #: includes/functions.php
 msgid ", Count:"
@@ -539,20 +513,20 @@ msgstr "ჰოსტი"
 #: includes/functions.php
 #, php-format
 msgid "Event Report - %s"
-msgstr ""
+msgstr "მოვლენის ანგარიში - %s"
 
 #: includes/functions.php
 #, php-format
 msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
-msgstr ""
+msgstr "ანგარიშის წინასწარი ნახვა ეძებს ბოლო %d შენახულ შეტყობინებაში; თავად ანგარიში მოიცავს მთელ თავის დროის ფანჯარას. ტესტირება არ აგზავნის ელფოსტას."
 
 #: includes/functions.php
 msgid "Grouped results are unavailable or expired. Refresh the results and try again."
-msgstr ""
+msgstr "დაჯგუფებული შედეგები მიუწვდომელია ან ვადაგასულია. განაახლეთ შედეგები და სცადეთ ხელახლა."
 
 #: includes/functions.php syslog.php
 msgid "Group messages could not be loaded."
-msgstr ""
+msgstr "ჯგუფის შეტყობინებების ჩატვირთვა ვერ მოხერხდა."
 
 #: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
 #: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
@@ -572,31 +546,29 @@ msgstr "სრული ტექსტი"
 
 #: includes/functions.php
 msgid "Fit Column"
-msgstr ""
+msgstr "სვეტის მორგება"
 
 #: includes/functions.php
-#, fuzzy, php-format
+#, php-format
 msgid "%d Chars"
 msgstr "%d სიმბოლო"
 
 #: includes/installer.php
-#, fuzzy
-#| msgid "Syslog %s Advisor"
 msgid "Syslog Upgrade Advisor"
-msgstr "Syslog %s მრჩეველი"
+msgstr "Syslog-ის განახლების მრჩეველი"
 
 #: includes/installer.php
 #, php-format
 msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
-msgstr ""
+msgstr "განახლდეს Syslog %s-დან %s-მდე? არსებული შეტყობინებები და წესები შენარჩუნდება. სქემის ცვლილებებს შესაძლოა დრო დასჭირდეს."
 
 #: includes/installer.php
 msgid "What upgrade/install type do you wish to use"
-msgstr ""
+msgstr "განახლების/ინსტალაციის რომელი ტიპის გამოყენება გსურთ"
 
 #: includes/installer.php
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
-msgstr ""
+msgstr "ძალიან დიდი ცხრილების შემთხვევაში, Truncate-ის შესრულება გაცილებით სწრაფი იქნება. თუ საარქივო მონაცემები გაღელვებთ, შეგიძლიათ აირჩიოთ ან ჩაშენებული (Inline), რომელიც განახლების პერიოდში გაყინავს თქვენს ბრაუზერს, ან ფონური რეჟიმი, რომელიც შექმნის ფონურ პროცესს ძველი syslog მონაცემების სარეზერვო ცხრილიდან ახალ syslog ფორმატში გადასატანად. კიდევ ერთხელ, ამ პროცესს შეიძლება რამდენიმე საათი დასჭირდეს. Truncate შლის მხოლოდ შენახულ syslog და წაშლილ შეტყობინებებს; გაფრთხილების, წაშლისა და ანგარიშის წესები ყოველთვის ინახება."
 
 #: includes/installer.php
 msgid "Truncate Syslog Table"
@@ -616,60 +588,59 @@ msgstr "მონაცემთა ბაზის საცავის ძრ
 
 #: includes/installer.php
 msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
-msgstr ""
+msgstr "ანალიტიკური ცხრილების შენახვის ძრავა. მხარდაჭერილია მხოლოდ InnoDB და, MariaDB-ზე, Aria შენახვის ძრავები. მონაცემთა დაშორებული კოლექტორის ნებისმიერი პარამეტრი მოითხოვს InnoDB-ს; შეუთავსებელი კომბინაციების გაგზავნა შეუძლებელია."
 
 #: includes/installer.php
 msgid "InnoDB Storage"
 msgstr "InnoDB-ის საცავი"
 
 #: includes/installer.php
-#, fuzzy
 msgid "Aria Storage"
-msgstr "MyISAM-ის საცავი"
+msgstr "Aria-ს საცავი"
 
 #: includes/installer.php
 msgid "Timestamp Precision"
-msgstr ""
+msgstr "დროის ნიშნულის სიზუსტე"
 
 #: includes/installer.php
 msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
-msgstr ""
+msgstr "მილიწამიანი სიზუსტე ინახავს წამზე ნაკლებ syslog დროის ნიშნულებს TIMESTAMP(3) სვეტში და ხელმისაწვდომია მხოლოდ MariaDB-ზე. წამიანი სიზუსტე იყენებს სტანდარტულ TIMESTAMP სვეტს. სამუშაო სისტემაზე გამოიყენეთ cli/upgrade_partitioning.php --convert-ms ტექნიკური მომსახურების ფანჯრის დროს არსებული შეტყობინებების დაკარგვის გარეშე კონვერტაციისთვის."
 
 #: includes/installer.php
 msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
-msgstr ""
+msgstr "მილიწამი - TIMESTAMP(3) (მხოლოდ MariaDB)"
 
 #: includes/installer.php
 msgid "Second - TIMESTAMP"
-msgstr ""
+msgstr "წამი - TIMESTAMP"
 
 #: includes/installer.php includes/settings.php
 msgid "Remote Message Processing"
-msgstr ""
+msgstr "შეტყობინებების დაშორებული დამუშავება"
 
 #: includes/installer.php includes/settings.php
 msgid "Enable Remote Data Collector Message Processing"
-msgstr ""
+msgstr "მონაცემთა დაშორებული შემგროვებლის შეტყობინებების დამუშავების ჩართვა"
 
 #: includes/installer.php includes/settings.php
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
-msgstr ""
+msgstr "თუ თქვენს მონაცემთა დაშორებულ შემგროვებლებს აქვთ საკუთარი Syslog მონაცემთა ბაზები და დამოუკიდებლად ამუშავებენ შეტყობინებებს, მონიშნეთ ეს ველი. ამ ველის მონიშვნით, თქვენს მონაცემთა დაშორებულ შემგროვებლებს დასჭირდებათ საკუთარი 'config_local.php' ფაილის ქონა, რათა Syslog-მა შეტყობინებების საჩვენებლად და დასამუშავებლად დამოუკიდებელი მონაცემთა ბაზა გამოიყენოს. გთხოვთ, ამ მიზნით გამოიყენოთ შაბლონის ფაილი 'config_local.php.dist'. გაფრთხილება: Syslog-ის ცხრილები ავტომატურად შეიქმნება ამ პარამეტრის ჩართვისთანავე."
 
 #: includes/installer.php includes/settings.php
 msgid "Remote Data Collector Rules Sync"
-msgstr ""
+msgstr "მონაცემთა დაშორებული შემგროვებლის წესების სინქრონიზაცია"
 
 #: includes/installer.php includes/settings.php
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr ""
+msgstr "თუ თქვენს მონაცემთა დაშორებულ შემგროვებლებს აქვთ საკუთარი Syslog მონაცემთა ბაზები და დამოუკიდებლად ამუშავებენ შეტყობინებებს, მონიშნეთ ეს ველი, თუ გსურთ, რომ მთავარი Cacti მონაცემთა ბაზის გაფრთხილების, წაშლისა და ანგარიშის წესები გაიგზავნოს დაშორებულ Cacti სისტემაში."
 
 #: includes/installer.php includes/settings.php
 msgid "Store Records on Remote Collector"
-msgstr ""
+msgstr "ჩანაწერების შენახვა დაშორებულ კოლექტორზე"
 
 #: includes/installer.php includes/settings.php
 msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
-msgstr ""
+msgstr "დამუშავებული შეტყობინებების დაშორებული კოლექტორის syslog ცხრილში შენახვა მთავარ კოლექტორზე მიწოდების შემდეგ. გამორთვის შემთხვევაში ჩანაწერები ლოკალურად ინახება მხოლოდ მთავარი კოლექტორის მიუწვდომლობის დროს და იშლება აღდგენითი მიწოდების დადასტურების შემდეგ."
 
 #: includes/installer.php
 msgid "Retention Policy"
@@ -677,16 +648,15 @@ msgstr "შენარჩუნების პოლიტიკა"
 
 #: includes/installer.php
 msgid "Choose how many days of Syslog values you wish to maintain in the database."
-msgstr ""
+msgstr "აირჩიეთ, რამდენი დღის Syslog მნიშვნელობების შენახვა გსურთ მონაცემთა ბაზაში."
 
 #: includes/installer.php includes/settings.php
-#, fuzzy
 msgid "Partitioning Level"
-msgstr "დანაყოფი დღეში"
+msgstr "დანაყოფებად დაყოფის დონე"
 
 #: includes/installer.php
 msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
-msgstr ""
+msgstr "syslog და syslog_removed ცხრილების თითოეული დანაყოფის ზომა. რეკომენდებულია დღიური. საათობრივი მოითხოვს სასრულ შენახვის ვადას, ხოლო შენახვის ვადა და დაყოფის დონე ერთად უნდა ეტეოდეს მონაცემთა ბაზის სერვერის დანაყოფების ლიმიტში. დონის მოგვიანებით შესაცვლელად შეცვალეთ ის პარამეტრებში და გაუშვით cli/upgrade_partitioning.php."
 
 #: includes/installer.php
 msgid "Upgrade"
@@ -703,60 +673,60 @@ msgstr "Syslog %s მრჩეველი"
 
 #: includes/installer.php
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
-msgstr ""
+msgstr "გაფრთხილება: Syslog-ის განახლება დიდ დროს მოითხოვს!!!"
 
 #: includes/installer.php
 msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
-msgstr ""
+msgstr "'main' syslog ცხრილის განახლება შეიძლება იყოს ძალიან შრომატევადი პროცესი. ამიტომ, რეკომენდებულია, განახლებამდე შეამციროთ syslog ცხრილის ზომა ან აირჩიოთ ფონური ვარიანტი."
 
 #: includes/installer.php
 msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
-msgstr ""
+msgstr "თუ აირჩევთ ფონურ ვარიანტს, თქვენს ძველ syslog ცხრილს შეეცვლება სახელი და შეიქმნება ახალი syslog ცხრილი. შემდეგ, ფონურ რეჟიმში გაეშვება განახლების პროცესი. კიდევ ერთხელ, ამ ფონური პროცესის დასრულებას შეიძლება საკმაოდ დიდი დრო დასჭირდეს. თუმცა, თქვენი მონაცემები შენარჩუნდება."
 
 #: includes/installer.php
 msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
-msgstr ""
+msgstr "თქვენი არჩევანის მიუხედავად, განახლების პროცესში შენარჩუნებული იქნება ყველა არსებული წაშლისა და გაფრთხილების წესი."
 
 #: includes/installer.php
 msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
-msgstr ""
+msgstr "განახლების გასაგრძელებლად დააჭირეთ <b>'განახლება'</b>-ს, ან პლაგინების მენიუში დასაბრუნებლად დააჭირეთ <b>'გაუქმება'</b>-ს."
 
 #: includes/installer.php
 msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
-msgstr ""
+msgstr "ასევე შეგიძლიათ დააყენოთ მონაცემთა ბაზის შენახვის ძრავა syslog და syslog_remove ანალიტიკური ცხრილებისთვის. მხარდაჭერილია მხოლოდ InnoDB შენახვის ძრავა და, MariaDB-ზე, Aria შენახვის ძრავა. MariaDB-ის გამოყენებისას გირჩევთ Aria შენახვის ძრავას, როცა მონაცემთა დაშორებული კოლექტორის პარამეტრები ჩართული არ არის; კოლექტორის პარამეტრები მოითხოვს InnoDB-ს."
 
 #: includes/installer.php
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
-msgstr ""
+msgstr "Syslog-ის ინსტალაციისას შეგიძლიათ აირჩიოთ რამდენიმე პარამეტრი. პირველი არის მონაცემთა ბაზის არქიტექტურა. დაყოფილი (Partitioned) ცხრილები ერთადერთი მხარდაჭერილი არქიტექტურაა, რადგან ისინი ხელს უშლიან ცხრილების ზომის გადაჭარბებულ ზრდას და მოთხოვნების შენელებას. ტრადიციული დაუყოფელი ცხრილები მოძველებულია და ახალი ინსტალაციებისთვის აღარ არის შემოთავაზებული."
 
 #: includes/installer.php
 msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
-msgstr ""
+msgstr "ასევე შეგიძლიათ აირჩიოთ დროის ნიშნულის სიზუსტე. მილიწამიანი სიზუსტე (TIMESTAMP(3)) ინარჩუნებს შემომავალი შეტყობინებების წამზე ნაკლები ინტერვალის თანმიმდევრობას და ხელმისაწვდომია მხოლოდ MariaDB-ზე; MySQL ინსტალაციები იყენებს წამიან სიზუსტეს. ამის შეცვლა მოგვიანებით, ადგილზე, შენახული შეტყობინებების განადგურების გარეშე შეუძლებელია."
 
 #: includes/installer.php
 msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
-msgstr ""
+msgstr "Aria შენახვა მიუწვდომელია, სანამ მონაცემთა დაშორებული კოლექტორის რომელიმე პარამეტრი ჩართულია. არჩეულია InnoDB."
 
 #: includes/installer.php
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
-msgstr ""
+msgstr "ასევე შეგიძლიათ აირჩიოთ შენახვის ხანგრძლივობა. გთხოვთ გაითვალისწინოთ, რომ თუ რამდენიმე ჰოსტი აგზავნის ჟურნალს syslog-ში, ეს ცხრილი შეიძლება საკმაოდ დიდი გახდეს."
 
 #: includes/installer.php
 #, php-format
 msgid "Syslog %s Settings"
-msgstr ""
+msgstr "Syslog %s პარამეტრები"
 
 #: includes/installer.php
 msgid "What uninstall method do you want to use?"
-msgstr ""
+msgstr "დეინსტალაციის რომელი მეთოდის გამოყენება გსურთ?"
 
 #: includes/installer.php
 msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
-msgstr ""
+msgstr "Syslog-ის დეინსტალაციისას შეგიძლიათ წაშალოთ ყველაფერი ან მხოლოდ კომპონენტები, იმ შემთხვევაში, თუ მომავალში ხელახლა დაინსტალირებას გეგმავთ."
 
 #: includes/installer.php
 msgid "Remove Everything (Logs, Tables, Settings)"
-msgstr ""
+msgstr "ყველაფრის წაშლა (ჟურნალები, ცხრილები, პარამეტრები)"
 
 #: includes/installer.php
 msgid "Syslog Data Only"
@@ -764,7 +734,7 @@ msgstr "მხოლოდ syslog-ის მონაცემები"
 
 #: includes/installer.php
 msgid "Syslog Uninstall Preferences"
-msgstr ""
+msgstr "Syslog-ის დეინსტალაციის პარამეტრები"
 
 #: includes/installer.php
 msgid "Uninstall"
@@ -803,68 +773,64 @@ msgstr "Syslog-ის ანგარიშები"
 
 #: includes/navigation.php includes/settings.php syslog_saved_searches.php
 msgid "Saved Search Templates"
-msgstr ""
+msgstr "შენახული ძებნის შაბლონები"
 
 #: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
 #: syslog_dashboards.php
 msgid "Dashboards"
-msgstr ""
+msgstr "სამუშაო დაფები"
 
 #: includes/navigation.php syslog_recommendations.php
-#, fuzzy
-#| msgid "Syslog Retention"
 msgid "Syslog Recommendations"
-msgstr "Syslog-ის შენარჩუნება"
+msgstr "Syslog რეკომენდაციები"
 
 #: includes/navigation.php
-#, fuzzy
-#| msgid "Import"
 msgid "(Import)"
-msgstr "შემოტანა"
+msgstr "(შემოტანა)"
 
 #: includes/navigation.php
 msgid "Display Syslog in Range"
-msgstr ""
+msgstr "Syslog-ის ჩვენება დიაპაზონში"
 
 #: includes/recommendations.php
 msgid "the identifier is empty"
-msgstr ""
+msgstr "იდენტიფიკატორი ცარიელია"
 
 #: includes/recommendations.php
 msgid "the identifier is longer than 190 characters"
-msgstr ""
+msgstr "იდენტიფიკატორი 190 სიმბოლოზე გრძელია"
 
 #: includes/recommendations.php
 msgid "the identifier contains spaces or line breaks"
-msgstr ""
+msgstr "იდენტიფიკატორი შეიცავს ინტერვალებს ან ხაზის წყვეტებს"
 
 #: includes/recommendations.php
 msgid "it has neither an explanation nor a recommended action"
-msgstr ""
+msgstr "მას არ აქვს არც განმარტება და არც რეკომენდებული მოქმედება"
 
 #: includes/recommendations.php
 msgid "it is not a JSON object"
-msgstr ""
+msgstr "ის არ არის JSON ობიექტი"
 
 #: includes/recommendations.php syslog.php
 msgid "Recommendations could not be loaded."
-msgstr ""
+msgstr "რეკომენდაციების ჩატვირთვა ვერ მოხერხდა."
 
 #: includes/recommendations.php
 msgid "Recommendation available - click the message for details"
-msgstr ""
+msgstr "ხელმისაწვდომია რეკომენდაცია - დეტალებისთვის დააწკაპუნეთ შეტყობინებაზე"
 
 #: includes/recommendations.php syslog_recommendations.php
 msgid "Explanation"
-msgstr ""
+msgstr "განმარტება"
 
 #: includes/recommendations.php syslog_recommendations.php
 msgid "Recommended Action"
-msgstr ""
+msgstr "რეკომენდებული მოქმედება"
 
 #: includes/recommendations.php syslog_recommendations.php
 msgid "Reference"
-msgstr ""
+msgstr "მითითება"
 
 #: includes/settings.php
 msgid "Monday"
@@ -896,11 +862,11 @@ msgstr "ხუთშაბათი"
 
 #: includes/settings.php
 msgid "Monday through Friday"
-msgstr ""
+msgstr "ორშაბათიდან პარასკევის ჩათვლით"
 
 #: includes/settings.php
 msgid "Saturday and Sunday"
-msgstr ""
+msgstr "შაბათი და კვირა"
 
 #: includes/settings.php
 msgid "Every day"
@@ -926,15 +892,15 @@ msgstr "Syslog ჩართულია"
 
 #: includes/settings.php
 msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
-msgstr ""
+msgstr "თუ ეს ველი მონიშნულია, ჩანაწერები გადაიტანება Syslog Incoming ცხრილიდან მთავარ syslog ცხრილში და გაფრთხილებები და ანგარიშები ჩაირთვება. გთხოვთ, გაითვალისწინოთ, რომ სისტემის გამორთვის შემთხვევაშიც კი ჟურნალის ჩანაწერები კვლავ დაგროვდება Syslog Incoming ცხრილში, რადგან ამას განსაზღვრავს rsyslog ან syslog-ng პროცესი."
 
 #: includes/settings.php
 msgid "Forward alarms to Alarm Manager"
-msgstr ""
+msgstr "განგაშების გადაგზავნა განგაშის მმართველში"
 
 #: includes/settings.php
 msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
-msgstr ""
+msgstr "განგაშის მმართველზე დაყენებული წესებისთვის განგაშების გადაგზავნის დაშვება. Syslog ელფოსტა რჩება სარეზერვო ვარიანტად; ბრძანების მოქმედებები ეშვება მხოლოდ Syslog განგაშის წესებისთვის."
 
 #: includes/settings.php
 msgid "Strip Domains"
@@ -942,7 +908,7 @@ msgstr "დომენების წაჭრა"
 
 #: includes/settings.php
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
-msgstr ""
+msgstr "მძიმით გამოყოფილი დომენების სია, რომელთა ამოშლაც გსურთ syslog ჰოსტის სახელიდან, მაგალითად 'mydomain.com, otherdomain.com'"
 
 #: includes/settings.php
 msgid "Refresh Interval"
@@ -950,15 +916,15 @@ msgstr "განახლების შუალედი"
 
 #: includes/settings.php
 msgid "This is the time in seconds before the page refreshes."
-msgstr ""
+msgstr "ეს არის დრო წამებში გვერდის განახლებამდე."
 
 #: includes/settings.php
 msgid "Skip Total Row Count"
-msgstr ""
+msgstr "მწკრივების სრული რაოდენობის დათვლის გამოტოვება"
 
 #: includes/settings.php
 msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
-msgstr ""
+msgstr "თუ ეს მოსანიშნი ველი ჩართულია, სისტემური ჟურნალებისა და გაფრთხილებების ჟურნალების ჩანართები არ ითვლის ყველა შესაბამის ჩანაწერს, რაც დიდ ინსტალაციებზე შეიძლება ძალიან რესურსტევადი იყოს. გვერდი ჯამური რაოდენობისა და გვერდების სიის ნაცვლად აჩვენებს ბმულებს წინა და შემდეგი, ხოლო შემდეგი შემოთავაზებულია მანამ, სანამ დამატებითი ჩანაწერები არსებობს."
 
 #: includes/settings.php
 msgid "Max Report Records"
@@ -966,7 +932,7 @@ msgstr "მაქს. ანგარიშის ჩანაწერები
 
 #: includes/settings.php
 msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
-msgstr ""
+msgstr "ზღვარზე დაფუძნებული გაფრთხილებებისთვის, რა მაქსიმალური რაოდენობის ჩვენება გსურთ ანგარიშში. ეს გამოიყენება HTML ჟურნალისა და ელფოსტის ზომის შესაზღუდად."
 
 #: includes/settings.php
 #, php-format
@@ -975,49 +941,49 @@ msgstr "%d ჩანაწერი"
 
 #: includes/settings.php
 msgid "Maximum Syslog Processing Processes"
-msgstr ""
+msgstr "Syslog-ის დამუშავების პროცესების მაქსიმალური რაოდენობა"
 
 #: includes/settings.php
 msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
-msgstr ""
+msgstr "როდესაც მნიშვნელობა 1-ზე მეტია, შემომავალი შეტყობინებების დამუშავება ნაწილდება პარალელურ სამუშაო პროცესებზე. თითოეული სამუშაო პროცესი ამუშავებს შემომავალი შეტყობინებების განცალკევებულ დიაპაზონს, რაც აჩქარებს ჰოსტის სახელის გარკვევას და შეტყობინებების გადაცემას მაღალი დატვირთვის დროს. 1-ის დაყენების შემთხვევაში ყველა შეტყობინება მუშავდება ერთ პროცესში. სამუშაო პროცესები არ არის მხარდაჭერილი Windows-ზე ან როდესაც PHP-ის pcntl და POSIX გაფართოებები მიუწვდომელია — ამ შემთხვევაში დამუშავება უბრუნდება ერთ პროცესს."
 
 #: includes/settings.php
 #, php-format
 msgid "%d Worker Process"
-msgstr ""
+msgstr "%d სამუშაო პროცესი"
 
 #: includes/settings.php
 #, php-format
 msgid "%d Worker Processes"
-msgstr ""
+msgstr "%d სამუშაო პროცესი"
 
 #: includes/settings.php
 msgid "Command for Opening Tickets"
-msgstr ""
+msgstr "ბილეთების გახსნის ბრძანება"
 
 #: includes/settings.php
 msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
-msgstr ""
+msgstr "ეს ბრძანება შესრულდება დახმარების სამსახურის ბილეთების გასახსნელად. ბრძანებამ უნდა დაამუშაოს შემდეგი შემავალი პარამეტრები: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>. hostlist იქნება გაფრთხილებით დაზარალებული ჰოსტების მძიმით გამოყოფილი სია."
 
 #: includes/settings.php
 msgid "Host Discovery Options"
-msgstr ""
+msgstr "ჰოსტის აღმოჩენის პარამეტრები"
 
 #: includes/settings.php
 msgid "Enable Hostname Resolution"
-msgstr ""
+msgstr "ჰოსტის სახელის გარკვევის ჩართვა"
 
 #: includes/settings.php
 msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
-msgstr ""
+msgstr "თუ ეს მოსანიშნი ველი ჩართულია, ყველა ჰოსტის სახელი ჯერ DNS ძიებით განისაზღვრება (თუ ჩართულია), A და AAAA ჩანაწერების გამოყენებით. IPv4 და IPv6 მისამართებს ძიება არ სჭირდება, ხოლო IPv6 მისამართები ინახება შეკუმშული, პატარა ასოების ფორმით. თუ DNS ძიება ვერ მოხერხდა, სისტემა შეეცდება ჰოსტის სახელი Cacti-ს ჰოსტების ცხრილში მოძებნოს და Cacti-ს ჰოსტის აღწერით ჩაანაცვლოს. თუ DNS და Cacti ძიებაც ვერ მოხერხდა, ჩანაწერებს ენიჭება პრეფიქსი 'unresolved-Original_hostname'."
 
 #: includes/settings.php
 msgid "Skip DNS Resolution for incoming hosts"
-msgstr ""
+msgstr "შემომავალი ჰოსტებისთვის DNS გარკვევის გამოტოვება"
 
 #: includes/settings.php
 msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
-msgstr ""
+msgstr "თუ ეს მოსანიშნი ველი მონიშნულია, სისტემა არ შეეცდება ჰოსტების სახელების გარკვევას DNS მოთხოვნებით. ეს სასარგებლოა ისეთ გარემოში, სადაც DNS გარკვევა შეუძლებელია ან არასასურველია."
 
 #: includes/settings.php
 msgid "HTML Notification Settings"
@@ -1025,45 +991,43 @@ msgstr "HTML გაფრთხილების მორგება"
 
 #: includes/settings.php
 msgid "Enable HTML Based Email"
-msgstr ""
+msgstr "HTML-ზე დაფუძნებული ელფოსტის ჩართვა"
 
 #: includes/settings.php
 msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
-msgstr ""
+msgstr "თუ ეს ველი მონიშნულია, ყველა ელფოსტა გაიგზავნება HTML ფორმატში. წინააღმდეგ შემთხვევაში, ელფოსტა გაიგზავნება უბრალო ტექსტის სახით."
 
 #: includes/settings.php
 msgid "Format File to Use"
-msgstr ""
+msgstr "გამოსაყენებელი ფორმატის ფაილი"
 
 #: includes/settings.php
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr ""
+msgstr "აირჩიეთ გამოსაყენებელი მორგებული html გარსი (wrapper) და CSS ფაილი. ეს ფაილი შეიცავს როგორც html-ს, ასევე CSS-ს თქვენი ანგარიშის გასაფორმებლად. თუ იგი მხოლოდ CSS-ზე მეტს შეიცავს, ფაილში უნდა მოათავსოთ სპეციალური <REPORT> ტეგი. ეს ფორმატის ტეგი ჩანაცვლდება ანგარიშის შიგთავსით. ეს ფაილები განთავსებულია 'formats' დირექტორიაში."
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "Data Retention Settings"
 msgid "Data Retention and Partitioning"
-msgstr "მონაცემთა შენარჩუნების მორგება"
+msgstr "მონაცემთა შენახვა და დანაყოფებად დაყოფა"
 
 #: includes/settings.php
 msgid "Syslog Retention"
-msgstr "Syslog-ის შენარჩუნება"
+msgstr "Syslog-ის შენახვის ვადა"
 
 #: includes/settings.php
 msgid "This is the number of days to keep events."
-msgstr ""
+msgstr "ეს არის მოვლენების შენახვის დღეების რაოდენობა."
 
 #: includes/settings.php
 msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
-msgstr ""
+msgstr "syslog და syslog_removed ცხრილების თითოეული დანაყოფის ზომა. ცვლილება აქ ინახება, მაგრამ ძალაში შედის მხოლოდ მას შემდეგ, რაც cli/upgrade_partitioning.php ხელახლა ააგებს ორივე ცხრილს; მანამდე დანაყოფების მოვლა ინარჩუნებს არსებულ ზომას. საათობრივი დაყოფა მოითხოვს სასრულ შენახვის ვადას. შენახვის ვადა, წინასწარი შექმნის ფანჯარა და დაყოფის დონე ერთად უნდა ეტეოდეს მონაცემთა ბაზის სერვერის დანაყოფების ლიმიტში, წინააღმდეგ შემთხვევაში პარამეტრები არ შეინახება."
 
 #: includes/settings.php
 msgid "Partition Pre-create Window"
-msgstr ""
+msgstr "დანაყოფების წინასწარ შექმნის ფანჯარა"
 
 #: includes/settings.php
 msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
-msgstr ""
+msgstr "ეს არის მომავალი დანაყოფების დღეების რაოდენობა, რომელიც უნდა შენარჩუნდეს დანაყოფებად დაყოფილი Syslog ცხრილებისთვის, რათა ახალი დანაყოფები ყოველთვის გამოეყოს ცარიელ dMaxValue დანაყოფს. საათობრივი დაყოფა ყოველთვის ინახავს მინიმუმ 2 დღეს."
 
 #: includes/settings.php syslog_alerts.php
 #, php-format
@@ -1076,13 +1040,12 @@ msgid "%d Days"
 msgstr "%d დღე"
 
 #: includes/settings.php
-#, fuzzy
 msgid "Partition Recovery Limit"
-msgstr "დანაყოფი დღეში"
+msgstr "დანაყოფის აღდგენის ლიმიტი"
 
 #: includes/settings.php
 msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
-msgstr ""
+msgstr "როდესაც დანაყოფები აკლია (მაგალითად, ტექნიკური მომსახურების გაჩერების შემდეგ), poller-ის თითოეულ გაშვებაზე თითო ცხრილისთვის მაქსიმუმ ამდენი ნაკლული დანაყოფი იქმნება. დარჩენილი ხარვეზი ივსება მომდევნო გაშვებებისას; შენახვის ვადის მიხედვით გასუფთავება გადავადებული რჩება მომავალი დანაყოფების ჰორიზონტის სრულ აღდგენამდე. ვრცელდება მხოლოდ დაყოფილ Syslog ცხრილებზე."
 
 #: includes/settings.php
 #, php-format
@@ -1096,15 +1059,15 @@ msgstr "%d დანაყოფი გაშვებაზე"
 
 #: includes/settings.php
 msgid "Collector Staleness Threshold"
-msgstr ""
+msgstr "კოლექტორის მოძველების ზღვარი"
 
 #: includes/settings.php
 msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
-msgstr ""
+msgstr "კონვეიერის მდგომარეობის გაფრთხილებები გატყობინებთ, როცა დაუმუშავებელი შეტყობინებები, დამუშავების დასრულება ან რიგში მყოფი სინქრონიზაცია აღემატება ამ დაყოვნებას. ეფექტური დაყოვნება შეადგენს გამომკითხველის სულ მცირე სამ ინტერვალს და 300 წამს. 300 წამის გამოსაყენებლად დააყენეთ 0."
 
 #: includes/settings.php
 msgid "Default (300 seconds)"
-msgstr ""
+msgstr "ნაგულისხმევი (300 წამი)"
 
 #: includes/settings.php
 #, php-format
@@ -1113,15 +1076,15 @@ msgstr "%d წამი"
 
 #: includes/settings.php
 msgid "Collector Backlog Threshold"
-msgstr ""
+msgstr "კოლექტორის დაგროვების ზღვარი"
 
 #: includes/settings.php
 msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
-msgstr ""
+msgstr "Syslog სტატუსის გვერდი აჩვენებს გაფრთხილებას, როდესაც Syslog შემომავალ ცხრილში ამაზე მეტი დაუმუშავებელი შეტყობინება გროვდება. დააყენეთ 0-ზე ნაგულისხმევი 10000 შეტყობინების გამოსაყენებლად."
 
 #: includes/settings.php
 msgid "Default (10000 messages)"
-msgstr ""
+msgstr "ნაგულისხმევი (10000 შეტყობინება)"
 
 #: includes/settings.php
 #, php-format
@@ -1130,33 +1093,31 @@ msgstr "%d შეტყობინება"
 
 #: includes/settings.php
 msgid "Pipeline Health Alerts"
-msgstr ""
+msgstr "კონვეიერის მდგომარეობის გაფრთხილებები"
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "Notification List"
 msgid "Pipeline Health Notification List"
-msgstr "გაფრთხილებების სია"
+msgstr "კონვეიერის მდგომარეობის შეტყობინებების სია"
 
 #: includes/settings.php
 msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
-msgstr ""
+msgstr "აირჩიეთ Thold-ის არსებული შეტყობინებების სია კონვეიერის მდგომარეობის გაფრთხილებებისთვის. ჩართული სიის მიმღებები გაერთიანდება ქვემოთ მითითებულ ელფოსტის მისამართებთან, BCC მიმღებების შენარჩუნებით. სიები საჭიროებს Thold-ის შეტყობინებების სიის ცხრილს."
 
 #: includes/settings.php
 msgid "Pipeline Health Email Recipients"
-msgstr ""
+msgstr "კონვეიერის მდგომარეობის ელფოსტის მიმღებები"
 
 #: includes/settings.php
 msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
-msgstr ""
+msgstr "მძიმით გამოყოფილი ელფოსტის მიმღებები კონვეიერის ხარვეზებისა და აღდგენის შესახებ შეტყობინებებისთვის. ელფოსტის გასათიშად დატოვეთ ცარიელი და არ აირჩიოთ შეტყობინებების სია; მდგომარეობა კვლავ გამოჩნდება სტატუსის ჩანართზე და სტატუსის ცვლილებები ჩაიწერება ჟურნალში. შემოწმებები საჭიროებს Cacti-ის გამომკითხველის გაშვებას."
 
 #: includes/settings.php
 msgid "Pipeline Health Reminder Interval"
-msgstr ""
+msgstr "კონვეიერის მდგომარეობის შეხსენების ინტერვალი"
 
 #: includes/settings.php
 msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
-msgstr ""
+msgstr "გაიმეორეთ შეტყობინებები კონვეიერის მიმდინარე პრობლემების შესახებ ამ ინტერვალის შემდეგ. ელფოსტის გაგზავნის წარუმატებელი მცდელობები ხელახლა მოწმდება არა უმეტეს ხუთ წუთში ერთხელ."
 
 #: includes/settings.php
 msgid "Syslog Alert Retention"
@@ -1164,93 +1125,91 @@ msgstr "Syslog-ის განგაშების შენარჩუნე
 
 #: includes/settings.php
 msgid "This is the number of days to keep alert logs."
-msgstr ""
+msgstr "ეს არის გაფრთხილებების ჟურნალების შენახვის დღეების რაოდენობა."
 
 #: includes/settings.php
 msgid "Alert Suppression and Maintenance"
-msgstr ""
+msgstr "განგაშების დახშობა და ტექნიკური მომსახურება"
 
 #: includes/settings.php
 msgid "Maintenance Window Days"
-msgstr ""
+msgstr "ტექნიკური მომსახურების ფანჯრის დღეები"
 
 #: includes/settings.php
 msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
-msgstr ""
+msgstr "დღეები, როდესაც კონფიგურირებული ტექნიკური მომსახურების დროის ინტერვალში განგაშის ყველა შეტყობინება დადუმებულია."
 
 #: includes/settings.php
 msgid "Maintenance Window Starts"
-msgstr ""
+msgstr "ტექნიკური მომსახურების ფანჯრის დასაწყისი"
 
 #: includes/settings.php
 msgid "Local start time for the global maintenance window."
-msgstr ""
+msgstr "ადგილობრივი დაწყების დრო გლობალური ტექნიკური მომსახურების ფანჯრისთვის."
 
 #: includes/settings.php
 msgid "Maintenance Window Ends"
-msgstr ""
+msgstr "ტექნიკური მომსახურების ფანჯრის დასასრული"
 
 #: includes/settings.php
 msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
-msgstr ""
+msgstr "ადგილობრივი დასრულების დრო გლობალური ტექნიკური მომსახურების ფანჯრისთვის. უფრო ადრეული დასრულების დრო მომდევნო დღეზე გრძელდება."
 
 #: includes/settings.php
 msgid "One-time Maintenance Starts"
-msgstr ""
+msgstr "ერთჯერადი ტექნიკური მომსახურების დასაწყისი"
 
 #: includes/settings.php
 msgid "Optional local date and time to start a one-time global maintenance window."
-msgstr ""
+msgstr "არასავალდებულო ადგილობრივი თარიღი და დრო ერთჯერადი გლობალური ტექნიკური მომსახურების ფანჯრის დასაწყებად."
 
 #: includes/settings.php
 msgid "One-time Maintenance Ends"
-msgstr ""
+msgstr "ერთჯერადი ტექნიკური მომსახურების დასასრული"
 
 #: includes/settings.php
 msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
-msgstr ""
+msgstr "არასავალდებულო ადგილობრივი თარიღი და დრო ერთჯერადი გლობალური ტექნიკური მომსახურების ფანჯრის დასასრულებლად. ფორმატი: YYYY-MM-DD HH:MM."
 
 #: includes/settings.php
 msgid "Default Alert Cooldown"
-msgstr ""
+msgstr "განგაშის ნაგულისხმევი მოცდის დრო"
 
 #: includes/settings.php
 msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
-msgstr ""
+msgstr "იმავე წესისა და ანგარიშგების არეალისთვის ნებისმიერი განმეორებითი შეტყობინების დახშობა მითითებული წუთების განმავლობაში. თითოეული წესის მნიშვნელობა გადაფარავს ამ პარამეტრს. გამოსართავად მიუთითეთ 0."
 
 #: includes/settings.php
 msgid "Default Duplicate Suppression"
-msgstr ""
+msgstr "დუბლიკატების ნაგულისხმევი დახშობა"
 
 #: includes/settings.php
 msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
-msgstr ""
+msgstr "იმავე დამთხვეული შეტყობინებების ნაკრების მქონე შეტყობინების დახშობა მითითებული წუთების განმავლობაში. თითოეული წესის მნიშვნელობა გადაფარავს ამ პარამეტრს. გამოსართავად მიუთითეთ 0."
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "Delete Syslog Report(s)"
 msgid "Remote Syslog Recovery"
-msgstr "Syslog-ის ანგარიშების წაშლა"
+msgstr "დაშორებული Syslog-ის აღდგენა"
 
 #: includes/settings.php
 msgid "Maximum Recovery Records Per Execution"
-msgstr ""
+msgstr "აღდგენის მაქსიმალური ჩანაწერები ერთ გაშვებაზე"
 
 #: includes/settings.php
 msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
-msgstr ""
+msgstr "შენახული დაშორებული Syslog მოვლენების მაქსიმალური რაოდენობა, რომლებიც მთავარ კოლექტორს ეგზავნება აღდგენის სამუშაო პროცესის ერთ გაშვებაზე. ცენტრალური მონაცემთა ბაზის თითოეული ტრანზაქცია კვლავ შეზღუდულია 100 ჩანაწერით. გაზარდეთ თანდათანობით მთავარი კოლექტორის დატვირთვისა და ბლოკირების მოლოდინების დაკვირვებით."
 
 #: includes/settings.php
 msgid "Recovery Pause Between Batches"
-msgstr ""
+msgstr "აღდგენის პაუზა პაკეტებს შორის"
 
 #: includes/settings.php
 msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
-msgstr ""
+msgstr "პაუზა მთავარ კოლექტორზე მიწოდების თითოეულ 100-ჩანაწერიან ტრანზაქციას შორის. უფრო ხანგრძლივი პაუზა ამცირებს დატვირთვას მთავარ კოლექტორზე; უფრო მოკლე პაუზა აჩქარებს დაგროვილი რიგის დამუშავებას."
 
 #: includes/settings.php
 msgid "No pause"
-msgstr ""
+msgstr "პაუზის გარეშე"
 
 #: includes/settings.php
 #, php-format
@@ -1264,16 +1223,16 @@ msgstr "%d წამი"
 
 #: includes/settings.php
 msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
-msgstr ""
+msgstr "Syslog-ის მონაცემთა ბაზა მიუწვდომელია, ამიტომ დანაყოფებად დაყოფის პარამეტრების შემოწმება მის დანაყოფების ლიმიტსა და ცხრილებთან შეუძლებელია."
 
 #: includes/settings.php
 msgid "The Syslog settings were not saved."
-msgstr ""
+msgstr "Syslog-ის პარამეტრები არ შენახულა."
 
 #: includes/settings.php
 #, php-format
 msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
-msgstr ""
+msgstr "მოლოდინში: შეტყობინებების ცხრილი კვლავ იყენებს %s დანაყოფებს. არჩეული დონის გამოსაყენებლად გაუშვით cli/upgrade_partitioning.php."
 
 #: includes/settings.php lib/syslog_dashboard.php syslog.php
 #: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
@@ -1363,7 +1322,7 @@ msgstr "ობიექტი არის"
 
 #: includes/settings.php syslog_alerts.php
 msgid "Filter Builder"
-msgstr ""
+msgstr "ფილტრის კონსტრუქტორი"
 
 #: includes/settings.php syslog_alerts.php
 msgid "SQL Expression"
@@ -1386,9 +1345,8 @@ msgid "Syslog Settings"
 msgstr "Syslog-ის მორგება"
 
 #: includes/settings.php syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rules"
-msgstr "განგაშის წესები"
+msgstr "მოწყობილობის განგაშის წესები"
 
 #: includes/settings.php
 msgid "Removal Rules"
@@ -1399,18 +1357,17 @@ msgid "Report Rules"
 msgstr "ანგარიშის წესები"
 
 #: includes/settings.php syslog.php syslog_recommendations.php
-#, fuzzy
 msgid "Recommendations"
-msgstr "წაშლილი ჩანაწერები"
+msgstr "რეკომენდაციები"
 
 #: includes/utilities.php
 msgid "Unable to connect to the Syslog database. No Device records were removed."
-msgstr ""
+msgstr "Syslog-ის მონაცემთა ბაზასთან დაკავშირება ვერ მოხერხდა. მოწყობილობის არცერთი ჩანაწერი არ წაშლილა."
 
 #: includes/utilities.php
 #, php-format
 msgid "There were %s Device records removed from the Syslog database"
-msgstr ""
+msgstr "Syslog მონაცემთა ბაზიდან წაიშალა %s მოწყობილობის ჩანაწერი"
 
 #: includes/utilities.php
 msgid "Syslog Utilities"
@@ -1422,11 +1379,11 @@ msgstr "სისტემური ჟურნალის მოწყობ�
 
 #: includes/utilities.php
 msgid "Are you sure you want to purge stale Syslog devices?"
-msgstr ""
+msgstr "დარწმუნებული ხართ, რომ გსურთ მოძველებული Syslog მოწყობილობების გასუფთავება?"
 
 #: includes/utilities.php
 msgid "Confirm Purge"
-msgstr ""
+msgstr "გასუფთავების დადასტურება"
 
 #: includes/utilities.php syslog_alerts.php syslog_dashboards.php
 #: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
@@ -1436,52 +1393,52 @@ msgstr "გაგრძელება"
 
 #: includes/utilities.php
 msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
-msgstr ""
+msgstr "მენიუს ეს პუნქტი იძლევა იმ მოწყობილობების წაშლის საშუალებას, რომლებიც აღარ აგზავნიან მონაცემებს Cacti-ს Syslog სერვერზე."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel source."
-msgstr ""
+msgstr "სამუშაო დაფის პანელის არასწორი წყარო."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel type."
-msgstr ""
+msgstr "სამუშაო დაფის პანელის არასწორი ტიპი."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard chart type."
-msgstr ""
+msgstr "სამუშაო დაფის დიაგრამის არასწორი ტიპი."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard breakdown field."
-msgstr ""
+msgstr "სამუშაო დაფის დაშლის არასწორი ველი."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard interval."
-msgstr ""
+msgstr "სამუშაო დაფის არასწორი ინტერვალი."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard timespan."
-msgstr ""
+msgstr "სამუშაო დაფის არასწორი დროის შუალედი."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard record type."
-msgstr ""
+msgstr "სამუშაო დაფის ჩანაწერის არასწორი ტიპი."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard top count."
-msgstr ""
+msgstr "სამუშაო დაფის ტოპ-ელემენტების არასწორი რაოდენობა."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel width."
-msgstr ""
+msgstr "სამუშაო დაფის პანელის არასწორი სიგანე."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel height."
-msgstr ""
+msgstr "სამუშაო დაფის პანელის არასწორი სიმაღლე."
 
 #: lib/syslog_dashboard.php syslog.php
 #, php-format
 msgid "Invalid logical search: %s"
-msgstr ""
+msgstr "არასწორი ლოგიკური ძიება: %s"
 
 #: lib/syslog_dashboard.php
 msgid "Other"
@@ -1489,74 +1446,71 @@ msgstr "სხვა"
 
 #: lib/syslog_dashboard.php
 msgid "A valid dashboard panel is required."
-msgstr ""
+msgstr "საჭიროა სამუშაო დაფის სწორი პანელი."
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard panel not found."
-msgstr ""
+msgstr "სამუშაო დაფის პანელი ვერ მოიძებნა."
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "A name of up to 128 characters is required."
-msgstr ""
+msgstr "საჭიროა სახელი მაქსიმუმ 128 სიმბოლომდე."
 
 #: lib/syslog_dashboard.php
 msgid "A valid dashboard is required."
-msgstr ""
+msgstr "საჭიროა სწორი სამუშაო დაფა."
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard not found."
-msgstr ""
+msgstr "სამუშაო დაფა ვერ მოიძებნა."
 
 #: lib/syslog_dashboard.php syslog_dashboards.php
 msgid "Unable to save dashboard changes."
-msgstr ""
+msgstr "საინფორმაციო დაფის ცვლილებების შენახვა ვერ მოხერხდა."
 
 #: lib/syslog_dashboard.php
 msgid "You may only share your own dashboards."
-msgstr ""
+msgstr "შეგიძლიათ გააზიაროთ მხოლოდ თქვენი საკუთარი სამუშაო დაფები."
 
 #: lib/syslog_dashboard.php
 msgid "copy"
-msgstr ""
+msgstr "ასლი"
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard could not be copied."
-msgstr ""
+msgstr "სამუშაო დაფის კოპირება ვერ მოხერხდა."
 
 #: lib/syslog_dashboard.php
 msgid "A valid panel position is required."
-msgstr ""
+msgstr "საჭიროა პანელის სწორი პოზიცია."
 
 #: lib/syslog_dashboard.php
 msgid "A title of up to 128 characters is required."
-msgstr ""
+msgstr "საჭიროა სათაური მაქსიმუმ 128 სიმბოლომდე."
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Drag to reorder card"
-msgstr ""
+msgstr "გადაათრიეთ ბარათის თანმიმდევრობის შესაცვლელად"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
-#| msgid "Refresh Interval"
 msgid "Refresh Panel"
-msgstr "განახლების შუალედი"
+msgstr "პანელის განახლება"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Total messages"
-msgstr "შეტყობინება"
+msgstr "სულ შეტყობინებები"
 
 #: lib/syslog_dashboard.php
 msgid "Chart library unavailable on this Cacti installation."
-msgstr ""
+msgstr "დიაგრამების ბიბლიოთეკა მიუწვდომელია ამ Cacti ინსტალაციაში."
 
 #: lib/syslog_dashboard.php
 msgid "Edit Panel"
-msgstr ""
+msgstr "პანელის რედაქტირება"
 
 #: lib/syslog_dashboard.php
 msgid "New Panel"
-msgstr ""
+msgstr "ახალი პანელი"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Save"
@@ -1564,36 +1518,35 @@ msgstr "შენახვა"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Apply"
-msgstr ""
+msgstr "გამოყენება"
 
 #: lib/syslog_dashboard.php
 msgid "Delete this dashboard panel?"
-msgstr ""
+msgstr "წაიშალოს სამუშაო დაფის ეს პანელი?"
 
 #: lib/syslog_dashboard.php
 msgid "Delete this dashboard and all of its panels?"
-msgstr ""
+msgstr "წაიშალოს ეს სამუშაო დაფა და მისი ყველა პანელი?"
 
 #: lib/syslog_dashboard.php
 msgid "Name your dashboard"
-msgstr ""
+msgstr "დაარქვით სახელი თქვენს სამუშაო დაფას"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Make Private"
-msgstr ""
+msgstr "პირადად ქცევა"
 
 #: lib/syslog_dashboard.php
 msgid "Share with all"
-msgstr ""
+msgstr "ყველასთვის გაზიარება"
 
 #: lib/syslog_dashboard.php
 msgid "Save as my copy"
-msgstr ""
+msgstr "ჩემს ასლად შენახვა"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Syslog Dashboards"
-msgstr "Syslog ჩართულია"
+msgstr "Syslog-ის სამუშაო დაფები"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Dashboard"
@@ -1640,15 +1593,15 @@ msgstr "განახლება"
 
 #: lib/syslog_dashboard.php
 msgid "My Dashboards"
-msgstr ""
+msgstr "ჩემი სამუშაო დაფები"
 
 #: lib/syslog_dashboard.php
 msgid "Global Dashboards"
-msgstr ""
+msgstr "გლობალური დაფები"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Shared With Me"
-msgstr ""
+msgstr "ჩემთვის გაზიარებული"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "New"
@@ -1660,19 +1613,19 @@ msgstr "სახელის გადარქმევა"
 
 #: lib/syslog_dashboard.php
 msgid "Add Panel"
-msgstr ""
+msgstr "პანელის დამატება"
 
 #: lib/syslog_dashboard.php
 msgid "Create your first dashboard to visualize syslog trends."
-msgstr ""
+msgstr "შექმენით თქვენი პირველი დაფა syslog-ის ტენდენციების ვიზუალიზაციისთვის."
 
 #: lib/syslog_dashboard.php
 msgid "Add a panel to start charting.  Panels can use your saved searches."
-msgstr ""
+msgstr "დიაგრამების აგების დასაწყებად დაამატეთ პანელი. პანელებს შეუძლიათ თქვენი შენახული ძებნების გამოყენება."
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard Panel"
-msgstr ""
+msgstr "დაფის პანელი"
 
 #: lib/syslog_dashboard.php
 msgid "Title"
@@ -1680,7 +1633,7 @@ msgstr "სათაური"
 
 #: lib/syslog_dashboard.php
 msgid "Log Source"
-msgstr ""
+msgstr "ჟურნალის წყარო"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "System Logs"
@@ -1691,22 +1644,20 @@ msgid "Alert Logs"
 msgstr "განგაშის ჟურნალი"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Panel Type"
-msgstr "დამთხვევის ტიპი"
+msgstr "პანელის ტიპი"
 
 #: lib/syslog_dashboard.php
 msgid "Time Series"
-msgstr ""
+msgstr "დროითი მწკრივი"
 
 #: lib/syslog_dashboard.php
 msgid "Breakdown"
-msgstr ""
+msgstr "ჩაშლა"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Chart"
-msgstr "%d სიმბოლო"
+msgstr "დიაგრამა"
 
 #: lib/syslog_dashboard.php
 msgid "Line"
@@ -1741,13 +1692,12 @@ msgid "Hour"
 msgstr "საათი"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Day"
-msgstr "ყოველდღიური"
+msgstr "დღე"
 
 #: lib/syslog_dashboard.php
 msgid "Field"
-msgstr ""
+msgstr "ველი"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
 #: syslog_reports.php
@@ -1765,9 +1715,8 @@ msgid "Priority"
 msgstr "პრიორიტეტი"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Top Count"
-msgstr "რაოდენობა"
+msgstr "ტოპ რაოდენობა"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Record Type"
@@ -1787,30 +1736,28 @@ msgstr "წაშლილი ჩანაწერები"
 
 #: lib/syslog_dashboard.php
 msgid "Start from Saved Search"
-msgstr ""
+msgstr "შენახული ძებნიდან დაწყება"
 
 #: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
 msgid "Enter message text…"
-msgstr ""
+msgstr "შეიყვანეთ შეტყობინების ტექსტი…"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
 #: syslog_reports.php syslog_saved_searches.php
-#, fuzzy
 msgid "Remove condition"
-msgstr "წაშლილი ჩანაწერები"
+msgstr "პირობის წაშლა"
 
 #: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
-#, fuzzy
 msgid "Match group"
-msgstr "დამთხვევის ტიპი"
+msgstr "დამთხვევის ჯგუფი"
 
 #: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
 msgid "Exclude group"
-msgstr ""
+msgstr "გამორიცხვის ჯგუფი"
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard Name"
-msgstr ""
+msgstr "დაფის სახელი"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
 #: syslog_reports.php syslog_saved_searches.php
@@ -1818,14 +1765,12 @@ msgid "Name"
 msgstr "სახელი"
 
 #: lib/syslog_thresholds.php syslog.php
-#, fuzzy
-#| msgid "Threshold"
 msgid "Breached Thresholds"
-msgstr "ზღვარი"
+msgstr "დარღვეული ზღვრები"
 
 #: lib/syslog_thresholds.php
 msgid "Breached Since"
-msgstr ""
+msgstr "დარღვეულია დროიდან"
 
 #: lib/syslog_thresholds.php
 msgid "Collector"
@@ -1838,30 +1783,27 @@ msgstr "მოწყობილობა"
 
 #: lib/syslog_thresholds.php
 msgid "Last Matching Message"
-msgstr ""
+msgstr "ბოლო შესაბამისი შეტყობინება"
 
 #: lib/syslog_thresholds.php
-#, fuzzy
 msgid "Recovers After"
-msgstr "თავიდან დამუშავება"
+msgstr "აღდგება შემდეგ"
 
 #: lib/syslog_thresholds.php
-#, fuzzy
-#| msgid "Rules"
 msgid "Rule"
-msgstr "წესები"
+msgstr "წესი"
 
 #: lib/syslog_thresholds.php
 msgid "All matching devices"
-msgstr ""
+msgstr "ყველა შესაბამისი მოწყობილობა"
 
 #: lib/syslog_thresholds.php
 msgid "No thresholds are currently breached."
-msgstr ""
+msgstr "ამჟამად არცერთი ზღვარი არ არის დარღვეული."
 
 #: lib/syslog_thresholds.php
 msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
-msgstr ""
+msgstr "აღდგენისთვის საჭიროა, რომ ნაჩვენებ დრომდე არ იყოს შესაბამისი შეტყობინებები. ყოველი დამთხვევა ხელახლა იწყებს სიჩუმის პერიოდს."
 
 #: lib/syslog_thresholds.php syslog.php
 msgid "Previous"
@@ -1873,48 +1815,43 @@ msgstr "შემდეგი"
 
 #: setup.php
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
-msgstr ""
+msgstr "გთხოვთ, გადაარქვათ სახელი config.php.dist ან config_local.php.dist ფაილს syslog დირექტორიაში და შეცვალოთ და დააყენოთ თქვენი მონაცემთა ბაზა ინსტალაციამდე."
 
 #: setup.php
 msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
-msgstr ""
+msgstr "მილიწამიანი (TIMESTAMP(3)) დროის ნიშნულები მხარდაჭერილია მხოლოდ MariaDB-ზე. ეს სერვერი არის MySQL, ამიტომ დააინსტალირეთ წამიანი სიზუსტის დროის ნიშნულებით."
 
 #: setup.php
 msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
-msgstr ""
+msgstr "Aria შენახვის გამოყენება შეუძლებელია, როცა მონაცემთა დაშორებული კოლექტორის რომელიმე პარამეტრი ჩართულია. აირჩიეთ InnoDB ან გამორთეთ მონაცემთა დაშორებული კოლექტორის ყველა პარამეტრი."
 
 #: setup.php
 msgid "Top 10 Hosts"
-msgstr ""
+msgstr "ტოპ 10 ჰოსტი"
 
 #: setup.php
-#, fuzzy
-#| msgid "No Syslog Messages"
 msgid "Syslog Messages - Past Hour"
-msgstr "Syslog-ის შეტყობინებების გარეშე"
+msgstr "Syslog შეტყობინებები - ბოლო საათი"
 
 #: setup.php
 msgid "Messages by Severity"
 msgstr "შეტყობინებების სიმძიმის მიხედვით"
 
 #: setup.php
-#, fuzzy
-#| msgid "All Programs"
 msgid "Top 10 Programs"
-msgstr "ყველა პროგრამა"
+msgstr "ტოპ 10 პროგრამა"
 
 #: setup.php
 msgid "Alert Activity"
-msgstr ""
+msgstr "გაფრთხილებების აქტივობა"
 
 #: syslog.php
 msgid "Syslog Viewer"
 msgstr "სისტემური ჟურნალის დათვალიერება"
 
 #: syslog.php
-#, fuzzy
 msgid "Syslog Status"
-msgstr "Syslog-ის მორგება"
+msgstr "Syslog-ის სტატუსი"
 
 #: syslog.php
 msgid "Selected Alert"
@@ -1936,12 +1873,11 @@ msgstr "დაუმუშავებელი შეტყობინებ�
 #: syslog.php
 #, php-format
 msgid "incoming backlog of %s messages"
-msgstr ""
+msgstr "%s შემომავალი შეტყობინების დაგროვება"
 
 #: syslog.php
-#, fuzzy
 msgid "day"
-msgstr "ყოველდღიური"
+msgstr "დღე"
 
 #: syslog.php
 msgid "days"
@@ -1965,101 +1901,91 @@ msgstr "წუთი"
 
 #: syslog.php
 msgid "Rows in syslog_incoming"
-msgstr ""
+msgstr "სტრიქონები syslog_incoming-ში"
 
 #: syslog.php
 msgid "Syslog table size (data + indexes)"
-msgstr ""
+msgstr "Syslog ცხრილის ზომა (მონაცემები + ინდექსები)"
 
 #: syslog.php
-#, fuzzy
 msgid "Syslog retention"
-msgstr "Syslog-ის შენარჩუნება"
+msgstr "Syslog-ის შენახვის ვადა"
 
 #: syslog.php
-#, fuzzy
 msgid "Alert retention"
-msgstr "Syslog-ის განგაშების შენარჩუნება"
+msgstr "განგაშების შენახვის ვადა"
 
 #: syslog.php
 msgid "No recovery activity recorded yet."
-msgstr ""
+msgstr "აღდგენის აქტივობა ჯერ არ ჩაწერილა."
 
 #: syslog.php
 msgid "created"
-msgstr ""
+msgstr "შექმნილია"
 
 #: syslog.php
-#, fuzzy
 msgid "remaining"
-msgstr "გაფრთხილება"
+msgstr "დარჩენილია"
 
 #: syslog.php
 msgid "retention deferred"
-msgstr ""
+msgstr "შენარჩუნება გადავადებულია"
 
 #: syslog.php
 msgid "Latest processing run"
-msgstr ""
+msgstr "დამუშავების ბოლო გაშვება"
 
 #: syslog.php
 msgid "Distributed synchronization"
-msgstr ""
+msgstr "განაწილებული სინქრონიზაცია"
 
 #: syslog.php
 msgid "Remote collector receipts"
-msgstr ""
+msgstr "დაშორებული კოლექტორის მიღებები"
 
 #: syslog.php
-#, fuzzy
 msgid "Storage and retention"
-msgstr "Syslog-ის შენარჩუნება"
+msgstr "საცავი და შენახვის ვადა"
 
 #: syslog.php
-#, fuzzy
 msgid "Partition health"
-msgstr "დანაყოფი დღეში"
+msgstr "დანაყოფების მდგომარეობა"
 
 #: syslog.php
-#, fuzzy
 msgid "Partition maintenance activity"
-msgstr "დაყოფილი ცხრილი"
+msgstr "დანაყოფების მომსახურების აქტივობა"
 
 #: syslog.php
-#, fuzzy
 msgid "Recent partition maintenance activity"
-msgstr "დაყოფილი ცხრილი"
+msgstr "დანაყოფების მომსახურების ბოლოდროინდელი აქტივობა"
 
 #: syslog.php
-#, fuzzy
 msgid "Pipeline health"
-msgstr "დანაყოფი დღეში"
+msgstr "კონვეიერის მდგომარეობა"
 
 #: syslog.php
 msgid "Parallel workers"
-msgstr ""
+msgstr "პარალელური სამუშაო პროცესები"
 
 #: syslog.php
-#, fuzzy
 msgid "Worker processes"
-msgstr "თავიდან დამუშავება"
+msgstr "სამუშაო პროცესები"
 
 #: syslog.php
 msgid "Processing phases"
-msgstr ""
+msgstr "დამუშავების ფაზები"
 
 #: syslog.php
 msgid "Rule activity"
-msgstr ""
+msgstr "წესების აქტივობა"
 
 #: syslog.php
-#, fuzzy
 msgid "Records processed"
-msgstr "თავიდან დამუშავება"
+msgstr "დამუშავებული ჩანაწერები"
 
 #: syslog.php
 msgid "Polling runtime"
-msgstr ""
+msgstr "გამოკითხვის შესრულების დრო"
 
 #: syslog.php
 msgid "Started"
@@ -2071,33 +1997,31 @@ msgstr "დასრულდა"
 
 #: syslog.php
 msgid "Minimum runtime"
-msgstr ""
+msgstr "მინიმალური შესრულების დრო"
 
 #: syslog.php
 msgid "Average runtime"
-msgstr ""
+msgstr "საშუალო შესრულების დრო"
 
 #: syslog.php
 msgid "Maximum runtime"
-msgstr ""
+msgstr "მაქსიმალური შესრულების დრო"
 
 #: syslog.php
 msgid "State"
 msgstr "მდგომარეობა"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Removed Records"
 msgid "Queued Recovery Records"
-msgstr "წაშლილი ჩანაწერები"
+msgstr "რიგში მყოფი აღდგენის ჩანაწერები"
 
 #: syslog.php
 msgid "Oldest pending"
-msgstr ""
+msgstr "უძველესი მომლოდინე"
 
 #: syslog.php
 msgid "Last successful synchronization"
-msgstr ""
+msgstr "ბოლო წარმატებული სინქრონიზაცია"
 
 #: syslog.php
 msgid "Active"
@@ -2108,50 +2032,44 @@ msgid "Inactive"
 msgstr "არააქტიური"
 
 #: syslog.php
-#, fuzzy
 msgid "Recovery worker"
-msgstr "თავიდან დამუშავება"
+msgstr "აღდგენის სამუშაო პროცესი"
 
 #: syslog.php
 msgid "Last synchronization error"
-msgstr ""
+msgstr "სინქრონიზაციის ბოლო შეცდომა"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Last Month"
 msgid "Last Batch Count"
-msgstr "ბოლო თვე"
+msgstr "ბოლო პაკეტის რაოდენობა"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Last Modified"
 msgid "Last Record Received"
-msgstr "ბოლო ცვლილება"
+msgstr "ბოლო მიღებული ჩანაწერი"
 
 #: syslog.php
 msgid "Remote Poller"
-msgstr ""
+msgstr "დაშორებული გამომკითხველი"
 
 #: syslog.php
 msgid "Unknown remote poller"
-msgstr ""
+msgstr "უცნობი დაშორებული გამომკითხველი"
 
 #: syslog.php
 msgid "No remote collector records have been received yet."
-msgstr ""
+msgstr "დაშორებული კოლექტორის ჩანაწერები ჯერ არ მიღებულა."
 
 #: syslog.php
-#, fuzzy
 msgid "Partition maintenance blocked"
-msgstr "დაყოფილი ცხრილი"
+msgstr "დანაყოფების მომსახურება დაბლოკილია"
 
 #: syslog.php
 msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
-msgstr ""
+msgstr "დანაყოფების მომსახურება შეჩერებულია; ჩაწერა გრძელდება dMaxValue უსაფრთხოების დანაყოფში."
 
 #: syslog.php
 msgid "Date coverage"
-msgstr ""
+msgstr "თარიღების დაფარვა"
 
 #: syslog.php
 msgid "Table"
@@ -2159,30 +2077,28 @@ msgstr "ცხრილი"
 
 #: syslog.php
 msgid "dMaxValue rows (estimated)"
-msgstr ""
+msgstr "dMaxValue მწკრივი (სავარაუდო)"
 
 #: syslog.php
 msgid "dMaxValue size"
-msgstr ""
+msgstr "dMaxValue-ის ზომა"
 
 #: syslog.php
-#, fuzzy
 msgid "Partitioning level"
-msgstr "დანაყოფი დღეში"
+msgstr "დანაყოფებად დაყოფის დონე"
 
 #: syslog.php
 #, php-format
 msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
-msgstr ""
+msgstr "%s არჩეულია პარამეტრებში და ძალაში შევა მას შემდეგ, რაც cli/upgrade_partitioning.php ხელახლა ააგებს ცხრილებს."
 
 #: syslog.php
-#, fuzzy
 msgid "Last attempt"
-msgstr "ბოლო გაგზავნილი"
+msgstr "ბოლო მცდელობა"
 
 #: syslog.php
 msgid "Last successful maintenance"
-msgstr ""
+msgstr "ბოლო წარმატებული მომსახურება"
 
 #: syslog.php
 msgid "Complete"
@@ -2190,16 +2106,15 @@ msgstr "დასრულებულია"
 
 #: syslog.php
 msgid "Deferred"
-msgstr ""
+msgstr "გადადებული"
 
 #: syslog.php
 msgid "Latest outcome"
-msgstr ""
+msgstr "ბოლო შედეგი"
 
 #: syslog.php
-#, fuzzy
 msgid "Recovery progress"
-msgstr "თავიდან დამუშავება"
+msgstr "აღდგენის მიმდინარეობა"
 
 #: syslog.php syslog_alerts.php syslog_reports.php
 msgid "Details"
@@ -2207,7 +2122,7 @@ msgstr "დეტალები"
 
 #: syslog.php
 msgid "Outcome"
-msgstr ""
+msgstr "შედეგი"
 
 #: syslog.php
 msgid "Recovery"
@@ -2215,125 +2130,112 @@ msgstr "აღდგენა"
 
 #: syslog.php
 msgid "When"
-msgstr ""
+msgstr "როდის"
 
 #: syslog.php
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
-msgstr ""
+msgstr "დანაყოფების მომსახურების აქტივობა ჯერ არ დაფიქსირებულა. აქტივობა გამოჩნდება გამომკითხველის შემდეგი გაშვების შემდეგ."
 
 #: syslog.php
 #, php-format
 msgid "%d created, %d remaining, %d pruned"
-msgstr ""
+msgstr "%d შეიქმნა, %d დარჩა, %d წაიშალა"
 
 #: syslog.php
 msgid "No action required."
-msgstr ""
+msgstr "მოქმედება საჭირო არ არის."
 
 #: syslog.php
 msgid "Incoming backlog"
-msgstr ""
+msgstr "შემომავალი რიგი"
 
 #: syslog.php
-#, fuzzy
 msgid "Processing"
-msgstr "თავიდან დამუშავება"
+msgstr "დამუშავება"
 
 #: syslog.php
-#, fuzzy
 msgid "Partition maintenance"
-msgstr "დაყოფილი ცხრილი"
+msgstr "დანაყოფების მომსახურება"
 
 #: syslog.php
 msgid "Synchronization"
-msgstr ""
+msgstr "სინქრონიზაცია"
 
 #: syslog.php
 msgid "Attention required"
-msgstr ""
+msgstr "საჭიროებს ყურადღებას"
 
 #: syslog.php
 msgid "Healthy"
-msgstr ""
+msgstr "გამართული"
 
 #: syslog.php
 msgid "Processing disabled"
-msgstr ""
+msgstr "დამუშავება გამორთულია"
 
 #: syslog.php
-#, fuzzy
 msgid "Waiting for processing"
-msgstr "თავიდან დამუშავება"
+msgstr "დამუშავების მოლოდინში"
 
 #: syslog.php
 msgid "Health"
-msgstr "მდგომარეობა"
+msgstr "სიჯანსაღე"
 
 #: syslog.php
 msgid "Ready"
-msgstr ""
+msgstr "მზად არის"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Last Sent"
 msgid "Sent"
-msgstr "ბოლო გაგზავნილი"
+msgstr "გაგზავნილია"
 
 #: syslog.php
 msgid "Failed; retry pending"
-msgstr ""
+msgstr "ჩავარდა; ხელახალი მცდელობა მოლოდინშია"
 
 #: syslog.php
 msgid "Pending; next poller check"
-msgstr ""
+msgstr "მოლოდინშია; გამომკითხველის შემდეგი შემოწმება"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Last Week"
 msgid "Last health check"
-msgstr "ბოლო კვირა"
+msgstr "მდგომარეობის ბოლო შემოწმება"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Email Options"
 msgid "Email notifications"
-msgstr "ელფოსტის მორგება"
+msgstr "ელფოსტის შეტყობინებები"
 
 #: syslog.php
 msgid "Not checked yet"
-msgstr ""
+msgstr "ჯერ არ შემოწმებულა"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Notification List"
 msgid "Last notification sent"
-msgstr "გაფრთხილებების სია"
+msgstr "ბოლო გაგზავნილი შეტყობინება"
 
 #: syslog.php
 msgid "Last received log"
-msgstr ""
+msgstr "ბოლოს მიღებული ჟურნალი"
 
 #: syslog.php
-#, fuzzy
 msgid "Oldest unprocessed message"
-msgstr "თავიდან დამუშავება"
+msgstr "უძველესი დაუმუშავებელი შეტყობინება"
 
 #: syslog.php
-#, fuzzy
 msgid "Records processed in latest run"
-msgstr "თავიდან დამუშავება"
+msgstr "ბოლო გაშვებისას დამუშავებული ჩანაწერები"
 
 #: syslog.php
 msgid "Worker processes running"
-msgstr ""
+msgstr "გაშვებული სამუშაო პროცესები"
 
 #: syslog.php
 msgid "Configured worker processes"
-msgstr ""
+msgstr "კონფიგურირებული სამუშაო პროცესები"
 
 #: syslog.php
 msgid "Hosts resolved"
-msgstr ""
+msgstr "გარკვეული ჰოსტები"
 
 #: syslog.php
 msgid "Process"
@@ -2349,7 +2251,7 @@ msgstr "შესრულების დრო"
 
 #: syslog.php
 msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
-msgstr ""
+msgstr "თითოეული პროცესის სტატისტიკა ჯერ არ არის ჩაწერილი. სამუშაო პროცესების სტატისტიკა გამოჩნდება პირველი პარალელური გაშვების შემდეგ."
 
 #: syslog.php
 msgid "Duration"
@@ -2357,7 +2259,7 @@ msgstr "ხანგრძლივობა"
 
 #: syslog.php
 msgid "Phase"
-msgstr ""
+msgstr "ფაზა"
 
 #: syslog.php
 msgid "Records"
@@ -2365,86 +2267,75 @@ msgstr "ჩანაწერები"
 
 #: syslog.php
 msgid "Reference updates"
-msgstr ""
+msgstr "საცნობარო განახლებები"
 
 #: syslog.php
-#, fuzzy
 msgid "Removal rules"
 msgstr "წაშლის წესები"
 
 #: syslog.php
-#, fuzzy
 msgid "Alert evaluation"
-msgstr "Syslog-ის განგაშების შენარჩუნება"
+msgstr "განგაშების შეფასება"
 
 #: syslog.php
 msgid "Incoming transfer"
-msgstr ""
+msgstr "შემომავალი გადატანა"
 
 #: syslog.php
-#, fuzzy
 msgid "Report processing"
-msgstr "თავიდან დამუშავება"
+msgstr "ანგარიშების დამუშავება"
 
 #: syslog.php
 msgid "slowest"
-msgstr ""
+msgstr "ყველაზე ნელი"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
-msgstr ""
+msgstr "ფაზების დროები ჯერ არ ჩაწერილა. ფაზების დროები გამომთხოვის შემდეგი გაშვების შემდეგ გამოჩნდება."
 
 #: syslog.php
-#, fuzzy
 msgid "Last run"
-msgstr "ბოლო გაგზავნილი"
+msgstr "ბოლო გაშვება"
 
 #: syslog.php
-#, fuzzy
 msgid "Rules processed"
-msgstr "თავიდან დამუშავება"
+msgstr "დამუშავებული წესები"
 
 #: syslog.php
 msgid "Total"
 msgstr "სულ"
 
 #: syslog.php
-#, fuzzy
 msgid "Alert rules"
 msgstr "განგაშის წესები"
 
 #: syslog.php
-#, fuzzy
 msgid "Delete rules"
-msgstr "განგაშის წესები"
+msgstr "წაშლის წესები"
 
 #: syslog.php
 msgid "Fired last run"
-msgstr ""
+msgstr "ბოლო გაშვებაზე ამოქმედებული"
 
 #: syslog.php
 msgid "Show more"
 msgstr "მეტის ჩვენება"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Show All Devices"
 msgid "Show less"
-msgstr "ყველა მოწყობილობის ჩვენება"
+msgstr "ნაკლების ჩვენება"
 
 #: syslog.php
 msgid "Open in a dialog"
-msgstr ""
+msgstr "დიალოგურ ფანჯარაში გახსნა"
 
 #: syslog.php
 msgid "Remove from page"
-msgstr ""
+msgstr "გვერდიდან წაშლა"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Refresh Interval"
 msgid "Invalid refresh interval."
-msgstr "განახლების შუალედი"
+msgstr "განახლების არასწორი ინტერვალი."
 
 #: syslog.php
 msgid "Unknown card."
@@ -2452,11 +2343,11 @@ msgstr "უცნობი ბარათი."
 
 #: syslog.php
 msgid "Add card"
-msgstr ""
+msgstr "ბარათის დამატება"
 
 #: syslog.php
 msgid "Add a status card…"
-msgstr ""
+msgstr "სტატუსის ბარათის დამატება…"
 
 #: syslog.php
 msgid "Syslog Alert View"
@@ -2464,24 +2355,24 @@ msgstr "განგაშის გარეგნობა Syslog-სი"
 
 #: syslog.php
 msgid "A valid saved search is required."
-msgstr ""
+msgstr "საჭიროა მოქმედი შენახული ძებნა."
 
 #: syslog.php
 msgid "Saved search not found."
-msgstr ""
+msgstr "შენახული ძებნა ვერ მოიძებნა."
 
 #: syslog.php
 msgid "You may only share your own saved searches."
-msgstr ""
+msgstr "შეგიძლიათ გააზიაროთ მხოლოდ საკუთარი შენახული ძებნები."
 
 #: syslog.php
 #, php-format
 msgid "[ Unprocessed Messages: %s ]"
-msgstr ""
+msgstr "[ დაუმუშავებელი შეტყობინებები: %s ]"
 
 #: syslog.php syslog_device_rules.php
 msgid "Enter a search term"
-msgstr ""
+msgstr "შეიყვანეთ საძიებო სიტყვა"
 
 #: syslog.php
 msgid "Select Device(s)"
@@ -2498,53 +2389,48 @@ msgstr "ყველა მონიშნული მოწყობილო�
 #: syslog.php
 #, php-format
 msgid "Syslog Message Filter %s"
-msgstr ""
+msgstr "Syslog შეტყობინებების ფილტრი %s"
 
 #: syslog.php
-#, fuzzy
 msgid "Search messages"
-msgstr "შეტყობინებები"
+msgstr "შეტყობინებების ძებნა"
 
 #: syslog.php
 msgid "Collapse filters"
-msgstr ""
+msgstr "ფილტრების ჩაკეცვა"
 
 #: syslog.php
 msgid "Edit filters"
-msgstr ""
+msgstr "ფილტრების რედაქტირება"
 
 #: syslog.php
-#, fuzzy
 msgid "Saved Searches"
-msgstr "ძებნა"
+msgstr "შენახული ძებნები"
 
 #: syslog.php
-#, fuzzy
 msgid "My Searches"
-msgstr "ძებნა"
+msgstr "ჩემი ძებნები"
 
 #: syslog.php
 msgid "Global Searches"
-msgstr ""
+msgstr "გლობალური ძებნები"
 
 #: syslog.php
-#, fuzzy, php-format
-#| msgid "Default"
+#, php-format
 msgid "%s (Default)"
-msgstr "ნაგულისხმევი"
+msgstr "%s (ნაგულისხმევი)"
 
 #: syslog.php
 msgid "Manage"
-msgstr ""
+msgstr "მართვა"
 
 #: syslog.php
 msgid "Manage saved searches"
-msgstr ""
+msgstr "შენახული ძებნების მართვა"
 
 #: syslog.php
-#, fuzzy
 msgid "Save search"
-msgstr "ძებნა"
+msgstr "ძებნის შენახვა"
 
 #: syslog.php
 msgid "Edit"
@@ -2552,16 +2438,15 @@ msgstr "ჩასწორება"
 
 #: syslog.php
 msgid "Save for all"
-msgstr ""
+msgstr "ყველასთვის შენახვა"
 
 #: syslog.php
-#, fuzzy
 msgid "contains"
 msgstr "შეიცავს"
 
 #: syslog.php
 msgid "does not contain"
-msgstr ""
+msgstr "არ შეიცავს"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
 #: syslog_saved_searches.php
@@ -2579,9 +2464,8 @@ msgid "Default"
 msgstr "ნაგულისხმევი"
 
 #: syslog.php
-#, fuzzy
 msgid "View options"
-msgstr "ელფოსტის მორგება"
+msgstr "ხედის პარამეტრები"
 
 #: syslog.php
 msgid "Trim"
@@ -2601,35 +2485,32 @@ msgstr "ჩვენება"
 
 #: syslog.php
 msgid "Group Duplicate Messages"
-msgstr ""
+msgstr "დუბლიკატი შეტყობინებების დაჯგუფება"
 
 #: syslog.php
-#, fuzzy
 msgid "Individual Messages"
-msgstr "ინდივიდუალური"
+msgstr "ინდივიდუალური შეტყობინებები"
 
 #: syslog.php
-#, fuzzy
 msgid "Grouped Messages"
-msgstr "შეტყობინებები"
+msgstr "დაჯგუფებული შეტყობინებები"
 
 #: syslog.php
 #, php-format
 msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
-msgstr ""
+msgstr "აირჩიეთ ველი, ოპერატორი და მნიშვნელობა. ოპერატორს AND აქვს უპირატესობა OR-თან შედარებით; NOT გამორიცხავს პირობას. LIKE იყენებს % სიმბოლოს ნებისმიერი რაოდენობის სიმბოლოსთვის და _ სიმბოლოს ერთი სიმბოლოსთვის. თარიღებისთვის გამოიყენება ფორმატი YYYY-MM-DD HH:MM:SS. ID-ებისთვის გამოიყენება არაუარყოფითი მთელი რიცხვები. ნაგულისხმევად ნაჩვენებია ბოლო დღის ჟურნალები, თუ თარიღების დიაპაზონი არ არის შეცვლილი."
 
 #: syslog.php
-#, fuzzy
 msgid "Search help"
-msgstr "ძებნა"
+msgstr "ძებნის დახმარება"
 
 #: syslog.php
 msgid "New Saved Search"
-msgstr ""
+msgstr "ახალი შენახული ძებნა"
 
 #: syslog.php
 msgid "Edit Saved Search"
-msgstr ""
+msgstr "შენახული ძებნის რედაქტირება"
 
 #: syslog.php
 msgid "Save As"
@@ -2637,7 +2518,7 @@ msgstr "შენახვა, როგორც"
 
 #: syslog.php
 msgid "Delete the selected saved search?"
-msgstr ""
+msgstr "წაიშალოს არჩეული შენახული ძებნა?"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
 #: syslog_recommendations.php syslog_removal.php syslog_reports.php
@@ -2653,66 +2534,59 @@ msgstr "გასუფთავება"
 
 #: syslog.php
 msgid "Return filter values to their user defined defaults"
-msgstr ""
+msgstr "ფილტრის მნიშვნელობების დაბრუნება მომხმარებლის მიერ განსაზღვრულ ნაგულისხმევ პარამეტრებზე"
 
 #: syslog.php
-#, fuzzy
 msgid "Refresh Results"
-msgstr "განახლების შუალედი"
+msgstr "შედეგების განახლება"
 
 #: syslog.php
 msgid "Export Records to CSV"
-msgstr ""
+msgstr "ჩანაწერების ექსპორტი CSV ფორმატში"
 
 #: syslog.php
 msgid "Save Default Settings"
-msgstr ""
+msgstr "ნაგულისხმევი პარამეტრების შენახვა"
 
 #: syslog.php
 msgid "Save view defaults"
-msgstr ""
+msgstr "ხედის ნაგულისხმევი პარამეტრების შენახვა"
 
 #: syslog.php
-#, fuzzy
 msgid "Save Search As"
-msgstr "ძებნა"
+msgstr "ძებნის შენახვა როგორც"
 
 #: syslog.php
 msgid "Apply this search when you open this page and no search is active yet"
-msgstr ""
+msgstr "ამ ძიების გამოყენება ამ გვერდის გახსნისას, როდესაც სხვა ძიება ჯერ არ არის აქტიური"
 
 #: syslog.php
 msgid "Breach"
-msgstr ""
+msgstr "დარღვევა"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Threshold"
 msgid "Threshold breached"
-msgstr "ზღვარი"
+msgstr "ზღვარი დარღვეულია"
 
 #: syslog.php
 msgid "Messages"
 msgstr "შეტყობინებები"
 
 #: syslog.php
-#, fuzzy
 msgid "Empty message"
-msgstr "შეტყობინება"
+msgstr "ცარიელი შეტყობინება"
 
 #: syslog.php
-#, fuzzy
 msgid "Toggle group messages"
-msgstr "შეტყობინება"
+msgstr "ჯგუფის შეტყობინებების ჩვენება/დამალვა"
 
 #: syslog.php
 msgid "Loading group messages..."
-msgstr ""
+msgstr "იტვირთება ჯგუფის შეტყობინებები..."
 
 #: syslog.php
-#, fuzzy
 msgid "No matching messages."
-msgstr "შეტყობინებები"
+msgstr "შესაბამისი შეტყობინებები არ არის."
 
 #: syslog.php
 msgid "No Syslog Messages"
@@ -2728,51 +2602,43 @@ msgstr "განგაში წაიშალა"
 
 #: syslog.php
 msgid "No Alert Log Messages"
-msgstr ""
+msgstr "გაფრთხილების ჟურნალის შეტყობინებები არ არის"
 
 #: syslog.php
 msgid "Close message details"
-msgstr ""
+msgstr "შეტყობინების დეტალების დახურვა"
 
 #: syslog.php
-#, fuzzy
 msgid "Message details"
-msgstr "შეტყობინებები"
+msgstr "შეტყობინების დეტალები"
 
 #: syslog.php
-#, fuzzy
-#| msgid "General Settings"
 msgid "General"
-msgstr "ზოგადი პარამეტრები"
+msgstr "ზოგადი"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Alert Rules"
 msgid "Alert Rule"
-msgstr "განგაშის წესები"
+msgstr "გაფრთხილების წესი"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Frequency"
 msgid "Sequence"
-msgstr "სიხშირე"
+msgstr "მიმდევრობა"
 
 #: syslog.php
 msgid "Copied"
-msgstr ""
+msgstr "დაკოპირებულია"
 
 #: syslog.php
 msgid "Copy link"
-msgstr ""
+msgstr "ბმულის კოპირება"
 
 #: syslog.php
-#, fuzzy
 msgid "Copy message"
-msgstr "შეტყობინება"
+msgstr "შეტყობინების კოპირება"
 
 #: syslog.php
 msgid "Copy unavailable. Select and copy the message text."
-msgstr ""
+msgstr "კოპირება მიუწვდომელია. მონიშნეთ და დააკოპირეთ შეტყობინების ტექსტი."
 
 #: syslog.php
 msgid "Looking up recommendations…"
@@ -2780,34 +2646,31 @@ msgstr "რეკომენდაციების ძებნა…"
 
 #: syslog.php
 msgid "No recommendation matches this message."
-msgstr ""
+msgstr "ამ შეტყობინებას არცერთი რეკომენდაცია არ შეესაბამება."
 
 #: syslog.php syslog_alerts.php
 msgid "Actions"
 msgstr "ქმედებები"
 
 #: syslog.php
-#, fuzzy
 msgid "Create Alarm Rule"
-msgstr "განგაშის წესის შემოტანა"
+msgstr "განგაშის წესის შექმნა"
 
 #: syslog.php
-#, fuzzy
 msgid "Create Device Alert Rule"
-msgstr "განგაშის წესის შემოტანა"
+msgstr "მოწყობილობის განგაშის წესის შექმნა"
 
 #: syslog.php
-#, fuzzy
 msgid "Create Removal Rule"
-msgstr "ახალი წაშლის წესი"
+msgstr "წაშლის წესის შექმნა"
 
 #: syslog.php
 msgid "Filter by device"
-msgstr ""
+msgstr "გაფილტვრა მოწყობილობით"
 
 #: syslog.php
 msgid "Filter by program"
-msgstr ""
+msgstr "გაფილტვრა პროგრამით"
 
 #: syslog.php
 msgid "All Programs"
@@ -2815,65 +2678,65 @@ msgstr "ყველა პროგრამა"
 
 #: syslog_alerts.php
 msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
-msgstr ""
+msgstr "დააჭირეთ ღილაკს 'გაგრძელება' შემდეგი Syslog გაფრთხილების წეს(ებ)ის წასაშლელად."
 
 #: syslog_alerts.php
 msgid "Delete Syslog Alert Rule(s)"
-msgstr ""
+msgstr "Syslog გაფრთხილების წეს(ებ)ის წაშლა"
 
 #: syslog_alerts.php
 msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
-msgstr ""
+msgstr "დააჭირეთ ღილაკს 'გაგრძელება' შემდეგი Syslog გაფრთხილების წეს(ებ)ის გასათიშად."
 
 #: syslog_alerts.php
 msgid "Disable Syslog Alert Rule(s)"
-msgstr ""
+msgstr "Syslog გაფრთხილების წეს(ებ)ის გათიშვა"
 
 #: syslog_alerts.php
 msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
-msgstr ""
+msgstr "დააჭირეთ ღილაკს 'გაგრძელება' შემდეგი Syslog გაფრთხილების წეს(ებ)ის ჩასართავად."
 
 #: syslog_alerts.php
 msgid "Enable Syslog Alert Rule(s)"
-msgstr ""
+msgstr "Syslog გაფრთხილების წეს(ებ)ის ჩართვა"
 
 #: syslog_alerts.php
 msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
-msgstr ""
+msgstr "დააჭირეთ ღილაკს 'გაგრძელება' შემდეგი Syslog გაფრთხილების წეს(ებ)ის ექსპორტისთვის."
 
 #: syslog_alerts.php
 msgid "Export Syslog Alert Rule(s)"
-msgstr ""
+msgstr "Syslog გაფრთხილების წეს(ებ)ის ექსპორტი"
 
 #: syslog_alerts.php
 msgid "Select Syslog Alarming or Alarm Manager."
-msgstr ""
+msgstr "აირჩიეთ Syslog განგაში ან განგაშის მმართველი."
 
 #: syslog_alerts.php
 msgid "Enter a whole number of minutes, hours, or days for the threshold window."
-msgstr ""
+msgstr "შეიყვანეთ წუთების, საათების ან დღეების მთელი რიცხვი ზღვრის ფანჯრისთვის."
 
 #: syslog_alerts.php
 msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
-msgstr ""
+msgstr "შეიყვანეთ წუთების, საათების ან დღეების დადებითი მთელი რიცხვი ზღვრის აღდგენისთვის."
 
 #: syslog_alerts.php syslog_reports.php
 msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
-msgstr ""
+msgstr "შეყვანილი SQL სინტაქსი არასწორია. გთხოვთ, შეასწოროთ თქვენი SQL.<br>"
 
 #: syslog_alerts.php syslog_reports.php
 #, php-format
 msgid "The Pre-processed SQL is:<br><br> %s"
-msgstr ""
+msgstr "წინასწარ დამუშავებული SQL არის:<br><br> %s"
 
 #: syslog_alerts.php syslog_removal.php
 #, php-format
 msgid "The filter is invalid: %s"
-msgstr ""
+msgstr "ფილტრი არასწორია: %s"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "The processed SQL was invalid.  Please correct your SQL"
-msgstr ""
+msgstr "დამუშავებული SQL არასწორი იყო. გთხოვთ, შეასწოროთ თქვენი SQL"
 
 #: syslog_alerts.php
 msgid "Not Set"
@@ -2900,7 +2763,7 @@ msgstr "1 თვე"
 #: syslog_alerts.php
 #, php-format
 msgid "Alert Edit [edit: %s]"
-msgstr ""
+msgstr "გაფრთხილების რედაქტირება [რედაქტირება: %s]"
 
 #: syslog_alerts.php
 msgid "Alert Edit [new]"
@@ -2915,10 +2778,8 @@ msgid "N/A"
 msgstr "N/A"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Time Range"
 msgid "Time unit"
-msgstr "დროის შუალედი"
+msgstr "დროის ერთეული"
 
 #: syslog_alerts.php
 msgid "Days"
@@ -2934,30 +2795,27 @@ msgstr "წუთი"
 
 #: syslog_alerts.php
 msgid "Please describe this Alert."
-msgstr ""
+msgstr "გთხოვთ, აღწეროთ ეს გაფრთხილება."
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Alarm Destination"
-msgstr "Syslog-ის განგაშების შენარჩუნება"
+msgstr "განგაშის დანიშნულება"
 
 #: syslog_alerts.php
 msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
-msgstr ""
+msgstr "აირჩიეთ Syslog განგაში ან განგაშის მმართველი. განგაშის მმართველი ასევე მოითხოვს გადაგზავნის ჩართვას Syslog პარამეტრებში. ელფოსტა შენარჩუნებულია როგორც სარეზერვო ვარიანტი; ბრძანების მოქმედებები არ ეშვება განგაშის მმართველის წესებისთვის."
 
 #: syslog_alerts.php
 msgid "Alarm Manager"
-msgstr ""
+msgstr "განგაშის მმართველი"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Syslog Alerts"
 msgid "Syslog Alarming"
-msgstr "Syslog-ის განგაშები"
+msgstr "Syslog განგაში"
 
 #: syslog_alerts.php
 msgid "What is the Severity Level of this Alert?"
-msgstr ""
+msgstr "რა არის ამ გაფრთხილების სიმძიმის დონე?"
 
 #: syslog_alerts.php
 msgid "Reporting Level"
@@ -2965,7 +2823,7 @@ msgstr "ანგარიშის დონე"
 
 #: syslog_alerts.php
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
-msgstr ""
+msgstr "განმეორებითი გაფრთხილების ციკლების ჩასაწერად, უნდა მოხდეს გაფრთხილების თვალყურის დევნება სისტემის თუ მოწყობილობის დონეზე."
 
 #: syslog_alerts.php
 msgid "System"
@@ -2977,7 +2835,7 @@ msgstr "ანგარიშების გზავნის მეთოდ�
 
 #: syslog_alerts.php
 msgid "Define how to Alert on the syslog messages."
-msgstr ""
+msgstr "განსაზღვრეთ, როგორ მოხდეს გაფრთხილება Syslog შეტყობინებებზე."
 
 #: syslog_alerts.php
 msgid "Individual"
@@ -2985,25 +2843,23 @@ msgstr "ინდივიდუალური"
 
 #: syslog_alerts.php
 msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
-msgstr ""
+msgstr "'ზღვრის' მეთოდისთვის გაფრთხილება ირთვება, როდესაც დაფიქსირებული რაოდენობა მიაღწევს ამ მნიშვნელობას."
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Threshold Logs"
 msgid "Threshold Window"
-msgstr "ზღვრის ჟურნალი"
+msgstr "ზღვრის ფანჯარა"
 
 #: syslog_alerts.php
 msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
-msgstr ""
+msgstr "დამთხვევების დათვლა შემგროვებლის ციკლებში ამ მცოცავ ფანჯარაში, შემგროვებლის დამუშავების დროის გამოყენებით. მხოლოდ მიმდინარე ციკლის დასათვლელად შეიყვანეთ 0."
 
 #: syslog_alerts.php
 msgid "Recover After Quiet Period"
-msgstr ""
+msgstr "აღდგენა სიჩუმის პერიოდის შემდეგ"
 
 #: syslog_alerts.php
 msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
-msgstr ""
+msgstr "დრო შესაბამისი შეტყობინებების გარეშე დარღვევის გასუფთავებამდე, მთვლელის განულებამდე და ამ წესის ხელახლა გააქტიურებამდე. ყოველი შესაბამისი შეტყობინება ხელახლა იწყებს ამ ტაიმერს."
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Match Type"
@@ -3011,7 +2867,7 @@ msgstr "დამთხვევის ტიპი"
 
 #: syslog_alerts.php
 msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
-msgstr ""
+msgstr "აირჩიეთ ფილტრის კონსტრუქტორი უსაფრთხო მრავალპირობიანი განგაშის ლოგიკისთვის. SQL გამოსახულება შენარჩუნებულია მოძველებული წესებისთვის."
 
 #: syslog_alerts.php syslog_reports.php
 msgid "Message Match String"
@@ -3019,7 +2875,7 @@ msgstr "შეტყობინება ემთხვევა სტრი�
 
 #: syslog_alerts.php
 msgid "Build filter conditions or enter an SQL expression to match syslog messages."
-msgstr ""
+msgstr "ააგეთ ფილტრის პირობები ან შეიყვანეთ SQL გამოსახულება syslog შეტყობინებებთან დასამთხვევად."
 
 #: syslog_alerts.php syslog_device_rules.php syslog_removal.php
 #: syslog_reports.php
@@ -3028,7 +2884,7 @@ msgstr "ჩართულია"
 
 #: syslog_alerts.php
 msgid "Is this Alert Enabled?"
-msgstr ""
+msgstr "ჩართულია ეს გაფრთხილება?"
 
 #: syslog_alerts.php
 msgid "Re-Alert Cycle"
@@ -3036,16 +2892,15 @@ msgstr "თავიდან განგაშის ციკლი"
 
 #: syslog_alerts.php
 msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
-msgstr ""
+msgstr "არ გაგზავნოთ ეს გაფრთხილება ხელახლა იმავე ჰოსტისთვის, სანამ არ გავა დროის ეს მონაკვეთი. ზღვარზე დაფუძნებული განგაშებისთვის ეს ეხება ყველა ჰოსტს."
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Notification Cooldown"
-msgstr "გაფრთხილებების სია"
+msgstr "შეტყობინების მოცდის პერიოდი"
 
 #: syslog_alerts.php
 msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
-msgstr ""
+msgstr "წუთების რაოდენობა ამ წესიდან და ანგარიშგების არეალიდან ყოველი მომდევნო შეტყობინების დასახშობად."
 
 #: syslog_alerts.php
 msgid "1 day"
@@ -3076,77 +2931,76 @@ msgid "5 minutes"
 msgstr "5 წუთი"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Use global setting"
-msgstr "Syslog-ის მორგება"
+msgstr "გლობალური პარამეტრის გამოყენება"
 
 #: syslog_alerts.php
 msgid "Duplicate Suppression"
-msgstr ""
+msgstr "დუბლიკატების დახშობა"
 
 #: syslog_alerts.php
 msgid "Minutes to suppress the same matched message set."
-msgstr ""
+msgstr "წუთების რაოდენობა იმავე დამთხვეული შეტყობინებების ნაკრების დასახშობად."
 
 #: syslog_alerts.php
 msgid "Maintenance Window"
-msgstr ""
+msgstr "ტექნიკური მომსახურების ფანჯარა"
 
 #: syslog_alerts.php
 msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
-msgstr ""
+msgstr "აირჩიეთ, ეს წესი გლობალურ ტექნიკური მომსახურების დროის ინტერვალს გამოიყენებს თუ საკუთარს."
 
 #: syslog_alerts.php
 msgid "Do not mute this rule"
-msgstr ""
+msgstr "არ დადუმდეს ეს წესი"
 
 #: syslog_alerts.php
 msgid "Use global timeframe"
-msgstr ""
+msgstr "გლობალური ინტერვალის გამოყენება"
 
 #: syslog_alerts.php
 msgid "Use rule timeframe"
-msgstr ""
+msgstr "წესის ინტერვალის გამოყენება"
 
 #: syslog_alerts.php
 msgid "Rule Maintenance Days"
-msgstr ""
+msgstr "წესის ტექნიკური მომსახურების დღეები"
 
 #: syslog_alerts.php
 msgid "Days for this rule timeframe, when Use rule timeframe is selected."
-msgstr ""
+msgstr "დღეები ამ წესის დროის ინტერვალისთვის, როდესაც არჩეულია წესის ინტერვალის გამოყენება."
 
 #: syslog_alerts.php
 msgid "Rule Maintenance Starts"
-msgstr ""
+msgstr "წესის ტექნიკური მომსახურების დასაწყისი"
 
 #: syslog_alerts.php
 msgid "Local start time for this rule timeframe."
-msgstr ""
+msgstr "ადგილობრივი დაწყების დრო ამ წესის დროის ინტერვალისთვის."
 
 #: syslog_alerts.php
 msgid "Rule Maintenance Ends"
-msgstr ""
+msgstr "წესის ტექნიკური მომსახურების დასასრული"
 
 #: syslog_alerts.php
 msgid "Local end time for this rule timeframe."
-msgstr ""
+msgstr "ადგილობრივი დასრულების დრო ამ წესის დროის ინტერვალისთვის."
 
 #: syslog_alerts.php
 msgid "One-time Rule Maintenance Starts"
-msgstr ""
+msgstr "წესის ერთჯერადი ტექნიკური მომსახურების დასაწყისი"
 
 #: syslog_alerts.php
 msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
-msgstr ""
+msgstr "არასავალდებულო ადგილობრივი თარიღი და დრო ამ წესის დადუმების დასაწყებად. ფორმატი: YYYY-MM-DD HH:MM."
 
 #: syslog_alerts.php
 msgid "One-time Rule Maintenance Ends"
-msgstr ""
+msgstr "წესის ერთჯერადი ტექნიკური მომსახურების დასასრული"
 
 #: syslog_alerts.php
 msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
-msgstr ""
+msgstr "არასავალდებულო ადგილობრივი თარიღი და დრო ამ წესის დადუმების შესაწყვეტად. ფორმატი: YYYY-MM-DD HH:MM."
 
 #: syslog_alerts.php syslog_device_rules.php syslog_reports.php
 msgid "Notes"
@@ -3154,7 +3008,7 @@ msgstr "შენიშვნები"
 
 #: syslog_alerts.php
 msgid "Space for Notes on the Alert"
-msgstr ""
+msgstr "ადგილი გაფრთხილების შესახებ შენიშვნებისთვის"
 
 #: syslog_alerts.php
 msgid "Email Options"
@@ -3166,7 +3020,7 @@ msgstr "გაფრთხილებების სია"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
-msgstr ""
+msgstr "გამოიყენეთ ამ შეტყობინებების სიის შიგთავსი იმის განსასაზღვრად, თუ ვის და როგორ უნდა გაეგზავნოს შეტყობინება."
 
 #: syslog_alerts.php
 msgid "Emails to Notify"
@@ -3174,7 +3028,7 @@ msgstr "ელფოსტები გაფრთხილებისთვ�
 
 #: syslog_alerts.php
 msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
-msgstr ""
+msgstr "გთხოვთ, შეიყვანოთ მძიმით გამოყოფილი ელფოსტის მისამართების სია შეტყობინების გასაგზავნად. თუ გსურთ ელფოსტის გაგზავნა მიმღებისთვის SMS ფორმატში, გთხოვთ, მიმღების ელფოსტის მისამართს წინ დაურთოთ პრეფიქსი <b>'sms@'</b>. მაგალითად, თუ მიმღების SMS მისამართია <b>'2485551212@mycarrier.net'</b>, უნდა შეიყვანოთ როგორც <b>'sms@2485551212@mycarrier.net'</b> და ის დაფორმატდება როგორც SMS შეტყობინება."
 
 #: syslog_alerts.php syslog_reports.php
 msgid "Email Body Text"
@@ -3182,7 +3036,7 @@ msgstr "ელფოსტის სხეულის ტექსტი"
 
 #: syslog_alerts.php
 msgid "This information will appear in the body of the Alert just before the Alert details."
-msgstr ""
+msgstr "ეს ინფორმაცია გამოჩნდება გაფრთხილების ტექსტში გაფრთხილების დეტალების წინ."
 
 #: syslog_alerts.php
 msgid "Open Ticket"
@@ -3190,34 +3044,31 @@ msgstr "ბილეთის გახსნა"
 
 #: syslog_alerts.php
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
-msgstr ""
+msgstr "უნდა გაიხსნას თუ არა დახმარების სამსახურის ბილეთი ამ გაფრთხილებისთვის. შენიშვნა: მოხერხებულობისთვის, ბილეთის ბრძანების სკრიპტი შეივსება რამდენიმე 'ALERT_' გარემოს ცვლადით."
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Alert command"
-msgstr "წაშლის დამუშავება"
+msgstr "გაფრთხილების ბრძანება"
 
 #: syslog_alerts.php
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
-msgstr ""
+msgstr "გაფრთხილების გააქტიურებისას გაუშვით შემდეგი ბრძანება. ხელმისაწვდომია შემდეგი ჩანაცვლების ცვლადები: <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>. გთხოვთ, გაითვალისწინოთ, რომ <b>'&lt;HOSTNAME&gt;'</b> ხელმისაწვდომია მხოლოდ ინდივიდუალურ ზღვრებზე. ჩანაცვლების ეს მნიშვნელობები შეიძლება გამოჩნდეს ბრძანების სტრიქონში ან მიღებულ იქნას სკრიპტის გარემოდან. გარემოდან გამოყენებისას ამ ცვლადებს წინ დაერთვება პრეფიქსი 'ALERT_'."
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Recovery command"
-msgstr "%d ჩანაწერი"
+msgstr "აღდგენის ბრძანება"
 
 #: syslog_alerts.php
 msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
-msgstr ""
+msgstr "არასავალდებულო ბრძანება, რომელიც გაეშვება, როდესაც ეს ზღვარი აღდგება სიჩუმის პერიოდის შემდეგ. იყენებს იგივე ჩანაცვლების ცვლადებს, რასაც გაფრთხილების ბრძანება. SYSLOG_EVENT არის clear; SYSLOG_BREACH_ID შეესაბამება დარღვევის ბრძანებას. წარუმატებელი ბრძანებები ხელახლა შესრულდება. გამოსართავად დატოვეთ ცარიელი."
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
-#, fuzzy
 msgid "Test rule"
-msgstr "განგაშის წესები"
+msgstr "წესის შემოწმება"
 
 #: syslog_alerts.php syslog_removal.php
 msgid "Rule Test Preview"
-msgstr ""
+msgstr "წესის შემოწმების წინასწარი ნახვა"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Value"
@@ -3225,12 +3076,11 @@ msgstr "მნიშვნელობა"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Enter a value"
-msgstr ""
+msgstr "შეიყვანეთ მნიშვნელობა"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
-#, fuzzy
 msgid "Match"
-msgstr "დამთხვევის ტიპი"
+msgstr "დამთხვევა"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Exclude"
@@ -3238,11 +3088,11 @@ msgstr "ამოღება"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Enter a nonnegative integer"
-msgstr ""
+msgstr "შეიყვანეთ არაუარყოფითი მთელი რიცხვი"
 
 #: syslog_alerts.php
 msgid "Alarm filter conditions"
-msgstr ""
+msgstr "განგაშის ფილტრის პირობები"
 
 #: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
 #: syslog_removal.php syslog_reports.php
@@ -3262,7 +3112,7 @@ msgstr "შემოტანა"
 
 #: syslog_alerts.php
 msgid "Syslog Alert Filters"
-msgstr ""
+msgstr "Syslog გაფრთხილების ფილტრები"
 
 #: syslog_alerts.php syslog_removal.php
 msgid "Method"
@@ -3298,23 +3148,23 @@ msgstr "მრავალი"
 
 #: syslog_alerts.php
 msgid "No Syslog Alerts Defined"
-msgstr ""
+msgstr "Syslog გაფრთხილებები არ არის განსაზღვრული"
 
 #: syslog_alerts.php
 msgid "Import Alert Rule from Local File"
-msgstr ""
+msgstr "გაფრთხილების წესის იმპორტი ლოკალური ფაილიდან"
 
 #: syslog_alerts.php
 msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
-msgstr ""
+msgstr "თუ XML ფაილი, რომელიც შეიცავს გაფრთხილების წესის განსაზღვრების მონაცემებს, მდებარეობს თქვენს ლოკალურ კომპიუტერზე, აირჩიეთ ის აქ."
 
 #: syslog_alerts.php
 msgid "Import Alert Rule from Text"
-msgstr ""
+msgstr "გაფრთხილების წესის იმპორტი ტექსტიდან"
 
 #: syslog_alerts.php
 msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
-msgstr ""
+msgstr "თუ გაქვთ განგაშის წესის აღწერის მონაცემების შემცველი XML ფაილი ტექსტის სახით, შეგიძლიათ ჩასვათ იგი ამ ველში შემოსატანად."
 
 #: syslog_alerts.php
 msgid "Import Alert Rule"
@@ -3323,11 +3173,11 @@ msgstr "განგაშის წესის შემოტანა"
 #: syslog_alerts.php syslog_dashboards.php syslog_removal.php
 #: syslog_saved_searches.php
 msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
-msgstr ""
+msgstr "იმპორტი უარყოფილია: ფაილი ცარიელია, არასწორია ან შეიცავს სხვა ტიპის Syslog ობიექტს."
 
 #: syslog_alerts.php
 msgid "Import rejected: invalid alarm destination."
-msgstr ""
+msgstr "შემოტანა უარყოფილია: განგაშის დანიშნულება არასწორია."
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Imported"
@@ -3336,7 +3186,7 @@ msgstr "შემოტანილია"
 #: syslog_alerts.php
 #, php-format
 msgid "NOTE: Alert '%s' %s!"
-msgstr ""
+msgstr "შენიშვნა: განგაში '%s' %s!"
 
 #: syslog_alerts.php syslog_dashboards.php syslog_removal.php
 #: syslog_reports.php
@@ -3346,7 +3196,7 @@ msgstr "განახლებულია"
 #: syslog_alerts.php
 #, php-format
 msgid "ERROR: Alert '%s' %s Failed!"
-msgstr ""
+msgstr "შეცდომა: განგაშის '%s' %s ვერ შესრულდა!"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Update"
@@ -3354,15 +3204,15 @@ msgstr "განახლება"
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Select a valid owner."
-msgstr ""
+msgstr "აირჩიეთ სწორი მფლობელი."
 
 #: syslog_dashboards.php
 msgid "Unable to save the dashboard. Please try again."
-msgstr ""
+msgstr "მართვის პანელის შენახვა ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა."
 
 #: syslog_dashboards.php
 msgid "Enter a dashboard name between 1 and 128 characters."
-msgstr ""
+msgstr "შეიყვანეთ მართვის პანელის სახელი 1-დან 128 სიმბოლომდე."
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Owner"
@@ -3370,456 +3220,434 @@ msgstr "მფლობელი"
 
 #: syslog_dashboards.php
 msgid "Shared"
-msgstr ""
+msgstr "გაზიარებული"
 
 #: syslog_dashboards.php
 msgid "Panels"
 msgstr "პანელები"
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "deleted user"
-msgstr "არჩეული განგაში"
+msgstr "წაშლილი მომხმარებელი"
 
 #: syslog_dashboards.php
 msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
-msgstr ""
+msgstr "მართვის პანელები ჯერ არ არის. მომხმარებლები ქმნიან მათ Syslog-ის მართვის პანელის ჩანართიდან."
 
 #: syslog_dashboards.php
 msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
-msgstr ""
+msgstr "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი მართვის პანელ(ებ)ის და მათი ყველა პანელის წასაშლელად."
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "Delete Dashboard(s)"
-msgstr "Syslog-ის ანგარიშების წაშლა"
+msgstr "მართვის პანელ(ებ)ის წაშლა"
 
 #: syslog_dashboards.php
 msgid "Click 'Continue' to Export the following Dashboard(s)."
-msgstr ""
+msgstr "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი მართვის პანელ(ებ)ის ექსპორტისთვის."
 
 #: syslog_dashboards.php
 msgid "Export Dashboard(s)"
-msgstr ""
+msgstr "მართვის პანელ(ებ)ის ექსპორტი"
 
 #: syslog_dashboards.php
 #, php-format
 msgid "NOTE: Imported %d and updated %d Dashboard(s)."
-msgstr ""
+msgstr "შენიშვნა: იმპორტირებულია %d და განახლებულია %d მართვის პანელი."
 
 #: syslog_dashboards.php
 #, php-format
 msgid "ERROR: %d Dashboard(s) failed to import."
-msgstr ""
+msgstr "შეცდომა: %d მართვის პანელის იმპორტი ვერ მოხერხდა."
 
 #: syslog_dashboards.php
 msgid "Import Dashboard from Local File"
-msgstr ""
+msgstr "მართვის პანელის იმპორტი ლოკალური ფაილიდან"
 
 #: syslog_dashboards.php
 msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
-msgstr ""
+msgstr "თუ მართვის პანელის განსაზღვრის მონაცემების შემცველი JSON ფაილი მდებარეობს თქვენს ლოკალურ მანქანაზე, აირჩიეთ იგი აქ."
 
 #: syslog_dashboards.php
 msgid "Import Dashboard from Text"
-msgstr ""
+msgstr "მართვის პანელის იმპორტი ტექსტიდან"
 
 #: syslog_dashboards.php
 msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
-msgstr ""
+msgstr "თუ გაქვთ მართვის პანელის განსაზღვრის მონაცემების შემცველი JSON ფაილი ტექსტის სახით, შეგიძლიათ ჩასვათ იგი ამ ველში მისი იმპორტისთვის."
 
 #: syslog_dashboards.php
 msgid "Import Dashboard"
-msgstr ""
+msgstr "მართვის პანელის იმპორტი"
 
 #: syslog_dashboards.php syslog_saved_searches.php
-#, fuzzy
 msgid "All Users"
-msgstr "ყველა ჩანაწერი"
+msgstr "ყველა მომხმარებელი"
 
 #: syslog_dashboards.php syslog_saved_searches.php
-#, fuzzy
 msgid "All Groups"
-msgstr "ყველა პროგრამა"
+msgstr "ყველა ჯგუფი"
 
 #: syslog_dashboards.php
 msgid "Edit Dashboard"
-msgstr ""
+msgstr "მართვის პანელის რედაქტირება"
 
 #: syslog_dashboards.php
 msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
-msgstr ""
+msgstr "სახელი, რომელიც ნაჩვენებია Syslog-ის მართვის პანელის ჩანართის მართვის პანელების არჩევის სიაში."
 
 #: syslog_dashboards.php
 msgid "The account that owns this dashboard and can manage its panels."
-msgstr ""
+msgstr "ანგარიში, რომელიც ფლობს ამ მართვის პანელს და შეუძლია მისი პანელების მართვა."
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Shared With Users"
-msgstr ""
+msgstr "გაზიარებულია მომხმარებლებთან"
 
 #: syslog_dashboards.php
 msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
-msgstr ""
+msgstr "მომხმარებლები, რომლებსაც შეუძლიათ ამ მართვის პანელის ნახვა მისი მფლობელისა და ნებისმიერი გლობალური გაზიარების გარდა. „ყველა მომხმარებელი“ მას ყველას უზიარებს."
 
 #: syslog_dashboards.php
 msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
-msgstr ""
+msgstr "ჯგუფები, რომლებსაც შეუძლიათ ამ მართვის პანელის ნახვა მისი მფლობელისა და ნებისმიერი გლობალური გაზიარების გარდა. „ყველა ჯგუფი“ მას ყველას უზიარებს."
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Shared With Groups"
-msgstr ""
+msgstr "გაზიარებულია ჯგუფებთან"
 
 #: syslog_dashboards.php
 msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
-msgstr ""
+msgstr "სახელის შეცვლა ვრცელდება ამ მართვის პანელის ყველა მნახველზე. პანელებს მართავენ მათი მფლობელები Syslog-ის მართვის პანელის ჩანართიდან."
 
 #: syslog_device_rules.php
 msgid "Choose a future pause end date and time."
-msgstr ""
+msgstr "აირჩიეთ დაპაუზების დასრულების მომავალი თარიღი და დრო."
 
 #: syslog_device_rules.php
 msgid "A device name is required."
-msgstr ""
+msgstr "მოწყობილობის სახელი სავალდებულოა."
 
 #: syslog_device_rules.php
 #, php-format
 msgid "Click Continue to %s the following Device Alert Rule(s)."
-msgstr ""
+msgstr "შემდეგი მოწყობილობის განგაშის წეს(ებ)ისთვის მოქმედების (%s) შესასრულებლად დააწკაპუნეთ ღილაკზე გაგრძელება."
 
 #: syslog_device_rules.php
 msgid "Do not pass any priority"
-msgstr ""
+msgstr "არ გაიშვას არცერთი პრიორიტეტი"
 
 #: syslog_device_rules.php
 #, php-format
 msgid "%s and more urgent"
-msgstr ""
+msgstr "%s და უფრო გადაუდებელი"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rule"
-msgstr "ახალი განგაშის წესი"
+msgstr "მოწყობილობის განგაშის წესი"
 
 #: syslog_device_rules.php
 msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
-msgstr ""
+msgstr "აკრეფისას მოძებნეთ Syslog-ის მიმდინარე მოწყობილობები, ან შეიყვანეთ ნებისმიერი IP მისამართი ან ჰოსტის სახელი."
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Alert Handling"
-msgstr "წაშლის დამუშავება"
+msgstr "განგაშების დამუშავება"
 
 #: syslog_device_rules.php
 msgid "Do not pause"
-msgstr ""
+msgstr "არ დაპაუზდეს"
 
 #: syslog_device_rules.php
 msgid "Pause all non-exempt alerts until a date, or indefinitely."
-msgstr ""
+msgstr "ყველა არაგამონაკლისი განგაშის დაპაუზება მითითებულ თარიღამდე ან განუსაზღვრელი ვადით."
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Pause indefinitely"
-msgstr "შეუზღუდავი"
+msgstr "განუსაზღვრელი ვადით დაპაუზება"
 
 #: syslog_device_rules.php
 msgid "Pause until"
-msgstr ""
+msgstr "დაპაუზება მითითებულ დრომდე"
 
 #: syslog_device_rules.php
 msgid "Local date and time, YYYY-MM-DD HH:MM."
-msgstr ""
+msgstr "ადგილობრივი თარიღი და დრო, YYYY-MM-DD HH:MM."
 
 #: syslog_device_rules.php
 msgid "Pause Ends"
-msgstr ""
+msgstr "დაპაუზება სრულდება"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Always Allow Priority"
-msgstr "ყველა პრიორიტეტი"
+msgstr "პრიორიტეტის ყოველთვის დაშვება"
 
 #: syslog_device_rules.php
 msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
-msgstr ""
+msgstr "ეს პრიორიტეტები გადის ამ მოწყობილობის დაპაუზებისა და ტექნიკური მომსახურების ფანჯრებში. კრიტიკული და უფრო გადაუდებელი ტიპური არჩევანია პლატინის კლასის მოწყობილობებისთვის."
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Allow During Maintenance"
-msgstr "დაყოფილი ცხრილი"
+msgstr "დაშვება ტექნიკური მომსახურების დროს"
 
 #: syslog_device_rules.php
 msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
-msgstr ""
+msgstr "ამ მოწყობილობიდან ყველა პრიორიტეტის დაშვება განგაშის ტექნიკური მომსახურების ფანჯრის დროს. ზემოთ მოყვანილი პრიორიტეტის გამონაკლისი კვლავ მოქმედებს, როდესაც ეს მნიშვნელობაა არა."
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rule [edit]"
-msgstr "ახალი განგაშის წესი"
+msgstr "მოწყობილობის განგაშის წესი [რედაქტირება]"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rule [new]"
-msgstr "ახალი განგაშის წესი"
+msgstr "მოწყობილობის განგაშის წესი [ახალი]"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rule Filters"
-msgstr "ახალი განგაშის წესი"
+msgstr "მოწყობილობის განგაშის წესის ფილტრები"
 
 #: syslog_device_rules.php syslog_removal.php
 msgid "Rules"
 msgstr "წესები"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Handling"
-msgstr "წაშლის დამუშავება"
+msgstr "დამუშავება"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Maintenance"
-msgstr "დაყოფილი ცხრილი"
+msgstr "ტექნიკური მომსახურება"
 
 #: syslog_device_rules.php
 msgid "Pass Through"
-msgstr ""
+msgstr "გატარება"
 
 #: syslog_device_rules.php
 msgid "No device alert rules found."
-msgstr ""
+msgstr "მოწყობილობის განგაშის წესები ვერ მოიძებნა."
 
 #: syslog_device_rules.php
 msgid "Not paused"
-msgstr ""
+msgstr "არ არის დაპაუზებული"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Paused indefinitely"
-msgstr "შეუზღუდავი"
+msgstr "დაპაუზებულია განუსაზღვრელი ვადით"
 
 #: syslog_device_rules.php
 #, php-format
 msgid "Paused until %s"
-msgstr ""
+msgstr "დაპაუზებულია %s-მდე"
 
 #: syslog_device_rules.php
 msgid "and more urgent"
-msgstr ""
+msgstr "და უფრო გადაუდებელი"
 
 #: syslog_device_rules.php
 msgid "Allow all"
-msgstr ""
+msgstr "ყველას დაშვება"
 
 #: syslog_device_rules.php
 msgid "Use priority exception"
-msgstr ""
+msgstr "პრიორიტეტის გამონაკლისის გამოყენება"
 
 #: syslog_recommendations.php
 #, php-format
 msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
-msgstr ""
+msgstr "რეკომენდაცია არ შეინახა, რადგან %s. შეიყვანეთ იდენტიფიკატორი ინტერვალების გარეშე და სულ მცირე განმარტება ან რეკომენდებული მოქმედება."
 
 #: syslog_recommendations.php
 msgid "A recommendation for this vendor and identifier already exists."
-msgstr ""
+msgstr "ამ მომწოდებლისა და იდენტიფიკატორისთვის რეკომენდაცია უკვე არსებობს."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
-msgstr ""
+msgstr "შენიშვნა: იდენტიფიკატორი %s შეიცავს სიმბოლოებს, გარდა ასოების, ციფრების, _ . - / და არასავალდებულო საწყისი სიმბოლოს %%, ამიტომ ის ვერასოდეს დაემთხვევა syslog შეტყობინებას. ჩაანაცვლეთ ჩანაცვლების სიმბოლოები, როგორიცაა #, ან ალტერნატივები, როგორიცაა A|B, ზუსტი კოდით."
 
 #: syslog_recommendations.php
 msgid "Click 'Continue' to Export the following Recommendation(s)."
-msgstr ""
+msgstr "დააწკაპუნეთ 'გაგრძელებაზე' შემდეგი რეკომენდაცი(ებ)ის გასატანად."
 
 #: syslog_recommendations.php
 msgid "Click 'Continue' to Delete the following Recommendation(s)."
-msgstr ""
+msgstr "დააწკაპუნეთ 'გაგრძელებაზე' შემდეგი რეკომენდაცი(ებ)ის წასაშლელად."
 
 #: syslog_recommendations.php
 msgid "Export requires the PHP zlib extension to create a JSON gzip file."
-msgstr ""
+msgstr "ექსპორტისთვის საჭიროა PHP zlib გაფართოება JSON gzip ფაილის შესაქმნელად."
 
 #: syslog_recommendations.php
 msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
-msgstr ""
+msgstr "იმპორტი უარყოფილია: ფაილი ცარიელია, ძალიან დიდია ან არ არის რეკომენდაციების სწორი JSON დოკუმენტი."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
-msgstr ""
+msgstr "შენიშვნა: დაემატა %d, განახლდა %d და უცვლელი დარჩა %d არსებული რეკომენდაცია."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
-msgstr ""
+msgstr "შეცდომა: %d რეკომენდაცია უარყოფილი იქნა (მაგალითად, %s). თითოეული მათგანი მიზეზთან ერთად მითითებულია Cacti-ის ჟურნალში."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
-msgstr ""
+msgstr "შეცდომა: %d რეკომენდაციის შენახვა ვერ მოხერხდა. თითოეული მათგანი მითითებულია Cacti-ის ჟურნალში."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
-msgstr ""
+msgstr "შენიშვნა: %d იმპორტირებულ რეკომენდაციას აქვს იდენტიფიკატორები, რომლებიც შეიცავს ისეთ სიმბოლოებს, როგორიცაა | ან #, რომლებიც შეტყობინების სიტყვაში არასოდეს გვხვდება, ამიტომ რედაქტირებამდე ისინი ვერ დაემთხვევა. მათ სანახავად დააყენეთ „შეუძლია დამთხვევა“ მნიშვნელობაზე „არა“."
 
 #: syslog_recommendations.php
 msgid "Import Recommendations from Local File"
-msgstr ""
+msgstr "რეკომენდაციების შემოტანა ლოკალური ფაილიდან"
 
 #: syslog_recommendations.php
 msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
-msgstr ""
+msgstr "აირჩიეთ .json ან .json.gz ფაილი თქვენს ლოკალურ კომპიუტერზე. მოსალოდნელი ფორმატის სანახავად გამოიყენეთ ექსპორტის ფუნქცია: ჩანაწერების სია ველებით vendor, identifier, component, severity, message, explanation, recommended_action და reference."
 
 #: syslog_recommendations.php
 msgid "Import Recommendations from Text"
-msgstr ""
+msgstr "რეკომენდაციების შემოტანა ტექსტიდან"
 
 #: syslog_recommendations.php
 msgid "Alternatively, paste the JSON document into this box."
-msgstr ""
+msgstr "ალტერნატიულად, ჩასვით JSON დოკუმენტი ამ ველში."
 
 #: syslog_recommendations.php
 msgid "Existing Recommendations"
-msgstr ""
+msgstr "არსებული რეკომენდაციები"
 
 #: syslog_recommendations.php
 msgid "A recommendation is the same as an existing one when its vendor and identifier match."
-msgstr ""
+msgstr "რეკომენდაცია ითვლება არსებულის იდენტურად, როდესაც მისი მომწოდებელი და იდენტიფიკატორი ემთხვევა."
 
 #: syslog_recommendations.php
 msgid "Keep the existing recommendation"
-msgstr ""
+msgstr "არსებული რეკომენდაციის შენარჩუნება"
 
 #: syslog_recommendations.php
 msgid "Replace it with the imported one"
-msgstr ""
+msgstr "შემოტანილით ჩანაცვლება"
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Data"
 msgid "Import Recommendations"
-msgstr "ანგარიშის მონაცემების შემოტანა"
+msgstr "რეკომენდაციების შემოტანა"
 
 #: syslog_recommendations.php
 msgid "Importing, please wait..."
-msgstr ""
+msgstr "მიმდინარეობს იმპორტი, გთხოვთ მოიცადოთ..."
 
 #: syslog_recommendations.php
 msgid "Not specified"
-msgstr ""
+msgstr "მითითებული არ არის"
 
 #: syslog_recommendations.php
-#, fuzzy
 msgid "Recommendation"
-msgstr "წაშლილი ჩანაწერები"
+msgstr "რეკომენდაცია"
 
 #: syslog_recommendations.php
 msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
-msgstr ""
+msgstr "მოწყობილობის ან პროგრამული უზრუნველყოფის მომწოდებელი, რომელიც ამ შეტყობინებას იწერს, მაგალითად Cisco ან Juniper."
 
 #: syslog_recommendations.php
 msgid "Vendor"
-msgstr ""
+msgstr "მომწოდებელი"
 
 #: syslog_recommendations.php
 msgid "Identifier"
-msgstr ""
+msgstr "იდენტიფიკატორი"
 
 #: syslog_recommendations.php
 msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
-msgstr ""
+msgstr "მოსაძებნი შეტყობინების კოდი, მაგალითად %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN ან 4625. ის უნდა ემთხვეოდეს syslog შეტყობინების მთლიან სიტყვას (ასოები, ციფრები და _ . - /); საწყისი % სიმბოლო სიტყვასიტყვითია და უნდა ემთხვეოდეს ზუსტად ისე, როგორც წერია. დამთხვევა არ არის მგრძნობიარე რეგისტრის მიმართ. იხილეთ „როგორ ხდება რეკომენდაციების დამთხვევა“ სიის გვერდზე."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Complete"
 msgid "Component"
-msgstr "დასრულებულია"
+msgstr "კომპონენტი"
 
 #: syslog_recommendations.php
 msgid "The facility, module or subsystem that raises the message."
-msgstr ""
+msgstr "სერვისი, მოდული ან ქვესისტემა, რომელიც შეტყობინებას წარმოქმნის."
 
 #: syslog_recommendations.php
 msgid "The severity the vendor documents for this message."
-msgstr ""
+msgstr "სიმძიმის დონე, რომელსაც მომწოდებელი ამ შეტყობინებისთვის განსაზღვრავს."
 
 #: syslog_recommendations.php
 msgid "The message format as documented, including its variable placeholders."
-msgstr ""
+msgstr "დოკუმენტირებული შეტყობინების ფორმატი, მისი ცვლადების ჩანაცვლების ველების ჩათვლით."
 
 #: syslog_recommendations.php
 msgid "What the message means."
-msgstr ""
+msgstr "რას ნიშნავს ეს შეტყობინება."
 
 #: syslog_recommendations.php
 msgid "What an operator should do about it."
-msgstr ""
+msgstr "რა უნდა გააკეთოს ოპერატორმა ამასთან დაკავშირებით."
 
 #: syslog_recommendations.php
 msgid "Links to the vendor documentation, one per line."
-msgstr ""
+msgstr "ბმულები მომწოდებლის დოკუმენტაციაზე, თითო ხაზზე თითო."
 
 #: syslog_recommendations.php
 msgid "Recommendation [edit]"
-msgstr ""
+msgstr "რეკომენდაცია [რედაქტირება]"
 
 #: syslog_recommendations.php
 msgid "Recommendation [new]"
-msgstr ""
+msgstr "რეკომენდაცია [ახალი]"
 
 #: syslog_recommendations.php
 msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
-msgstr ""
+msgstr "შეტყობინების წინ არსებული ნათურის ხატულა აღნიშნავს შესაბამის რეკომენდაციებს „სისტემური ჟურნალების“ და „გაფრთხილების ჟურნალების“ ჩანართებზე. დეტალების პანელში წასაკითხად დააწკაპუნეთ შეტყობინებაზე. მაუსის მიტანა სერვერზე მოთხოვნას არ აგზავნის."
 
 #: syslog_recommendations.php
 msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
-msgstr ""
+msgstr "დამთხვევისთვის გამოიყენება მხოლოდ სვეტი <b>იდენტიფიკატორი</b>. მწარმოებელი, კომპონენტი, სიმძიმე, შეტყობინება და განმარტება ნაჩვენებია დეტალების პანელში, მაგრამ მათში ძიება არ ხდება."
 
 #: syslog_recommendations.php
 msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
-msgstr ""
+msgstr "შეტყობინების პირველი 2,048 სიმბოლო იყოფა სიტყვებად. სიტყვა არის ასოების, ციფრებისა და _ . - / სიმბოლოების მიმდევრობა, რომელიც შეიძლება იწყებოდეს %-ით. ნებისმიერი სხვა სიმბოლო, როგორიცაა გამოტოვება, ორწერტილი, მძიმე ან ფრჩხილი, ასრულებს სიტყვას. ტექსტში <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> სიტყვებია <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> და <code>down</code>."
 
 #: syslog_recommendations.php
 msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
-msgstr ""
+msgstr "იდენტიფიკატორი ემთხვევა მაშინ, როდესაც ის <b>ზუსტად უდრის ერთ მთლიან სიტყვას</b>, რეგისტრის უგულებელყოფით. ეს არ არის „შეიცავს“, „იწყება“-ით ან „მთავრდება“-ით ძიება და არ არსებობს ჩასანაცვლებელი სიმბოლოები (wildcards): <code>LINK-3-UPDOWN</code> არ ემთხვევა სიტყვას <code>LINK-3-UPDOWN-EXT</code>, ხოლო <code>UPDOWN</code> არ ემთხვევა სიტყვას <code>%LINK-3-UPDOWN</code>."
 
 #: syslog_recommendations.php
 msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
-msgstr ""
+msgstr "საწყისი <b>%</b> სიმბოლო არის სიტყვასიტყვითი და არა ჩასანაცვლებელი, და უნდა ემთხვეოდეს შეტყობინების სიტყვას ზუსტად ისე, როგორც წერია. იდენტიფიკატორი <code>%LINK-3-UPDOWN</code> ემთხვევა შეტყობინების სიტყვას <code>%LINK-3-UPDOWN</code> და არა <code>LINK-3-UPDOWN</code>-ს; პრეფიქსის გარეშე იდენტიფიკატორი ემთხვევა მხოლოდ უპრეფიქსო სიტყვას."
 
 #: syslog_recommendations.php
 msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
-msgstr ""
+msgstr "როდესაც syslog ჰოსტი არის Cacti-ის მოწყობილობა, რომლის მწარმოებელიც ამოცნობილია მისი SNMP სისტემური აღწერიდან ან მოწყობილობის შაბლონიდან და ამ მწარმოებლისთვის არსებობს რეკომენდაციები, მოწმდება მხოლოდ ამ მწარმოებლისა და მწარმოებლის გარეშე არსებული რეკომენდაციები. წინააღმდეგ შემთხვევაში მოწმდება ყველა მწარმოებელი, მაგრამ მხოლოდ ციფრებისგან შემდგარი იდენტიფიკატორი ემთხვევა მხოლოდ მწარმოებლის გარეშე რეკომენდაციებს. როდესაც რამდენიმე რეკომენდაცია ემთხვევა, პირველ რიგში ნაჩვენებია ყველაზე გრძელი იდენტიფიკატორები, მაქსიმუმ სამი."
 
 #: syslog_recommendations.php
 msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
-msgstr ""
+msgstr "იდენტიფიკატორები, რომლებიც შეიცავს სხვა სიმბოლოებს, როგორიცაა სლოტის ჩანაცვლების სიმბოლო <code>#</code> ან ალტერნატივების სიმბოლო <code>|</code> ზოგიერთი მწარმოებლის დოკუმენტაციაში (მაგალითად, <code>%ASA|PIX-3-331001</code>), ინახება და ექსპორტირდება, მაგრამ ვერასოდეს დაემთხვევა. მათ სანახავად დააყენეთ <b>შეუძლია დამთხვევა</b> მნიშვნელობაზე „არა“ და დაარედაქტირეთ ზუსტ კოდამდე, მაგალითად <code>%ASA-3-331001</code>."
 
 #: syslog_recommendations.php
-#, fuzzy
 msgid "How Recommendations Are Matched"
-msgstr "წაშლილი ჩანაწერები"
+msgstr "როგორ ხდება რეკომენდაციების დამთხვევა"
 
 #: syslog_recommendations.php
-#, fuzzy
 msgid "Can Match"
-msgstr "დამთხვევის ტიპი"
+msgstr "შეუძლია დამთხვევა"
 
 #: syslog_recommendations.php
 msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
-msgstr ""
+msgstr "აქვს თუ არა იდენტიფიკატორს შეტყობინების სიტყვის ფორმა, რათა შეტყობინებაში ძიებამ შეძლოს მისი პოვნა"
 
 #: syslog_recommendations.php
 msgid "Export every recommendation that matches the filters"
-msgstr ""
+msgstr "ფილტრების შესაბამისი ყველა რეკომენდაციის გატანა"
 
 #: syslog_recommendations.php
 msgid "No recommendations found."
-msgstr ""
+msgstr "რეკომენდაციები ვერ მოიძებნა."
 
 #: syslog_removal.php
 msgid "Reprocess"
@@ -3827,57 +3655,57 @@ msgstr "თავიდან დამუშავება"
 
 #: syslog_removal.php
 msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
-msgstr ""
+msgstr "დააწკაპუნეთ 'გაგრძელებაზე', რომ წაშალოთ შემდეგი Syslog-ის წაშლის წეს(ებ)ი."
 
 #: syslog_removal.php
 msgid "Delete Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Syslog-ის წაშლის წეს(ებ)ის წაშლა"
 
 #: syslog_removal.php
 msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
-msgstr ""
+msgstr "დააწკაპუნეთ 'გაგრძელებაზე', რომ გამორთოთ შემდეგი Syslog-ის წაშლის წეს(ებ)ი."
 
 #: syslog_removal.php
 msgid "Disable Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Syslog-ის წაშლის წეს(ებ)ის გამორთვა"
 
 #: syslog_removal.php
 msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
-msgstr ""
+msgstr "დააწკაპუნეთ 'გაგრძელებაზე', რომ ჩართოთ შემდეგი Syslog-ის წაშლის წეს(ებ)ი."
 
 #: syslog_removal.php
 msgid "Enable Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Syslog-ის წაშლის წეს(ებ)ის ჩართვა"
 
 #: syslog_removal.php
 msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
-msgstr ""
+msgstr "დააწკაპუნეთ 'გაგრძელებაზე', რომ თავიდან დაამუშაოთ შემდეგი Syslog-ის წაშლის წეს(ებ)ი."
 
 #: syslog_removal.php
 msgid "Retroactively Process Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Syslog-ის წაშლის წეს(ებ)ის რეტროაქტიული დამუშავება"
 
 #: syslog_removal.php
 msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
-msgstr ""
+msgstr "დააწკაპუნეთ 'გაგრძელებაზე', რომ გაიტანოთ შემდეგი Syslog-ის წაშლის წეს(ებ)ი."
 
 #: syslog_removal.php
 msgid "Export Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Syslog-ის წაშლის წეს(ებ)ის გატანა"
 
 #: syslog_removal.php
 #, php-format
 msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
-msgstr ""
+msgstr "წესმა '%s' შედეგად %s/%s შეტყობინება წაშალა/გადაიტანა"
 
 #: syslog_removal.php
 #, php-format
 msgid "Removal Rule Edit [edit: %s]"
-msgstr ""
+msgstr "წაშლის წესის რედაქტირება [რედაქტირება: %s]"
 
 #: syslog_removal.php
 msgid "Removal Rule Edit [new]"
-msgstr ""
+msgstr "წაშლის წესის რედაქტირება [ახალი]"
 
 #: syslog_removal.php
 msgid "New Removal Record"
@@ -3897,7 +3725,7 @@ msgstr "წაშლის წესის სახელი"
 
 #: syslog_removal.php
 msgid "Please describe this Removal Rule."
-msgstr ""
+msgstr "გთხოვთ, აღწეროთ ეს წაშლის წესი."
 
 #: syslog_removal.php syslog_reports.php
 msgid "Enabled?"
@@ -3905,7 +3733,7 @@ msgstr "ჩართულია?"
 
 #: syslog_removal.php
 msgid "Is this Removal Rule Enabled?"
-msgstr ""
+msgstr "ჩართულია თუ არა ეს წაშლის წესი?"
 
 #: syslog_removal.php syslog_reports.php
 msgid "String Match Type"
@@ -3913,15 +3741,15 @@ msgstr "სტრიქონის დამთხვევის ტიპი"
 
 #: syslog_removal.php
 msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
-msgstr ""
+msgstr "განსაზღვრეთ, როგორ გსურთ ამ სტრიქონის შედარება. SQL გამოსახულების ტიპის გამოყენებისას შეგიძლიათ გამოიყენოთ ნებისმიერი სწორი SQL გამოსახულება განგაშის გენერირებისთვის. ხელმისაწვდომი ველებია 'message', 'facility', 'priority' და 'host'."
 
 #: syslog_removal.php
 msgid "Syslog Message Match String"
-msgstr ""
+msgstr "Syslog შეტყობინების დამთხვევის სტრიქონი"
 
 #: syslog_removal.php
 msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
-msgstr ""
+msgstr "შეიყვანეთ Syslog შეტყობინების შესაბამისი კომპონენტი, სერვისი (facility) ან ჰოსტის სახელი, ან SQL where პირობა, თუ იყენებთ SQL გამოსახულების შედარების ტიპს."
 
 #: syslog_removal.php
 msgid "Method of Removal"
@@ -3941,16 +3769,15 @@ msgstr "წაშლის წესის შენიშვნები"
 
 #: syslog_removal.php
 msgid "Space for Notes on the Removal rule"
-msgstr ""
+msgstr "ადგილი წაშლის წესის შენიშვნებისთვის"
 
 #: syslog_removal.php
-#, fuzzy
 msgid "Removal filter conditions"
-msgstr "წაშლის წესის შენიშვნები"
+msgstr "წაშლის ფილტრის პირობები"
 
 #: syslog_removal.php
 msgid "Syslog Removal Rule Filters"
-msgstr ""
+msgstr "Syslog-ის წაშლის წესის ფილტრები"
 
 #: syslog_removal.php
 msgid "Removal Name"
@@ -3962,23 +3789,23 @@ msgstr "გადაყვანა"
 
 #: syslog_removal.php
 msgid "No Syslog Removal Rules Defined"
-msgstr ""
+msgstr "Syslog-ის წაშლის წესები განსაზღვრული არ არის"
 
 #: syslog_removal.php
 msgid "Import Removal Rule from Local File"
-msgstr ""
+msgstr "წაშლის წესის შემოტანა ლოკალური ფაილიდან"
 
 #: syslog_removal.php
 msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
-msgstr ""
+msgstr "თუ წაშლის წესის აღწერის მონაცემების შემცველი XML ფაილი მდებარეობს თქვენს ლოკალურ მანქანაზე, აირჩიეთ იგი აქ."
 
 #: syslog_removal.php
 msgid "Import Removal Rule from Text"
-msgstr ""
+msgstr "წაშლის წესის შემოტანა ტექსტიდან"
 
 #: syslog_removal.php
 msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
-msgstr ""
+msgstr "თუ გაქვთ წაშლის წესის აღწერის მონაცემების შემცველი XML ფაილი ტექსტის სახით, შეგიძლიათ ჩასვათ იგი ამ ველში შემოსატანად."
 
 #: syslog_removal.php
 msgid "Import Removal Rule"
@@ -3987,16 +3814,16 @@ msgstr "წაშლის წესის შემოტანა"
 #: syslog_removal.php
 #, php-format
 msgid "NOTE: Removal Rule '%s' %s!"
-msgstr ""
+msgstr "შენიშვნა: წაშლის წესი '%s' %s!"
 
 #: syslog_removal.php
 #, php-format
 msgid "ERROR: Removal Rule '%s' %s Failed!"
-msgstr ""
+msgstr "შეცდომა: წაშლის წესის '%s' %s ვერ შესრულდა!"
 
 #: syslog_reports.php
 msgid "Click 'Continue' to Delete the following Syslog Report(s)."
-msgstr ""
+msgstr "დააწკაპუნეთ 'გაგრძელებაზე', რომ წაშალოთ შემდეგი Syslog-ის ანგარიშ(ებ)ი."
 
 #: syslog_reports.php
 msgid "Delete Syslog Report(s)"
@@ -4004,7 +3831,7 @@ msgstr "Syslog-ის ანგარიშების წაშლა"
 
 #: syslog_reports.php
 msgid "Click 'Continue' to Disable the following Syslog Report(s)."
-msgstr ""
+msgstr "დააწკაპუნეთ 'გაგრძელებაზე', რომ გამორთოთ შემდეგი Syslog-ის ანგარიშ(ებ)ი."
 
 #: syslog_reports.php
 msgid "Disable Syslog Report(s)"
@@ -4012,7 +3839,7 @@ msgstr "Syslog-ის ანგარიშების გათიშვა"
 
 #: syslog_reports.php
 msgid "Click 'Continue' to Enable the following Syslog Report(s)."
-msgstr ""
+msgstr "დააწკაპუნეთ 'გაგრძელებაზე', რომ ჩართოთ შემდეგი Syslog-ის ანგარიშ(ებ)ი."
 
 #: syslog_reports.php
 msgid "Enable Syslog Report(s)"
@@ -4020,15 +3847,15 @@ msgstr "Syslog-ის ანგარიშების ჩართვა"
 
 #: syslog_reports.php
 msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
-msgstr ""
+msgstr "დააწკაპუნეთ 'გაგრძელებაზე', რომ გაიტანოთ შემდეგი Syslog-ის ანგარიშის წეს(ებ)ი."
 
 #: syslog_reports.php
 msgid "Export Syslog Report Rule(s)"
-msgstr ""
+msgstr "Syslog-ის ანგარიშის წეს(ებ)ის გატანა"
 
 #: syslog_reports.php
 msgid "You must select at least one Syslog Report."
-msgstr ""
+msgstr "უნდა აირჩიოთ მინიმუმ ერთი Syslog-ის ანგარიში."
 
 #: syslog_reports.php
 msgid "Return"
@@ -4037,11 +3864,11 @@ msgstr "დაბრუნება"
 #: syslog_reports.php
 #, php-format
 msgid "Report Edit [edit: %s]"
-msgstr ""
+msgstr "ანგარიშის რედაქტირება [რედაქტირება: %s]"
 
 #: syslog_reports.php
 msgid "Report Edit [new]"
-msgstr ""
+msgstr "ანგარიშის რედაქტირება [ახალი]"
 
 #: syslog_reports.php
 msgid "New Report Record"
@@ -4049,15 +3876,15 @@ msgstr "ახალი ანგარიშის ჩანაწერი"
 
 #: syslog_reports.php
 msgid "Please describe this Report."
-msgstr ""
+msgstr "გთხოვთ, აღწეროთ ეს ანგარიში."
 
 #: syslog_reports.php
 msgid "Is this Report Enabled?"
-msgstr ""
+msgstr "ჩართულია თუ არა ეს ანგარიში?"
 
 #: syslog_reports.php
 msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
-msgstr ""
+msgstr "განსაზღვრეთ, როგორ გსურთ ამ სტრიქონის დამთხვევა. ფილტრის კონსტრუქტორი აერთიანებს პირობებს შეტყობინებაზე, ჰოსტზე, პროგრამაზე, კატეგორიაზე (facility) და პრიორიტეტზე."
 
 #: syslog_reports.php
 msgid "Frequency"
@@ -4065,7 +3892,7 @@ msgstr "სიხშირე"
 
 #: syslog_reports.php
 msgid "How often should this Report be sent to the distribution list?"
-msgstr ""
+msgstr "რა სიხშირით უნდა გაიგზავნოს ეს ანგარიში დაგზავნის სიაში?"
 
 #: syslog_reports.php
 msgid "Send Time"
@@ -4073,7 +3900,7 @@ msgstr "გაგზავნის დრო"
 
 #: syslog_reports.php
 msgid "What time of day should this report be sent?"
-msgstr ""
+msgstr "დღის რომელ საათზე უნდა გაიგზავნოს ეს ანგარიში?"
 
 #: syslog_reports.php
 msgid "Report Format"
@@ -4081,28 +3908,27 @@ msgstr "ანგარიშის ფორმატი"
 
 #: syslog_reports.php
 msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
-msgstr ""
+msgstr "ააგეთ ფილტრის პირობები, ან შეიყვანეთ ტექსტი ან SQL გამოსახულება syslog შეტყობინებების დასამთხვევად."
 
 #: syslog_reports.php
 msgid "The information that will be contained in the body of the Report."
-msgstr ""
+msgstr "ინფორმაცია, რომელიც მოთავსდება ანგარიშის ტექსტში."
 
 #: syslog_reports.php
 msgid "Comma delimited list of Email addresses to send the report to."
-msgstr ""
+msgstr "ელფოსტის მისამართების მძიმით გამოყოფილი სია, რომლებზეც უნდა გაიგზავნოს ანგარიში."
 
 #: syslog_reports.php
 msgid "Space for Notes on the Report"
-msgstr ""
+msgstr "ადგილი ანგარიშის შენიშვნებისთვის"
 
 #: syslog_reports.php
 msgid "Report Test Preview"
-msgstr ""
+msgstr "ანგარიშის ტესტის წინასწარი ნახვა"
 
 #: syslog_reports.php
-#, fuzzy
 msgid "Report filter conditions"
-msgstr "წაშლის წესის შენიშვნები"
+msgstr "ანგარიშის ფილტრის პირობები"
 
 #: syslog_reports.php
 msgid "Syslog Report Filters"
@@ -4122,23 +3948,23 @@ msgstr "ანგარიშები"
 
 #: syslog_reports.php
 msgid "No Syslog Reports Defined"
-msgstr ""
+msgstr "Syslog-ის ანგარიშები განსაზღვრული არ არის"
 
 #: syslog_reports.php
 msgid "Import Report Rule from Local File"
-msgstr ""
+msgstr "ანგარიშის წესის შემოტანა ლოკალური ფაილიდან"
 
 #: syslog_reports.php
 msgid "If the XML file containing the Report Rule definition data is located on your local machine, select it here."
-msgstr ""
+msgstr "თუ ანგარიშის წესის აღწერის მონაცემების შემცველი XML ფაილი მდებარეობს თქვენს ლოკალურ მანქანაზე, აირჩიეთ იგი აქ."
 
 #: syslog_reports.php
 msgid "Import Report Rule from Text"
-msgstr ""
+msgstr "ანგარიშის წესის შემოტანა ტექსტიდან"
 
 #: syslog_reports.php
 msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
-msgstr ""
+msgstr "თუ გაქვთ ანგარიშის წესის აღწერის მონაცემების შემცველი XML ფაილი ტექსტის სახით, შეგიძლიათ ჩასვათ იგი ამ ველში შემოსატანად."
 
 #: syslog_reports.php
 msgid "Import Report Data"
@@ -4147,20 +3973,20 @@ msgstr "ანგარიშის მონაცემების შემ�
 #: syslog_reports.php
 #, php-format
 msgid "NOTE: Report Rule '%s' %s!"
-msgstr ""
+msgstr "შენიშვნა: ანგარიშის წესი '%s' %s!"
 
 #: syslog_reports.php
 #, php-format
 msgid "ERROR: Report Rule '%s' %s Failed!"
-msgstr ""
+msgstr "შეცდომა: ანგარიშის წესის '%s' %s ვერ შესრულდა!"
 
 #: syslog_saved_searches.php
 msgid "Unable to save the template. Please try again."
-msgstr ""
+msgstr "შაბლონის შენახვა ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა."
 
 #: syslog_saved_searches.php
 msgid "Enter a template name between 1 and 128 characters."
-msgstr ""
+msgstr "შეიყვანეთ შაბლონის სახელი 1-დან 128 სიმბოლომდე."
 
 #: syslog_saved_searches.php
 msgid "Templates"
@@ -4172,86 +3998,85 @@ msgstr "მოთხოვნა"
 
 #: syslog_saved_searches.php
 msgid "No shared search templates. Save a search for all users from Syslog to create one."
-msgstr ""
+msgstr "გაზიარებული ძიების შაბლონები არ არის. შექმნისთვის შეინახეთ ძიება ყველა მომხმარებლისთვის Syslog-იდან."
 
 #: syslog_saved_searches.php
 msgid "Click 'Continue' to Export the following Saved Search Template(s)."
-msgstr ""
+msgstr "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი შენახული ძიების შაბლონ(ებ)ის ექსპორტისთვის."
 
 #: syslog_saved_searches.php
 msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
-msgstr ""
+msgstr "დააწკაპუნეთ 'გაგრძელება'-ზე შემდეგი შენახული ძიების შაბლონ(ებ)ის წასაშლელად."
 
 #: syslog_saved_searches.php
 msgid "Delete Saved Search Template(s)"
-msgstr ""
+msgstr "შენახული ძიების შაბლონ(ებ)ის წაშლა"
 
 #: syslog_saved_searches.php
 msgid "Export Saved Search Template(s)"
-msgstr ""
+msgstr "შენახული ძიების შაბლონ(ებ)ის ექსპორტი"
 
 #: syslog_saved_searches.php
 #, php-format
 msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
-msgstr ""
+msgstr "შენიშვნა: იმპორტირებულია %d და განახლებულია %d შენახული ძიების შაბლონი."
 
 #: syslog_saved_searches.php
 #, php-format
 msgid "ERROR: %d Saved Search Template(s) failed to import."
-msgstr ""
+msgstr "შეცდომა: %d შენახული ძიების შაბლონის იმპორტი ვერ მოხერხდა."
 
 #: syslog_saved_searches.php
 msgid "Import Saved Search Template from Local File"
-msgstr ""
+msgstr "შენახული ძიების შაბლონის იმპორტი ლოკალური ფაილიდან"
 
 #: syslog_saved_searches.php
 msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
-msgstr ""
+msgstr "თუ შენახული ძიების შაბლონის განსაზღვრის მონაცემების შემცველი JSON ფაილი მდებარეობს თქვენს ლოკალურ მანქანაზე, აირჩიეთ იგი აქ."
 
 #: syslog_saved_searches.php
 msgid "Import Saved Search Template from Text"
-msgstr ""
+msgstr "შენახული ძიების შაბლონის იმპორტი ტექსტიდან"
 
 #: syslog_saved_searches.php
 msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
-msgstr ""
+msgstr "თუ გაქვთ შენახული ძიების შაბლონის განსაზღვრის მონაცემების შემცველი JSON ფაილი ტექსტის სახით, შეგიძლიათ ჩასვათ იგი ამ ველში მისი იმპორტისთვის."
 
 #: syslog_saved_searches.php
 msgid "Import Saved Search Template"
-msgstr ""
+msgstr "შენახული ძიების შაბლონის იმპორტი"
 
 #: syslog_saved_searches.php
 msgid "Edit Saved Search Template"
-msgstr ""
+msgstr "შენახული ძიების შაბლონის რედაქტირება"
 
 #: syslog_saved_searches.php
 msgid "The name shown to all users in Saved Searches."
-msgstr ""
+msgstr "სახელი, რომელიც ყველა მომხმარებლისთვის ჩანს შენახულ ძიებებში."
 
 #: syslog_saved_searches.php
 msgid "The account that owns this template and can manage it in Saved Searches."
-msgstr ""
+msgstr "ანგარიში, რომელიც ფლობს ამ შაბლონს და შეუძლია მისი მართვა შენახულ ძიებებში."
 
 #: syslog_saved_searches.php
 msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
-msgstr ""
+msgstr "მომხმარებლები, რომლებსაც შეუძლიათ ამ შაბლონის გამოყენება მისი მფლობელის გარდა. „ყველა მომხმარებელი“ მას ყველას უზიარებს."
 
 #: syslog_saved_searches.php
 msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
-msgstr ""
+msgstr "ჯგუფები, რომლებსაც შეუძლიათ ამ შაბლონის გამოყენება მისი მფლობელის გარდა. „ყველა ჯგუფი“ მას ყველას უზიარებს."
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "Search Query"
-msgstr "ძებნა"
+msgstr "საძიებო მოთხოვნა"
 
 #: syslog_saved_searches.php
 msgid "Correct the query syntax to use the query builder."
-msgstr ""
+msgstr "შეასწორეთ მოთხოვნის სინტაქსი მოთხოვნის კონსტრუქტორის გამოსაყენებლად."
 
 #: syslog_saved_searches.php
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
-msgstr ""
+msgstr "აირჩიეთ ველი, ოპერატორი და მნიშვნელობა. მოთხოვნის ასაგებად გამოიყენეთ AND, OR, NOT ან Group. ცვლილებები ვრცელდება ამ გაზიარებულ შაბლონზე ყველა მომხმარებლისთვის."
 
 #~ msgid "Partitions per Day"
 #~ msgstr "დანაყოფი დღეში"
