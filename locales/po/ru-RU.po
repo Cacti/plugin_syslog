@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Russian <https://translate.cacti.net/projects/cacti/syslog/ru/>\nLanguage: ru-RU\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 05:53+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Russian <https://translate.cacti.net/projects/cacti/syslog/ru/>\nLanguage: ru-RU\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -39,7 +39,7 @@ msgstr "%d неделя"
 #: includes/functions.php
 #, php-format
 msgid "%d weeks"
-msgstr "%d нед."
+msgstr "%d недель"
 
 #: includes/functions.php
 #, php-format
@@ -49,7 +49,7 @@ msgstr "%d месяц"
 #: includes/functions.php
 #, php-format
 msgid "%d months"
-msgstr "%d мес."
+msgstr "%d месяцев"
 
 #: includes/functions.php
 #, php-format
@@ -250,7 +250,7 @@ msgstr "Структура разделов для %s некорректна и�
 #: includes/functions.php
 #, php-format
 msgid "remaining partition gap: %d partition(s)"
-msgstr "оставшийся пробел секций: %d секц."
+msgstr "оставшийся пробел секций: %d секций"
 
 #: includes/functions.php
 msgid "no retention deferral"
@@ -660,7 +660,7 @@ msgstr "Размер каждого раздела таблиц syslog и syslog
 
 #: includes/installer.php
 msgid "Upgrade"
-msgstr "Обновить"
+msgstr "Обновить версию"
 
 #: includes/installer.php
 msgid "Install"
@@ -987,7 +987,7 @@ msgstr "Если этот флажок установлен, система не
 
 #: includes/settings.php
 msgid "HTML Notification Settings"
-msgstr "Список уведомлений"
+msgstr "Настройки HTML-уведомлений"
 
 #: includes/settings.php
 msgid "Enable HTML Based Email"
@@ -1089,7 +1089,7 @@ msgstr "По умолчанию (10000 сообщений)"
 #: includes/settings.php
 #, php-format
 msgid "%d Messages"
-msgstr "%d сообщ."
+msgstr "%d сообщений"
 
 #: includes/settings.php
 msgid "Pipeline Health Alerts"
@@ -1265,7 +1265,7 @@ msgstr "%d Неделя"
 #: includes/settings.php syslog_alerts.php
 #, php-format
 msgid "%d Weeks"
-msgstr "%d нед."
+msgstr "%d недель"
 
 #: includes/settings.php
 #, php-format
@@ -1275,7 +1275,7 @@ msgstr "%d Месяц"
 #: includes/settings.php
 #, php-format
 msgid "%d Months"
-msgstr "%d мес."
+msgstr "%d месяцев"
 
 #: includes/settings.php
 #, php-format
@@ -2009,7 +2009,7 @@ msgstr "Максимальное время выполнения"
 
 #: syslog.php
 msgid "State"
-msgstr "Область"
+msgstr "Состояние"
 
 #: syslog.php
 msgid "Queued Recovery Records"
@@ -2102,7 +2102,7 @@ msgstr "Последнее успешное обслуживание"
 
 #: syslog.php
 msgid "Complete"
-msgstr "Готово"
+msgstr "Завершено"
 
 #: syslog.php
 msgid "Deferred"
