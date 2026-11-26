@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Arabic (Saudi Arabia) <https://translate.cacti.net/projects/cacti/syslog/ar_SA/>\nLanguage: ar-SA\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 05:53+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Arabic (Saudi Arabia) <https://translate.cacti.net/projects/cacti/syslog/ar_SA/>\nLanguage: ar-SA\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -67,7 +67,7 @@ msgstr "وردية نهارية"
 
 #: includes/functions.php
 msgid "This Day"
-msgstr "كل يوم"
+msgstr "هذا اليوم"
 
 #: includes/functions.php
 msgid "This Week"
@@ -904,7 +904,7 @@ msgstr "السماح للقواعد المضبوطة على مدير الإنذ�
 
 #: includes/settings.php
 msgid "Strip Domains"
-msgstr "Strip Domains"
+msgstr "إزالة النطاقات"
 
 #: includes/settings.php
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
@@ -1255,7 +1255,7 @@ msgstr "تصدير"
 
 #: includes/settings.php
 msgid "Indefinite"
-msgstr "غير محدد"
+msgstr "إلى أجل غير مسمى"
 
 #: includes/settings.php syslog_alerts.php
 #, php-format
@@ -1589,7 +1589,7 @@ msgstr "آخر %d أشهر"
 
 #: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
 msgid "Refresh"
-msgstr "تحديث"
+msgstr "إنعاش"
 
 #: lib/syslog_dashboard.php
 msgid "My Dashboards"
@@ -2811,7 +2811,7 @@ msgstr "مدير الإنذارات"
 
 #: syslog_alerts.php
 msgid "Syslog Alarming"
-msgstr "تنبيهات Syslog"
+msgstr "إنذار Syslog"
 
 #: syslog_alerts.php
 msgid "What is the Severity Level of this Alert?"
@@ -3181,7 +3181,7 @@ msgstr "تم رفض الاستيراد: وجهة التنبيه غير صالح�
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Imported"
-msgstr "استيراد"
+msgstr "مستورد"
 
 #: syslog_alerts.php
 #, php-format
@@ -3191,7 +3191,7 @@ msgstr "ملاحظة: تنبيه \"%s\" %s!"
 #: syslog_alerts.php syslog_dashboards.php syslog_removal.php
 #: syslog_reports.php
 msgid "Updated"
-msgstr "تحديث"
+msgstr "تم التحديث"
 
 #: syslog_alerts.php
 #, php-format
@@ -3216,7 +3216,7 @@ msgstr "أدخل اسم لوحة معلومات يتراوح بين 1 و128 حر
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Owner"
-msgstr "المشارك"
+msgstr "المالك"
 
 #: syslog_dashboards.php
 msgid "Shared"
