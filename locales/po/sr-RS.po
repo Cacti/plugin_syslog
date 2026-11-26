@@ -1,0 +1,4089 @@
+# Serbian translation for Cacti.
+# Copyright (C) 2004-2026 The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-20 14:13-0500\n"
+"PO-Revision-Date: 2026-11-26 18:57+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Serbian <developers@cacti.net>\n"
+"Language: sr-RS\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d minutes"
+msgstr "%d минута"
+
+#: includes/functions.php
+#, php-format
+msgid "%d hour"
+msgstr "%d сат"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d hours"
+msgstr "%d сати"
+
+#: includes/functions.php
+#, php-format
+msgid "%d day"
+msgstr "%d дан"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d days"
+msgstr "%d дана"
+
+#: includes/functions.php
+#, php-format
+msgid "%d week"
+msgstr "%d недеља"
+
+#: includes/functions.php
+#, php-format
+msgid "%d weeks"
+msgstr "%d недеље"
+
+#: includes/functions.php
+#, php-format
+msgid "%d month"
+msgstr "%d месец"
+
+#: includes/functions.php
+#, php-format
+msgid "%d months"
+msgstr "%d месеци"
+
+#: includes/functions.php
+#, php-format
+msgid "%d year"
+msgstr "%d година"
+
+#: includes/functions.php
+#, php-format
+msgid "%d years"
+msgstr "%d година"
+
+#: includes/functions.php
+msgid "Day Shift"
+msgstr "Дневна смена"
+
+#: includes/functions.php
+msgid "This Day"
+msgstr "Овај дан"
+
+#: includes/functions.php
+msgid "This Week"
+msgstr "Ова недеља"
+
+#: includes/functions.php
+msgid "This Month"
+msgstr "Овај месец"
+
+#: includes/functions.php
+msgid "This Year"
+msgstr "Ова година"
+
+#: includes/functions.php
+msgid "Previous Day"
+msgstr "Претходни дан"
+
+#: includes/functions.php
+msgid "Previous Week"
+msgstr "Претходна недеља"
+
+#: includes/functions.php
+msgid "Previous Month"
+msgstr "Претходни месец"
+
+#: includes/functions.php
+msgid "Previous Year"
+msgstr "Претходна година"
+
+#: includes/functions.php
+msgid "Syslog download"
+msgstr "Преузимање Syslog дневника"
+
+#: includes/functions.php
+msgid "Share with users…"
+msgstr "Подели са корисницима…"
+
+#: includes/functions.php
+msgid "Share with groups…"
+msgstr "Подели са групама…"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Emergency"
+msgstr "Хитно"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Critical"
+msgstr "Критично"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Alert"
+msgstr "Узбуна"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Error"
+msgstr "Грешка"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Warning"
+msgstr "Упозорење"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Notice"
+msgstr "Напомена"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "Инфо"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Debug"
+msgstr "Отклони грешке"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Informational"
+msgstr "Информативно"
+
+#: includes/functions.php
+msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
+msgstr "Чување није успело. Удаљеним сакупљачима података у режиму синхронизације није дозвољено да чувају правила. Уместо тога сачувајте са главног Cacti сервера."
+
+#: includes/functions.php
+msgid "Please use an HTML Email Client"
+msgstr "Молимо користите HTML клијент е-поште"
+
+#: includes/functions.php
+msgid "Text import payload exceeds the maximum size"
+msgstr "Садржај текстуалног увоза премашује максималну величину"
+
+#: includes/functions.php
+msgid "Unable to read the uploaded import file. Check the file and upload size limit."
+msgstr "Није могуће прочитати отпремљену датотеку за увоз. Проверите датотеку и ограничење величине отпремања."
+
+#: includes/functions.php
+msgid "Select an import file or paste its contents before importing."
+msgstr "Изаберите датотеку за увоз или налепите њен садржај пре увоза."
+
+#: includes/functions.php
+msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
+msgstr "Syslog табеле нису партиционисане. Традиционалне (непартиционисане) табеле су застареле, а партиционисане табеле су обавезне за нове инсталације. Ваши подаци ће наставити да се прикупљају, али требало би да мигрирате syslog табелу на партиционисану архитектуру."
+
+#: includes/functions.php
+msgid "Waiting for a completed processing run."
+msgstr "Чекање на завршено извршавање обраде."
+
+#: includes/functions.php
+msgid "Processing is completing within the allowed delay."
+msgstr "Обрада се завршава у оквиру дозвољеног кашњења."
+
+#: includes/functions.php
+#, php-format
+msgid "No processing run has completed for more than %d seconds."
+msgstr "Ниједно извршавање обраде није завршено дуже од %d секунди."
+
+#: includes/functions.php
+msgid "Incoming messages are within the configured limits."
+msgstr "Долазне поруке су у оквиру конфигурисаних ограничења."
+
+#: includes/functions.php
+msgid "Incoming queue metrics are unavailable."
+msgstr "Метрике долазног реда нису доступне."
+
+#: includes/functions.php
+#, php-format
+msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
+msgstr "Заостатак од најмање %s долазних порука премашује ограничење од %s."
+
+#: includes/functions.php
+msgid "The oldest incoming message timestamp is unavailable."
+msgstr "Временска ознака најстарије долазне поруке није доступна."
+
+#: includes/functions.php
+#, php-format
+msgid "Unprocessed messages are older than %d seconds."
+msgstr "Необрађене поруке су старије од %d секунди."
+
+#: includes/functions.php
+msgid "Synchronization is not enabled on this collector."
+msgstr "Синхронизација није омогућена на овом сакупљачу."
+
+#: includes/functions.php
+msgid "Synchronization is within the allowed delay."
+msgstr "Синхронизација је у оквиру дозвољеног кашњења."
+
+#: includes/functions.php
+msgid "Synchronization queue metrics are unavailable."
+msgstr "Метрике реда синхронизације нису доступне."
+
+#: includes/functions.php
+msgid "The oldest synchronization record timestamp is unavailable."
+msgstr "Временска ознака најстаријег записа синхронизације није доступна."
+
+#: includes/functions.php
+msgid "Synchronization has failed or queued records exceed the allowed delay."
+msgstr "Синхронизација није успела или записи у реду премашују дозвољено кашњење."
+
+#: includes/functions.php
+msgid "Partition maintenance is not blocked."
+msgstr "Одржавање партиција није блокирано."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition maintenance is blocked: %s"
+msgstr "Одржавање партиција је блокирано: %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Syslog pipeline health - collector %d"
+msgstr "Стање Syslog цевовода - сакупљач %d"
+
+#: includes/functions.php
+msgid "The Syslog pipeline has recovered."
+msgstr "Syslog цевовод се опоравио."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
+msgstr "Распоред партиција за %s је неважећи или непотпун; одржавање партиција је заустављено. Проверите метаподатке партиција помоћу SHOW CREATE TABLE и, ако је потребно, поново изградите партиције; уписи се настављају у сигурносну партицију dMaxValue."
+
+#: includes/functions.php
+#, php-format
+msgid "remaining partition gap: %d partition(s)"
+msgstr "преостала празнина партиција: %d партиција(е)"
+
+#: includes/functions.php
+msgid "no retention deferral"
+msgstr "нема одлагања задржавања"
+
+#: includes/functions.php
+msgid "retention pruning deferred until the future horizon is restored"
+msgstr "чишћење ради задржавања је одложено док се не обнови будући хоризонт"
+
+#: includes/functions.php
+msgid "new records are accumulating in the dMaxValue safety partition"
+msgstr "нови записи се нагомилавају у сигурносној партицији dMaxValue"
+
+#: includes/functions.php
+msgid "per run recovery limit reached"
+msgstr "достигнуто је ограничење опоравка по извршавању"
+
+#: includes/functions.php
+msgid "partition creation failed"
+msgstr "креирање партиције није успело"
+
+#: includes/functions.php
+msgid "Unknown partitioning level; choose Hourly or Daily."
+msgstr "Непознат ниво партиционисања; изаберите По сату или Дневно."
+
+#: includes/functions.php
+msgid "The Syslog retention is invalid."
+msgstr "Период задржавања за Syslog је неважећи."
+
+#: includes/functions.php
+msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
+msgstr "Партиционисање по сату не може се користити са Неограниченим задржавањем, јер би то захтевало неограничен број партиција. Изаберите период задржавања или Дневно партиционисање."
+
+#: includes/functions.php
+#, php-format
+msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
+msgstr "%s партиционисање са %s дана задржавања и периодом за креирање унапред од %s дана захтева %s партиција по табели, што премашује ограничење овог сервера базе података од %s партиција. Смањите задржавање, скратите период за креирање унапред или изаберите Дневно партиционисање."
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Daily"
+msgstr "Дневно"
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Hourly"
+msgstr "На сваки сат"
+
+#: includes/functions.php
+#, php-format
+msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
+msgstr "Табеле и даље користе %s партиције док их cli/upgrade_partitioning.php поново не изгради."
+
+#: includes/functions.php
+msgid "The partitioning level of the existing Syslog tables could not be read."
+msgstr "Ниво партиционисања постојећих Syslog табела није могао бити прочитан."
+
+#: includes/functions.php
+msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
+msgstr "Аутоматски опоравак партиција је одложен: величина dMaxValue није доступна; потребна је интервенција оператера."
+
+#: includes/functions.php
+#, php-format
+msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
+msgstr "Аутоматски опоравак партиција је одложен: dMaxValue има процењених %s редова и %s бајтова; ограничења су 100000 редова и 134217728 бајтова. Потребна је интервенција оператера."
+
+#: includes/functions.php
+msgid "Unknown rule type."
+msgstr "Непознат тип правила."
+
+#: includes/functions.php
+msgid "The configured incoming field mapping is invalid."
+msgstr "Конфигурисано мапирање долазног поља није важеће."
+
+#: includes/functions.php
+msgid "The facility of this rule is not in the reference table yet."
+msgstr "Категорија овог правила још увек није у референтној табели."
+
+#: includes/functions.php
+msgid "Unknown rule match type."
+msgstr "Непознат тип поклапања правила."
+
+#: includes/functions.php
+msgid "The rule did not compile to a query."
+msgstr "Правило није компајлирано у упит."
+
+#: includes/functions.php
+msgid "The preview query could not be evaluated."
+msgstr "Упит за преглед није могао да се процени."
+
+#: includes/functions.php
+msgid "The historical preview filter could not be compiled."
+msgstr "Филтер за историјски преглед није могао да се компајлира."
+
+#: includes/functions.php
+msgid "The historical preview query could not be evaluated."
+msgstr "Упит за историјски преглед није могао да се процени."
+
+#: includes/functions.php
+msgid "The preview sample could not be read."
+msgstr "Узорак за преглед није могао да се прочита."
+
+#: includes/functions.php
+msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
+msgstr "Прегледи SQL израза проверавају само долазне поруке у реду чекања. Већ обрађене поруке се не претражују. Тестирање не шаље аларме."
+
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Permission denied."
+msgstr "Дозвола је одбијена."
+
+#: includes/functions.php includes/utilities.php syslog.php
+msgid "Invalid request. Please try again."
+msgstr "Неважећи захтев. Покушајте поново."
+
+#: includes/functions.php
+msgid "The rule has no match expression to test."
+msgstr "Правило нема израз за поклапање за тестирање."
+
+#: includes/functions.php
+msgid "The match expression is too long to test."
+msgstr "Израз за поклапање је предугачак за тестирање."
+
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
+msgid "Unknown"
+msgstr "Непознато"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
+msgstr "Cacti Syslog упозорење прага '%s' за домаћина '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "Cacti Syslog упозорење прага '%s'"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+msgid "Alert Name"
+msgstr "Назив упозорења"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+#: syslog_recommendations.php
+msgid "Severity"
+msgstr "Озбиљност"
+
+#: includes/functions.php syslog_alerts.php
+msgid "Threshold"
+msgstr "Праг"
+
+#: includes/functions.php syslog.php
+msgid "Count"
+msgstr "Број"
+
+#: includes/functions.php
+msgid "Match String"
+msgstr "Ниска за поклапање"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s' for Host '%s'"
+msgstr "Cacti Syslog упозорење '%s' за домаћина '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s'"
+msgstr "Cacti Syslog упозорење '%s'"
+
+#: includes/functions.php
+msgid "Hostname"
+msgstr "Име домаћина"
+
+#: includes/functions.php syslog.php
+msgid "Date"
+msgstr "Датум"
+
+#: includes/functions.php
+msgid "Level"
+msgstr "Ниво"
+
+#: includes/functions.php includes/recommendations.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Message"
+msgstr "Порука"
+
+#: includes/functions.php
+#, php-format
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
+msgstr "УПОЗОРЕЊЕ: Покренуто је Syslog упозорење прага за домаћина '%s'"
+
+#: includes/functions.php
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
+msgstr "УПОЗОРЕЊЕ: Покренуто је Syslog упозорење прага"
+
+#: includes/functions.php
+msgid "Name:"
+msgstr "Назив:"
+
+#: includes/functions.php
+msgid "Severity:"
+msgstr "Озбиљност:"
+
+#: includes/functions.php
+msgid "Threshold:"
+msgstr "Праг:"
+
+#: includes/functions.php
+msgid "Count:"
+msgstr "Број:"
+
+#: includes/functions.php
+msgid "Message String:"
+msgstr "Текст поруке:"
+
+#: includes/functions.php
+msgid "Hostname:"
+msgstr "Име домаћина:"
+
+#: includes/functions.php
+msgid "Date:"
+msgstr "Датум:"
+
+#: includes/functions.php
+msgid "Level:"
+msgstr "Ниво:"
+
+#: includes/functions.php
+msgid "Message:"
+msgstr "Порука:"
+
+#: includes/functions.php
+msgid ", Host:"
+msgstr ", Домаћин:"
+
+#: includes/functions.php
+msgid ", URL:"
+msgstr ", URL:"
+
+#: includes/functions.php
+msgid "Sev:"
+msgstr "Озб:"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Alert - %s"
+msgstr "Упозорење о догађају - %s"
+
+#: includes/functions.php
+msgid ", Count:"
+msgstr ", Број:"
+
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php syslog_reports.php
+msgid "Host"
+msgstr "Домаћин"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Report - %s"
+msgstr "Извештај о догађају - %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
+msgstr "Прегледи извештаја претражују најновијих %d сачуваних порука; сам извештај обухвата цео свој временски оквир. Тестирање не шаље е-пошту."
+
+#: includes/functions.php
+msgid "Grouped results are unavailable or expired. Refresh the results and try again."
+msgstr "Груписани резултати нису доступни или су истекли. Освежите резултате и покушајте поново."
+
+#: includes/functions.php syslog.php
+msgid "Group messages could not be loaded."
+msgstr "Поруке групе нису могле да се учитају."
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "No"
+msgstr "Не"
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "Yes"
+msgstr "Да"
+
+#: includes/functions.php
+msgid "All Text"
+msgstr "Сав текст"
+
+#: includes/functions.php
+msgid "Fit Column"
+msgstr "Прилагоди колону"
+
+#: includes/functions.php
+#, php-format
+msgid "%d Chars"
+msgstr "%d знакова"
+
+#: includes/installer.php
+msgid "Syslog Upgrade Advisor"
+msgstr "Саветник за надоградњу система Syslog"
+
+#: includes/installer.php
+#, php-format
+msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
+msgstr "Надоградити Syslog са %s на %s? Постојеће поруке и правила биће сачувани. Промене шеме могу потрајати."
+
+#: includes/installer.php
+msgid "What upgrade/install type do you wish to use"
+msgstr "Који тип надоградње/инсталације желите да користите"
+
+#: includes/installer.php
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
+msgstr "Када имате веома велике табеле, пражњење (Truncate) ће бити много брже. Ако бринете о архивираним подацима, можете изабрати или директну надоградњу (Inline), која ће замрзнути ваш прегледач током ове надоградње, или позадинску надоградњу, која ће покренути позадински процес за пренос старих syslog података из резервне табеле у нови syslog формат. Опет, овај процес може трајати неколико сати. Пражњење одбацује само сачуване syslog и уклоњене поруке; правила упозорења, уклањања и извештаја се увек чувају."
+
+#: includes/installer.php
+msgid "Truncate Syslog Table"
+msgstr "Испразни Syslog табелу"
+
+#: includes/installer.php
+msgid "Inline Upgrade"
+msgstr "Директна надоградња"
+
+#: includes/installer.php
+msgid "Background Upgrade"
+msgstr "Позадинска надоградња"
+
+#: includes/installer.php
+msgid "Database Storage Engine"
+msgstr "Механизам складиштења базе података"
+
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
+msgstr "Механизам складиштења за аналитичке табеле. Подржани су само механизми складиштења InnoDB и, на систему MariaDB, Aria. Свака опција удаљеног прикупљача података захтева InnoDB; некомпатибилне комбинације не могу бити послате."
+
+#: includes/installer.php
+msgid "InnoDB Storage"
+msgstr "InnoDB складиште"
+
+#: includes/installer.php
+msgid "Aria Storage"
+msgstr "Aria складиште"
+
+#: includes/installer.php
+msgid "Timestamp Precision"
+msgstr "Прецизност временске ознаке"
+
+#: includes/installer.php
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
+msgstr "Милисекундна прецизност чува syslog временске ознаке мање од секунде у колони TIMESTAMP(3) и доступна је само на систему MariaDB. Секундна прецизност користи стандардну колону TIMESTAMP. На продукционом систему, користите cli/upgrade_partitioning.php --convert-ms током прозора одржавања да бисте конвертовали постојеће поруке без њиховог одбацивања."
+
+#: includes/installer.php
+msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
+msgstr "Милисекунда - TIMESTAMP(3) (само MariaDB)"
+
+#: includes/installer.php
+msgid "Second - TIMESTAMP"
+msgstr "Секунда - TIMESTAMP"
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Message Processing"
+msgstr "Удаљена обрада порука"
+
+#: includes/installer.php includes/settings.php
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "Омогући обраду порука на удаљеном прикупљачу података"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "Ако ваши удаљени прикупљачи података имају сопствене Syslog базе података и самостално обрађују своје поруке, означите ово поље за потврду. Означавањем овог поља за потврду, ваши удаљени прикупљачи података ће морати да одржавају сопствену датотеку 'config_local.php' како би обавестили Syslog да користи независну базу података за приказ и обраду порука. У ту сврху користите датотеку шаблона 'config_local.php.dist'. УПОЗОРЕЊЕ: Syslog табеле ће бити аутоматски креиране чим ова опција буде омогућена."
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Data Collector Rules Sync"
+msgstr "Синхронизација правила удаљеног прикупљача података"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "Ако ваши удаљени прикупљачи података имају сопствене Syslog базе података и самостално обрађују своје поруке, означите ово поље за потврду ако желите да се правила упозорења, уклањања и извештаја из главне Cacti базе података шаљу удаљеном Cacti систему."
+
+#: includes/installer.php includes/settings.php
+msgid "Store Records on Remote Collector"
+msgstr "Сачувај записе на удаљеном прикупљачу"
+
+#: includes/installer.php includes/settings.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr "Задржи обрађене поруке у syslog табели удаљеног прикупљача након што буду испоручене главном прикупљачу. Када је онемогућено, записи се чувају локално само док је главни прикупљач недоступан и уклањају се након потврђене испоруке при опоравку."
+
+#: includes/installer.php
+msgid "Retention Policy"
+msgstr "Политика задржавања"
+
+#: includes/installer.php
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "Изаберите колико дана Syslog вредности желите да чувате у бази података."
+
+#: includes/installer.php includes/settings.php
+msgid "Partitioning Level"
+msgstr "Ниво партиционисања"
+
+#: includes/installer.php
+msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
+msgstr "Величина сваке партиције табела syslog и syslog_removed. Препоручује се дневно. На сатном нивоу је потребно ограничено време задржавања, а задржавање и ниво партиционисања заједно морају да се уклопе у ограничење партиција сервера базе података. Да бисте касније променили ниво, промените га у Подешавањима и покрените cli/upgrade_partitioning.php."
+
+#: includes/installer.php
+msgid "Upgrade"
+msgstr "Надоградња"
+
+#: includes/installer.php
+msgid "Install"
+msgstr "Инсталирај"
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Advisor"
+msgstr "Syslog %s саветник"
+
+#: includes/installer.php
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "УПОЗОРЕЊЕ: Надоградња система Syslog одузима много времена!!!"
+
+#: includes/installer.php
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
+msgstr "Надоградња 'main' syslog табеле може бити веома дуготрајан процес. Због тога се препоручује да или смањите величину своје syslog табеле пре надоградње, или изаберете опцију у позадини."
+
+#: includes/installer.php
+msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
+msgstr "Ако изаберете опцију у позадини, ваша наслеђена syslog табела биће преименована и биће креирана нова syslog табела. Затим ће процес надоградње бити покренут у позадини. Опет, овај позадински процес може потрајати прилично дуго док се не заврши. Међутим, ваши подаци ће бити сачувани."
+
+#: includes/installer.php
+msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
+msgstr "Без обзира на ваш избор, сва постојећа правила за уклањање и упозорења биће сачувана током процеса надоградње."
+
+#: includes/installer.php
+msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Притисните <b>'Надогради'</b> да бисте наставили са надоградњом или <b>'Откажи'</b> да бисте се вратили у мени Додаци."
+
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
+msgstr "Такође можете подесити механизам складишта базе података за аналитичке табеле syslog и syslog_remove. Подржани су само механизам складишта InnoDB и, на MariaDB бази, механизам складишта Aria. Ако користите MariaDB, препоручујемо механизам складишта Aria када нису омогућене опције удаљеног прикупљача података; опције прикупљача захтевају InnoDB."
+
+#: includes/installer.php
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "Приликом инсталације додатка Syslog имате неколико опција за избор. Прва је архитектура базе података. Партиционисане табеле су једина подржана архитектура јер спречавају да величина табела постане превелика и тиме успори упите. Традиционалне непартиционисане табеле су застареле и више се не нуде за нове инсталације."
+
+#: includes/installer.php
+msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
+msgstr "Такође можете изабрати прецизност временске ознаке. Милисекундна прецизност (TIMESTAMP(3)) чува редослед долазних порука испод нивоа секунде и доступна је само на MariaDB бази; MySQL инсталације користе прецизност у секундама. Ово се касније не може променити на лицу места без уништавања сачуваних порука."
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr "Aria складиште није доступно док је омогућена било која опција удаљеног прикупљача података. Изабран је InnoDB."
+
+#: includes/installer.php
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "Такође можете изабрати трајање задржавања података. Имајте на уму да ако имате више хостова који бележе у syslog, ова табела може постати прилично велика."
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Settings"
+msgstr "Syslog %s подешавања"
+
+#: includes/installer.php
+msgid "What uninstall method do you want to use?"
+msgstr "Који метод деинсталације желите да користите?"
+
+#: includes/installer.php
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "Приликом деинсталације додатка syslog можете уклонити све или само компоненте, за случај да планирате поновну инсталацију у будућности."
+
+#: includes/installer.php
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "Уклони све (дневници, табеле, подешавања)"
+
+#: includes/installer.php
+msgid "Syslog Data Only"
+msgstr "Само Syslog подаци"
+
+#: includes/installer.php
+msgid "Syslog Uninstall Preferences"
+msgstr "Поставке деинсталације за Syslog"
+
+#: includes/installer.php
+msgid "Uninstall"
+msgstr "Деинсталирај"
+
+#: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Cancel"
+msgstr "Откажи"
+
+#: includes/navigation.php includes/settings.php
+msgid "Syslog"
+msgstr "Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Removals"
+msgstr "Syslog уклањања"
+
+#: includes/navigation.php
+msgid "(Edit)"
+msgstr "(Уреди)"
+
+#: includes/navigation.php
+msgid "(Actions)"
+msgstr "(Радње)"
+
+#: includes/navigation.php
+msgid "Syslog Alerts"
+msgstr "Syslog упозорења"
+
+#: includes/navigation.php
+msgid "Syslog Reports"
+msgstr "Syslog извештаји"
+
+#: includes/navigation.php includes/settings.php syslog_saved_searches.php
+msgid "Saved Search Templates"
+msgstr "Сачувани шаблони претраге"
+
+#: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
+#: syslog_dashboards.php
+msgid "Dashboards"
+msgstr "Контролне табле"
+
+#: includes/navigation.php syslog_recommendations.php
+msgid "Syslog Recommendations"
+msgstr "Syslog препоруке"
+
+#: includes/navigation.php
+msgid "(Import)"
+msgstr "(Увоз)"
+
+#: includes/navigation.php
+msgid "Display Syslog in Range"
+msgstr "Прикажи Syslog у опсегу"
+
+#: includes/recommendations.php
+msgid "the identifier is empty"
+msgstr "идентификатор је празан"
+
+#: includes/recommendations.php
+msgid "the identifier is longer than 190 characters"
+msgstr "идентификатор је дужи од 190 знакова"
+
+#: includes/recommendations.php
+msgid "the identifier contains spaces or line breaks"
+msgstr "идентификатор садржи размаке или преломе редова"
+
+#: includes/recommendations.php
+msgid "it has neither an explanation nor a recommended action"
+msgstr "нема ни објашњење ни препоручену радњу"
+
+#: includes/recommendations.php
+msgid "it is not a JSON object"
+msgstr "није JSON објекат"
+
+#: includes/recommendations.php syslog.php
+msgid "Recommendations could not be loaded."
+msgstr "Препоруке нису могле бити учитане."
+
+#: includes/recommendations.php
+msgid "Recommendation available - click the message for details"
+msgstr "Доступна је препорука - кликните на поруку за детаље"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Explanation"
+msgstr "Објашњење"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Recommended Action"
+msgstr "Препоручена радња"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Reference"
+msgstr "Референца"
+
+#: includes/settings.php
+msgid "Monday"
+msgstr "Понедељак"
+
+#: includes/settings.php
+msgid "Tuesday"
+msgstr "Уторак"
+
+#: includes/settings.php
+msgid "Wednesday"
+msgstr "Среда"
+
+#: includes/settings.php
+msgid "Friday"
+msgstr "Петак"
+
+#: includes/settings.php
+msgid "Saturday"
+msgstr "Субота"
+
+#: includes/settings.php
+msgid "Sunday"
+msgstr "Недеља"
+
+#: includes/settings.php
+msgid "Thursday"
+msgstr "Четвртак"
+
+#: includes/settings.php
+msgid "Monday through Friday"
+msgstr "Од понедељка до петка"
+
+#: includes/settings.php
+msgid "Saturday and Sunday"
+msgstr "Субота и недеља"
+
+#: includes/settings.php
+msgid "Every day"
+msgstr "Сваког дана"
+
+#: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Disabled"
+msgstr "Онемогућено"
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_reports.php
+msgid "None"
+msgstr "Ниједан"
+
+#: includes/settings.php
+msgid "General Settings"
+msgstr "Општа подешавања"
+
+#: includes/settings.php
+msgid "Syslog Enabled"
+msgstr "Syslog омогућен"
+
+#: includes/settings.php
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "Ако је ово поље за потврду означено, записи ће бити пренети из долазне Syslog табеле у главну syslog табелу, а упозорења и извештаји ће бити омогућени. Имајте на уму да ће се, чак и ако је систем онемогућен, ставке дневника и даље прикупљати у долазну Syslog табелу јер то дефинише процес rsyslog или syslog-ng."
+
+#: includes/settings.php
+msgid "Forward alarms to Alarm Manager"
+msgstr "Проследи аларме у Менаџер аларма"
+
+#: includes/settings.php
+msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
+msgstr "Дозволи правилима подешеним на Менаџер аларма да прослеђују аларме. Syslog е-пошта остаје резервна опција; командне радње се извршавају само за Syslog правила алармирања."
+
+#: includes/settings.php
+msgid "Strip Domains"
+msgstr "Уклони домене"
+
+#: includes/settings.php
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "Листа домена раздвојена зарезима које желите да уклоните из syslog имена хоста, примери би били 'mydomain.com, otherdomain.com'"
+
+#: includes/settings.php
+msgid "Refresh Interval"
+msgstr "Интервал освежавања"
+
+#: includes/settings.php
+msgid "This is the time in seconds before the page refreshes."
+msgstr "Ово је време у секундама пре освежавања странице."
+
+#: includes/settings.php
+msgid "Skip Total Row Count"
+msgstr "Прескочи укупан број редова"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
+msgstr "Ако је ово поље за потврду означено, картице Системски дневници и Дневници упозорења не броје сваки одговарајући запис, што може бити веома захтевно на великим инсталацијама. Страница приказује везе Претходно и Следеће уместо укупног броја и листе страница, а Следеће се нуди док год има преосталих записа."
+
+#: includes/settings.php
+msgid "Max Report Records"
+msgstr "Максималан број записа у извештају"
+
+#: includes/settings.php
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "За упозорења заснована на прагу, који је максимални број који желите да прикажете у извештају. Ово се користи за ограничавање величине HTML дневника и е-поште."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Records"
+msgstr "%d записа"
+
+#: includes/settings.php
+msgid "Maximum Syslog Processing Processes"
+msgstr "Максималан број процеса за обраду Syslog порука"
+
+#: includes/settings.php
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr "Када је подешено изнад 1, обрада долазних порука се распоређује на паралелне радне процесе. Сваки радни процес обрађује одвојен опсег долазних порука, што убрзава разрешавање имена хостова и пренос порука при великом оптерећењу. Подешавање на 1 обрађује све поруке у једном процесу. Радни процеси нису подржани на систему Windows или када PHP проширења pcntl и POSIX нису доступна, у ком случају се обрада враћа на један процес."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Process"
+msgstr "%d радни процес"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Processes"
+msgstr "%d радних процеса"
+
+#: includes/settings.php
+msgid "Command for Opening Tickets"
+msgstr "Команда за отварање тикета"
+
+#: includes/settings.php
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "Ова команда ће бити извршена за отварање тикета подршке. Команда ће морати да обради више улазних параметара на следећи начин: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>. Листа хостова ће бити листа хостова погођених упозорењем раздвојена зарезима."
+
+#: includes/settings.php
+msgid "Host Discovery Options"
+msgstr "Опције откривања хостова"
+
+#: includes/settings.php
+msgid "Enable Hostname Resolution"
+msgstr "Омогући разрешавање назива хостова"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr "Ако је ово поље означено, сви називи хостова се прво разрешавају путем DNS упита (ако је омогућено), користећи A и AAAA записе. IPv4 и IPv6 адресама није потребан упит, а IPv6 адресе се чувају у компримованом облику малим словима. Ако DNS упит не успе, систем ће покушати да разреши назив хоста у Cacti табели хостова и замени га Cacti описом хоста. Ако не успеју ни DNS ни Cacti упити, записима се додељује префикс 'unresolved-Original_hostname'."
+
+#: includes/settings.php
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr "Прескочи DNS разрешавање за долазне хостове"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr "Ако је ово поље означено, систем неће покушавати да разреши хостове путем DNS упита. Ово је корисно за окружења у којима DNS разрешавање није могуће или није пожељно."
+
+#: includes/settings.php
+msgid "HTML Notification Settings"
+msgstr "Подешавања HTML обавештења"
+
+#: includes/settings.php
+msgid "Enable HTML Based Email"
+msgstr "Омогући е-пошту у HTML формату"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "Ако је ово поље означено, све поруке е-поште биће послате у HTML формату. У супротном, поруке е-поште биће послате као обичан текст."
+
+#: includes/settings.php
+msgid "Format File to Use"
+msgstr "Датотека формата за коришћење"
+
+#: includes/settings.php
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr "Изаберите датотеку прилагођеног html омотача и CSS-а коју желите да користите. Ова датотека садржи и html и CSS који окружују ваш извештај. Ако садржи више од самог CSS-а, потребно је да у датотеку поставите посебну ознаку <REPORT>. Ова ознака формата биће замењена садржајем извештаја. Те датотеке се налазе у директоријуму 'formats'."
+
+#: includes/settings.php
+msgid "Data Retention and Partitioning"
+msgstr "Задржавање података и партиционисање"
+
+#: includes/settings.php
+msgid "Syslog Retention"
+msgstr "Задржавање Syslog података"
+
+#: includes/settings.php
+msgid "This is the number of days to keep events."
+msgstr "Ово је број дана током којих се догађаји чувају."
+
+#: includes/settings.php
+msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
+msgstr "Величина сваке партиције табела syslog и syslog_removed. Промена се чува овде, али ступа на снагу тек када cli/upgrade_partitioning.php поново изгради обе табеле; до тада, одржавање партиција задржава постојећу величину. Партиционисање по сату захтева коначно задржавање. Задржавање, прозор за унапред креирање и ниво партиционисања заједно морају да се уклопе у ограничење партиција сервера базе података, иначе се подешавања неће сачувати."
+
+#: includes/settings.php
+msgid "Partition Pre-create Window"
+msgstr "Прозор за унапред креирање партиција"
+
+#: includes/settings.php
+msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
+msgstr "Ово је број дана будућих партиција које треба одржавати за партиционисане Syslog табеле, тако да се нове партиције увек деле из празне dMaxValue партиције. Партиционисање по сату увек чува најмање 2 дана."
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Day"
+msgstr "%d дан"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Days"
+msgstr "%d дана"
+
+#: includes/settings.php
+msgid "Partition Recovery Limit"
+msgstr "Ограничење опоравка партиција"
+
+#: includes/settings.php
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr "Када партиције недостају (на пример након застоја ради одржавања), при сваком покретању сакупљача креира се највише оволико недостајућих партиција по табели. Преостала празнина се попуњава током наредних покретања; уклањање на основу задржавања остаје одложено док се хоризонт будућих партиција у потпуности не обнови. Важи само за партиционисане Syslog табеле."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partition per run"
+msgstr "%d партиција по покретању"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partitions per run"
+msgstr "%d партиција по покретању"
+
+#: includes/settings.php
+msgid "Collector Staleness Threshold"
+msgstr "Праг застарелости сакупљача"
+
+#: includes/settings.php
+msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
+msgstr "Упозорења о исправности цевовода упозоравају када необрађене поруке, завршетак обраде или синхронизација у реду чекања премаше ово кашњење. Ефективно кашњење износи најмање три интервала сакупљача и 300 секунди. Поставите на 0 да бисте користили 300 секунди."
+
+#: includes/settings.php
+msgid "Default (300 seconds)"
+msgstr "Подразумевано (300 секунди)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d seconds"
+msgstr "%d секунди"
+
+#: includes/settings.php
+msgid "Collector Backlog Threshold"
+msgstr "Праг заостатка сакупљача"
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr "Syslog страница статуса приказује упозорење када више од оволико порука стоји необрађено у табели Syslog Incoming. Поставите на 0 да бисте користили подразумевану вредност од 10000 порука."
+
+#: includes/settings.php
+msgid "Default (10000 messages)"
+msgstr "Подразумевано (10000 порука)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Messages"
+msgstr "%d порука"
+
+#: includes/settings.php
+msgid "Pipeline Health Alerts"
+msgstr "Упозорења о исправности цевовода"
+
+#: includes/settings.php
+msgid "Pipeline Health Notification List"
+msgstr "Листа обавештења о исправности цевовода"
+
+#: includes/settings.php
+msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
+msgstr "Изаберите постојећу Thold листу обавештења за упозорења о исправности цевовода. Омогућени примаоци са листе комбинују се са адресама е-поште испод, уз очување BCC прималаца. Листе захтевају Thold табелу листа обавештења."
+
+#: includes/settings.php
+msgid "Pipeline Health Email Recipients"
+msgstr "Примаоци е-поште за исправност цевовода"
+
+#: includes/settings.php
+msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
+msgstr "Примаоци е-поште раздвојени зарезима за отказе и опоравак цевовода. Оставите празно и немојте изабрати листу обавештења да бисте онемогућили е-пошту; исправност остаје видљива на картици Статус, а промене стања се бележе у дневник. Провере захтевају да Cacti сакупљач буде покренут."
+
+#: includes/settings.php
+msgid "Pipeline Health Reminder Interval"
+msgstr "Интервал подсетника о исправности цевовода"
+
+#: includes/settings.php
+msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
+msgstr "Поновите обавештења за текуће проблеме цевовода након овог интервала. Неуспели покушаји слања е-поште се понављају највише једном на сваких пет минута."
+
+#: includes/settings.php
+msgid "Syslog Alert Retention"
+msgstr "Задржавање Syslog упозорења"
+
+#: includes/settings.php
+msgid "This is the number of days to keep alert logs."
+msgstr "Ово је број дана током којих се чувају дневници упозорења."
+
+#: includes/settings.php
+msgid "Alert Suppression and Maintenance"
+msgstr "Потискивање упозорења и одржавање"
+
+#: includes/settings.php
+msgid "Maintenance Window Days"
+msgstr "Дани периода одржавања"
+
+#: includes/settings.php
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr "Дани када су сва обавештења о упозорењима утишана током конфигурисаног временског оквира одржавања."
+
+#: includes/settings.php
+msgid "Maintenance Window Starts"
+msgstr "Почетак периода одржавања"
+
+#: includes/settings.php
+msgid "Local start time for the global maintenance window."
+msgstr "Локално време почетка за глобални период одржавања."
+
+#: includes/settings.php
+msgid "Maintenance Window Ends"
+msgstr "Крај периода одржавања"
+
+#: includes/settings.php
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr "Локално време завршетка за глобални период одржавања. Раније време завршетка наставља се у наредни дан."
+
+#: includes/settings.php
+msgid "One-time Maintenance Starts"
+msgstr "Почетак једнократног одржавања"
+
+#: includes/settings.php
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr "Опциони локални датум и време за почетак једнократног глобалног периода одржавања."
+
+#: includes/settings.php
+msgid "One-time Maintenance Ends"
+msgstr "Крај једнократног одржавања"
+
+#: includes/settings.php
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr "Опциони локални датум и време за завршетак једнократног глобалног периода одржавања. Формат: YYYY-MM-DD HH:MM."
+
+#: includes/settings.php
+msgid "Default Alert Cooldown"
+msgstr "Подразумевано време смиривања упозорења"
+
+#: includes/settings.php
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Потисните свако поновљено обавештење за исто правило и опсег извештавања на оволико минута. Вредности по правилу замењују ово подешавање. Поставите на 0 да бисте онемогућили."
+
+#: includes/settings.php
+msgid "Default Duplicate Suppression"
+msgstr "Подразумевано потискивање дупликата"
+
+#: includes/settings.php
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Потисни обавештење са истим скупом подударних порука на оволико минута. Вредности по правилу замењују ово подешавање. Постави на 0 за онемогућавање."
+
+#: includes/settings.php
+msgid "Remote Syslog Recovery"
+msgstr "Опоравак удаљеног Syslog-а"
+
+#: includes/settings.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr "Максималан број записа опоравка по извршавању"
+
+#: includes/settings.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr "Максималан број задржаних удаљених Syslog догађаја који се шаљу главном сакупљачу током једног извршавања радног процеса опоравка. Свака трансакција централне базе података остаје ограничена на 100 записа. Повећавајте постепено уз праћење оптерећења главног сакупљача и чекања на закључавање."
+
+#: includes/settings.php
+msgid "Recovery Pause Between Batches"
+msgstr "Пауза опоравка између серија"
+
+#: includes/settings.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr "Пауза између сваке трансакције испоруке од 100 записа ка главном сакупљачу. Дужа пауза смањује оптерећење главног сакупљача; краћа пауза убрзава обраду заосталих записа."
+
+#: includes/settings.php
+msgid "No pause"
+msgstr "Без паузе"
+
+#: includes/settings.php
+#, php-format
+msgid "%d milliseconds"
+msgstr "%d милисекунди"
+
+#: includes/settings.php
+#, php-format
+msgid "%d second"
+msgstr "%d секунда"
+
+#: includes/settings.php
+msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
+msgstr "Syslog база података није доступна, па се подешавања партиционисања не могу проверити у односу на њено ограничење партиција и табеле."
+
+#: includes/settings.php
+msgid "The Syslog settings were not saved."
+msgstr "Syslog подешавања нису сачувана."
+
+#: includes/settings.php
+#, php-format
+msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
+msgstr "На чекању: табела порука и даље користи %s партиција. Покрените cli/upgrade_partitioning.php да бисте применили изабрани ниво."
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_saved_searches.php
+msgid "Delete"
+msgstr "Обриши"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Disable"
+msgstr "Онемогући"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Enable"
+msgstr "Омогући"
+
+#: includes/settings.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_saved_searches.php
+msgid "Export"
+msgstr "Извези"
+
+#: includes/settings.php
+msgid "Indefinite"
+msgstr "Неограничено"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Week"
+msgstr "%d недеља"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Weeks"
+msgstr "%d недеља"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Month"
+msgstr "%d месец"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Months"
+msgstr "%d месеци"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Year"
+msgstr "%d година"
+
+#: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
+msgid "Never"
+msgstr "Никада"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d минут"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d минута"
+
+#: includes/settings.php
+msgid "Begins with"
+msgstr "Почиње са"
+
+#: includes/settings.php
+msgid "Contains"
+msgstr "Садржи"
+
+#: includes/settings.php
+msgid "Ends with"
+msgstr "Завршава се са"
+
+#: includes/settings.php
+msgid "Hostname is"
+msgstr "Име хоста је"
+
+#: includes/settings.php
+msgid "Program is"
+msgstr "Програм је"
+
+#: includes/settings.php
+msgid "Facility is"
+msgstr "Подсистем је"
+
+#: includes/settings.php syslog_alerts.php
+msgid "Filter Builder"
+msgstr "Креатор филтера"
+
+#: includes/settings.php syslog_alerts.php
+msgid "SQL Expression"
+msgstr "SQL израз"
+
+#: includes/settings.php
+msgid "Weekly"
+msgstr "Недељно"
+
+#: includes/settings.php
+msgid "Import/Export"
+msgstr "Увоз/Извоз"
+
+#: includes/settings.php
+msgid "Alert Rules"
+msgstr "Правила упозорења"
+
+#: includes/settings.php
+msgid "Syslog Settings"
+msgstr "Syslog подешавања"
+
+#: includes/settings.php syslog_device_rules.php
+msgid "Device Alert Rules"
+msgstr "Правила упозорења уређаја"
+
+#: includes/settings.php
+msgid "Removal Rules"
+msgstr "Правила уклањања"
+
+#: includes/settings.php
+msgid "Report Rules"
+msgstr "Правила извештаја"
+
+#: includes/settings.php syslog.php syslog_recommendations.php
+msgid "Recommendations"
+msgstr "Препоруке"
+
+#: includes/utilities.php
+msgid "Unable to connect to the Syslog database. No Device records were removed."
+msgstr "Није могуће повезивање са Syslog базом података. Ниједан запис уређаја није уклоњен."
+
+#: includes/utilities.php
+#, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "Уклоњено је %s записа уређаја из Syslog базе података"
+
+#: includes/utilities.php
+msgid "Syslog Utilities"
+msgstr "Syslog алатке"
+
+#: includes/utilities.php
+msgid "Purge Syslog Devices"
+msgstr "Очисти Syslog уређаје"
+
+#: includes/utilities.php
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr "Да ли сте сигурни да желите да очистите застареле Syslog уређаје?"
+
+#: includes/utilities.php
+msgid "Confirm Purge"
+msgstr "Потврди чишћење"
+
+#: includes/utilities.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Continue"
+msgstr "Настави"
+
+#: includes/utilities.php
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "Ова ставка менија омогућава уклањање уређаја који више не шаљу извештаје Cacti syslog серверу."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel source."
+msgstr "Неисправан извор панела контролне табле."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel type."
+msgstr "Неисправан тип панела контролне табле."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard chart type."
+msgstr "Неисправан тип графикона контролне табле."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard breakdown field."
+msgstr "Неисправно поље разлагања контролне табле."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard interval."
+msgstr "Неисправан интервал контролне табле."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard timespan."
+msgstr "Неисправан временски опсег контролне табле."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard record type."
+msgstr "Неисправан тип записа контролне табле."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard top count."
+msgstr "Неисправан број водећих ставки контролне табле."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel width."
+msgstr "Неисправна ширина панела контролне табле."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel height."
+msgstr "Неисправна висина панела контролне табле."
+
+#: lib/syslog_dashboard.php syslog.php
+#, php-format
+msgid "Invalid logical search: %s"
+msgstr "Неисправна логичка претрага: %s"
+
+#: lib/syslog_dashboard.php
+msgid "Other"
+msgstr "Остало"
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard panel is required."
+msgstr "Потребан је исправан панел контролне табле."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard panel not found."
+msgstr "Панел контролне табле није пронађен."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "A name of up to 128 characters is required."
+msgstr "Потребан је назив до 128 знакова."
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard is required."
+msgstr "Потребна је исправна контролна табла."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard not found."
+msgstr "Контролна табла није пронађена."
+
+#: lib/syslog_dashboard.php syslog_dashboards.php
+msgid "Unable to save dashboard changes."
+msgstr "Није могуће сачувати измене контролне табле."
+
+#: lib/syslog_dashboard.php
+msgid "You may only share your own dashboards."
+msgstr "Можете делити само сопствене контролне табле."
+
+#: lib/syslog_dashboard.php
+msgid "copy"
+msgstr "копија"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard could not be copied."
+msgstr "Контролна табла није могла бити копирана."
+
+#: lib/syslog_dashboard.php
+msgid "A valid panel position is required."
+msgstr "Потребна је исправна позиција панела."
+
+#: lib/syslog_dashboard.php
+msgid "A title of up to 128 characters is required."
+msgstr "Потребан је наслов до 128 знакова."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Drag to reorder card"
+msgstr "Превуците за промену редоследа картице"
+
+#: lib/syslog_dashboard.php
+msgid "Refresh Panel"
+msgstr "Освежи панел"
+
+#: lib/syslog_dashboard.php
+msgid "Total messages"
+msgstr "Укупно порука"
+
+#: lib/syslog_dashboard.php
+msgid "Chart library unavailable on this Cacti installation."
+msgstr "Библиотека графикона није доступна на овој Cacti инсталацији."
+
+#: lib/syslog_dashboard.php
+msgid "Edit Panel"
+msgstr "Уреди панел"
+
+#: lib/syslog_dashboard.php
+msgid "New Panel"
+msgstr "Нови панел"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Save"
+msgstr "Сачувај"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Apply"
+msgstr "Примени"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard panel?"
+msgstr "Обрисати овај панел контролне табле?"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard and all of its panels?"
+msgstr "Обрисати ову контролну таблу и све њене панеле?"
+
+#: lib/syslog_dashboard.php
+msgid "Name your dashboard"
+msgstr "Именујте своју контролну таблу"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Make Private"
+msgstr "Постави као приватно"
+
+#: lib/syslog_dashboard.php
+msgid "Share with all"
+msgstr "Дели са свима"
+
+#: lib/syslog_dashboard.php
+msgid "Save as my copy"
+msgstr "Сачувај као моју копију"
+
+#: lib/syslog_dashboard.php
+msgid "Syslog Dashboards"
+msgstr "Syslog контролне табле"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Dashboard"
+msgstr "Контролна табла"
+
+#: lib/syslog_dashboard.php
+msgid "Time Range"
+msgstr "Временски опсег"
+
+#: lib/syslog_dashboard.php
+msgid "Last Hour"
+msgstr "Последњи сат"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Hours"
+msgstr "Последњих %d сати"
+
+#: lib/syslog_dashboard.php
+msgid "Last Day"
+msgstr "Последњи дан"
+
+#: lib/syslog_dashboard.php
+msgid "Last Week"
+msgstr "Последња недеља"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Weeks"
+msgstr "Последњих %d недеља"
+
+#: lib/syslog_dashboard.php
+msgid "Last Month"
+msgstr "Последњи месец"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Months"
+msgstr "Последњих %d месеци"
+
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
+msgid "Refresh"
+msgstr "Освежи"
+
+#: lib/syslog_dashboard.php
+msgid "My Dashboards"
+msgstr "Моје контролне табле"
+
+#: lib/syslog_dashboard.php
+msgid "Global Dashboards"
+msgstr "Глобалне контролне табле"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Shared With Me"
+msgstr "Дељено са мном"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "New"
+msgstr "Ново"
+
+#: lib/syslog_dashboard.php
+msgid "Rename"
+msgstr "Преименуј"
+
+#: lib/syslog_dashboard.php
+msgid "Add Panel"
+msgstr "Додај панел"
+
+#: lib/syslog_dashboard.php
+msgid "Create your first dashboard to visualize syslog trends."
+msgstr "Направите своју прву контролну таблу за визуелизацију syslog трендова."
+
+#: lib/syslog_dashboard.php
+msgid "Add a panel to start charting.  Panels can use your saved searches."
+msgstr "Додајте панел да бисте започели цртање графикона.  Панели могу користити ваше сачуване претраге."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Panel"
+msgstr "Панел контролне табле"
+
+#: lib/syslog_dashboard.php
+msgid "Title"
+msgstr "Наслов"
+
+#: lib/syslog_dashboard.php
+msgid "Log Source"
+msgstr "Извор дневника"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "System Logs"
+msgstr "Системски дневници"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Alert Logs"
+msgstr "Дневници аларма"
+
+#: lib/syslog_dashboard.php
+msgid "Panel Type"
+msgstr "Тип панела"
+
+#: lib/syslog_dashboard.php
+msgid "Time Series"
+msgstr "Временска серија"
+
+#: lib/syslog_dashboard.php
+msgid "Breakdown"
+msgstr "Рашчлањивање"
+
+#: lib/syslog_dashboard.php
+msgid "Chart"
+msgstr "Графикон"
+
+#: lib/syslog_dashboard.php
+msgid "Line"
+msgstr "Линијски"
+
+#: lib/syslog_dashboard.php
+msgid "Area"
+msgstr "Површински"
+
+#: lib/syslog_dashboard.php
+msgid "Bar"
+msgstr "Тракасти"
+
+#: lib/syslog_dashboard.php
+msgid "Interval"
+msgstr "Интервал"
+
+#: lib/syslog_dashboard.php
+msgid "Auto"
+msgstr "Аутоматски"
+
+#: lib/syslog_dashboard.php
+msgid "Minute"
+msgstr "Минут"
+
+#: lib/syslog_dashboard.php
+msgid "10 Minutes"
+msgstr "10 минута"
+
+#: lib/syslog_dashboard.php
+msgid "Hour"
+msgstr "Сат"
+
+#: lib/syslog_dashboard.php
+msgid "Day"
+msgstr "Дан"
+
+#: lib/syslog_dashboard.php
+msgid "Field"
+msgstr "Поље"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Program"
+msgstr "Програм"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Facility"
+msgstr "Категорија"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Priority"
+msgstr "Приоритет"
+
+#: lib/syslog_dashboard.php
+msgid "Top Count"
+msgstr "Број првих ставки"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Record Type"
+msgstr "Тип записа"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "All Records"
+msgstr "Сви записи"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Main Records"
+msgstr "Главни записи"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Removed Records"
+msgstr "Уклоњени записи"
+
+#: lib/syslog_dashboard.php
+msgid "Start from Saved Search"
+msgstr "Почни од сачуване претраге"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Enter message text…"
+msgstr "Унесите текст поруке…"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Remove condition"
+msgstr "Уклони услов"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Match group"
+msgstr "Група подударања"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Exclude group"
+msgstr "Група изузимања"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Name"
+msgstr "Назив контролне табле"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Name"
+msgstr "Назив"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Breached Thresholds"
+msgstr "Прекорачени прагови"
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr "Прекорачено од"
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr "Сакупљач"
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr "Уређај"
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr "Последња одговарајућа порука"
+
+#: lib/syslog_thresholds.php
+msgid "Recovers After"
+msgstr "Опоравак након"
+
+#: lib/syslog_thresholds.php
+msgid "Rule"
+msgstr "Правило"
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr "Сви одговарајући уређаји"
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr "Тренутно нема прекорачених прагова."
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr "Опоравак захтева да не буде одговарајућих порука до приказаног времена. Свако подударање поново покреће период мировања."
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Previous"
+msgstr "Претходно"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Next"
+msgstr "Следеће"
+
+#: setup.php
+msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
+msgstr "Преименујте датотеку config.php.dist или config_local.php.dist у директоријуму syslog и промените подешавања своје базе података пре инсталације."
+
+#: setup.php
+msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
+msgstr "Временске ознаке са милисекундама (TIMESTAMP(3)) подржане су само на серверу MariaDB. Овај сервер је MySQL, па уместо тога инсталирајте са временским ознакама прецизности у секундама."
+
+#: setup.php
+msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
+msgstr "Складиште Aria се не може користити када је омогућена било која опција удаљеног сакупљача података. Изаберите InnoDB или онемогућите све опције удаљеног сакупљача података."
+
+#: setup.php
+msgid "Top 10 Hosts"
+msgstr "Првих 10 хостова"
+
+#: setup.php
+msgid "Syslog Messages - Past Hour"
+msgstr "Syslog поруке - последњи сат"
+
+#: setup.php
+msgid "Messages by Severity"
+msgstr "Поруке по озбиљности"
+
+#: setup.php
+msgid "Top 10 Programs"
+msgstr "Првих 10 програма"
+
+#: setup.php
+msgid "Alert Activity"
+msgstr "Активност аларма"
+
+#: syslog.php
+msgid "Syslog Viewer"
+msgstr "Syslog прегледач"
+
+#: syslog.php
+msgid "Syslog Status"
+msgstr "Syslog статус"
+
+#: syslog.php
+msgid "Selected Alert"
+msgstr "Изабрани аларм"
+
+#: syslog.php
+msgid "seconds"
+msgstr "секунди"
+
+#: syslog.php
+msgid "Unavailable"
+msgstr "Недоступно"
+
+#: syslog.php
+#, php-format
+msgid "unprocessed messages are %s old"
+msgstr "необрађене поруке су старе %s"
+
+#: syslog.php
+#, php-format
+msgid "incoming backlog of %s messages"
+msgstr "долазни заостатак од %s порука"
+
+#: syslog.php
+msgid "day"
+msgstr "дан"
+
+#: syslog.php
+msgid "days"
+msgstr "дана"
+
+#: syslog.php
+msgid "hour"
+msgstr "сат"
+
+#: syslog.php
+msgid "hours"
+msgstr "сати"
+
+#: syslog.php
+msgid "minute"
+msgstr "минут"
+
+#: syslog.php
+msgid "minutes"
+msgstr "минута"
+
+#: syslog.php
+msgid "Rows in syslog_incoming"
+msgstr "Редови у syslog_incoming"
+
+#: syslog.php
+msgid "Syslog table size (data + indexes)"
+msgstr "Величина Syslog табеле (подаци + индекси)"
+
+#: syslog.php
+msgid "Syslog retention"
+msgstr "Задржавање Syslog података"
+
+#: syslog.php
+msgid "Alert retention"
+msgstr "Задржавање аларма"
+
+#: syslog.php
+msgid "No recovery activity recorded yet."
+msgstr "Још увек није забележена активност опоравка."
+
+#: syslog.php
+msgid "created"
+msgstr "креирано"
+
+#: syslog.php
+msgid "remaining"
+msgstr "преостало"
+
+#: syslog.php
+msgid "retention deferred"
+msgstr "задржавање одложено"
+
+#: syslog.php
+msgid "Latest processing run"
+msgstr "Последње покретање обраде"
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr "Дистрибуирана синхронизација"
+
+#: syslog.php
+msgid "Remote collector receipts"
+msgstr "Потврде удаљених сакупљача"
+
+#: syslog.php
+msgid "Storage and retention"
+msgstr "Складиште и задржавање"
+
+#: syslog.php
+msgid "Partition health"
+msgstr "Стање партиција"
+
+#: syslog.php
+msgid "Partition maintenance activity"
+msgstr "Активност одржавања партиција"
+
+#: syslog.php
+msgid "Recent partition maintenance activity"
+msgstr "Недавна активност одржавања партиција"
+
+#: syslog.php
+msgid "Pipeline health"
+msgstr "Стање тока обраде"
+
+#: syslog.php
+msgid "Parallel workers"
+msgstr "Паралелни радни процеси"
+
+#: syslog.php
+msgid "Worker processes"
+msgstr "Радни процеси"
+
+#: syslog.php
+msgid "Processing phases"
+msgstr "Фазе обраде"
+
+#: syslog.php
+msgid "Rule activity"
+msgstr "Активност правила"
+
+#: syslog.php
+msgid "Records processed"
+msgstr "Обрађени записи"
+
+#: syslog.php
+msgid "Polling runtime"
+msgstr "Време извршавања анкетирања"
+
+#: syslog.php
+msgid "Started"
+msgstr "Покренуто"
+
+#: syslog.php
+msgid "Finished"
+msgstr "Завршено"
+
+#: syslog.php
+msgid "Minimum runtime"
+msgstr "Минимално време извршавања"
+
+#: syslog.php
+msgid "Average runtime"
+msgstr "Просечно време извршавања"
+
+#: syslog.php
+msgid "Maximum runtime"
+msgstr "Максимално време извршавања"
+
+#: syslog.php
+msgid "State"
+msgstr "Савезна држава"
+
+#: syslog.php
+msgid "Queued Recovery Records"
+msgstr "Записи опоравка у реду чекања"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr "Најстарији на чекању"
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr "Последња успешна синхронизација"
+
+#: syslog.php
+msgid "Active"
+msgstr "Активан"
+
+#: syslog.php
+msgid "Inactive"
+msgstr "Неактивно"
+
+#: syslog.php
+msgid "Recovery worker"
+msgstr "Радни процес за опоравак"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr "Последња грешка синхронизације"
+
+#: syslog.php
+msgid "Last Batch Count"
+msgstr "Број у последњој групи"
+
+#: syslog.php
+msgid "Last Record Received"
+msgstr "Последњи примљени запис"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr "Удаљени испитивач"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr "Непознат удаљени испитивач"
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
+msgstr "Још нису примљени записи удаљеног сакупљача."
+
+#: syslog.php
+msgid "Partition maintenance blocked"
+msgstr "Одржавање партиција блокирано"
+
+#: syslog.php
+msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
+msgstr "Одржавање партиција је заустављено; уписивање се наставља у заштитну партицију dMaxValue."
+
+#: syslog.php
+msgid "Date coverage"
+msgstr "Покривеност датумима"
+
+#: syslog.php
+msgid "Table"
+msgstr "Табела"
+
+#: syslog.php
+msgid "dMaxValue rows (estimated)"
+msgstr "Редови у dMaxValue (процењено)"
+
+#: syslog.php
+msgid "dMaxValue size"
+msgstr "Величина dMaxValue"
+
+#: syslog.php
+msgid "Partitioning level"
+msgstr "Ниво партиционисања"
+
+#: syslog.php
+#, php-format
+msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
+msgstr "%s је изабрано у Подешавањима и ступа на снагу након што cli/upgrade_partitioning.php поново изгради табеле."
+
+#: syslog.php
+msgid "Last attempt"
+msgstr "Последњи покушај"
+
+#: syslog.php
+msgid "Last successful maintenance"
+msgstr "Последње успешно одржавање"
+
+#: syslog.php
+msgid "Complete"
+msgstr "Завршено"
+
+#: syslog.php
+msgid "Deferred"
+msgstr "Одложено"
+
+#: syslog.php
+msgid "Latest outcome"
+msgstr "Најновији исход"
+
+#: syslog.php
+msgid "Recovery progress"
+msgstr "Напредак опоравка"
+
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "Детаљи"
+
+#: syslog.php
+msgid "Outcome"
+msgstr "Исход"
+
+#: syslog.php
+msgid "Recovery"
+msgstr "Опоравак"
+
+#: syslog.php
+msgid "When"
+msgstr "Када"
+
+#: syslog.php
+msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
+msgstr "Још није забележена активност одржавања партиција. Активност се појављује након следећег покретања испитивача."
+
+#: syslog.php
+#, php-format
+msgid "%d created, %d remaining, %d pruned"
+msgstr "%d креирано, %d преостало, %d уклоњено"
+
+#: syslog.php
+msgid "No action required."
+msgstr "Није потребна никаква радња."
+
+#: syslog.php
+msgid "Incoming backlog"
+msgstr "Долазни заостатак"
+
+#: syslog.php
+msgid "Processing"
+msgstr "Обрада"
+
+#: syslog.php
+msgid "Partition maintenance"
+msgstr "Одржавање партиција"
+
+#: syslog.php
+msgid "Synchronization"
+msgstr "Синхронизација"
+
+#: syslog.php
+msgid "Attention required"
+msgstr "Потребна пажња"
+
+#: syslog.php
+msgid "Healthy"
+msgstr "Исправно"
+
+#: syslog.php
+msgid "Processing disabled"
+msgstr "Обрада онемогућена"
+
+#: syslog.php
+msgid "Waiting for processing"
+msgstr "Чека на обраду"
+
+#: syslog.php
+msgid "Health"
+msgstr "Стање"
+
+#: syslog.php
+msgid "Ready"
+msgstr "Спремно"
+
+#: syslog.php
+msgid "Sent"
+msgstr "Послато"
+
+#: syslog.php
+msgid "Failed; retry pending"
+msgstr "Неуспешно; поновни покушај на чекању"
+
+#: syslog.php
+msgid "Pending; next poller check"
+msgstr "На чекању; следећа провера испитивача"
+
+#: syslog.php
+msgid "Last health check"
+msgstr "Последња провера исправности"
+
+#: syslog.php
+msgid "Email notifications"
+msgstr "Обавештења е-поштом"
+
+#: syslog.php
+msgid "Not checked yet"
+msgstr "Још није проверено"
+
+#: syslog.php
+msgid "Last notification sent"
+msgstr "Последње послато обавештење"
+
+#: syslog.php
+msgid "Last received log"
+msgstr "Последњи примљени дневник"
+
+#: syslog.php
+msgid "Oldest unprocessed message"
+msgstr "Најстарија необрађена порука"
+
+#: syslog.php
+msgid "Records processed in latest run"
+msgstr "Записи обрађени у последњем покретању"
+
+#: syslog.php
+msgid "Worker processes running"
+msgstr "Активни радни процеси"
+
+#: syslog.php
+msgid "Configured worker processes"
+msgstr "Подешени радни процеси"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr "Разрешени хостови"
+
+#: syslog.php
+msgid "Process"
+msgstr "Процес"
+
+#: syslog.php
+msgid "Records handled"
+msgstr "Обрађени записи"
+
+#: syslog.php
+msgid "Runtime"
+msgstr "Време извршавања"
+
+#: syslog.php
+msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
+msgstr "Још није забележена статистика по процесу. Статистика радних процеса појављује се након првог паралелног покретања."
+
+#: syslog.php
+msgid "Duration"
+msgstr "Трајање"
+
+#: syslog.php
+msgid "Phase"
+msgstr "Фаза"
+
+#: syslog.php
+msgid "Records"
+msgstr "Записи"
+
+#: syslog.php
+msgid "Reference updates"
+msgstr "Ажурирања референци"
+
+#: syslog.php
+msgid "Removal rules"
+msgstr "Правила уклањања"
+
+#: syslog.php
+msgid "Alert evaluation"
+msgstr "Процена упозорења"
+
+#: syslog.php
+msgid "Incoming transfer"
+msgstr "Долазни пренос"
+
+#: syslog.php
+msgid "Report processing"
+msgstr "Обрада извештаја"
+
+#: syslog.php
+msgid "slowest"
+msgstr "најспорије"
+
+#: syslog.php
+msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
+msgstr "Још нису забележена времена фаза. Времена фаза појављују се након следећег покретања испитивача."
+
+#: syslog.php
+msgid "Last run"
+msgstr "Последње покретање"
+
+#: syslog.php
+msgid "Rules processed"
+msgstr "Обрађена правила"
+
+#: syslog.php
+msgid "Total"
+msgstr "Укупно"
+
+#: syslog.php
+msgid "Alert rules"
+msgstr "Правила упозорења"
+
+#: syslog.php
+msgid "Delete rules"
+msgstr "Правила брисања"
+
+#: syslog.php
+msgid "Fired last run"
+msgstr "Активирано при последњем покретању"
+
+#: syslog.php
+msgid "Show more"
+msgstr "Прикажи више"
+
+#: syslog.php
+msgid "Show less"
+msgstr "Прикажи мање"
+
+#: syslog.php
+msgid "Open in a dialog"
+msgstr "Отвори у дијалогу"
+
+#: syslog.php
+msgid "Remove from page"
+msgstr "Уклони са странице"
+
+#: syslog.php
+msgid "Invalid refresh interval."
+msgstr "Неважећи интервал освежавања."
+
+#: syslog.php
+msgid "Unknown card."
+msgstr "Непозната картица."
+
+#: syslog.php
+msgid "Add card"
+msgstr "Додај картицу"
+
+#: syslog.php
+msgid "Add a status card…"
+msgstr "Додај картицу статуса…"
+
+#: syslog.php
+msgid "Syslog Alert View"
+msgstr "Приказ Syslog упозорења"
+
+#: syslog.php
+msgid "A valid saved search is required."
+msgstr "Потребна је важећа сачувана претрага."
+
+#: syslog.php
+msgid "Saved search not found."
+msgstr "Сачувана претрага није пронађена."
+
+#: syslog.php
+msgid "You may only share your own saved searches."
+msgstr "Можете делити само сопствене сачуване претраге."
+
+#: syslog.php
+#, php-format
+msgid "[ Unprocessed Messages: %s ]"
+msgstr "[ Необрађене поруке: %s ]"
+
+#: syslog.php syslog_device_rules.php
+msgid "Enter a search term"
+msgstr "Унесите појам за претрагу"
+
+#: syslog.php
+msgid "Select Device(s)"
+msgstr "Изаберите уређај(е)"
+
+#: syslog.php
+msgid "Devices Selected"
+msgstr "Изабрани уређаји"
+
+#: syslog.php
+msgid "All Devices Selected"
+msgstr "Изабрани сви уређаји"
+
+#: syslog.php
+#, php-format
+msgid "Syslog Message Filter %s"
+msgstr "Филтер Syslog порука %s"
+
+#: syslog.php
+msgid "Search messages"
+msgstr "Претражи поруке"
+
+#: syslog.php
+msgid "Collapse filters"
+msgstr "Скупи филтере"
+
+#: syslog.php
+msgid "Edit filters"
+msgstr "Уреди филтере"
+
+#: syslog.php
+msgid "Saved Searches"
+msgstr "Сачуване претраге"
+
+#: syslog.php
+msgid "My Searches"
+msgstr "Моје претраге"
+
+#: syslog.php
+msgid "Global Searches"
+msgstr "Глобалне претраге"
+
+#: syslog.php
+#, php-format
+msgid "%s (Default)"
+msgstr "%s (Подразумевано)"
+
+#: syslog.php
+msgid "Manage"
+msgstr "Управљај"
+
+#: syslog.php
+msgid "Manage saved searches"
+msgstr "Управљај сачуваним претрагама"
+
+#: syslog.php
+msgid "Save search"
+msgstr "Сачувај претрагу"
+
+#: syslog.php
+msgid "Edit"
+msgstr "Измени"
+
+#: syslog.php
+msgid "Save for all"
+msgstr "Сачувај за све"
+
+#: syslog.php
+msgid "contains"
+msgstr "садржи"
+
+#: syslog.php
+msgid "does not contain"
+msgstr "не садржи"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Rows"
+msgstr "Редови"
+
+#: syslog.php
+msgid "Display Rows"
+msgstr "Приказ редова"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Default"
+msgstr "Подразумевано"
+
+#: syslog.php
+msgid "View options"
+msgstr "Опције приказа"
+
+#: syslog.php
+msgid "Trim"
+msgstr "Скрати"
+
+#: syslog.php
+msgid "Message Trim"
+msgstr "Скраћивање поруке"
+
+#: syslog.php
+msgid "Removal Handling"
+msgstr "Руковање уклањањем"
+
+#: syslog.php
+msgid "Display"
+msgstr "Приказ"
+
+#: syslog.php
+msgid "Group Duplicate Messages"
+msgstr "Групиши дуплиране поруке"
+
+#: syslog.php
+msgid "Individual Messages"
+msgstr "Појединачне поруке"
+
+#: syslog.php
+msgid "Grouped Messages"
+msgstr "Груписане поруке"
+
+#: syslog.php
+#, no-php-format
+msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
+msgstr "Изаберите поље, оператор и вредност. AND има предност над OR; NOT искључује услов. LIKE користи % за произвољан број знакова и _ за један знак. Датуми користе формат YYYY-MM-DD HH:MM:SS. ID вредности користе ненегативне целе бројеве. Подразумевано се приказује последњи дан дневника уколико се опсег датума не прилагоди."
+
+#: syslog.php
+msgid "Search help"
+msgstr "Помоћ за претрагу"
+
+#: syslog.php
+msgid "New Saved Search"
+msgstr "Нова сачувана претрага"
+
+#: syslog.php
+msgid "Edit Saved Search"
+msgstr "Уреди сачувану претрагу"
+
+#: syslog.php
+msgid "Save As"
+msgstr "Сачувај као"
+
+#: syslog.php
+msgid "Delete the selected saved search?"
+msgstr "Обрисати изабрану сачувану претрагу?"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Search"
+msgstr "Претражи"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Clear"
+msgstr "Очисти"
+
+#: syslog.php
+msgid "Return filter values to their user defined defaults"
+msgstr "Врати вредности филтера на кориснички дефинисане подразумеване вредности"
+
+#: syslog.php
+msgid "Refresh Results"
+msgstr "Освежи резултате"
+
+#: syslog.php
+msgid "Export Records to CSV"
+msgstr "Извези записе у CSV"
+
+#: syslog.php
+msgid "Save Default Settings"
+msgstr "Сачувај подразумевана подешавања"
+
+#: syslog.php
+msgid "Save view defaults"
+msgstr "Сачувај подразумеване вредности приказа"
+
+#: syslog.php
+msgid "Save Search As"
+msgstr "Сачувај претрагу као"
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
+msgstr "Примени ову претрагу када отворите ову страницу а ниједна претрага још није активна"
+
+#: syslog.php
+msgid "Breach"
+msgstr "Прекорачење"
+
+#: syslog.php
+msgid "Threshold breached"
+msgstr "Праг је прекорачен"
+
+#: syslog.php
+msgid "Messages"
+msgstr "Поруке"
+
+#: syslog.php
+msgid "Empty message"
+msgstr "Празна порука"
+
+#: syslog.php
+msgid "Toggle group messages"
+msgstr "Пребаци приказ групних порука"
+
+#: syslog.php
+msgid "Loading group messages..."
+msgstr "Учитавање групних порука..."
+
+#: syslog.php
+msgid "No matching messages."
+msgstr "Нема одговарајућих порука."
+
+#: syslog.php
+msgid "No Syslog Messages"
+msgstr "Нема Syslog порука"
+
+#: syslog.php
+msgid "Alert Log Rows"
+msgstr "Редови дневника упозорења"
+
+#: syslog.php
+msgid "Alert Removed"
+msgstr "Упозорење уклоњено"
+
+#: syslog.php
+msgid "No Alert Log Messages"
+msgstr "Нема порука у дневнику упозорења"
+
+#: syslog.php
+msgid "Close message details"
+msgstr "Затвори детаље поруке"
+
+#: syslog.php
+msgid "Message details"
+msgstr "Детаљи поруке"
+
+#: syslog.php
+msgid "General"
+msgstr "Опште"
+
+#: syslog.php
+msgid "Alert Rule"
+msgstr "Правило упозорења"
+
+#: syslog.php
+msgid "Sequence"
+msgstr "Редослед"
+
+#: syslog.php
+msgid "Copied"
+msgstr "Копирано"
+
+#: syslog.php
+msgid "Copy link"
+msgstr "Копирај везу"
+
+#: syslog.php
+msgid "Copy message"
+msgstr "Копирај поруку"
+
+#: syslog.php
+msgid "Copy unavailable. Select and copy the message text."
+msgstr "Копирање није доступно. Изаберите и копирајте текст поруке."
+
+#: syslog.php
+msgid "Looking up recommendations…"
+msgstr "Претрага препорука…"
+
+#: syslog.php
+msgid "No recommendation matches this message."
+msgstr "Ниједна препорука не одговара овој поруци."
+
+#: syslog.php syslog_alerts.php
+msgid "Actions"
+msgstr "Радње"
+
+#: syslog.php
+msgid "Create Alarm Rule"
+msgstr "Направи правило аларма"
+
+#: syslog.php
+msgid "Create Device Alert Rule"
+msgstr "Направи правило упозорења за уређај"
+
+#: syslog.php
+msgid "Create Removal Rule"
+msgstr "Направи правило уклањања"
+
+#: syslog.php
+msgid "Filter by device"
+msgstr "Филтрирај по уређају"
+
+#: syslog.php
+msgid "Filter by program"
+msgstr "Филтрирај по програму"
+
+#: syslog.php
+msgid "All Programs"
+msgstr "Сви програми"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
+msgstr "Кликните на 'Настави' да бисте обрисали следећа Syslog правила упозорења."
+
+#: syslog_alerts.php
+msgid "Delete Syslog Alert Rule(s)"
+msgstr "Обриши Syslog правила упозорења"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
+msgstr "Кликните на 'Настави' да бисте онемогућили следећа Syslog правила упозорења."
+
+#: syslog_alerts.php
+msgid "Disable Syslog Alert Rule(s)"
+msgstr "Онемогући Syslog правила упозорења"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
+msgstr "Кликните на 'Настави' да бисте омогућили следећа Syslog правила упозорења."
+
+#: syslog_alerts.php
+msgid "Enable Syslog Alert Rule(s)"
+msgstr "Омогући Syslog правила упозорења"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
+msgstr "Кликните на 'Настави' да бисте извезли следећа Syslog правила упозорења."
+
+#: syslog_alerts.php
+msgid "Export Syslog Alert Rule(s)"
+msgstr "Извези Syslog правила упозорења"
+
+#: syslog_alerts.php
+msgid "Select Syslog Alarming or Alarm Manager."
+msgstr "Изаберите Syslog алармирање или Менаџер аларма."
+
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr "Унесите цео број минута, сати или дана за временски прозор прага."
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr "Унесите позитиван цео број минута, сати или дана за опоравак прага."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
+msgstr "Унета SQL синтакса је неважећа. Молимо исправите ваш SQL.<br>"
+
+#: syslog_alerts.php syslog_reports.php
+#, php-format
+msgid "The Pre-processed SQL is:<br><br> %s"
+msgstr "Претходно обрађени SQL је:<br><br> %s"
+
+#: syslog_alerts.php syslog_removal.php
+#, php-format
+msgid "The filter is invalid: %s"
+msgstr "Филтер је неважећи: %s"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The processed SQL was invalid.  Please correct your SQL"
+msgstr "Обрађени SQL је био неважећи. Молимо исправите ваш SQL"
+
+#: syslog_alerts.php
+msgid "Not Set"
+msgstr "Није постављено"
+
+#: syslog_alerts.php
+msgid "1 Minute"
+msgstr "1 минут"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hour"
+msgstr "%d сат"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hours"
+msgstr "%d сати"
+
+#: syslog_alerts.php
+msgid "1 Month"
+msgstr "1 месец"
+
+#: syslog_alerts.php
+#, php-format
+msgid "Alert Edit [edit: %s]"
+msgstr "Уређивање упозорења [уреди: %s]"
+
+#: syslog_alerts.php
+msgid "Alert Edit [new]"
+msgstr "Уређивање упозорења [ново]"
+
+#: syslog_alerts.php
+msgid "New Alert Rule"
+msgstr "Ново правило упозорења"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "N/A"
+msgstr "Н/Д"
+
+#: syslog_alerts.php
+msgid "Time unit"
+msgstr "Временска јединица"
+
+#: syslog_alerts.php
+msgid "Days"
+msgstr "Дани"
+
+#: syslog_alerts.php
+msgid "Hours"
+msgstr "Сати"
+
+#: syslog_alerts.php
+msgid "Minutes"
+msgstr "Минути"
+
+#: syslog_alerts.php
+msgid "Please describe this Alert."
+msgstr "Молимо опишите ово упозорење."
+
+#: syslog_alerts.php
+msgid "Alarm Destination"
+msgstr "Одредиште аларма"
+
+#: syslog_alerts.php
+msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
+msgstr "Изаберите Syslog алармирање или Менаџер аларма. Менаџер аларма такође захтева омогућено прослеђивање у Syslog подешавањима. Е-пошта се задржава као резерва; радње команди се не извршавају за правила Менаџера аларма."
+
+#: syslog_alerts.php
+msgid "Alarm Manager"
+msgstr "Менаџер аларма"
+
+#: syslog_alerts.php
+msgid "Syslog Alarming"
+msgstr "Syslog алармирање"
+
+#: syslog_alerts.php
+msgid "What is the Severity Level of this Alert?"
+msgstr "Који је ниво озбиљности овог упозорења?"
+
+#: syslog_alerts.php
+msgid "Reporting Level"
+msgstr "Ниво извештавања"
+
+#: syslog_alerts.php
+msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
+msgstr "За бележење циклуса поновног упозоравања, да ли упозорење треба да се прати на нивоу система или уређаја."
+
+#: syslog_alerts.php
+msgid "System"
+msgstr "Систем"
+
+#: syslog_alerts.php
+msgid "Reporting Method"
+msgstr "Метод извештавања"
+
+#: syslog_alerts.php
+msgid "Define how to Alert on the syslog messages."
+msgstr "Дефинишите како да се шаљу упозорења за syslog поруке."
+
+#: syslog_alerts.php
+msgid "Individual"
+msgstr "Појединачно"
+
+#: syslog_alerts.php
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
+msgstr "За метод 'Праг', упозорење се покреће када уочени број достигне ову вредност."
+
+#: syslog_alerts.php
+msgid "Threshold Window"
+msgstr "Прозор прага"
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr "Броји поклапања кроз циклусе сакупљача у оквиру овог клизног прозора, користећи време обраде сакупљача. Унесите 0 да бисте бројали само текући циклус."
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr "Опоравак након мирног периода"
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
+msgstr "Време без одговарајућих порука пре уклањања прекорачења, ресетовања броја и поновног активирања овог правила. Свака одговарајућа порука поново покреће овај тајмер."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match Type"
+msgstr "Тип поклапања"
+
+#: syslog_alerts.php
+msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
+msgstr "Изаберите Градитељ филтера за безбедну логику аларма са више услова. SQL израз је задржан за застарела правила."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Message Match String"
+msgstr "Ниска за поклапање поруке"
+
+#: syslog_alerts.php
+msgid "Build filter conditions or enter an SQL expression to match syslog messages."
+msgstr "Направите услове филтера или унесите SQL израз за поклапање syslog порука."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_removal.php
+#: syslog_reports.php
+msgid "Enabled"
+msgstr "Омогућено"
+
+#: syslog_alerts.php
+msgid "Is this Alert Enabled?"
+msgstr "Да ли је ово упозорење омогућено?"
+
+#: syslog_alerts.php
+msgid "Re-Alert Cycle"
+msgstr "Циклус поновног упозоравања"
+
+#: syslog_alerts.php
+msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
+msgstr "Немојте поново слати ово упозорење за исти хост док не протекне ово време. За аларме засноване на прагу, ово важи за све хостове."
+
+#: syslog_alerts.php
+msgid "Notification Cooldown"
+msgstr "Пауза између обавештења"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
+msgstr "Минути за потискивање сваког наредног обавештења из овог правила и опсега извештавања."
+
+#: syslog_alerts.php
+msgid "1 day"
+msgstr "1 дан"
+
+#: syslog_alerts.php
+msgid "1 hour"
+msgstr "1 сат"
+
+#: syslog_alerts.php
+msgid "1 minute"
+msgstr "1 минут"
+
+#: syslog_alerts.php
+msgid "15 minutes"
+msgstr "15 минута"
+
+#: syslog_alerts.php
+msgid "30 minutes"
+msgstr "30 минута"
+
+#: syslog_alerts.php
+msgid "4 hours"
+msgstr "4 сата"
+
+#: syslog_alerts.php
+msgid "5 minutes"
+msgstr "5 минута"
+
+#: syslog_alerts.php
+msgid "Use global setting"
+msgstr "Користи глобално подешавање"
+
+#: syslog_alerts.php
+msgid "Duplicate Suppression"
+msgstr "Потискивање дупликата"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress the same matched message set."
+msgstr "Минути за потискивање истог скупа поклопљених порука."
+
+#: syslog_alerts.php
+msgid "Maintenance Window"
+msgstr "Период одржавања"
+
+#: syslog_alerts.php
+msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
+msgstr "Изаберите да ли ово правило користи глобални временски оквир одржавања или сопствени временски оквир."
+
+#: syslog_alerts.php
+msgid "Do not mute this rule"
+msgstr "Не утишавај ово правило"
+
+#: syslog_alerts.php
+msgid "Use global timeframe"
+msgstr "Користи глобални временски оквир"
+
+#: syslog_alerts.php
+msgid "Use rule timeframe"
+msgstr "Користи временски оквир правила"
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Days"
+msgstr "Дани одржавања правила"
+
+#: syslog_alerts.php
+msgid "Days for this rule timeframe, when Use rule timeframe is selected."
+msgstr "Дани за временски оквир овог правила, када је изабрано Користи временски оквир правила."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Starts"
+msgstr "Почетак одржавања правила"
+
+#: syslog_alerts.php
+msgid "Local start time for this rule timeframe."
+msgstr "Локално време почетка за временски оквир овог правила."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Ends"
+msgstr "Крај одржавања правила"
+
+#: syslog_alerts.php
+msgid "Local end time for this rule timeframe."
+msgstr "Локално време завршетка за временски оквир овог правила."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Starts"
+msgstr "Почетак једнократног одржавања правила"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Опциони локални датум и време за почетак утишавања овог правила. Формат: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Ends"
+msgstr "Крај једнократног одржавања правила"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Опциони локални датум и време за престанак утишавања овог правила. Формат: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_reports.php
+msgid "Notes"
+msgstr "Напомене"
+
+#: syslog_alerts.php
+msgid "Space for Notes on the Alert"
+msgstr "Простор за белешке о упозорењу"
+
+#: syslog_alerts.php
+msgid "Email Options"
+msgstr "Опције е-поште"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Notification List"
+msgstr "Листа обавештења"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "Користите садржај ове листе обавештења да бисте одредили ко треба да буде обавештен и на који начин."
+
+#: syslog_alerts.php
+msgid "Emails to Notify"
+msgstr "Адресе е-поште за обавештавање"
+
+#: syslog_alerts.php
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "Унесите листу адреса е-поште за обавештавање раздвојену зарезима. Ако желите да пошаљете е-пошту примаоцу у SMS формату, додајте префикс <b>'sms@'</b> испред адресе е-поште тог примаоца. На пример, ако је SMS адреса примаоца <b>'2485551212@mycarrier.net'</b>, унесите је као <b>'sms@2485551212@mycarrier.net'</b> и биће форматирана као SMS порука."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Body Text"
+msgstr "Текст тела е-поште"
+
+#: syslog_alerts.php
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "Ове информације ће се појавити у телу упозорења непосредно пре детаља упозорења."
+
+#: syslog_alerts.php
+msgid "Open Ticket"
+msgstr "Отвори тикет"
+
+#: syslog_alerts.php
+msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
+msgstr "Да ли треба отворити тикет службе подршке за ово упозорење. НАПОМЕНА: Скрипта команде за тикет биће попуњена са неколико 'ALERT_' променљивих окружења ради лакшег коришћења."
+
+#: syslog_alerts.php
+msgid "Alert command"
+msgstr "Команда упозорења"
+
+#: syslog_alerts.php
+msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
+msgstr "Када се упозорење покрене, извршите следећу команду. Доступне су следеће заменске променљиве <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>. Имајте у виду да је <b>'&lt;HOSTNAME&gt;'</b> доступан само за појединачне прагове. Ове заменске вредности могу да се појаве у командној линији или да се преузму из окружења скрипте. Када се користе из окружења, те променљиве ће имати префикс 'ALERT_'."
+
+#: syslog_alerts.php
+msgid "Recovery command"
+msgstr "Команда опоравка"
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgstr "Опциона команда која се извршава када се овај праг опорави након мирног периода. Користи исте заменске променљиве као команда упозорења. SYSLOG_EVENT је clear; SYSLOG_BREACH_ID се поклапа са командом прекорачења. Неуспеле команде се поново покушавају. Оставите празно да бисте онемогућили."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Test rule"
+msgstr "Тестирај правило"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Rule Test Preview"
+msgstr "Преглед теста правила"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Value"
+msgstr "Вредност"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a value"
+msgstr "Унесите вредност"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match"
+msgstr "Поклапање"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Exclude"
+msgstr "Искључи"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a nonnegative integer"
+msgstr "Унесите ненегативан цео број"
+
+#: syslog_alerts.php
+msgid "Alarm filter conditions"
+msgstr "Услови филтера аларма"
+
+#: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php
+msgid "All"
+msgstr "Све"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Go"
+msgstr "Иди"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+msgid "Import"
+msgstr "Увези"
+
+#: syslog_alerts.php
+msgid "Syslog Alert Filters"
+msgstr "Филтери Syslog упозорења"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Method"
+msgstr "Метод"
+
+#: syslog_alerts.php
+msgid "Threshold Count"
+msgstr "Број прага"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Search String"
+msgstr "Ниска за претрагу"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Addresses"
+msgstr "Адресе е-поште"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Last Modified"
+msgstr "Последња измена"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "By User"
+msgstr "Од стране корисника"
+
+#: syslog_alerts.php
+msgid "Alerts"
+msgstr "Аларми"
+
+#: syslog_alerts.php
+msgid "Multiple"
+msgstr "Вишеструко"
+
+#: syslog_alerts.php
+msgid "No Syslog Alerts Defined"
+msgstr "Нема дефинисаних Syslog упозорења"
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Local File"
+msgstr "Увези правило упозорења из локалне датотеке"
+
+#: syslog_alerts.php
+msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
+msgstr "Ако се XML датотека која садржи податке дефиниције правила упозорења налази на вашем локалном рачунару, изаберите је овде."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Text"
+msgstr "Увези правило упозорења из текста"
+
+#: syslog_alerts.php
+msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
+msgstr "Ако имате XML датотеку која садржи податке дефиниције правила упозорења као текст, можете је налепити у ово поље да бисте је увезли."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule"
+msgstr "Увези правило упозорења"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_saved_searches.php
+msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
+msgstr "Увоз одбијен: датотека је празна, неважећа или садржи другу врсту Syslog објекта."
+
+#: syslog_alerts.php
+msgid "Import rejected: invalid alarm destination."
+msgstr "Увоз одбијен: неважеће одредиште аларма."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Imported"
+msgstr "Увезен"
+
+#: syslog_alerts.php
+#, php-format
+msgid "NOTE: Alert '%s' %s!"
+msgstr "НАПОМЕНА: Упозорење '%s' %s!"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_reports.php
+msgid "Updated"
+msgstr "Ажуриран"
+
+#: syslog_alerts.php
+#, php-format
+msgid "ERROR: Alert '%s' %s Failed!"
+msgstr "ГРЕШКА: За упозорење '%s' %s није успело!"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Update"
+msgstr "Ажурирање"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Select a valid owner."
+msgstr "Изаберите важећег власника."
+
+#: syslog_dashboards.php
+msgid "Unable to save the dashboard. Please try again."
+msgstr "Није могуће сачувати контролну таблу. Покушајте поново."
+
+#: syslog_dashboards.php
+msgid "Enter a dashboard name between 1 and 128 characters."
+msgstr "Унесите назив контролне табле дужине од 1 до 128 знакова."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Owner"
+msgstr "Власник"
+
+#: syslog_dashboards.php
+msgid "Shared"
+msgstr "Дељено"
+
+#: syslog_dashboards.php
+msgid "Panels"
+msgstr "Панели"
+
+#: syslog_dashboards.php
+msgid "deleted user"
+msgstr "обрисани корисник"
+
+#: syslog_dashboards.php
+msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
+msgstr "Још увек нема контролних табли. Корисници их праве на картици Контролна табла додатка Syslog."
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
+msgstr "Кликните на 'Настави' да бисте обрисали следеће контролне табле и све њихове панеле."
+
+#: syslog_dashboards.php
+msgid "Delete Dashboard(s)"
+msgstr "Обриши контролне табле"
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Export the following Dashboard(s)."
+msgstr "Кликните на 'Настави' да бисте извезли следеће контролне табле."
+
+#: syslog_dashboards.php
+msgid "Export Dashboard(s)"
+msgstr "Извези контролне табле"
+
+#: syslog_dashboards.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Dashboard(s)."
+msgstr "НАПОМЕНА: Увезено је %d и ажурирано %d контролних табли."
+
+#: syslog_dashboards.php
+#, php-format
+msgid "ERROR: %d Dashboard(s) failed to import."
+msgstr "ГРЕШКА: Увоз %d контролних табли није успео."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Local File"
+msgstr "Увези контролну таблу из локалне датотеке"
+
+#: syslog_dashboards.php
+msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
+msgstr "Ако се JSON датотека са подацима дефиниције контролне табле налази на вашем локалном рачунару, изаберите је овде."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Text"
+msgstr "Увези контролну таблу из текста"
+
+#: syslog_dashboards.php
+msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
+msgstr "Ако имате JSON датотеку са подацима дефиниције контролне табле као текст, можете је налепити у ово поље да бисте је увезли."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard"
+msgstr "Увези контролну таблу"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Users"
+msgstr "Сви корисници"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Groups"
+msgstr "Све групе"
+
+#: syslog_dashboards.php
+msgid "Edit Dashboard"
+msgstr "Уреди контролну таблу"
+
+#: syslog_dashboards.php
+msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
+msgstr "Назив који се приказује у листи избора Контролне табле на Syslog картици Контролна табла."
+
+#: syslog_dashboards.php
+msgid "The account that owns this dashboard and can manage its panels."
+msgstr "Налог који је власник ове контролне табле и може да управља њеним панелима."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Users"
+msgstr "Дељено са корисницима"
+
+#: syslog_dashboards.php
+msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
+msgstr "Корисници који могу да виде ову контролну таблу поред њеног власника и глобалног дељења. Сви корисници је дели са свима."
+
+#: syslog_dashboards.php
+msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
+msgstr "Групе које могу да виде ову контролну таблу поред њеног власника и глобалног дељења. Све групе је дели са свима."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Groups"
+msgstr "Дељено са групама"
+
+#: syslog_dashboards.php
+msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
+msgstr "Преименовање се односи на сваког гледаоца ове контролне табле. Панелима управљају њихови власници на Syslog картици Контролна табла."
+
+#: syslog_device_rules.php
+msgid "Choose a future pause end date and time."
+msgstr "Изаберите будући датум и време завршетка паузе."
+
+#: syslog_device_rules.php
+msgid "A device name is required."
+msgstr "Назив уређаја је обавезан."
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Click Continue to %s the following Device Alert Rule(s)."
+msgstr "Кликните на Настави да бисте %s следећа правила упозорења уређаја."
+
+#: syslog_device_rules.php
+msgid "Do not pass any priority"
+msgstr "Не прослеђуј ниједан приоритет"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "%s and more urgent"
+msgstr "%s и хитније"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule"
+msgstr "Правило упозорења уређаја"
+
+#: syslog_device_rules.php
+msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
+msgstr "Претражите тренутне Syslog уређаје док куцате или унесите било коју IP адресу или назив хоста."
+
+#: syslog_device_rules.php
+msgid "Alert Handling"
+msgstr "Руковање упозорењима"
+
+#: syslog_device_rules.php
+msgid "Do not pause"
+msgstr "Не паузирај"
+
+#: syslog_device_rules.php
+msgid "Pause all non-exempt alerts until a date, or indefinitely."
+msgstr "Паузирај сва неиззета упозорења до одређеног датума или на неодређено време."
+
+#: syslog_device_rules.php
+msgid "Pause indefinitely"
+msgstr "Паузирај на неодређено"
+
+#: syslog_device_rules.php
+msgid "Pause until"
+msgstr "Паузирај до"
+
+#: syslog_device_rules.php
+msgid "Local date and time, YYYY-MM-DD HH:MM."
+msgstr "Локални датум и време, YYYY-MM-DD HH:MM."
+
+#: syslog_device_rules.php
+msgid "Pause Ends"
+msgstr "Пауза се завршава"
+
+#: syslog_device_rules.php
+msgid "Always Allow Priority"
+msgstr "Увек дозволи приоритет"
+
+#: syslog_device_rules.php
+msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
+msgstr "Ови приоритети пролазе кроз ову паузу уређаја и периоде одржавања. Критично и хитније је уобичајен избор за платинасте уређаје."
+
+#: syslog_device_rules.php
+msgid "Allow During Maintenance"
+msgstr "Дозволи током одржавања"
+
+#: syslog_device_rules.php
+msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
+msgstr "Дозволи све приоритете са овог уређаја током периода одржавања упозорења. Горе наведени изузетак приоритета и даље важи када је ово подешено на Не."
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [edit]"
+msgstr "Правило упозорења уређаја [измена]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [new]"
+msgstr "Правило упозорења уређаја [ново]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule Filters"
+msgstr "Филтери правила упозорења уређаја"
+
+#: syslog_device_rules.php syslog_removal.php
+msgid "Rules"
+msgstr "Правила"
+
+#: syslog_device_rules.php
+msgid "Handling"
+msgstr "Руковање"
+
+#: syslog_device_rules.php
+msgid "Maintenance"
+msgstr "Одржавање"
+
+#: syslog_device_rules.php
+msgid "Pass Through"
+msgstr "Прослеђивање"
+
+#: syslog_device_rules.php
+msgid "No device alert rules found."
+msgstr "Није пронађено ниједно правило упозорења уређаја."
+
+#: syslog_device_rules.php
+msgid "Not paused"
+msgstr "Није паузирано"
+
+#: syslog_device_rules.php
+msgid "Paused indefinitely"
+msgstr "Паузирано на неодређено"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Paused until %s"
+msgstr "Паузирано до %s"
+
+#: syslog_device_rules.php
+msgid "and more urgent"
+msgstr "и хитније"
+
+#: syslog_device_rules.php
+msgid "Allow all"
+msgstr "Дозволи све"
+
+#: syslog_device_rules.php
+msgid "Use priority exception"
+msgstr "Користи изузетак приоритета"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
+msgstr "Препорука није сачувана јер %s. Унесите идентификатор без размака и бар објашњење или препоручену радњу."
+
+#: syslog_recommendations.php
+msgid "A recommendation for this vendor and identifier already exists."
+msgstr "Препорука за овог произвођача и идентификатор већ постоји."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
+msgstr "НАПОМЕНА: Идентификатор %s садржи знакове осим слова, цифара, _ . - / и опционог дословног почетног %%, тако да се никада не може подударити са syslog поруком. Замените чуваре места као што је # или алтернативе као што је A|B тачним кодом."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Export the following Recommendation(s)."
+msgstr "Кликните на 'Настави' да бисте извезли следеће препоруке."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Delete the following Recommendation(s)."
+msgstr "Кликните на 'Настави' да бисте обрисали следеће препоруке."
+
+#: syslog_recommendations.php
+msgid "Export requires the PHP zlib extension to create a JSON gzip file."
+msgstr "Извоз захтева PHP zlib проширење за прављење JSON gzip датотеке."
+
+#: syslog_recommendations.php
+msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
+msgstr "Увоз је одбијен: датотека је празна, превелика или није важећи JSON документ са препорукама."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
+msgstr "НАПОМЕНА: Додато је %d, ажурирано %d и остављено %d постојећих препорука непромењеним."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
+msgstr "ГРЕШКА: Одбијено је %d препорука (на пример %s). Свака од њих је наведена са разлогом у Cacti дневнику."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
+msgstr "ГРЕШКА: Није било могуће сачувати %d препорука. Свака од њих је наведена у Cacti дневнику."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
+msgstr "НАПОМЕНА: %d увезених препорука има идентификаторе који садрже знакове као што су | или # који се никада не појављују у речи поруке, тако да се не могу подударити док се не измене. Поставите Може да се подудари на Не да бисте их приказали."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Local File"
+msgstr "Увези препоруке из локалне датотеке"
+
+#: syslog_recommendations.php
+msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
+msgstr "Изаберите .json или .json.gz датотеку на вашем локалном рачунару. Користите функцију Извези да бисте видели очекивани формат: листа записа са пољима vendor, identifier, component, severity, message, explanation, recommended_action и reference."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Text"
+msgstr "Увези препоруке из текста"
+
+#: syslog_recommendations.php
+msgid "Alternatively, paste the JSON document into this box."
+msgstr "Алтернативно, налепите JSON документ у ово поље."
+
+#: syslog_recommendations.php
+msgid "Existing Recommendations"
+msgstr "Постојеће препоруке"
+
+#: syslog_recommendations.php
+msgid "A recommendation is the same as an existing one when its vendor and identifier match."
+msgstr "Препорука је иста као постојећа када се њен произвођач и идентификатор подударају."
+
+#: syslog_recommendations.php
+msgid "Keep the existing recommendation"
+msgstr "Задржи постојећу препоруку"
+
+#: syslog_recommendations.php
+msgid "Replace it with the imported one"
+msgstr "Замени је увезеном"
+
+#: syslog_recommendations.php
+msgid "Import Recommendations"
+msgstr "Увоз препорука"
+
+#: syslog_recommendations.php
+msgid "Importing, please wait..."
+msgstr "Увоз у току, сачекајте..."
+
+#: syslog_recommendations.php
+msgid "Not specified"
+msgstr "Није наведено"
+
+#: syslog_recommendations.php
+msgid "Recommendation"
+msgstr "Препорука"
+
+#: syslog_recommendations.php
+msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
+msgstr "Добављач уређаја или софтвера који бележи ову поруку, на пример Cisco или Juniper."
+
+#: syslog_recommendations.php
+msgid "Vendor"
+msgstr "Произвођач"
+
+#: syslog_recommendations.php
+msgid "Identifier"
+msgstr "Идентификатор"
+
+#: syslog_recommendations.php
+msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
+msgstr "Код поруке који се тражи, на пример %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN или 4625. Мора бити једнак целој речи syslog поруке (слова, цифре и знаци _ . - /); водећи знак % је дослован и мора се поклапати онако како је написан. Поклапање не разликује мала и велика слова. Погледајте Како се препоруке упарују на страници са списком."
+
+#: syslog_recommendations.php
+msgid "Component"
+msgstr "Компонента"
+
+#: syslog_recommendations.php
+msgid "The facility, module or subsystem that raises the message."
+msgstr "Сервис, модул или подсистем који генерише поруку."
+
+#: syslog_recommendations.php
+msgid "The severity the vendor documents for this message."
+msgstr "Озбиљност коју је произвођач документовао за ову поруку."
+
+#: syslog_recommendations.php
+msgid "The message format as documented, including its variable placeholders."
+msgstr "Формат поруке како је документован, укључујући њене резервисане ознаке за променљиве."
+
+#: syslog_recommendations.php
+msgid "What the message means."
+msgstr "Шта порука значи."
+
+#: syslog_recommendations.php
+msgid "What an operator should do about it."
+msgstr "Шта оператер треба да уради поводом тога."
+
+#: syslog_recommendations.php
+msgid "Links to the vendor documentation, one per line."
+msgstr "Везе ка документацији произвођача, по једна у реду."
+
+#: syslog_recommendations.php
+msgid "Recommendation [edit]"
+msgstr "Препорука [уређивање]"
+
+#: syslog_recommendations.php
+msgid "Recommendation [new]"
+msgstr "Препорука [ново]"
+
+#: syslog_recommendations.php
+msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
+msgstr "Сијалица испред поруке означава одговарајуће препоруке на картицама Системски дневници и Дневници упозорења. Кликните на поруку да бисте их прочитали у искачућем панелу са детаљима. Задржавање показивача никада не шаље захтев серверу."
+
+#: syslog_recommendations.php
+msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
+msgstr "За упаривање се користи само колона <b>Идентификатор</b>. Произвођач, компонента, озбиљност, порука и објашњење приказују се у искачућем панелу са детаљима, али се никада не претражују."
+
+#: syslog_recommendations.php
+msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
+msgstr "Првих 2.048 знакова поруке дели се на речи. Реч је низ слова, цифара и знакова _ . - / који може почети знаком %. Сваки други знак, као што је размак, двотачка, зарез или заграда, завршава реч. У поруци <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> речи су <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> и <code>down</code>."
+
+#: syslog_recommendations.php
+msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
+msgstr "Идентификатор се поклапа када је <b>потпуно једнак једној целој речи</b>, не узимајући у обзир величину слова. То није претрага типа „садржи“, „почиње са“ или „завршава се са“, и нема џокер знакова: <code>LINK-3-UPDOWN</code> се не поклапа са речју <code>LINK-3-UPDOWN-EXT</code>, а <code>UPDOWN</code> се не поклапа са <code>%LINK-3-UPDOWN</code>."
+
+#: syslog_recommendations.php
+msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
+msgstr "Водеће <b>%</b> је дословно, није џокер знак, и мора се поклапати са речју у поруци онако како је написано. Идентификатор <code>%LINK-3-UPDOWN</code> поклапа се са речју поруке <code>%LINK-3-UPDOWN</code>, а не са <code>LINK-3-UPDOWN</code>; идентификатор без префикса поклапа се само са речју без префикса."
+
+#: syslog_recommendations.php
+msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
+msgstr "Када је syslog домаћин Cacti уређај чији је произвођач препознат из његовог SNMP системског описа или шаблона уређаја, и постоје препоруке за тог произвођача, проверавају се само препоруке тог произвођача и оне без произвођача. У супротном се проверавају сви произвођачи, али идентификатор састављен само од цифара поклапа се само са препорукама без произвођача. Када се поклапа више препорука, прво се приказују најдужи идентификатори, највише три."
+
+#: syslog_recommendations.php
+msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
+msgstr "Идентификатори који садрже друге знакове, као што су резервисано место за слот <code>#</code> или алтернативе <code>|</code> у документацији појединих произвођача (на пример <code>%ASA|PIX-3-331001</code>), чувају се и извозе, али се никада не могу поклопити. Поставите <b>Може да се поклопи</b> на Не да бисте их навели и уредите их у тачан код, на пример <code>%ASA-3-331001</code>."
+
+#: syslog_recommendations.php
+msgid "How Recommendations Are Matched"
+msgstr "Како се препоруке упарују"
+
+#: syslog_recommendations.php
+msgid "Can Match"
+msgstr "Може да се поклопи"
+
+#: syslog_recommendations.php
+msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
+msgstr "Да ли идентификатор има облик речи поруке, тако да претрага порука уопште може да га пронађе"
+
+#: syslog_recommendations.php
+msgid "Export every recommendation that matches the filters"
+msgstr "Извези сваку препоруку која одговара филтерима"
+
+#: syslog_recommendations.php
+msgid "No recommendations found."
+msgstr "Није пронађена ниједна препорука."
+
+#: syslog_removal.php
+msgid "Reprocess"
+msgstr "Поново обради"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
+msgstr "Кликните на 'Настави' да бисте обрисали следећа Syslog правила за уклањање."
+
+#: syslog_removal.php
+msgid "Delete Syslog Removal Rule(s)"
+msgstr "Брисање Syslog правила за уклањање"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
+msgstr "Кликните на 'Настави' да бисте онемогућили следећа Syslog правила за уклањање."
+
+#: syslog_removal.php
+msgid "Disable Syslog Removal Rule(s)"
+msgstr "Онемогућавање Syslog правила за уклањање"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
+msgstr "Кликните на 'Настави' да бисте омогућили следећа Syslog правила за уклањање."
+
+#: syslog_removal.php
+msgid "Enable Syslog Removal Rule(s)"
+msgstr "Омогућавање Syslog правила за уклањање"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
+msgstr "Кликните на 'Настави' да бисте поново обрадили следећа Syslog правила за уклањање."
+
+#: syslog_removal.php
+msgid "Retroactively Process Syslog Removal Rule(s)"
+msgstr "Ретроактивна обрада Syslog правила за уклањање"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
+msgstr "Кликните на 'Настави' да бисте извезли следећа Syslog правила за уклањање."
+
+#: syslog_removal.php
+msgid "Export Syslog Removal Rule(s)"
+msgstr "Извоз Syslog правила за уклањање"
+
+#: syslog_removal.php
+#, php-format
+msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
+msgstr "Правило '%s' довело је до %s/%s уклоњених/пренетих порука"
+
+#: syslog_removal.php
+#, php-format
+msgid "Removal Rule Edit [edit: %s]"
+msgstr "Уређивање правила за уклањање [уређивање: %s]"
+
+#: syslog_removal.php
+msgid "Removal Rule Edit [new]"
+msgstr "Уређивање правила за уклањање [ново]"
+
+#: syslog_removal.php
+msgid "New Removal Record"
+msgstr "Нови запис за уклањање"
+
+#: syslog_removal.php
+msgid "New Removal Rule"
+msgstr "Ново правило за уклањање"
+
+#: syslog_removal.php
+msgid "Removal Rule Details"
+msgstr "Детаљи правила за уклањање"
+
+#: syslog_removal.php
+msgid "Removal Rule Name"
+msgstr "Назив правила за уклањање"
+
+#: syslog_removal.php
+msgid "Please describe this Removal Rule."
+msgstr "Опишите ово правило за уклањање."
+
+#: syslog_removal.php syslog_reports.php
+msgid "Enabled?"
+msgstr "Омогућено?"
+
+#: syslog_removal.php
+msgid "Is this Removal Rule Enabled?"
+msgstr "Да ли је ово правило за уклањање омогућено?"
+
+#: syslog_removal.php syslog_reports.php
+msgid "String Match Type"
+msgstr "Тип поклапања ниске"
+
+#: syslog_removal.php
+msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
+msgstr "Одредите како желите да се ова ниска поклапа. Ако користите тип SQL израз, можете употребити било који важећи SQL израз за генерисање аларма. Доступна поља укључују 'message', 'facility', 'priority' и 'host'."
+
+#: syslog_removal.php
+msgid "Syslog Message Match String"
+msgstr "Ниска за поклапање Syslog поруке"
+
+#: syslog_removal.php
+msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
+msgstr "Унесите део syslog поруке за подударање, категорију или назив хоста, односно SQL WHERE услов ако користите тип подударања SQL израз."
+
+#: syslog_removal.php
+msgid "Method of Removal"
+msgstr "Начин уклањања"
+
+#: syslog_removal.php
+msgid "Deletion"
+msgstr "Брисање"
+
+#: syslog_removal.php
+msgid "Transferal"
+msgstr "Пренос"
+
+#: syslog_removal.php
+msgid "Removal Rule Notes"
+msgstr "Напомене за правило уклањања"
+
+#: syslog_removal.php
+msgid "Space for Notes on the Removal rule"
+msgstr "Простор за напомене о правилу уклањања"
+
+#: syslog_removal.php
+msgid "Removal filter conditions"
+msgstr "Услови филтера за уклањање"
+
+#: syslog_removal.php
+msgid "Syslog Removal Rule Filters"
+msgstr "Филтери правила уклањања за Syslog"
+
+#: syslog_removal.php
+msgid "Removal Name"
+msgstr "Назив уклањања"
+
+#: syslog_removal.php
+msgid "Transfer"
+msgstr "Пренос"
+
+#: syslog_removal.php
+msgid "No Syslog Removal Rules Defined"
+msgstr "Нема дефинисаних Syslog правила уклањања"
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Local File"
+msgstr "Увези правило уклањања из локалне датотеке"
+
+#: syslog_removal.php
+msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
+msgstr "Ако се XML датотека са подацима дефиниције правила уклањања налази на вашем локалном рачунару, изаберите је овде."
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Text"
+msgstr "Увези правило уклањања из текста"
+
+#: syslog_removal.php
+msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
+msgstr "Ако имате XML датотеку са подацима дефиниције правила уклањања у виду текста, можете је налепити у ово поље да бисте је увезли."
+
+#: syslog_removal.php
+msgid "Import Removal Rule"
+msgstr "Увези правило уклањања"
+
+#: syslog_removal.php
+#, php-format
+msgid "NOTE: Removal Rule '%s' %s!"
+msgstr "НАПОМЕНА: Правило уклањања '%s' %s!"
+
+#: syslog_removal.php
+#, php-format
+msgid "ERROR: Removal Rule '%s' %s Failed!"
+msgstr "ГРЕШКА: Правило уклањања '%s': %s није успело!"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Delete the following Syslog Report(s)."
+msgstr "Кликните на 'Настави' да бисте обрисали следећи Syslog извештај(е)."
+
+#: syslog_reports.php
+msgid "Delete Syslog Report(s)"
+msgstr "Обриши Syslog извештај(е)"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Disable the following Syslog Report(s)."
+msgstr "Кликните на 'Настави' да бисте онемогућили следећи Syslog извештај(е)."
+
+#: syslog_reports.php
+msgid "Disable Syslog Report(s)"
+msgstr "Онемогући Syslog извештај(е)"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Enable the following Syslog Report(s)."
+msgstr "Кликните на 'Настави' да бисте омогућили следећи Syslog извештај(е)."
+
+#: syslog_reports.php
+msgid "Enable Syslog Report(s)"
+msgstr "Омогући Syslog извештај(е)"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
+msgstr "Кликните на 'Настави' да бисте извезли следећа Syslog правила извештаја."
+
+#: syslog_reports.php
+msgid "Export Syslog Report Rule(s)"
+msgstr "Извези Syslog правила извештаја"
+
+#: syslog_reports.php
+msgid "You must select at least one Syslog Report."
+msgstr "Морате изабрати бар један Syslog извештај."
+
+#: syslog_reports.php
+msgid "Return"
+msgstr "Повратак"
+
+#: syslog_reports.php
+#, php-format
+msgid "Report Edit [edit: %s]"
+msgstr "Уређивање извештаја [уреди: %s]"
+
+#: syslog_reports.php
+msgid "Report Edit [new]"
+msgstr "Уређивање извештаја [ново]"
+
+#: syslog_reports.php
+msgid "New Report Record"
+msgstr "Нови запис извештаја"
+
+#: syslog_reports.php
+msgid "Please describe this Report."
+msgstr "Опишите овај извештај."
+
+#: syslog_reports.php
+msgid "Is this Report Enabled?"
+msgstr "Да ли је овај извештај омогућен?"
+
+#: syslog_reports.php
+msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
+msgstr "Дефинишите како желите да се овај низ подудара. Градитељ филтера комбинује услове за поруку, хост, програм, категорију и приоритет."
+
+#: syslog_reports.php
+msgid "Frequency"
+msgstr "Учесталост"
+
+#: syslog_reports.php
+msgid "How often should this Report be sent to the distribution list?"
+msgstr "Колико често треба слати овај извештај на листу за дистрибуцију?"
+
+#: syslog_reports.php
+msgid "Send Time"
+msgstr "Време слања"
+
+#: syslog_reports.php
+msgid "What time of day should this report be sent?"
+msgstr "У које доба дана треба послати овај извештај?"
+
+#: syslog_reports.php
+msgid "Report Format"
+msgstr "Формат извештаја"
+
+#: syslog_reports.php
+msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
+msgstr "Направите услове филтера или унесите текст или SQL израз за подударање syslog порука."
+
+#: syslog_reports.php
+msgid "The information that will be contained in the body of the Report."
+msgstr "Информације које ће бити садржане у телу извештаја."
+
+#: syslog_reports.php
+msgid "Comma delimited list of Email addresses to send the report to."
+msgstr "Списак адреса е-поште раздвојених зарезом на које се шаље извештај."
+
+#: syslog_reports.php
+msgid "Space for Notes on the Report"
+msgstr "Простор за напомене о извештају"
+
+#: syslog_reports.php
+msgid "Report Test Preview"
+msgstr "Пробни преглед извештаја"
+
+#: syslog_reports.php
+msgid "Report filter conditions"
+msgstr "Услови филтера извештаја"
+
+#: syslog_reports.php
+msgid "Syslog Report Filters"
+msgstr "Филтери Syslog извештаја"
+
+#: syslog_reports.php
+msgid "Report Name"
+msgstr "Назив извештаја"
+
+#: syslog_reports.php
+msgid "Last Sent"
+msgstr "Последње слање"
+
+#: syslog_reports.php
+msgid "Reports"
+msgstr "Извештаји"
+
+#: syslog_reports.php
+msgid "No Syslog Reports Defined"
+msgstr "Нема дефинисаних Syslog извештаја"
+
+#: syslog_reports.php
+msgid "Import Report Rule from Local File"
+msgstr "Увези правило извештаја из локалне датотеке"
+
+#: syslog_reports.php
+msgid "If the XML file containing the Report Rule definition data is located on your local machine, select it here."
+msgstr "Ако се XML датотека са подацима дефиниције правила извештаја налази на вашем локалном рачунару, изаберите је овде."
+
+#: syslog_reports.php
+msgid "Import Report Rule from Text"
+msgstr "Увези правило извештаја из текста"
+
+#: syslog_reports.php
+msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
+msgstr "Ако имате XML датотеку са подацима дефиниције правила извештаја у виду текста, можете је налепити у ово поље да бисте је увезли."
+
+#: syslog_reports.php
+msgid "Import Report Data"
+msgstr "Увези податке извештаја"
+
+#: syslog_reports.php
+#, php-format
+msgid "NOTE: Report Rule '%s' %s!"
+msgstr "НАПОМЕНА: Правило извештаја '%s' %s!"
+
+#: syslog_reports.php
+#, php-format
+msgid "ERROR: Report Rule '%s' %s Failed!"
+msgstr "ГРЕШКА: Правило извештаја '%s': %s није успело!"
+
+#: syslog_saved_searches.php
+msgid "Unable to save the template. Please try again."
+msgstr "Није могуће сачувати шаблон. Покушајте поново."
+
+#: syslog_saved_searches.php
+msgid "Enter a template name between 1 and 128 characters."
+msgstr "Унесите назив шаблона дужине између 1 и 128 знакова."
+
+#: syslog_saved_searches.php
+msgid "Templates"
+msgstr "Шаблони"
+
+#: syslog_saved_searches.php
+msgid "Query"
+msgstr "Упит"
+
+#: syslog_saved_searches.php
+msgid "No shared search templates. Save a search for all users from Syslog to create one."
+msgstr "Нема дељених шаблона претраге. Сачувајте претрагу за све кориснике из система Syslog да бисте направили шаблон."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Export the following Saved Search Template(s)."
+msgstr "Кликните на 'Настави' да бисте извезли следећи сачувани шаблон(е) претраге."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
+msgstr "Кликните на 'Настави' да бисте обрисали следећи сачувани шаблон(е) претраге."
+
+#: syslog_saved_searches.php
+msgid "Delete Saved Search Template(s)"
+msgstr "Обриши сачувани шаблон(е) претраге"
+
+#: syslog_saved_searches.php
+msgid "Export Saved Search Template(s)"
+msgstr "Извези сачувани шаблон(е) претраге"
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
+msgstr "НАПОМЕНА: Увезено је %d и ажурирано %d сачуваних шаблона претраге."
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "ERROR: %d Saved Search Template(s) failed to import."
+msgstr "ГРЕШКА: Увоз %d сачуваних шаблона претраге није успео."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Local File"
+msgstr "Увези сачувани шаблон претраге из локалне датотеке"
+
+#: syslog_saved_searches.php
+msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
+msgstr "Ако се JSON датотека са подацима дефиниције сачуваног шаблона претраге налази на вашем локалном рачунару, изаберите је овде."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Text"
+msgstr "Увези сачувани шаблон претраге из текста"
+
+#: syslog_saved_searches.php
+msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
+msgstr "Ако имате JSON датотеку са подацима дефиниције сачуваног шаблона претраге у виду текста, можете је налепити у ово поље да бисте је увезли."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template"
+msgstr "Увези сачувани шаблон претраге"
+
+#: syslog_saved_searches.php
+msgid "Edit Saved Search Template"
+msgstr "Уреди сачувани шаблон претраге"
+
+#: syslog_saved_searches.php
+msgid "The name shown to all users in Saved Searches."
+msgstr "Назив који се приказује свим корисницима у одељку Сачуване претраге."
+
+#: syslog_saved_searches.php
+msgid "The account that owns this template and can manage it in Saved Searches."
+msgstr "Налог који је власник овог шаблона и може да управља њиме у одељку Сачуване претраге."
+
+#: syslog_saved_searches.php
+msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
+msgstr "Корисници који могу да користе овај шаблон поред његовог власника. Опција Сви корисници дели га са свима."
+
+#: syslog_saved_searches.php
+msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
+msgstr "Групе које могу да користе овај шаблон поред његовог власника. Опција Све групе дели га са свима."
+
+#: syslog_saved_searches.php
+msgid "Search Query"
+msgstr "Упит претраге"
+
+#: syslog_saved_searches.php
+msgid "Correct the query syntax to use the query builder."
+msgstr "Исправите синтаксу упита да бисте користили градитељ упита."
+
+#: syslog_saved_searches.php
+msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
+msgstr "Изаберите поље, оператор и вредност. Користите И, ИЛИ, НЕ или Група да бисте направили упит. Измене се примењују на овај дељени шаблон за све кориснике."
