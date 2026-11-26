@@ -4,19 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-20 14:13-0500\n"
-"PO-Revision-Date: 2026-11-26 05:53+0000\n"
-"Last-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\n"
-"Language-Team: German <https://translate.cacti.net/projects/cacti/syslog/de/>\n"
-"Language: de-DE\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 10:50+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: German <https://translate.cacti.net/projects/cacti/syslog/de/>\nLanguage: de-DE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -576,7 +564,7 @@ msgstr "Syslog von %s auf %s aktualisieren? Vorhandene Meldungen und Regeln blei
 
 #: includes/installer.php
 msgid "What upgrade/install type do you wish to use"
-msgstr "Welchen Upgrade-/Installationstyp möchten Sie verwenden?"
+msgstr "Gewünschter Upgrade-/Installationstyp"
 
 #: includes/installer.php
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
@@ -3976,7 +3964,7 @@ msgstr "Berichtsregel aus Text importieren"
 
 #: syslog_reports.php
 msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
-msgstr "Wenn Sie über die XML-Datei verfügen, die die Definitionsdaten der Berichtsregel als Text enthält, können Sie sie in dieses Feld einfügen, um sie zu importieren."
+msgstr "Wenn Sie über die XML-Datei verfügen, welche die Definitionsdaten der Berichtsregel als Text enthält, können Sie diese in das Feld einfügen, um sie zu importieren."
 
 #: syslog_reports.php
 msgid "Import Report Data"
