@@ -4,19 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-20 14:13-0500\n"
-"PO-Revision-Date: 2026-11-26 05:53+0000\n"
-"Last-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\n"
-"Language-Team: Vietnamese <https://translate.cacti.net/projects/cacti/syslog/vi/>\n"
-"Language: vi-VN\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 10:50+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Vietnamese <https://translate.cacti.net/projects/cacti/syslog/vi/>\nLanguage: vi-VN\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=1; plural=0;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -668,7 +656,7 @@ msgstr "Cấp độ phân vùng"
 
 #: includes/installer.php
 msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
-msgstr "Kích thước của mỗi phân vùng thuộc bảng syslog và syslog_removed. Khuyến nghị dùng Hàng ngày. Hàng giờ yêu cầu thời gian lưu giữ hữu hạn, đồng thời thời gian lưu giữ và mức phân vùng phải nằm trong giới hạn phân vùng của máy chủ cơ sở dữ liệu. Để thay đổi mức này sau, hãy sửa trong Cài đặt và chạy cli/upgrade_partitioning.php."
+msgstr "Kích thước của mỗi phân vùng thuộc bảng syslog và syslog_removed. Khuyến nghị dùng Hàng ngày. Hàng giờ yêu cầu thời gian lưu giữ hữu hạn, và thời gian lưu giữ cùng mức phân vùng phải nằm trong giới hạn phân vùng của máy chủ cơ sở dữ liệu. Để thay đổi mức này sau, hãy sửa trong Cài đặt và chạy cli/upgrade_partitioning.php."
 
 #: includes/installer.php
 msgid "Upgrade"
@@ -1379,7 +1367,7 @@ msgstr "Không thể kết nối đến cơ sở dữ liệu Syslog. Không có 
 #: includes/utilities.php
 #, php-format
 msgid "There were %s Device records removed from the Syslog database"
-msgstr "Đã có %s bản ghi Thiết bị bị xóa khỏi cơ sở dữ liệu Syslog"
+msgstr "Đã xóa %s bản ghi Thiết bị khỏi cơ sở dữ liệu Syslog"
 
 #: includes/utilities.php
 msgid "Syslog Utilities"
@@ -1977,7 +1965,7 @@ msgstr "Tình trạng luồng xử lý"
 
 #: syslog.php
 msgid "Parallel workers"
-msgstr "Tiến trình song song"
+msgstr "Tiến trình đồng thời"
 
 #: syslog.php
 msgid "Worker processes"
@@ -2263,7 +2251,7 @@ msgstr "Thời gian chạy"
 
 #: syslog.php
 msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
-msgstr "Chưa có thống kê theo từng tiến trình nào được ghi nhận.  Thống kê tiến trình xử lý sẽ xuất hiện sau lần chạy song song đầu tiên."
+msgstr "Chưa có thống kê theo từng tiến trình nào được ghi nhận.  Thống kê tiến trình xử lý sẽ xuất hiện sau lần chạy đồng thời đầu tiên."
 
 #: syslog.php
 msgid "Duration"
