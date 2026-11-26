@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: German <https://translate.cacti.net/projects/cacti/syslog/de/>\nLanguage: de-DE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 05:53+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: German <https://translate.cacti.net/projects/cacti/syslog/de/>\nLanguage: de-DE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -660,7 +660,7 @@ msgstr "Die Größe jeder Partition der Tabellen syslog und syslog_removed. Täg
 
 #: includes/installer.php
 msgid "Upgrade"
-msgstr "Upgrade"
+msgstr "Aktualisierung"
 
 #: includes/installer.php
 msgid "Install"
@@ -1589,7 +1589,7 @@ msgstr "Letzte %d Monate"
 
 #: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
 msgid "Refresh"
-msgstr "Aktualisieren"
+msgstr "Neu laden"
 
 #: lib/syslog_dashboard.php
 msgid "My Dashboards"
@@ -1774,7 +1774,7 @@ msgstr "Überschritten seit"
 
 #: lib/syslog_thresholds.php
 msgid "Collector"
-msgstr "Collector"
+msgstr "Sammler"
 
 #: lib/syslog_thresholds.php syslog.php syslog_alerts.php
 #: syslog_device_rules.php
@@ -2009,7 +2009,7 @@ msgstr "Maximale Laufzeit"
 
 #: syslog.php
 msgid "State"
-msgstr "Bundesland"
+msgstr "Zustand"
 
 #: syslog.php
 msgid "Queued Recovery Records"
@@ -2775,7 +2775,7 @@ msgstr "Neue Warnungsregel"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "N/A"
-msgstr "Nicht verfügbar"
+msgstr "Nicht zutreffend"
 
 #: syslog_alerts.php
 msgid "Time unit"
@@ -3224,7 +3224,7 @@ msgstr "Freigegeben"
 
 #: syslog_dashboards.php
 msgid "Panels"
-msgstr "Panels"
+msgstr "Bereiche"
 
 #: syslog_dashboards.php
 msgid "deleted user"
