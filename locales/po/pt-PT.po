@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Portuguese (Portugal) <https://translate.cacti.net/projects/cacti/syslog/pt_PT/>\nLanguage: pt-PT\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n > 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 05:53+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Portuguese (Portugal) <https://translate.cacti.net/projects/cacti/syslog/pt_PT/>\nLanguage: pt-PT\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n > 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -67,7 +67,7 @@ msgstr "Turno do dia"
 
 #: includes/functions.php
 msgid "This Day"
-msgstr "&Uacuteltimo dia"
+msgstr "Este dia"
 
 #: includes/functions.php
 msgid "This Week"
@@ -669,7 +669,7 @@ msgstr "Instalar"
 #: includes/installer.php
 #, php-format
 msgid "Syslog %s Advisor"
-msgstr "Syslog %s Advisor"
+msgstr "Consultor Syslog %s"
 
 #: includes/installer.php
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
@@ -778,7 +778,7 @@ msgstr "Modelos de pesquisa guardados"
 #: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
 #: syslog_dashboards.php
 msgid "Dashboards"
-msgstr "Painéis"
+msgstr "Painéis de controlo"
 
 #: includes/navigation.php syslog_recommendations.php
 msgid "Syslog Recommendations"
@@ -1567,7 +1567,7 @@ msgstr "Última %d Horas"
 
 #: lib/syslog_dashboard.php
 msgid "Last Day"
-msgstr "&Uacuteltimo dia"
+msgstr "Último dia"
 
 #: lib/syslog_dashboard.php
 msgid "Last Week"
@@ -1589,7 +1589,7 @@ msgstr "Último %d Meses"
 
 #: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
 msgid "Refresh"
-msgstr "Atualizar"
+msgstr "Recarregar"
 
 #: lib/syslog_dashboard.php
 msgid "My Dashboards"
@@ -1720,7 +1720,7 @@ msgstr "Contagem de Topo"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Record Type"
-msgstr "Registros"
+msgstr "Tipo de registo"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "All Records"
@@ -2263,7 +2263,7 @@ msgstr "Fase"
 
 #: syslog.php
 msgid "Records"
-msgstr "Registros"
+msgstr "Registos"
 
 #: syslog.php
 msgid "Reference updates"
