@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Italian <https://translate.cacti.net/projects/cacti/syslog/it/>\nLanguage: it-IT\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 05:53+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Italian <https://translate.cacti.net/projects/cacti/syslog/it/>\nLanguage: it-IT\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -67,7 +67,7 @@ msgstr "Turno di giorno"
 
 #: includes/functions.php
 msgid "This Day"
-msgstr "Ultimo giorno"
+msgstr "Questo giorno"
 
 #: includes/functions.php
 msgid "This Week"
@@ -660,7 +660,7 @@ msgstr "La dimensione di ciascuna partizione delle tabelle syslog e syslog_remov
 
 #: includes/installer.php
 msgid "Upgrade"
-msgstr "Aggiorna"
+msgstr "Aggiorna versione"
 
 #: includes/installer.php
 msgid "Install"
@@ -669,7 +669,7 @@ msgstr "Installa"
 #: includes/installer.php
 #, php-format
 msgid "Syslog %s Advisor"
-msgstr "Syslog %s Advisor"
+msgstr "Assistente %s Syslog"
 
 #: includes/installer.php
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
@@ -778,7 +778,7 @@ msgstr "Modelli di ricerca salvati"
 #: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
 #: syslog_dashboards.php
 msgid "Dashboards"
-msgstr "Pannelli"
+msgstr "Cruscotti"
 
 #: includes/navigation.php syslog_recommendations.php
 msgid "Syslog Recommendations"
@@ -1314,7 +1314,7 @@ msgstr "Il nome host è"
 
 #: includes/settings.php
 msgid "Program is"
-msgstr "Programma"
+msgstr "Programma è"
 
 #: includes/settings.php
 msgid "Facility is"
@@ -1589,7 +1589,7 @@ msgstr "Ultimi %d Mesi"
 
 #: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
 msgid "Refresh"
-msgstr "Aggiorna"
+msgstr "Ricarica"
 
 #: lib/syslog_dashboard.php
 msgid "My Dashboards"
