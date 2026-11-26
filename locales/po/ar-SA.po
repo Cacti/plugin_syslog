@@ -4,19 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-20 14:13-0500\n"
-"PO-Revision-Date: 2026-11-26 05:53+0000\n"
-"Last-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\n"
-"Language-Team: Arabic (Saudi Arabia) <https://translate.cacti.net/projects/cacti/syslog/ar_SA/>\n"
-"Language: ar-SA\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 10:50+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Arabic (Saudi Arabia) <https://translate.cacti.net/projects/cacti/syslog/ar_SA/>\nLanguage: ar-SA\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -734,7 +722,7 @@ msgstr "ما هي طريقة إلغاء التثبيت التي تريد است�
 
 #: includes/installer.php
 msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
-msgstr "عند إلغاء تثبيت syslog ، يمكنك إزالة كل شيء ، أو المكونات فقط ، فقط في حالة التخطيط لإعادة التثبيت في المستقبل."
+msgstr "عند إلغاء تثبيت syslog، يمكنك إزالة كل شيء، أو المكونات فقط، وذلك في حال التخطيط لإعادة التثبيت في المستقبل."
 
 #: includes/installer.php
 msgid "Remove Everything (Logs, Tables, Settings)"
