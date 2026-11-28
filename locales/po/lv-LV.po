@@ -1,0 +1,4090 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-20 14:13-0500\n"
+"PO-Revision-Date: 2026-11-28 02:00+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Latvian <https://translate.cacti.net/projects/cacti/syslog/lv/>\n"
+"Language: lv-LV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n % 10 == 0 || n % 100 >= 11 && n % 100 <= 19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2);\n"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d minutes"
+msgstr "%d minūtes"
+
+#: includes/functions.php
+#, php-format
+msgid "%d hour"
+msgstr "%d stunda"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d hours"
+msgstr "%d stundas"
+
+#: includes/functions.php
+#, php-format
+msgid "%d day"
+msgstr "%d diena"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d days"
+msgstr "%d dienas"
+
+#: includes/functions.php
+#, php-format
+msgid "%d week"
+msgstr "%d nedēļa"
+
+#: includes/functions.php
+#, php-format
+msgid "%d weeks"
+msgstr "%d nedēļas"
+
+#: includes/functions.php
+#, php-format
+msgid "%d month"
+msgstr "%d mēnesis"
+
+#: includes/functions.php
+#, php-format
+msgid "%d months"
+msgstr "%d mēneši"
+
+#: includes/functions.php
+#, php-format
+msgid "%d year"
+msgstr "%d gads"
+
+#: includes/functions.php
+#, php-format
+msgid "%d years"
+msgstr "%d gadi"
+
+#: includes/functions.php
+msgid "Day Shift"
+msgstr "Dienas maiņa"
+
+#: includes/functions.php
+msgid "This Day"
+msgstr "Šodien"
+
+#: includes/functions.php
+msgid "This Week"
+msgstr "Šonedēļ"
+
+#: includes/functions.php
+msgid "This Month"
+msgstr "Šomēnes"
+
+#: includes/functions.php
+msgid "This Year"
+msgstr "Šogad"
+
+#: includes/functions.php
+msgid "Previous Day"
+msgstr "Iepriekšējā diena"
+
+#: includes/functions.php
+msgid "Previous Week"
+msgstr "Iepriekšējā nedēļa"
+
+#: includes/functions.php
+msgid "Previous Month"
+msgstr "Iepriekšējais mēnesis"
+
+#: includes/functions.php
+msgid "Previous Year"
+msgstr "Iepriekšējais gads"
+
+#: includes/functions.php
+msgid "Syslog download"
+msgstr "Syslog lejupielāde"
+
+#: includes/functions.php
+msgid "Share with users…"
+msgstr "Koplietot ar lietotājiem…"
+
+#: includes/functions.php
+msgid "Share with groups…"
+msgstr "Koplietot ar grupām…"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Emergency"
+msgstr "Ārkārtas"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Critical"
+msgstr "Kritisks"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Alert"
+msgstr "Trauksme"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Error"
+msgstr "Kļūda"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Warning"
+msgstr "Brīdinājums"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Notice"
+msgstr "Paziņojums"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "Informācija"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Debug"
+msgstr "Atkļūdošana"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Informational"
+msgstr "Informatīvs"
+
+#: includes/functions.php
+msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
+msgstr "Saglabāšana neizdevās. Attālajiem datu vācējiem sinhronizācijas režīmā nav atļauts saglabāt kārtulas. Saglabājiet tās galvenajā Cacti serverī."
+
+#: includes/functions.php
+msgid "Please use an HTML Email Client"
+msgstr "Lūdzu, izmantojiet HTML e-pasta klientu"
+
+#: includes/functions.php
+msgid "Text import payload exceeds the maximum size"
+msgstr "Teksta importa dati pārsniedz maksimālo izmēru"
+
+#: includes/functions.php
+msgid "Unable to read the uploaded import file. Check the file and upload size limit."
+msgstr "Nevar nolasīt augšupielādēto importa failu. Pārbaudiet failu un augšupielādes izmēra ierobežojumu."
+
+#: includes/functions.php
+msgid "Select an import file or paste its contents before importing."
+msgstr "Pirms importēšanas atlasiet importa failu vai ielīmējiet tā saturu."
+
+#: includes/functions.php
+msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
+msgstr "Syslog tabulas nav particionētas. Tradicionālās (neparticionētās) tabulas ir novecojušas, un jaunām instalācijām ir nepieciešamas particionētas tabulas. Jūsu dati turpinās tikt apkopoti, taču jums vajadzētu migrēt syslog tabulu uz particionētu arhitektūru."
+
+#: includes/functions.php
+msgid "Waiting for a completed processing run."
+msgstr "Gaida pabeigtu apstrādes ciklu."
+
+#: includes/functions.php
+msgid "Processing is completing within the allowed delay."
+msgstr "Apstrāde tiek pabeigta atļautās aizkaves ietvaros."
+
+#: includes/functions.php
+#, php-format
+msgid "No processing run has completed for more than %d seconds."
+msgstr "Neviens apstrādes cikls nav pabeigts vairāk nekā %d sekundes."
+
+#: includes/functions.php
+msgid "Incoming messages are within the configured limits."
+msgstr "Ienākošie ziņojumi nepārsniedz konfigurētos ierobežojumus."
+
+#: includes/functions.php
+msgid "Incoming queue metrics are unavailable."
+msgstr "Ienākošās rindas metrika nav pieejama."
+
+#: includes/functions.php
+#, php-format
+msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
+msgstr "Ienākošo neapstrādāto ziņojumu skaits (vismaz %s) pārsniedz ierobežojumu %s."
+
+#: includes/functions.php
+msgid "The oldest incoming message timestamp is unavailable."
+msgstr "Vecākā ienākošā ziņojuma laikspiedols nav pieejams."
+
+#: includes/functions.php
+#, php-format
+msgid "Unprocessed messages are older than %d seconds."
+msgstr "Neapstrādātie ziņojumi ir vecāki par %d sekundēm."
+
+#: includes/functions.php
+msgid "Synchronization is not enabled on this collector."
+msgstr "Sinhronizācija šajā datu vācējā nav iespējota."
+
+#: includes/functions.php
+msgid "Synchronization is within the allowed delay."
+msgstr "Sinhronizācija iekļaujas atļautajā aizkavē."
+
+#: includes/functions.php
+msgid "Synchronization queue metrics are unavailable."
+msgstr "Sinhronizācijas rindas metrika nav pieejama."
+
+#: includes/functions.php
+msgid "The oldest synchronization record timestamp is unavailable."
+msgstr "Vecākā sinhronizācijas ieraksta laikspiedols nav pieejams."
+
+#: includes/functions.php
+msgid "Synchronization has failed or queued records exceed the allowed delay."
+msgstr "Sinhronizācija neizdevās vai rindā esošie ieraksti pārsniedz atļauto aizkavi."
+
+#: includes/functions.php
+msgid "Partition maintenance is not blocked."
+msgstr "Partīciju uzturēšana nav bloķēta."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition maintenance is blocked: %s"
+msgstr "Partīciju uzturēšana ir bloķēta: %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Syslog pipeline health - collector %d"
+msgstr "Syslog apstrādes konveijera stāvoklis - datu vācējs %d"
+
+#: includes/functions.php
+msgid "The Syslog pipeline has recovered."
+msgstr "Syslog apstrādes konveijers ir atjaunojies."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
+msgstr "Tabulas %s partīciju izkārtojums nav derīgs vai ir nepilnīgs; partīciju uzturēšana ir apturēta. Pārbaudiet partīciju metadatus ar SHOW CREATE TABLE un, ja nepieciešams, pārbūvējiet partīcijas; ieraksti turpinās dMaxValue drošības partīcijā."
+
+#: includes/functions.php
+#, php-format
+msgid "remaining partition gap: %d partition(s)"
+msgstr "atlikušais partīciju iztrūkums: %d partīcija(-as)"
+
+#: includes/functions.php
+msgid "no retention deferral"
+msgstr "glabāšanas termiņa atlikšanas nav"
+
+#: includes/functions.php
+msgid "retention pruning deferred until the future horizon is restored"
+msgstr "vecu datu dzēšana atlikta, līdz tiks atjaunots nākotnes partīciju horizonts"
+
+#: includes/functions.php
+msgid "new records are accumulating in the dMaxValue safety partition"
+msgstr "jauni ieraksti uzkrājas dMaxValue drošības partīcijā"
+
+#: includes/functions.php
+msgid "per run recovery limit reached"
+msgstr "sasniegts viena cikla atkopšanas ierobežojums"
+
+#: includes/functions.php
+msgid "partition creation failed"
+msgstr "partīcijas izveide neizdevās"
+
+#: includes/functions.php
+msgid "Unknown partitioning level; choose Hourly or Daily."
+msgstr "Nezināms particionēšanas līmenis; izvēlieties \"Ikstundas\" vai \"Ikdienas\"."
+
+#: includes/functions.php
+msgid "The Syslog retention is invalid."
+msgstr "Syslog glabāšanas termiņš nav derīgs."
+
+#: includes/functions.php
+msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
+msgstr "Ikstundas particionēšanu nevar izmantot ar nenoteiktu glabāšanas termiņu, jo tam būtu nepieciešams neierobežots partīciju skaits. Izvēlieties glabāšanas periodu vai ikdienas particionēšanu."
+
+#: includes/functions.php
+#, php-format
+msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
+msgstr "%s particionēšanai ar %s dienu glabāšanas termiņu un %s dienu iepriekšējas izveides logu nepieciešamas %s partīcijas katrai tabulai, kas pārsniedz šī datubāzes servera ierobežojumu (%s partīcijas). Samaziniet glabāšanas termiņu, saīsiniet iepriekšējas izveides logu vai izvēlieties ikdienas particionēšanu."
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Daily"
+msgstr "Ikdienas"
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Hourly"
+msgstr "Ikstundas"
+
+#: includes/functions.php
+#, php-format
+msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
+msgstr "Tabulas joprojām izmanto %s partīcijas, līdz cli/upgrade_partitioning.php tās pārbūvēs."
+
+#: includes/functions.php
+msgid "The partitioning level of the existing Syslog tables could not be read."
+msgstr "Nevarēja nolasīt esošo Syslog tabulu particionēšanas līmeni."
+
+#: includes/functions.php
+msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
+msgstr "Automātiskā partīciju atkopšana ir atlikta: dMaxValue izmērs nav pieejams; nepieciešama operatora iejaukšanās."
+
+#: includes/functions.php
+#, php-format
+msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
+msgstr "Automātiskā partīciju atkopšana ir atlikta: dMaxValue satur aptuveni %s rindas un %s baitus; ierobežojumi ir 100000 rindu un 134217728 baiti. Nepieciešama operatora iejaukšanās."
+
+#: includes/functions.php
+msgid "Unknown rule type."
+msgstr "Nezināms kārtulas tips."
+
+#: includes/functions.php
+msgid "The configured incoming field mapping is invalid."
+msgstr "Konfigurētais ienākošo lauku kartējums nav derīgs."
+
+#: includes/functions.php
+msgid "The facility of this rule is not in the reference table yet."
+msgstr "Šīs kārtulas kategorija vēl nav atsauces tabulā."
+
+#: includes/functions.php
+msgid "Unknown rule match type."
+msgstr "Nezināms kārtulas atbilstības tips."
+
+#: includes/functions.php
+msgid "The rule did not compile to a query."
+msgstr "Kārtulu neizdevās kompilēt vaicājumā."
+
+#: includes/functions.php
+msgid "The preview query could not be evaluated."
+msgstr "Priekšskatījuma vaicājumu neizdevās izpildīt."
+
+#: includes/functions.php
+msgid "The historical preview filter could not be compiled."
+msgstr "Vēsturiskā priekšskatījuma filtru neizdevās kompilēt."
+
+#: includes/functions.php
+msgid "The historical preview query could not be evaluated."
+msgstr "Vēsturiskā priekšskatījuma vaicājumu neizdevās izpildīt."
+
+#: includes/functions.php
+msgid "The preview sample could not be read."
+msgstr "Priekšskatījuma paraugu neizdevās nolasīt."
+
+#: includes/functions.php
+msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
+msgstr "SQL izteiksmes priekšskatījumi pārbauda tikai rindā esošos ienākošos ziņojumus. Jau apstrādātie ziņojumi netiek meklēti. Testēšana nesūta trauksmes."
+
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Permission denied."
+msgstr "Piekļuve liegta."
+
+#: includes/functions.php includes/utilities.php syslog.php
+msgid "Invalid request. Please try again."
+msgstr "Nederīgs pieprasījums. Lūdzu, mēģiniet vēlreiz."
+
+#: includes/functions.php
+msgid "The rule has no match expression to test."
+msgstr "Kārtulai nav testējamas atbilstības izteiksmes."
+
+#: includes/functions.php
+msgid "The match expression is too long to test."
+msgstr "Atbilstības izteiksme ir pārāk gara, lai to testētu."
+
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
+msgid "Unknown"
+msgstr "Nezināms"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
+msgstr "Cacti Syslog sliekšņa trauksme '%s' resursdatoram '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "Cacti Syslog sliekšņa trauksme '%s'"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+msgid "Alert Name"
+msgstr "Trauksmes nosaukums"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+#: syslog_recommendations.php
+msgid "Severity"
+msgstr "Smaguma pakāpe"
+
+#: includes/functions.php syslog_alerts.php
+msgid "Threshold"
+msgstr "Slieksnis"
+
+#: includes/functions.php syslog.php
+msgid "Count"
+msgstr "Skaits"
+
+#: includes/functions.php
+msgid "Match String"
+msgstr "Atbilstības virkne"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s' for Host '%s'"
+msgstr "Cacti Syslog trauksme '%s' resursdatoram '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s'"
+msgstr "Cacti Syslog trauksme '%s'"
+
+#: includes/functions.php
+msgid "Hostname"
+msgstr "Resursdatora nosaukums"
+
+#: includes/functions.php syslog.php
+msgid "Date"
+msgstr "Datums"
+
+#: includes/functions.php
+msgid "Level"
+msgstr "Līmenis"
+
+#: includes/functions.php includes/recommendations.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Message"
+msgstr "Ziņojums"
+
+#: includes/functions.php
+#, php-format
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
+msgstr "BRĪDINĀJUMS: Resursdatoram '%s' ir aktivizēta Syslog sliekšņa trauksme"
+
+#: includes/functions.php
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
+msgstr "BRĪDINĀJUMS: Ir aktivizēta Syslog sliekšņa trauksme"
+
+#: includes/functions.php
+msgid "Name:"
+msgstr "Nosaukums:"
+
+#: includes/functions.php
+msgid "Severity:"
+msgstr "Smaguma pakāpe:"
+
+#: includes/functions.php
+msgid "Threshold:"
+msgstr "Slieksnis:"
+
+#: includes/functions.php
+msgid "Count:"
+msgstr "Skaits:"
+
+#: includes/functions.php
+msgid "Message String:"
+msgstr "Ziņojuma virkne:"
+
+#: includes/functions.php
+msgid "Hostname:"
+msgstr "Resursdatora nosaukums:"
+
+#: includes/functions.php
+msgid "Date:"
+msgstr "Datums:"
+
+#: includes/functions.php
+msgid "Level:"
+msgstr "Līmenis:"
+
+#: includes/functions.php
+msgid "Message:"
+msgstr "Ziņojums:"
+
+#: includes/functions.php
+msgid ", Host:"
+msgstr ", Resursdators:"
+
+#: includes/functions.php
+msgid ", URL:"
+msgstr ", URL:"
+
+#: includes/functions.php
+msgid "Sev:"
+msgstr "Smag.:"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Alert - %s"
+msgstr "Notikuma trauksme - %s"
+
+#: includes/functions.php
+msgid ", Count:"
+msgstr ", Skaits:"
+
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php syslog_reports.php
+msgid "Host"
+msgstr "Resursdators"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Report - %s"
+msgstr "Notikumu atskaite - %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
+msgstr "Atskaites priekšskatījumi meklē %d jaunākajos saglabātajos ziņojumos; pati atskaite aptver visu savu laika periodu. Testēšana nesūta e-pastu."
+
+#: includes/functions.php
+msgid "Grouped results are unavailable or expired. Refresh the results and try again."
+msgstr "Grupētie rezultāti nav pieejami vai to derīguma termiņš ir beidzies. Atsvaidziniet rezultātus un mēģiniet vēlreiz."
+
+#: includes/functions.php syslog.php
+msgid "Group messages could not be loaded."
+msgstr "Grupas ziņojumus neizdevās ielādēt."
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "No"
+msgstr "Nē"
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "Yes"
+msgstr "Jā"
+
+#: includes/functions.php
+msgid "All Text"
+msgstr "Viss teksts"
+
+#: includes/functions.php
+msgid "Fit Column"
+msgstr "Pielāgot kolonnai"
+
+#: includes/functions.php
+#, php-format
+msgid "%d Chars"
+msgstr "%d rakstzīmes"
+
+#: includes/installer.php
+msgid "Syslog Upgrade Advisor"
+msgstr "Syslog jaunināšanas palīgs"
+
+#: includes/installer.php
+#, php-format
+msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
+msgstr "Vai jaunināt Syslog no %s uz %s? Esošie ziņojumi un kārtulas tiks saglabātas. Shēmas izmaiņas var aizņemt laiku."
+
+#: includes/installer.php
+msgid "What upgrade/install type do you wish to use"
+msgstr "Kādu jaunināšanas/instalēšanas veidu vēlaties izmantot"
+
+#: includes/installer.php
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
+msgstr "Ja tabulas ir ļoti lielas, tabulas iztukšošana (Truncate) būs daudz ātrāka. Ja jums ir svarīgi arhīva dati, varat izvēlēties vai nu tiešsaistes jaunināšanu, kas uz jaunināšanas laiku iesaldēs pārlūkprogrammu, vai fona jaunināšanu, kas izveidos fona procesu, lai pārvietotu vecos syslog datus no dublējuma tabulas uz jauno syslog formātu. Arī šis process var aizņemt vairākas stundas. Tabulas iztukšošana izdzēš tikai saglabātos syslog un noņemtos ziņojumus; trauksmes, noņemšanas un atskaišu kārtulas vienmēr tiek saglabātas."
+
+#: includes/installer.php
+msgid "Truncate Syslog Table"
+msgstr "Iztukšot Syslog tabulu"
+
+#: includes/installer.php
+msgid "Inline Upgrade"
+msgstr "Tiešsaistes jaunināšana"
+
+#: includes/installer.php
+msgid "Background Upgrade"
+msgstr "Fona jaunināšana"
+
+#: includes/installer.php
+msgid "Database Storage Engine"
+msgstr "Datubāzes krātuves dzinis"
+
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
+msgstr "Krātuves dzinis analītiskajām tabulām. Tiek atbalstīts tikai InnoDB un, izmantojot MariaDB, Aria krātuves dzinis. Jebkurai attālā datu vācēja opcijai nepieciešams InnoDB; nesaderīgas kombinācijas nevar iesniegt."
+
+#: includes/installer.php
+msgid "InnoDB Storage"
+msgstr "InnoDB krātuve"
+
+#: includes/installer.php
+msgid "Aria Storage"
+msgstr "Aria krātuve"
+
+#: includes/installer.php
+msgid "Timestamp Precision"
+msgstr "Laikspiedola precizitāte"
+
+#: includes/installer.php
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
+msgstr "Milisekunžu precizitāte saglabā sekundes daļu syslog laikspiedolus TIMESTAMP(3) kolonnā un ir pieejama tikai MariaDB. Sekunžu precizitāte izmanto standarta TIMESTAMP kolonnu. Produkcijas sistēmā izmantojiet cli/upgrade_partitioning.php --convert-ms apkopes loga laikā, lai konvertētu esošos ziņojumus tos neizdzēšot."
+
+#: includes/installer.php
+msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
+msgstr "Milisekunde - TIMESTAMP(3) (tikai MariaDB)"
+
+#: includes/installer.php
+msgid "Second - TIMESTAMP"
+msgstr "Sekunde - TIMESTAMP"
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Message Processing"
+msgstr "Attālā ziņojumu apstrāde"
+
+#: includes/installer.php includes/settings.php
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "Iespējot attālā datu vācēja ziņojumu apstrādi"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "Ja jūsu attālajiem datu vācējiem ir savas Syslog datubāzes un tie apstrādā savus ziņojumus neatkarīgi, atzīmējiet šo izvēles rūtiņu. Atzīmējot šo izvēles rūtiņu, attālajiem datu vācējiem būs jāuztur savs 'config_local.php' fails, lai norādītu Syslog izmantot neatkarīgu datubāzi ziņojumu attēlošanai un apstrādei. Šim nolūkam izmantojiet veidnes failu 'config_local.php.dist'. BRĪDINĀJUMS: Syslog tabulas tiks automātiski izveidotas, tiklīdz šī opcija tiks iespējota."
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Data Collector Rules Sync"
+msgstr "Attālā datu vācēja kārtulu sinhronizācija"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "Ja jūsu attālajiem datu vācējiem ir savas Syslog datubāzes un tie apstrādā savus ziņojumus neatkarīgi, atzīmējiet šo izvēles rūtiņu, ja vēlaties, lai galvenās Cacti datubāzes trauksmes, noņemšanas un atskaišu kārtulas tiktu nosūtītas attālajai Cacti sistēmai."
+
+#: includes/installer.php includes/settings.php
+msgid "Store Records on Remote Collector"
+msgstr "Saglabāt ierakstus attālajā datu vācējā"
+
+#: includes/installer.php includes/settings.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr "Saglabāt apstrādātos ziņojumus attālā datu vācēja syslog tabulā pēc tam, kad tie ir piegādāti galvenajam datu vācējam. Kad šī opcija ir atspējota, ieraksti tiek saglabāti lokāli tikai tikmēr, kamēr galvenais datu vācējs nav pieejams, un tiek noņemti pēc apstiprinātas atkopšanas piegādes."
+
+#: includes/installer.php
+msgid "Retention Policy"
+msgstr "Saglabāšanas politika"
+
+#: includes/installer.php
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "Izvēlieties, cik dienu Syslog datus vēlaties saglabāt datubāzē."
+
+#: includes/installer.php includes/settings.php
+msgid "Partitioning Level"
+msgstr "Particionēšanas līmenis"
+
+#: includes/installer.php
+msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
+msgstr "Katras syslog un syslog_removed tabulu partīcijas izmērs. Ieteicams ir ikdienas līmenis. Ikstundas līmenim nepieciešams ierobežots saglabāšanas periods, un saglabāšanas periodam kopā ar particionēšanas līmeni jāiekļaujas datubāzes servera partīciju ierobežojumā. Lai līmeni mainītu vēlāk, nomainiet to iestatījumos un palaidiet cli/upgrade_partitioning.php."
+
+#: includes/installer.php
+msgid "Upgrade"
+msgstr "Jaunināt"
+
+#: includes/installer.php
+msgid "Install"
+msgstr "Instalēt"
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Advisor"
+msgstr "Syslog %s palīgs"
+
+#: includes/installer.php
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "BRĪDINĀJUMS: Syslog jaunināšana aizņem daudz laika!!!"
+
+#: includes/installer.php
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
+msgstr "Galvenās ('main') syslog tabulas jaunināšana var būt ļoti laikietilpīgs process. Tāpēc pirms jaunināšanas ieteicams vai nu samazināt syslog tabulas izmēru, vai izvēlēties fona opciju."
+
+#: includes/installer.php
+msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
+msgstr "Ja izvēlēsieties fona opciju, jūsu vecā syslog tabula tiks pārdēvēta un tiks izveidota jauna syslog tabula. Pēc tam fonā tiks palaists jaunināšanas process. Arī šī fona procesa pabeigšana var aizņemt diezgan ilgu laiku, taču jūsu dati tiks saglabāti."
+
+#: includes/installer.php
+msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
+msgstr "Neatkarīgi no jūsu izvēles visas esošās noņemšanas un trauksmes kārtulas jaunināšanas procesā tiks saglabātas."
+
+#: includes/installer.php
+msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Nospiediet <b>'Jaunināt'</b>, lai turpinātu jaunināšanu, vai <b>'Atcelt'</b>, lai atgrieztos spraudņu izvēlnē."
+
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
+msgstr "Varat arī iestatīt datubāzes krātuves dzini analītiskajām tabulām syslog un syslog_remove. Tiek atbalstīts tikai InnoDB krātuves dzinis un, izmantojot MariaDB, Aria krātuves dzinis. Ja izmantojat MariaDB, iesakām Aria krātuves dzini, ja nav iespējota neviena attālā datu vācēja opcija; datu vācēja opcijām nepieciešams InnoDB."
+
+#: includes/installer.php
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "Instalējot Syslog, varat izvēlēties no vairākām opcijām. Pirmā ir datubāzes arhitektūra. Particionētas tabulas ir vienīgā atbalstītā arhitektūra, jo tās neļauj tabulu izmēram kļūt pārmērīgam un palēnināt vaicājumus. Tradicionālās neparticionētās tabulas ir novecojušas un jaunām instalācijām vairs netiek piedāvātas."
+
+#: includes/installer.php
+msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
+msgstr "Varat arī izvēlēties laikspiedola precizitāti. Milisekunžu precizitāte (TIMESTAMP(3)) saglabā ienākošo ziņojumu secību ar sekundes daļu precizitāti un ir pieejama tikai MariaDB; MySQL instalācijas izmanto sekunžu precizitāti. To vēlāk nevar mainīt uz vietas, neizdzēšot saglabātos ziņojumus."
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr "Aria krātuve nav pieejama, kamēr ir iespējota jebkura attālā datu vācēja opcija. Ir atlasīts InnoDB."
+
+#: includes/installer.php
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "Varat arī izvēlēties saglabāšanas ilgumu. Lūdzu, ņemiet vērā, ka tad, ja syslog žurnālā raksta vairāki resursdatori, šī tabula var kļūt diezgan liela."
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Settings"
+msgstr "Syslog %s iestatījumi"
+
+#: includes/installer.php
+msgid "What uninstall method do you want to use?"
+msgstr "Kādu atinstalēšanas metodi vēlaties izmantot?"
+
+#: includes/installer.php
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "Atinstalējot syslog, varat noņemt visu vai tikai komponentus, ja nākotnē plānojat to instalēt atkārtoti."
+
+#: includes/installer.php
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "Noņemt visu (žurnālus, tabulas, iestatījumus)"
+
+#: includes/installer.php
+msgid "Syslog Data Only"
+msgstr "Tikai Syslog datus"
+
+#: includes/installer.php
+msgid "Syslog Uninstall Preferences"
+msgstr "Syslog atinstalēšanas preferences"
+
+#: includes/installer.php
+msgid "Uninstall"
+msgstr "Atinstalēt"
+
+#: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Cancel"
+msgstr "Atcelt"
+
+#: includes/navigation.php includes/settings.php
+msgid "Syslog"
+msgstr "Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Removals"
+msgstr "Syslog noņemšanas"
+
+#: includes/navigation.php
+msgid "(Edit)"
+msgstr "(Rediģēt)"
+
+#: includes/navigation.php
+msgid "(Actions)"
+msgstr "(Darbības)"
+
+#: includes/navigation.php
+msgid "Syslog Alerts"
+msgstr "Syslog trauksmes"
+
+#: includes/navigation.php
+msgid "Syslog Reports"
+msgstr "Syslog atskaites"
+
+#: includes/navigation.php includes/settings.php syslog_saved_searches.php
+msgid "Saved Search Templates"
+msgstr "Saglabātās meklēšanas veidnes"
+
+#: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
+#: syslog_dashboards.php
+msgid "Dashboards"
+msgstr "Informācijas paneļi"
+
+#: includes/navigation.php syslog_recommendations.php
+msgid "Syslog Recommendations"
+msgstr "Syslog ieteikumi"
+
+#: includes/navigation.php
+msgid "(Import)"
+msgstr "(Importēt)"
+
+#: includes/navigation.php
+msgid "Display Syslog in Range"
+msgstr "Rādīt Syslog diapazonā"
+
+#: includes/recommendations.php
+msgid "the identifier is empty"
+msgstr "identifikators ir tukšs"
+
+#: includes/recommendations.php
+msgid "the identifier is longer than 190 characters"
+msgstr "identifikators ir garāks par 190 rakstzīmēm"
+
+#: includes/recommendations.php
+msgid "the identifier contains spaces or line breaks"
+msgstr "identifikators satur atstarpes vai rindas pārtraukumus"
+
+#: includes/recommendations.php
+msgid "it has neither an explanation nor a recommended action"
+msgstr "tam nav ne paskaidrojuma, ne ieteicamās darbības"
+
+#: includes/recommendations.php
+msgid "it is not a JSON object"
+msgstr "tas nav JSON objekts"
+
+#: includes/recommendations.php syslog.php
+msgid "Recommendations could not be loaded."
+msgstr "Neizdevās ielādēt ieteikumus."
+
+#: includes/recommendations.php
+msgid "Recommendation available - click the message for details"
+msgstr "Pieejams ieteikums - noklikšķiniet uz ziņojuma, lai skatītu detalizētu informāciju"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Explanation"
+msgstr "Paskaidrojums"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Recommended Action"
+msgstr "Ieteicamā darbība"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Reference"
+msgstr "Atsauce"
+
+#: includes/settings.php
+msgid "Monday"
+msgstr "Pirmdiena"
+
+#: includes/settings.php
+msgid "Tuesday"
+msgstr "Otrdiena"
+
+#: includes/settings.php
+msgid "Wednesday"
+msgstr "Trešdiena"
+
+#: includes/settings.php
+msgid "Friday"
+msgstr "Piektdiena"
+
+#: includes/settings.php
+msgid "Saturday"
+msgstr "Sestdiena"
+
+#: includes/settings.php
+msgid "Sunday"
+msgstr "Svētdiena"
+
+#: includes/settings.php
+msgid "Thursday"
+msgstr "Ceturtdiena"
+
+#: includes/settings.php
+msgid "Monday through Friday"
+msgstr "No pirmdienas līdz piektdienai"
+
+#: includes/settings.php
+msgid "Saturday and Sunday"
+msgstr "Sestdiena un svētdiena"
+
+#: includes/settings.php
+msgid "Every day"
+msgstr "Katru dienu"
+
+#: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Disabled"
+msgstr "Atspējots"
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_reports.php
+msgid "None"
+msgstr "Nav"
+
+#: includes/settings.php
+msgid "General Settings"
+msgstr "Vispārīgie iestatījumi"
+
+#: includes/settings.php
+msgid "Syslog Enabled"
+msgstr "Syslog iespējots"
+
+#: includes/settings.php
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "Ja šī izvēles rūtiņa ir atzīmēta, ieraksti tiks pārsūtīti no Syslog ienākošo ziņojumu tabulas uz galveno syslog tabulu, un tiks iespējotas trauksmes un atskaites. Lūdzu, ņemiet vērā, ka sistēmas atspējošanas gadījumā žurnāla ieraksti joprojām uzkrāsies Syslog ienākošo ziņojumu tabulā, jo to nosaka rsyslog vai syslog-ng process."
+
+#: includes/settings.php
+msgid "Forward alarms to Alarm Manager"
+msgstr "Pārsūtīt trauksmes uz trauksmju pārvaldnieku"
+
+#: includes/settings.php
+msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
+msgstr "Atļaut kārtulām, kas iestatītas trauksmju pārvaldniekam, pārsūtīt trauksmes. Syslog e-pasts paliek kā rezerves variants; komandu darbības tiek izpildītas tikai Syslog trauksmes kārtulām."
+
+#: includes/settings.php
+msgid "Strip Domains"
+msgstr "Noņemt domēnus"
+
+#: includes/settings.php
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "Ar komatiem atdalīts domēnu saraksts, kurus vēlaties noņemt no syslog resursdatora nosaukuma, piemēram, 'mydomain.com, otherdomain.com'"
+
+#: includes/settings.php
+msgid "Refresh Interval"
+msgstr "Atsvaidzināšanas intervāls"
+
+#: includes/settings.php
+msgid "This is the time in seconds before the page refreshes."
+msgstr "Laiks sekundēs līdz lapas atsvaidzināšanai."
+
+#: includes/settings.php
+msgid "Skip Total Row Count"
+msgstr "Izlaist kopējo rindu skaitīšanu"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
+msgstr "Ja šī izvēles rūtiņa ir atzīmēta, cilnes Sistēmas žurnāli un Trauksmes žurnāli neskaita katru atbilstošo ierakstu, kas lielās instalācijās var būt ļoti resursu ietilpīgi. Kopskaita un lapu saraksta vietā lapā tiek rādītas saites Iepriekšējā un Nākamā, un saite Nākamā tiek piedāvāta, kamēr ir pieejami vēl ieraksti."
+
+#: includes/settings.php
+msgid "Max Report Records"
+msgstr "Maks. atskaites ieraksti"
+
+#: includes/settings.php
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "Maksimālais ierakstu skaits, ko vēlaties rādīt atskaitē uz sliekšņiem balstītām trauksmēm. To izmanto, lai ierobežotu HTML žurnāla un e-pasta izmēru."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Records"
+msgstr "%d ieraksti"
+
+#: includes/settings.php
+msgid "Maximum Syslog Processing Processes"
+msgstr "Maksimālais Syslog apstrādes procesu skaits"
+
+#: includes/settings.php
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr "Ja iestatīts lielāks par 1, ienākošo ziņojumu apstrāde tiek sadalīta starp paralēliem darba procesiem. Katrs darba process apstrādā atsevišķu ienākošo ziņojumu diapazonu, paātrinot resursdatoru nosaukumu atrisināšanu un ziņojumu pārsūtīšanu lielas slodzes apstākļos. Iestatījums 1 apstrādā visus ziņojumus vienā procesā. Darba procesi netiek atbalstīti operētājsistēmā Windows vai gadījumā, ja nav pieejami PHP pcntl un POSIX paplašinājumi; šādā gadījumā apstrāde notiek vienā procesā."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Process"
+msgstr "%d darba process"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Processes"
+msgstr "%d darba procesi"
+
+#: includes/settings.php
+msgid "Command for Opening Tickets"
+msgstr "Komanda pieteikumu atvēršanai"
+
+#: includes/settings.php
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "Šī komanda tiks izpildīta palīdzības dienesta pieteikumu atvēršanai. Komandai būs jāapstrādā šādi ievades parametri: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>. Parametrs hostlist būs ar komatiem atdalīts trauksmes skarto resursdatoru saraksts."
+
+#: includes/settings.php
+msgid "Host Discovery Options"
+msgstr "Resursdatoru atklāšanas opcijas"
+
+#: includes/settings.php
+msgid "Enable Hostname Resolution"
+msgstr "Iespējot resursdatoru nosaukumu atrisināšanu"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr "Ja šī izvēles rūtiņa ir atzīmēta, visi resursdatoru nosaukumi vispirms tiek atrisināti, izmantojot DNS vaicājumu (ja tas ir iespējots) ar A un AAAA ierakstiem. IPv4 un IPv6 adresēm vaicājums nav nepieciešams, un IPv6 adreses tiek saglabātas saspiestā mazo burtu formā. Ja DNS vaicājums neizdodas, sistēma mēģina atrisināt resursdatora nosaukumu Cacti resursdatoru tabulā un aizstāj to ar Cacti resursdatora aprakstu. Ja neizdodas ne DNS, ne Cacti meklēšana, ierakstiem tiek piešķirts prefikss 'unresolved-Original_hostname'."
+
+#: includes/settings.php
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr "Izlaist DNS atrisināšanu ienākošajiem resursdatoriem"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr "Ja šī izvēles rūtiņa ir atzīmēta, sistēma nemēģinās atrisināt resursdatorus, izmantojot DNS vaicājumus. Tas ir noderīgi vidēs, kur DNS atrisināšana nav iespējama vai nav vēlama."
+
+#: includes/settings.php
+msgid "HTML Notification Settings"
+msgstr "HTML paziņojumu iestatījumi"
+
+#: includes/settings.php
+msgid "Enable HTML Based Email"
+msgstr "Iespējot HTML formāta e-pastus"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "Ja šī izvēles rūtiņa ir atzīmēta, visi e-pasti tiks sūtīti HTML formātā. Pretējā gadījumā e-pasti tiks sūtīti vienkārša teksta formātā."
+
+#: includes/settings.php
+msgid "Format File to Use"
+msgstr "Izmantojamais formāta fails"
+
+#: includes/settings.php
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr "Izvēlieties izmantojamo pielāgoto HTML ietvara un CSS failu. Šajā failā ir gan HTML, gan CSS jūsu atskaites noformēšanai. Ja tas satur vairāk nekā tikai CSS, failā jāievieto īpašs <REPORT> tags. Šis formāta tags tiks aizstāts ar atskaites saturu. Šie faili atrodas direktorijā 'formats'."
+
+#: includes/settings.php
+msgid "Data Retention and Partitioning"
+msgstr "Datu saglabāšana un particionēšana"
+
+#: includes/settings.php
+msgid "Syslog Retention"
+msgstr "Syslog saglabāšana"
+
+#: includes/settings.php
+msgid "This is the number of days to keep events."
+msgstr "Dienu skaits, cik ilgi saglabāt notikumus."
+
+#: includes/settings.php
+msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
+msgstr "Katras syslog un syslog_removed tabulu partīcijas izmērs. Izmaiņas tiek saglabātas šeit, taču stājas spēkā tikai tad, kad cli/upgrade_partitioning.php pārbūvē abas tabulas; līdz tam partīciju uzturēšana saglabā esošo izmēru. Ikstundas particionēšanai nepieciešams ierobežots saglabāšanas periods. Saglabāšanas periodam, iepriekšējas izveides logam un particionēšanas līmenim kopā jāiekļaujas datubāzes servera partīciju ierobežojumā, pretējā gadījumā iestatījumi netiek saglabāti."
+
+#: includes/settings.php
+msgid "Partition Pre-create Window"
+msgstr "Partīciju iepriekšējas izveides logs"
+
+#: includes/settings.php
+msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
+msgstr "Dienu skaits nākotnes partīcijām, kas jāuztur particionētajām Syslog tabulām, lai jaunas partīcijas vienmēr tiktu atdalītas no tukšas dMaxValue partīcijas. Ikstundas particionēšana vienmēr saglabā vismaz 2 dienas."
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Day"
+msgstr "%d diena"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Days"
+msgstr "%d dienas"
+
+#: includes/settings.php
+msgid "Partition Recovery Limit"
+msgstr "Partīciju atkopšanas ierobežojums"
+
+#: includes/settings.php
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr "Ja trūkst partīciju (piemēram, pēc apkopes dīkstāves), katrā aptaujātāja palaišanas reizē katrai tabulai tiek izveidots ne vairāk kā šis trūkstošo partīciju skaits. Atlikušais iztrūkums tiek novērsts nākamajās palaišanas reizēs; saglabāšanas tīrīšana tiek atlikta, līdz nākotnes partīciju horizonts ir pilnībā atjaunots. Attiecas tikai uz particionētām Syslog tabulām."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partition per run"
+msgstr "%d partīcija palaišanas reizē"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partitions per run"
+msgstr "%d partīcijas palaišanas reizē"
+
+#: includes/settings.php
+msgid "Collector Staleness Threshold"
+msgstr "Datu vācēja novecošanās slieksnis"
+
+#: includes/settings.php
+msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
+msgstr "Apstrādes konveijera darbības trauksmes brīdina, ja neapstrādāti ziņojumi, apstrādes pabeigšana vai rindā gaidošā sinhronizācija pārsniedz šo aizkavi. Faktiskā aizkave ir vismaz trīs aptaujātāja intervāli un 300 sekundes. Iestatiet 0, lai izmantotu 300 sekundes."
+
+#: includes/settings.php
+msgid "Default (300 seconds)"
+msgstr "Noklusējuma (300 sekundes)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d seconds"
+msgstr "%d sekundes"
+
+#: includes/settings.php
+msgid "Collector Backlog Threshold"
+msgstr "Datu vācēja uzkrājuma slieksnis"
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr "Syslog statusa lapā tiek rādīts brīdinājums, ja Syslog ienākošo ziņojumu tabulā neapstrādāti uzkrājas vairāk par šo ziņojumu skaitu. Iestatiet 0, lai izmantotu noklusējuma vērtību 10000 ziņojumu."
+
+#: includes/settings.php
+msgid "Default (10000 messages)"
+msgstr "Noklusējuma (10000 ziņojumu)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Messages"
+msgstr "%d ziņojumi"
+
+#: includes/settings.php
+msgid "Pipeline Health Alerts"
+msgstr "Apstrādes konveijera darbības trauksmes"
+
+#: includes/settings.php
+msgid "Pipeline Health Notification List"
+msgstr "Apstrādes konveijera darbības paziņojumu saraksts"
+
+#: includes/settings.php
+msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
+msgstr "Atlasiet esošu Thold paziņojumu sarakstu apstrādes konveijera darbības trauksmēm. Iespējotā saraksta adresāti tiek apvienoti ar tālāk norādītajām e-pasta adresēm, saglabājot BCC adresātus. Sarakstiem nepieciešama Thold paziņojumu sarakstu tabula."
+
+#: includes/settings.php
+msgid "Pipeline Health Email Recipients"
+msgstr "Apstrādes konveijera darbības e-pasta adresāti"
+
+#: includes/settings.php
+msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
+msgstr "Ar komatiem atdalīti e-pasta adresāti paziņojumiem par konveijera kļūmēm un atkopšanos. Atstājiet tukšu un neizvēlieties paziņojumu sarakstu, lai atspējotu e-pastu; darbības stāvoklis joprojām būs redzams cilnē Statuss un stāvokļa izmaiņas tiks reģistrētas žurnālā. Pārbaudēm nepieciešama Cacti aptaujātāja darbība."
+
+#: includes/settings.php
+msgid "Pipeline Health Reminder Interval"
+msgstr "Apstrādes konveijera darbības atgādinājumu intervāls"
+
+#: includes/settings.php
+msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
+msgstr "Atkārtot paziņojumus par ilgstošām apstrādes konveijera problēmām pēc šī intervāla. Neveiksmīgi e-pasta sūtīšanas mēģinājumi tiek atkārtoti ne biežāk kā reizi piecās minūtēs."
+
+#: includes/settings.php
+msgid "Syslog Alert Retention"
+msgstr "Syslog trauksmju saglabāšana"
+
+#: includes/settings.php
+msgid "This is the number of days to keep alert logs."
+msgstr "Dienu skaits, cik ilgi saglabāt trauksmju žurnālus."
+
+#: includes/settings.php
+msgid "Alert Suppression and Maintenance"
+msgstr "Trauksmju slāpēšana un apkope"
+
+#: includes/settings.php
+msgid "Maintenance Window Days"
+msgstr "Apkopes loga dienas"
+
+#: includes/settings.php
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr "Dienas, kad konfigurētajā apkopes laika posmā tiek izslēgti visi trauksmes paziņojumi."
+
+#: includes/settings.php
+msgid "Maintenance Window Starts"
+msgstr "Apkopes loga sākums"
+
+#: includes/settings.php
+msgid "Local start time for the global maintenance window."
+msgstr "Globālā apkopes loga sākuma laiks pēc vietējā laika."
+
+#: includes/settings.php
+msgid "Maintenance Window Ends"
+msgstr "Apkopes loga beigas"
+
+#: includes/settings.php
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr "Globālā apkopes loga beigu laiks pēc vietējā laika. Agrāks beigu laiks turpinās nākamajā dienā."
+
+#: includes/settings.php
+msgid "One-time Maintenance Starts"
+msgstr "Vienreizējās apkopes sākums"
+
+#: includes/settings.php
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr "Neobligāts vietējais datums un laiks vienreizēja globālā apkopes loga sākumam."
+
+#: includes/settings.php
+msgid "One-time Maintenance Ends"
+msgstr "Vienreizējās apkopes beigas"
+
+#: includes/settings.php
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr "Neobligāts vietējais datums un laiks vienreizēja globālā apkopes loga beigām. Formāts: YYYY-MM-DD HH:MM."
+
+#: includes/settings.php
+msgid "Default Alert Cooldown"
+msgstr "Noklusējuma trauksmju pauzes periods"
+
+#: includes/settings.php
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Slāpēt atkārtotus paziņojumus tai pašai kārtulai un atskaišu tvērumam uz šādu minūšu skaitu. Atsevišķu kārtulu vērtības pārraksta šo iestatījumu. Iestatiet 0, lai atspējotu."
+
+#: includes/settings.php
+msgid "Default Duplicate Suppression"
+msgstr "Noklusējuma dublikātu slāpēšana"
+
+#: includes/settings.php
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Slāpēt paziņojumu ar to pašu atbilstošo ziņojumu kopu uz šādu minūšu skaitu. Atsevišķu kārtulu vērtības pārraksta šo iestatījumu. Iestatiet 0, lai atspējotu."
+
+#: includes/settings.php
+msgid "Remote Syslog Recovery"
+msgstr "Attālā Syslog atkopšana"
+
+#: includes/settings.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr "Maksimālais atkopšanas ierakstu skaits izpildes reizē"
+
+#: includes/settings.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr "Maksimālais saglabāto attālā Syslog notikumu skaits, ko viena atkopšanas darba procesa izpildes reize nosūta galvenajam datu vācējam. Katra centrālās datubāzes transakcija joprojām ir ierobežota līdz 100 ierakstiem. Palieliniet pakāpeniski, novērojot galvenā datu vācēja slodzi un bloķēšanas gaidīšanas laiku."
+
+#: includes/settings.php
+msgid "Recovery Pause Between Batches"
+msgstr "Atkopšanas pauze starp paketēm"
+
+#: includes/settings.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr "Pauze starp katru 100 ierakstu piegādes transakciju galvenajam datu vācējam. Garāka pauze samazina slodzi uz galveno datu vācēju; īsāka pauze paātrina uzkrājuma apstrādi."
+
+#: includes/settings.php
+msgid "No pause"
+msgstr "Bez pauzes"
+
+#: includes/settings.php
+#, php-format
+msgid "%d milliseconds"
+msgstr "%d milisekundes"
+
+#: includes/settings.php
+#, php-format
+msgid "%d second"
+msgstr "%d sekunde"
+
+#: includes/settings.php
+msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
+msgstr "Syslog datubāze nav pieejama, tāpēc particionēšanas iestatījumus nevar pārbaudīt pret tās partīciju ierobežojumu un tabulām."
+
+#: includes/settings.php
+msgid "The Syslog settings were not saved."
+msgstr "Syslog iestatījumi netika saglabāti."
+
+#: includes/settings.php
+#, php-format
+msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
+msgstr "Gaida izpildi: ziņojumu tabula joprojām izmanto %s partīcijas. Palaidiet cli/upgrade_partitioning.php, lai piemērotu atlasīto līmeni."
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_saved_searches.php
+msgid "Delete"
+msgstr "Dzēst"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Disable"
+msgstr "Atspējot"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Enable"
+msgstr "Iespējot"
+
+#: includes/settings.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_saved_searches.php
+msgid "Export"
+msgstr "Eksportēt"
+
+#: includes/settings.php
+msgid "Indefinite"
+msgstr "Neierobežots"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Week"
+msgstr "%d nedēļa"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Weeks"
+msgstr "%d nedēļas"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Month"
+msgstr "%d mēnesis"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Months"
+msgstr "%d mēneši"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Year"
+msgstr "%d gads"
+
+#: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
+msgid "Never"
+msgstr "Nekad"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d minūte"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d minūtes"
+
+#: includes/settings.php
+msgid "Begins with"
+msgstr "Sākas ar"
+
+#: includes/settings.php
+msgid "Contains"
+msgstr "Satur"
+
+#: includes/settings.php
+msgid "Ends with"
+msgstr "Beidzas ar"
+
+#: includes/settings.php
+msgid "Hostname is"
+msgstr "Resursdatora nosaukums ir"
+
+#: includes/settings.php
+msgid "Program is"
+msgstr "Programma ir"
+
+#: includes/settings.php
+msgid "Facility is"
+msgstr "Kategorija ir"
+
+#: includes/settings.php syslog_alerts.php
+msgid "Filter Builder"
+msgstr "Filtra veidotājs"
+
+#: includes/settings.php syslog_alerts.php
+msgid "SQL Expression"
+msgstr "SQL izteiksme"
+
+#: includes/settings.php
+msgid "Weekly"
+msgstr "Iknedēļas"
+
+#: includes/settings.php
+msgid "Import/Export"
+msgstr "Importēt/Eksportēt"
+
+#: includes/settings.php
+msgid "Alert Rules"
+msgstr "Trauksmes kārtulas"
+
+#: includes/settings.php
+msgid "Syslog Settings"
+msgstr "Syslog iestatījumi"
+
+#: includes/settings.php syslog_device_rules.php
+msgid "Device Alert Rules"
+msgstr "Ierīču trauksmes kārtulas"
+
+#: includes/settings.php
+msgid "Removal Rules"
+msgstr "Noņemšanas kārtulas"
+
+#: includes/settings.php
+msgid "Report Rules"
+msgstr "Atskaišu kārtulas"
+
+#: includes/settings.php syslog.php syslog_recommendations.php
+msgid "Recommendations"
+msgstr "Ieteikumi"
+
+#: includes/utilities.php
+msgid "Unable to connect to the Syslog database. No Device records were removed."
+msgstr "Nevar izveidot savienojumu ar Syslog datubāzi. Netika noņemts neviens ierīces ieraksts."
+
+#: includes/utilities.php
+#, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "No Syslog datubāzes tika noņemti %s ierīču ieraksti"
+
+#: includes/utilities.php
+msgid "Syslog Utilities"
+msgstr "Syslog utilītas"
+
+#: includes/utilities.php
+msgid "Purge Syslog Devices"
+msgstr "Iztīrīt Syslog ierīces"
+
+#: includes/utilities.php
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr "Vai tiešām vēlaties iztīrīt novecojušās Syslog ierīces?"
+
+#: includes/utilities.php
+msgid "Confirm Purge"
+msgstr "Apstiprināt iztīrīšanu"
+
+#: includes/utilities.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Continue"
+msgstr "Turpināt"
+
+#: includes/utilities.php
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "Šī izvēlnes vienība ļauj noņemt ierīces, kas vairs nesūta datus Cacti syslog serverim."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel source."
+msgstr "Nederīgs paneļa avots informācijas panelī."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel type."
+msgstr "Nederīgs paneļa tips informācijas panelī."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard chart type."
+msgstr "Nederīgs diagrammas tips informācijas panelī."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard breakdown field."
+msgstr "Nederīgs sadalījuma lauks informācijas panelī."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard interval."
+msgstr "Nederīgs informācijas paneļa intervāls."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard timespan."
+msgstr "Nederīgs informācijas paneļa laika diapazons."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard record type."
+msgstr "Nederīgs informācijas paneļa ieraksta tips."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard top count."
+msgstr "Nederīgs informācijas paneļa populārāko ierakstu skaits."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel width."
+msgstr "Nederīgs paneļa platums informācijas panelī."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel height."
+msgstr "Nederīgs paneļa augstums informācijas panelī."
+
+#: lib/syslog_dashboard.php syslog.php
+#, php-format
+msgid "Invalid logical search: %s"
+msgstr "Nederīga loģiskā meklēšana: %s"
+
+#: lib/syslog_dashboard.php
+msgid "Other"
+msgstr "Cits"
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard panel is required."
+msgstr "Nepieciešams derīgs panelis informācijas panelī."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard panel not found."
+msgstr "Panelis informācijas panelī nav atrasts."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "A name of up to 128 characters is required."
+msgstr "Nepieciešams nosaukums līdz 128 rakstzīmēm."
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard is required."
+msgstr "Nepieciešams derīgs informācijas panelis."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard not found."
+msgstr "Informācijas panelis nav atrasts."
+
+#: lib/syslog_dashboard.php syslog_dashboards.php
+msgid "Unable to save dashboard changes."
+msgstr "Nevar saglabāt informācijas paneļa izmaiņas."
+
+#: lib/syslog_dashboard.php
+msgid "You may only share your own dashboards."
+msgstr "Varat kopīgot tikai savus informācijas paneļus."
+
+#: lib/syslog_dashboard.php
+msgid "copy"
+msgstr "kopija"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard could not be copied."
+msgstr "Neizdevās kopēt informācijas paneli."
+
+#: lib/syslog_dashboard.php
+msgid "A valid panel position is required."
+msgstr "Nepieciešama derīga paneļa pozīcija."
+
+#: lib/syslog_dashboard.php
+msgid "A title of up to 128 characters is required."
+msgstr "Nepieciešams virsraksts līdz 128 rakstzīmēm."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Drag to reorder card"
+msgstr "Velciet, lai mainītu kartītes secību"
+
+#: lib/syslog_dashboard.php
+msgid "Refresh Panel"
+msgstr "Atsvaidzināt paneli"
+
+#: lib/syslog_dashboard.php
+msgid "Total messages"
+msgstr "Kopā ziņojumu"
+
+#: lib/syslog_dashboard.php
+msgid "Chart library unavailable on this Cacti installation."
+msgstr "Diagrammu bibliotēka šajā Cacti instalācijā nav pieejama."
+
+#: lib/syslog_dashboard.php
+msgid "Edit Panel"
+msgstr "Rediģēt paneli"
+
+#: lib/syslog_dashboard.php
+msgid "New Panel"
+msgstr "Jauns panelis"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Save"
+msgstr "Saglabāt"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Apply"
+msgstr "Lietot"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard panel?"
+msgstr "Dzēst šo paneli no informācijas paneļa?"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard and all of its panels?"
+msgstr "Dzēst šo informācijas paneli un visus tā paneļus?"
+
+#: lib/syslog_dashboard.php
+msgid "Name your dashboard"
+msgstr "Nosauciet savu informācijas paneli"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Make Private"
+msgstr "Padarīt privātu"
+
+#: lib/syslog_dashboard.php
+msgid "Share with all"
+msgstr "Koplietot ar visiem"
+
+#: lib/syslog_dashboard.php
+msgid "Save as my copy"
+msgstr "Saglabāt kā manu kopiju"
+
+#: lib/syslog_dashboard.php
+msgid "Syslog Dashboards"
+msgstr "Syslog informācijas paneļi"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Dashboard"
+msgstr "Informācijas panelis"
+
+#: lib/syslog_dashboard.php
+msgid "Time Range"
+msgstr "Laika diapazons"
+
+#: lib/syslog_dashboard.php
+msgid "Last Hour"
+msgstr "Pēdējā stunda"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Hours"
+msgstr "Pēdējās %d stundas"
+
+#: lib/syslog_dashboard.php
+msgid "Last Day"
+msgstr "Pēdējā diena"
+
+#: lib/syslog_dashboard.php
+msgid "Last Week"
+msgstr "Pēdējā nedēļa"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Weeks"
+msgstr "Pēdējās %d nedēļas"
+
+#: lib/syslog_dashboard.php
+msgid "Last Month"
+msgstr "Pagājušais mēnesis"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Months"
+msgstr "Pēdējie %d mēneši"
+
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
+msgid "Refresh"
+msgstr "Atsvaidzināt"
+
+#: lib/syslog_dashboard.php
+msgid "My Dashboards"
+msgstr "Mani informācijas paneļi"
+
+#: lib/syslog_dashboard.php
+msgid "Global Dashboards"
+msgstr "Globālie informācijas paneļi"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Shared With Me"
+msgstr "Koplietots ar mani"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "New"
+msgstr "Jauns"
+
+#: lib/syslog_dashboard.php
+msgid "Rename"
+msgstr "Pārdēvēt"
+
+#: lib/syslog_dashboard.php
+msgid "Add Panel"
+msgstr "Pievienot paneli"
+
+#: lib/syslog_dashboard.php
+msgid "Create your first dashboard to visualize syslog trends."
+msgstr "Izveidojiet savu pirmo informācijas paneli, lai vizualizētu Syslog tendences."
+
+#: lib/syslog_dashboard.php
+msgid "Add a panel to start charting.  Panels can use your saved searches."
+msgstr "Pievienojiet paneli, lai sāktu veidot diagrammas. Paneļos var izmantot jūsu saglabātos meklējumus."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Panel"
+msgstr "Informācijas paneļa panelis"
+
+#: lib/syslog_dashboard.php
+msgid "Title"
+msgstr "Virsraksts"
+
+#: lib/syslog_dashboard.php
+msgid "Log Source"
+msgstr "Žurnāla avots"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "System Logs"
+msgstr "Sistēmas žurnāli"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Alert Logs"
+msgstr "Trauksmju žurnāli"
+
+#: lib/syslog_dashboard.php
+msgid "Panel Type"
+msgstr "Paneļa tips"
+
+#: lib/syslog_dashboard.php
+msgid "Time Series"
+msgstr "Laika rinda"
+
+#: lib/syslog_dashboard.php
+msgid "Breakdown"
+msgstr "Sadalījums"
+
+#: lib/syslog_dashboard.php
+msgid "Chart"
+msgstr "Diagramma"
+
+#: lib/syslog_dashboard.php
+msgid "Line"
+msgstr "Līnija"
+
+#: lib/syslog_dashboard.php
+msgid "Area"
+msgstr "Laukums"
+
+#: lib/syslog_dashboard.php
+msgid "Bar"
+msgstr "Stabiņu"
+
+#: lib/syslog_dashboard.php
+msgid "Interval"
+msgstr "Intervāls"
+
+#: lib/syslog_dashboard.php
+msgid "Auto"
+msgstr "Automātiski"
+
+#: lib/syslog_dashboard.php
+msgid "Minute"
+msgstr "Minūte"
+
+#: lib/syslog_dashboard.php
+msgid "10 Minutes"
+msgstr "10 minūtes"
+
+#: lib/syslog_dashboard.php
+msgid "Hour"
+msgstr "Stunda"
+
+#: lib/syslog_dashboard.php
+msgid "Day"
+msgstr "Diena"
+
+#: lib/syslog_dashboard.php
+msgid "Field"
+msgstr "Lauks"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Program"
+msgstr "Programma"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Facility"
+msgstr "Kategorija"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Priority"
+msgstr "Prioritāte"
+
+#: lib/syslog_dashboard.php
+msgid "Top Count"
+msgstr "TOP vienumu skaits"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Record Type"
+msgstr "Ieraksta tips"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "All Records"
+msgstr "Visi ieraksti"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Main Records"
+msgstr "Galvenie ieraksti"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Removed Records"
+msgstr "Noņemtie ieraksti"
+
+#: lib/syslog_dashboard.php
+msgid "Start from Saved Search"
+msgstr "Sākt no saglabātā meklējuma"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Enter message text…"
+msgstr "Ievadiet ziņojuma tekstu…"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Remove condition"
+msgstr "Noņemt nosacījumu"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Match group"
+msgstr "Atbilstības grupa"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Exclude group"
+msgstr "Izslēgšanas grupa"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Name"
+msgstr "Informācijas paneļa nosaukums"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Name"
+msgstr "Nosaukums"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Breached Thresholds"
+msgstr "Pārkāptie sliekšņi"
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr "Pārkāpts kopš"
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr "Savācējs"
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr "Ierīce"
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr "Pēdējais atbilstošais ziņojums"
+
+#: lib/syslog_thresholds.php
+msgid "Recovers After"
+msgstr "Atgūstas pēc"
+
+#: lib/syslog_thresholds.php
+msgid "Rule"
+msgstr "Kārtula"
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr "Visas atbilstošās ierīces"
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr "Pašlaik nav pārkāptu sliekšņu."
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr "Atgūšanai līdz norādītajam laikam nedrīkst būt neviena atbilstoša ziņojuma. Katra atbilstība no jauna sāk klusuma periodu."
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Previous"
+msgstr "Iepriekšējais"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Next"
+msgstr "Nākamais"
+
+#: setup.php
+msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
+msgstr "Lūdzu, pirms instalēšanas pārdēvējiet failu config.php.dist vai config_local.php.dist direktorijā syslog un nokonfigurējiet datubāzi."
+
+#: setup.php
+msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
+msgstr "Milisekunžu (TIMESTAMP(3)) laikspiedoli tiek atbalstīti tikai MariaDB. Šis serveris izmanto MySQL, tāpēc instalējiet ar sekunžu precizitātes laikspiedoliem."
+
+#: setup.php
+msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
+msgstr "Aria krātuvi nevar izmantot, ja ir iespējota jebkura attālā datu savācēja opcija. Izvēlieties InnoDB vai atspējojiet visas attālā datu savācēja opcijas."
+
+#: setup.php
+msgid "Top 10 Hosts"
+msgstr "TOP 10 resursdatori"
+
+#: setup.php
+msgid "Syslog Messages - Past Hour"
+msgstr "Syslog ziņojumi - pēdējā stunda"
+
+#: setup.php
+msgid "Messages by Severity"
+msgstr "Ziņojumi pēc smaguma pakāpes"
+
+#: setup.php
+msgid "Top 10 Programs"
+msgstr "TOP 10 programmas"
+
+#: setup.php
+msgid "Alert Activity"
+msgstr "Trauksmju aktivitāte"
+
+#: syslog.php
+msgid "Syslog Viewer"
+msgstr "Syslog skatītājs"
+
+#: syslog.php
+msgid "Syslog Status"
+msgstr "Syslog statuss"
+
+#: syslog.php
+msgid "Selected Alert"
+msgstr "Atlasītā trauksme"
+
+#: syslog.php
+msgid "seconds"
+msgstr "sekundes"
+
+#: syslog.php
+msgid "Unavailable"
+msgstr "Nav pieejams"
+
+#: syslog.php
+#, php-format
+msgid "unprocessed messages are %s old"
+msgstr "neapstrādātie ziņojumi ir %s veci"
+
+#: syslog.php
+#, php-format
+msgid "incoming backlog of %s messages"
+msgstr "ienākošais %s ziņojumu uzkrājums"
+
+#: syslog.php
+msgid "day"
+msgstr "diena"
+
+#: syslog.php
+msgid "days"
+msgstr "dienas"
+
+#: syslog.php
+msgid "hour"
+msgstr "stunda"
+
+#: syslog.php
+msgid "hours"
+msgstr "stundas"
+
+#: syslog.php
+msgid "minute"
+msgstr "minūte"
+
+#: syslog.php
+msgid "minutes"
+msgstr "minūtes"
+
+#: syslog.php
+msgid "Rows in syslog_incoming"
+msgstr "Rindas tabulā syslog_incoming"
+
+#: syslog.php
+msgid "Syslog table size (data + indexes)"
+msgstr "Syslog tabulas izmērs (dati + indeksi)"
+
+#: syslog.php
+msgid "Syslog retention"
+msgstr "Syslog glabāšanas ilgums"
+
+#: syslog.php
+msgid "Alert retention"
+msgstr "Trauksmju glabāšanas ilgums"
+
+#: syslog.php
+msgid "No recovery activity recorded yet."
+msgstr "Atgūšanas aktivitāte vēl nav reģistrēta."
+
+#: syslog.php
+msgid "created"
+msgstr "izveidoti"
+
+#: syslog.php
+msgid "remaining"
+msgstr "atlikuši"
+
+#: syslog.php
+msgid "retention deferred"
+msgstr "glabāšanas tīrīšana atlikta"
+
+#: syslog.php
+msgid "Latest processing run"
+msgstr "Pēdējais apstrādes cikls"
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr "Izkliedētā sinhronizācija"
+
+#: syslog.php
+msgid "Remote collector receipts"
+msgstr "Attālo savācēju saņemtie dati"
+
+#: syslog.php
+msgid "Storage and retention"
+msgstr "Krātuve un glabāšanas ilgums"
+
+#: syslog.php
+msgid "Partition health"
+msgstr "Partīciju stāvoklis"
+
+#: syslog.php
+msgid "Partition maintenance activity"
+msgstr "Partīciju uzturēšanas aktivitāte"
+
+#: syslog.php
+msgid "Recent partition maintenance activity"
+msgstr "Nesenā partīciju uzturēšanas aktivitāte"
+
+#: syslog.php
+msgid "Pipeline health"
+msgstr "Apstrādes konveijera stāvoklis"
+
+#: syslog.php
+msgid "Parallel workers"
+msgstr "Paralēlie darba procesi"
+
+#: syslog.php
+msgid "Worker processes"
+msgstr "Darba procesi"
+
+#: syslog.php
+msgid "Processing phases"
+msgstr "Apstrādes posmi"
+
+#: syslog.php
+msgid "Rule activity"
+msgstr "Kārtulu aktivitāte"
+
+#: syslog.php
+msgid "Records processed"
+msgstr "Apstrādātie ieraksti"
+
+#: syslog.php
+msgid "Polling runtime"
+msgstr "Aptaujas izpildes laiks"
+
+#: syslog.php
+msgid "Started"
+msgstr "Sākts"
+
+#: syslog.php
+msgid "Finished"
+msgstr "Pabeigts"
+
+#: syslog.php
+msgid "Minimum runtime"
+msgstr "Minimālais izpildes laiks"
+
+#: syslog.php
+msgid "Average runtime"
+msgstr "Vidējais izpildes laiks"
+
+#: syslog.php
+msgid "Maximum runtime"
+msgstr "Maksimālais izpildes laiks"
+
+#: syslog.php
+msgid "State"
+msgstr "Stāvoklis"
+
+#: syslog.php
+msgid "Queued Recovery Records"
+msgstr "Rindā esošie atgūšanas ieraksti"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr "Vecākais gaidošais"
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr "Pēdējā veiksmīgā sinhronizācija"
+
+#: syslog.php
+msgid "Active"
+msgstr "Aktīvs"
+
+#: syslog.php
+msgid "Inactive"
+msgstr "Neaktīvs"
+
+#: syslog.php
+msgid "Recovery worker"
+msgstr "Atgūšanas darba process"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr "Pēdējā sinhronizācijas kļūda"
+
+#: syslog.php
+msgid "Last Batch Count"
+msgstr "Pēdējās paketes skaits"
+
+#: syslog.php
+msgid "Last Record Received"
+msgstr "Pēdējais saņemtais ieraksts"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr "Attālais aptaujātājs"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr "Nezināms attālais aptaujātājs"
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
+msgstr "No attālajiem savācējiem vēl nav saņemts neviens ieraksts."
+
+#: syslog.php
+msgid "Partition maintenance blocked"
+msgstr "Partīciju uzturēšana bloķēta"
+
+#: syslog.php
+msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
+msgstr "Partīciju uzturēšana ir apturēta; ierakstīšana turpinās dMaxValue drošības partīcijā."
+
+#: syslog.php
+msgid "Date coverage"
+msgstr "Datumu pārklājums"
+
+#: syslog.php
+msgid "Table"
+msgstr "Tabula"
+
+#: syslog.php
+msgid "dMaxValue rows (estimated)"
+msgstr "dMaxValue rindas (aptuveni)"
+
+#: syslog.php
+msgid "dMaxValue size"
+msgstr "dMaxValue izmērs"
+
+#: syslog.php
+msgid "Partitioning level"
+msgstr "Particionēšanas līmenis"
+
+#: syslog.php
+#, php-format
+msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
+msgstr "Iestatījumos ir izvēlēts %s, un tas stājas spēkā pēc tam, kad cli/upgrade_partitioning.php pārbūvē tabulas."
+
+#: syslog.php
+msgid "Last attempt"
+msgstr "Pēdējais mēģinājums"
+
+#: syslog.php
+msgid "Last successful maintenance"
+msgstr "Pēdējā veiksmīgā uzturēšana"
+
+#: syslog.php
+msgid "Complete"
+msgstr "Pabeigts"
+
+#: syslog.php
+msgid "Deferred"
+msgstr "Atlikts"
+
+#: syslog.php
+msgid "Latest outcome"
+msgstr "Pēdējais rezultāts"
+
+#: syslog.php
+msgid "Recovery progress"
+msgstr "Atgūšanas gaita"
+
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "Detaļas"
+
+#: syslog.php
+msgid "Outcome"
+msgstr "Rezultāts"
+
+#: syslog.php
+msgid "Recovery"
+msgstr "Atgūšana"
+
+#: syslog.php
+msgid "When"
+msgstr "Kad"
+
+#: syslog.php
+msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
+msgstr "Partīciju uzturēšanas aktivitāte vēl nav reģistrēta. Aktivitāte parādīsies pēc nākamās aptaujātāja darbības."
+
+#: syslog.php
+#, php-format
+msgid "%d created, %d remaining, %d pruned"
+msgstr "%d izveidoti, %d atlikuši, %d iztīrīti"
+
+#: syslog.php
+msgid "No action required."
+msgstr "Darbība nav nepieciešama."
+
+#: syslog.php
+msgid "Incoming backlog"
+msgstr "Ienākošais uzkrājums"
+
+#: syslog.php
+msgid "Processing"
+msgstr "Apstrāde"
+
+#: syslog.php
+msgid "Partition maintenance"
+msgstr "Partīciju uzturēšana"
+
+#: syslog.php
+msgid "Synchronization"
+msgstr "Sinhronizācija"
+
+#: syslog.php
+msgid "Attention required"
+msgstr "Nepieciešama uzmanība"
+
+#: syslog.php
+msgid "Healthy"
+msgstr "Kārtībā"
+
+#: syslog.php
+msgid "Processing disabled"
+msgstr "Apstrāde atspējota"
+
+#: syslog.php
+msgid "Waiting for processing"
+msgstr "Gaida apstrādi"
+
+#: syslog.php
+msgid "Health"
+msgstr "Darbspēja"
+
+#: syslog.php
+msgid "Ready"
+msgstr "Gatavs"
+
+#: syslog.php
+msgid "Sent"
+msgstr "Nosūtīts"
+
+#: syslog.php
+msgid "Failed; retry pending"
+msgstr "Neizdevās; gaida atkārtotu mēģinājumu"
+
+#: syslog.php
+msgid "Pending; next poller check"
+msgstr "Gaida; nākamā aptaujātāja pārbaude"
+
+#: syslog.php
+msgid "Last health check"
+msgstr "Pēdējā darbspējas pārbaude"
+
+#: syslog.php
+msgid "Email notifications"
+msgstr "E-pasta paziņojumi"
+
+#: syslog.php
+msgid "Not checked yet"
+msgstr "Vēl nav pārbaudīts"
+
+#: syslog.php
+msgid "Last notification sent"
+msgstr "Pēdējais nosūtītais paziņojums"
+
+#: syslog.php
+msgid "Last received log"
+msgstr "Pēdējais saņemtais žurnāls"
+
+#: syslog.php
+msgid "Oldest unprocessed message"
+msgstr "Vecākais neapstrādātais ziņojums"
+
+#: syslog.php
+msgid "Records processed in latest run"
+msgstr "Pēdējā ciklā apstrādātie ieraksti"
+
+#: syslog.php
+msgid "Worker processes running"
+msgstr "Darbojošies darba procesi"
+
+#: syslog.php
+msgid "Configured worker processes"
+msgstr "Konfigurētie darba procesi"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr "Atrisinātie resursdatori"
+
+#: syslog.php
+msgid "Process"
+msgstr "Process"
+
+#: syslog.php
+msgid "Records handled"
+msgstr "Apstrādātie ieraksti"
+
+#: syslog.php
+msgid "Runtime"
+msgstr "Izpildes laiks"
+
+#: syslog.php
+msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
+msgstr "Statistika pa procesiem vēl nav reģistrēta. Darba procesu statistika parādīsies pēc pirmā paralēlā cikla."
+
+#: syslog.php
+msgid "Duration"
+msgstr "Ilgums"
+
+#: syslog.php
+msgid "Phase"
+msgstr "Posms"
+
+#: syslog.php
+msgid "Records"
+msgstr "Ieraksti"
+
+#: syslog.php
+msgid "Reference updates"
+msgstr "Atsauču atjauninājumi"
+
+#: syslog.php
+msgid "Removal rules"
+msgstr "Noņemšanas kārtulas"
+
+#: syslog.php
+msgid "Alert evaluation"
+msgstr "Trauksmju izvērtēšana"
+
+#: syslog.php
+msgid "Incoming transfer"
+msgstr "Ienākošo datu pārsūtīšana"
+
+#: syslog.php
+msgid "Report processing"
+msgstr "Atskaišu apstrāde"
+
+#: syslog.php
+msgid "slowest"
+msgstr "lēnākais"
+
+#: syslog.php
+msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
+msgstr "Posmu izpildes laiki vēl nav reģistrēti. Posmu izpildes laiki parādīsies pēc nākamās aptaujātāja darbības."
+
+#: syslog.php
+msgid "Last run"
+msgstr "Pēdējā izpilde"
+
+#: syslog.php
+msgid "Rules processed"
+msgstr "Apstrādātās kārtulas"
+
+#: syslog.php
+msgid "Total"
+msgstr "Kopā"
+
+#: syslog.php
+msgid "Alert rules"
+msgstr "Trauksmes kārtulas"
+
+#: syslog.php
+msgid "Delete rules"
+msgstr "Dzēšanas kārtulas"
+
+#: syslog.php
+msgid "Fired last run"
+msgstr "Nostrādāja pēdējā izpildē"
+
+#: syslog.php
+msgid "Show more"
+msgstr "Rādīt vairāk"
+
+#: syslog.php
+msgid "Show less"
+msgstr "Rādīt mazāk"
+
+#: syslog.php
+msgid "Open in a dialog"
+msgstr "Atvērt dialoglodziņā"
+
+#: syslog.php
+msgid "Remove from page"
+msgstr "Noņemt no lapas"
+
+#: syslog.php
+msgid "Invalid refresh interval."
+msgstr "Nederīgs atsvaidzināšanas intervāls."
+
+#: syslog.php
+msgid "Unknown card."
+msgstr "Nezināma kartīte."
+
+#: syslog.php
+msgid "Add card"
+msgstr "Pievienot kartīti"
+
+#: syslog.php
+msgid "Add a status card…"
+msgstr "Pievienot statusa kartīti…"
+
+#: syslog.php
+msgid "Syslog Alert View"
+msgstr "Syslog trauksmju skats"
+
+#: syslog.php
+msgid "A valid saved search is required."
+msgstr "Nepieciešams derīgs saglabātais meklējums."
+
+#: syslog.php
+msgid "Saved search not found."
+msgstr "Saglabātais meklējums nav atrasts."
+
+#: syslog.php
+msgid "You may only share your own saved searches."
+msgstr "Jūs drīkstat koplietot tikai savus saglabātos meklējumus."
+
+#: syslog.php
+#, php-format
+msgid "[ Unprocessed Messages: %s ]"
+msgstr "[ Neapstrādātie ziņojumi: %s ]"
+
+#: syslog.php syslog_device_rules.php
+msgid "Enter a search term"
+msgstr "Ievadiet meklējamo tekstu"
+
+#: syslog.php
+msgid "Select Device(s)"
+msgstr "Atlasīt ierīci(-es)"
+
+#: syslog.php
+msgid "Devices Selected"
+msgstr "Atlasītās ierīces"
+
+#: syslog.php
+msgid "All Devices Selected"
+msgstr "Atlasītas visas ierīces"
+
+#: syslog.php
+#, php-format
+msgid "Syslog Message Filter %s"
+msgstr "Syslog ziņojumu filtrs %s"
+
+#: syslog.php
+msgid "Search messages"
+msgstr "Meklēt ziņojumus"
+
+#: syslog.php
+msgid "Collapse filters"
+msgstr "Sakļaut filtrus"
+
+#: syslog.php
+msgid "Edit filters"
+msgstr "Rediģēt filtrus"
+
+#: syslog.php
+msgid "Saved Searches"
+msgstr "Saglabātie meklējumi"
+
+#: syslog.php
+msgid "My Searches"
+msgstr "Mani meklējumi"
+
+#: syslog.php
+msgid "Global Searches"
+msgstr "Globālie meklējumi"
+
+#: syslog.php
+#, php-format
+msgid "%s (Default)"
+msgstr "%s (Noklusējuma)"
+
+#: syslog.php
+msgid "Manage"
+msgstr "Pārvaldīt"
+
+#: syslog.php
+msgid "Manage saved searches"
+msgstr "Pārvaldīt saglabātos meklējumus"
+
+#: syslog.php
+msgid "Save search"
+msgstr "Saglabāt meklējumu"
+
+#: syslog.php
+msgid "Edit"
+msgstr "Rediģēt"
+
+#: syslog.php
+msgid "Save for all"
+msgstr "Saglabāt visiem"
+
+#: syslog.php
+msgid "contains"
+msgstr "satur"
+
+#: syslog.php
+msgid "does not contain"
+msgstr "nesatur"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Rows"
+msgstr "Rindas"
+
+#: syslog.php
+msgid "Display Rows"
+msgstr "Rādītās rindas"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Default"
+msgstr "Noklusējuma"
+
+#: syslog.php
+msgid "View options"
+msgstr "Skata opcijas"
+
+#: syslog.php
+msgid "Trim"
+msgstr "Apgriezt"
+
+#: syslog.php
+msgid "Message Trim"
+msgstr "Ziņojuma apgriešana"
+
+#: syslog.php
+msgid "Removal Handling"
+msgstr "Noņemšanas apstrāde"
+
+#: syslog.php
+msgid "Display"
+msgstr "Attēlojums"
+
+#: syslog.php
+msgid "Group Duplicate Messages"
+msgstr "Grupēt dublētos ziņojumus"
+
+#: syslog.php
+msgid "Individual Messages"
+msgstr "Atsevišķi ziņojumi"
+
+#: syslog.php
+msgid "Grouped Messages"
+msgstr "Grupēti ziņojumi"
+
+#: syslog.php
+#, no-php-format
+msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
+msgstr "Izvēlieties lauku, operatoru un vērtību. AND ir augstāka prioritāte nekā OR; NOT izslēdz nosacījumu. LIKE izmanto % jebkuram rakstzīmju skaitam un _ vienai rakstzīmei. Datumi izmanto formātu YYYY-MM-DD HH:MM:SS. ID izmanto nenegatīvus veselus skaitļus. Pēc noklusējuma tiek rādīta pēdējā žurnālu diena, ja vien netiek pielāgots datumu diapazons."
+
+#: syslog.php
+msgid "Search help"
+msgstr "Meklēšanas palīdzība"
+
+#: syslog.php
+msgid "New Saved Search"
+msgstr "Jauns saglabātais meklējums"
+
+#: syslog.php
+msgid "Edit Saved Search"
+msgstr "Rediģēt saglabāto meklējumu"
+
+#: syslog.php
+msgid "Save As"
+msgstr "Saglabāt kā"
+
+#: syslog.php
+msgid "Delete the selected saved search?"
+msgstr "Dzēst atlasīto saglabāto meklējumu?"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Search"
+msgstr "Meklēt"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Clear"
+msgstr "Notīrīt"
+
+#: syslog.php
+msgid "Return filter values to their user defined defaults"
+msgstr "Atiestatīt filtra vērtības uz lietotāja definētajām noklusējuma vērtībām"
+
+#: syslog.php
+msgid "Refresh Results"
+msgstr "Atsvaidzināt rezultātus"
+
+#: syslog.php
+msgid "Export Records to CSV"
+msgstr "Eksportēt ierakstus uz CSV"
+
+#: syslog.php
+msgid "Save Default Settings"
+msgstr "Saglabāt noklusējuma iestatījumus"
+
+#: syslog.php
+msgid "Save view defaults"
+msgstr "Saglabāt skata noklusējuma vērtības"
+
+#: syslog.php
+msgid "Save Search As"
+msgstr "Saglabāt meklējumu kā"
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
+msgstr "Lietot šo meklējumu, atverot šo lapu, ja vēl nav aktīvs neviens meklējums"
+
+#: syslog.php
+msgid "Breach"
+msgstr "Pārkāpums"
+
+#: syslog.php
+msgid "Threshold breached"
+msgstr "Slieksnis pārkāpts"
+
+#: syslog.php
+msgid "Messages"
+msgstr "Ziņojumi"
+
+#: syslog.php
+msgid "Empty message"
+msgstr "Tukšs ziņojums"
+
+#: syslog.php
+msgid "Toggle group messages"
+msgstr "Pārslēgt grupas ziņojumus"
+
+#: syslog.php
+msgid "Loading group messages..."
+msgstr "Ielādē grupas ziņojumus..."
+
+#: syslog.php
+msgid "No matching messages."
+msgstr "Nav atbilstošu ziņojumu."
+
+#: syslog.php
+msgid "No Syslog Messages"
+msgstr "Nav Syslog ziņojumu"
+
+#: syslog.php
+msgid "Alert Log Rows"
+msgstr "Trauksmju žurnāla rindas"
+
+#: syslog.php
+msgid "Alert Removed"
+msgstr "Trauksme noņemta"
+
+#: syslog.php
+msgid "No Alert Log Messages"
+msgstr "Nav trauksmju žurnāla ziņojumu"
+
+#: syslog.php
+msgid "Close message details"
+msgstr "Aizvērt ziņojuma informāciju"
+
+#: syslog.php
+msgid "Message details"
+msgstr "Ziņojuma informācija"
+
+#: syslog.php
+msgid "General"
+msgstr "Vispārīgi"
+
+#: syslog.php
+msgid "Alert Rule"
+msgstr "Trauksmes kārtula"
+
+#: syslog.php
+msgid "Sequence"
+msgstr "Secība"
+
+#: syslog.php
+msgid "Copied"
+msgstr "Nokopēts"
+
+#: syslog.php
+msgid "Copy link"
+msgstr "Kopēt saiti"
+
+#: syslog.php
+msgid "Copy message"
+msgstr "Kopēt ziņojumu"
+
+#: syslog.php
+msgid "Copy unavailable. Select and copy the message text."
+msgstr "Kopēšana nav pieejama. Atlasiet un nokopējiet ziņojuma tekstu."
+
+#: syslog.php
+msgid "Looking up recommendations…"
+msgstr "Meklē ieteikumus…"
+
+#: syslog.php
+msgid "No recommendation matches this message."
+msgstr "Šim ziņojumam neatbilst neviens ieteikums."
+
+#: syslog.php syslog_alerts.php
+msgid "Actions"
+msgstr "Darbības"
+
+#: syslog.php
+msgid "Create Alarm Rule"
+msgstr "Izveidot trauksmes kārtulu"
+
+#: syslog.php
+msgid "Create Device Alert Rule"
+msgstr "Izveidot ierīces trauksmes kārtulu"
+
+#: syslog.php
+msgid "Create Removal Rule"
+msgstr "Izveidot noņemšanas kārtulu"
+
+#: syslog.php
+msgid "Filter by device"
+msgstr "Filtrēt pēc ierīces"
+
+#: syslog.php
+msgid "Filter by program"
+msgstr "Filtrēt pēc programmas"
+
+#: syslog.php
+msgid "All Programs"
+msgstr "Visas programmas"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai dzēstu norādīto(-ās) Syslog trauksmes kārtulu(-as)."
+
+#: syslog_alerts.php
+msgid "Delete Syslog Alert Rule(s)"
+msgstr "Dzēst Syslog trauksmes kārtulu(-as)"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai atspējotu norādīto(-ās) Syslog trauksmes kārtulu(-as)."
+
+#: syslog_alerts.php
+msgid "Disable Syslog Alert Rule(s)"
+msgstr "Atspējot Syslog trauksmes kārtulu(-as)"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai iespējotu norādīto(-ās) Syslog trauksmes kārtulu(-as)."
+
+#: syslog_alerts.php
+msgid "Enable Syslog Alert Rule(s)"
+msgstr "Iespējot Syslog trauksmes kārtulu(-as)"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai eksportētu norādīto(-ās) Syslog trauksmes kārtulu(-as)."
+
+#: syslog_alerts.php
+msgid "Export Syslog Alert Rule(s)"
+msgstr "Eksportēt Syslog trauksmes kārtulu(-as)"
+
+#: syslog_alerts.php
+msgid "Select Syslog Alarming or Alarm Manager."
+msgstr "Atlasiet Syslog trauksmes vai Trauksmju pārvaldnieku."
+
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr "Ievadiet veselu minūšu, stundu vai dienu skaitu sliekšņa logam."
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr "Ievadiet pozitīvu veselu minūšu, stundu vai dienu skaitu sliekšņa atkopšanai."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
+msgstr "Ievadītā SQL sintakse nav derīga. Lūdzu, izlabojiet savu SQL.<br>"
+
+#: syslog_alerts.php syslog_reports.php
+#, php-format
+msgid "The Pre-processed SQL is:<br><br> %s"
+msgstr "Priekšapstrādātais SQL ir:<br><br> %s"
+
+#: syslog_alerts.php syslog_removal.php
+#, php-format
+msgid "The filter is invalid: %s"
+msgstr "Filtrs nav derīgs: %s"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The processed SQL was invalid.  Please correct your SQL"
+msgstr "Apstrādātais SQL nebija derīgs. Lūdzu, izlabojiet savu SQL"
+
+#: syslog_alerts.php
+msgid "Not Set"
+msgstr "Nav iestatīts"
+
+#: syslog_alerts.php
+msgid "1 Minute"
+msgstr "1 minūte"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hour"
+msgstr "%d stunda"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hours"
+msgstr "%d stundas"
+
+#: syslog_alerts.php
+msgid "1 Month"
+msgstr "1 mēnesis"
+
+#: syslog_alerts.php
+#, php-format
+msgid "Alert Edit [edit: %s]"
+msgstr "Trauksmes rediģēšana [rediģēt: %s]"
+
+#: syslog_alerts.php
+msgid "Alert Edit [new]"
+msgstr "Trauksmes rediģēšana [jauna]"
+
+#: syslog_alerts.php
+msgid "New Alert Rule"
+msgstr "Jauna trauksmes kārtula"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "N/A"
+msgstr "Nav pieejams"
+
+#: syslog_alerts.php
+msgid "Time unit"
+msgstr "Laika vienība"
+
+#: syslog_alerts.php
+msgid "Days"
+msgstr "Dienas"
+
+#: syslog_alerts.php
+msgid "Hours"
+msgstr "Stundas"
+
+#: syslog_alerts.php
+msgid "Minutes"
+msgstr "Minūtes"
+
+#: syslog_alerts.php
+msgid "Please describe this Alert."
+msgstr "Lūdzu, aprakstiet šo trauksmi."
+
+#: syslog_alerts.php
+msgid "Alarm Destination"
+msgstr "Trauksmes galamērķis"
+
+#: syslog_alerts.php
+msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
+msgstr "Izvēlieties Syslog trauksmes vai Trauksmju pārvaldnieku. Trauksmju pārvaldniekam Syslog iestatījumos ir jāiespējo arī pārsūtīšana. E-pasts tiek saglabāts kā rezerves risinājums; komandu darbības Trauksmju pārvaldnieka kārtulām netiek izpildītas."
+
+#: syslog_alerts.php
+msgid "Alarm Manager"
+msgstr "Trauksmju pārvaldnieks"
+
+#: syslog_alerts.php
+msgid "Syslog Alarming"
+msgstr "Syslog trauksmes"
+
+#: syslog_alerts.php
+msgid "What is the Severity Level of this Alert?"
+msgstr "Kāda ir šīs trauksmes smaguma pakāpe?"
+
+#: syslog_alerts.php
+msgid "Reporting Level"
+msgstr "Ziņošanas līmenis"
+
+#: syslog_alerts.php
+msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
+msgstr "Atkārtotu trauksmju ciklu reģistrēšanai norādiet, vai trauksme jāuzskaita sistēmas vai ierīces līmenī."
+
+#: syslog_alerts.php
+msgid "System"
+msgstr "Sistēma"
+
+#: syslog_alerts.php
+msgid "Reporting Method"
+msgstr "Ziņošanas metode"
+
+#: syslog_alerts.php
+msgid "Define how to Alert on the syslog messages."
+msgstr "Definējiet, kā radīt trauksmi par syslog ziņojumiem."
+
+#: syslog_alerts.php
+msgid "Individual"
+msgstr "Atsevišķi"
+
+#: syslog_alerts.php
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
+msgstr "Metodei 'Slieksnis' trauksme tiek aktivizēta, kad konstatētais skaits sasniedz šo vērtību."
+
+#: syslog_alerts.php
+msgid "Threshold Window"
+msgstr "Sliekšņa logs"
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr "Skaitīt atbilstības savācēja ciklos šajā slīdošajā logā, izmantojot savācēja apstrādes laiku. Ievadiet 0, lai skaitītu tikai pašreizējo ciklu."
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr "Atkopties pēc klusuma perioda"
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
+msgstr "Laiks bez atbilstošiem ziņojumiem pirms pārkāpuma notīrīšanas, skaitītāja atiestatīšanas un šīs kārtulas atkārtotas aktivizēšanas. Katrs atbilstošs ziņojums restartē šo taimeri."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match Type"
+msgstr "Atbilstības veids"
+
+#: syslog_alerts.php
+msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
+msgstr "Izvēlieties Filtra veidotāju drošai vairāku nosacījumu trauksmes loģikai. SQL izteiksme ir saglabāta mantotajām kārtulām."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Message Match String"
+msgstr "Ziņojuma atbilstības virkne"
+
+#: syslog_alerts.php
+msgid "Build filter conditions or enter an SQL expression to match syslog messages."
+msgstr "Izveidojiet filtra nosacījumus vai ievadiet SQL izteiksmi, lai atrastu atbilstošus syslog ziņojumus."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_removal.php
+#: syslog_reports.php
+msgid "Enabled"
+msgstr "Iespējots"
+
+#: syslog_alerts.php
+msgid "Is this Alert Enabled?"
+msgstr "Vai šī trauksme ir iespējota?"
+
+#: syslog_alerts.php
+msgid "Re-Alert Cycle"
+msgstr "Atkārtotas trauksmes cikls"
+
+#: syslog_alerts.php
+msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
+msgstr "Nesūtīt šo trauksmi atkārtoti tam pašam resursdatoram, kamēr nav pagājis šis laika posms. Uz slieksni balstītām trauksmēm tas attiecas uz visiem resursdatoriem."
+
+#: syslog_alerts.php
+msgid "Notification Cooldown"
+msgstr "Paziņojumu nogaidīšanas laiks"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
+msgstr "Minūšu skaits, cik ilgi apspiest katru nākamo paziņojumu no šīs kārtulas un ziņošanas tvēruma."
+
+#: syslog_alerts.php
+msgid "1 day"
+msgstr "1 diena"
+
+#: syslog_alerts.php
+msgid "1 hour"
+msgstr "1 stunda"
+
+#: syslog_alerts.php
+msgid "1 minute"
+msgstr "1 minūte"
+
+#: syslog_alerts.php
+msgid "15 minutes"
+msgstr "15 minūtes"
+
+#: syslog_alerts.php
+msgid "30 minutes"
+msgstr "30 minūtes"
+
+#: syslog_alerts.php
+msgid "4 hours"
+msgstr "4 stundas"
+
+#: syslog_alerts.php
+msgid "5 minutes"
+msgstr "5 minūtes"
+
+#: syslog_alerts.php
+msgid "Use global setting"
+msgstr "Izmantot globālo iestatījumu"
+
+#: syslog_alerts.php
+msgid "Duplicate Suppression"
+msgstr "Dublikātu apspiešana"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress the same matched message set."
+msgstr "Minūšu skaits, cik ilgi apspiest to pašu atbilstošo ziņojumu kopu."
+
+#: syslog_alerts.php
+msgid "Maintenance Window"
+msgstr "Apkopes logs"
+
+#: syslog_alerts.php
+msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
+msgstr "Izvēlieties, vai šī kārtula izmanto globālo apkopes laika posmu vai savu laika posmu."
+
+#: syslog_alerts.php
+msgid "Do not mute this rule"
+msgstr "Neapklusināt šo kārtulu"
+
+#: syslog_alerts.php
+msgid "Use global timeframe"
+msgstr "Izmantot globālo laika posmu"
+
+#: syslog_alerts.php
+msgid "Use rule timeframe"
+msgstr "Izmantot kārtulas laika posmu"
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Days"
+msgstr "Kārtulas apkopes dienas"
+
+#: syslog_alerts.php
+msgid "Days for this rule timeframe, when Use rule timeframe is selected."
+msgstr "Dienas šīs kārtulas laika posmam, kad ir atlasīta opcija Izmantot kārtulas laika posmu."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Starts"
+msgstr "Kārtulas apkopes sākums"
+
+#: syslog_alerts.php
+msgid "Local start time for this rule timeframe."
+msgstr "Vietējais sākuma laiks šīs kārtulas laika posmam."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Ends"
+msgstr "Kārtulas apkopes beigas"
+
+#: syslog_alerts.php
+msgid "Local end time for this rule timeframe."
+msgstr "Vietējais beigu laiks šīs kārtulas laika posmam."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Starts"
+msgstr "Vienreizējās kārtulas apkopes sākums"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Neobligāts vietējais datums un laiks šīs kārtulas apklusināšanas sākumam. Formāts: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Ends"
+msgstr "Vienreizējās kārtulas apkopes beigas"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Neobligāts vietējais datums un laiks šīs kārtulas apklusināšanas beigām. Formāts: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_reports.php
+msgid "Notes"
+msgstr "Piezīmes"
+
+#: syslog_alerts.php
+msgid "Space for Notes on the Alert"
+msgstr "Vieta piezīmēm par trauksmi"
+
+#: syslog_alerts.php
+msgid "Email Options"
+msgstr "E-pasta opcijas"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Notification List"
+msgstr "Paziņojumu saraksts"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "Izmantojiet šī paziņojumu saraksta saturu, lai noteiktu, kam un kā paziņot."
+
+#: syslog_alerts.php
+msgid "Emails to Notify"
+msgstr "E-pasta adreses paziņošanai"
+
+#: syslog_alerts.php
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "Lūdzu, ievadiet ar komatiem atdalītu informējamo e-pasta adrešu sarakstu. Ja vēlaties nosūtīt e-pastu saņēmējam SMS formātā, pirms šī saņēmēja e-pasta adreses pievienojiet prefiksu <b>'sms@'</b>. Piemēram, ja saņēmēja SMS adrese ir <b>'2485551212@mycarrier.net'</b>, ievadiet to kā <b>'sms@2485551212@mycarrier.net'</b>, un tā tiks formatēta kā SMS ziņojums."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Body Text"
+msgstr "E-pasta ziņojuma pamatteksts"
+
+#: syslog_alerts.php
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "Šī informācija parādīsies trauksmes pamattekstā tieši pirms trauksmes detaļām."
+
+#: syslog_alerts.php
+msgid "Open Ticket"
+msgstr "Atvērt pieteikumu"
+
+#: syslog_alerts.php
+msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
+msgstr "Vai šai trauksmei jāatver atbalsta dienesta pieteikums. PIEZĪME: ērtībai pieteikuma komandas skriptam tiks nodoti vairāki 'ALERT_' vides mainīgie."
+
+#: syslog_alerts.php
+msgid "Alert command"
+msgstr "Trauksmes komanda"
+
+#: syslog_alerts.php
+msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
+msgstr "Kad tiek aktivizēta trauksme, izpildīt šo komandu. Ir pieejami šādi aizstāšanas mainīgie: <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>. Lūdzu, ņemiet vērā, ka <b>'&lt;HOSTNAME&gt;'</b> ir pieejams tikai atsevišķiem sliekšņiem. Šīs aizstāšanas vērtības var parādīties komandrindā vai tikt nolasītas no skripta vides. Izmantojot no vides, šiem mainīgajiem tiks pievienots prefikss 'ALERT_'."
+
+#: syslog_alerts.php
+msgid "Recovery command"
+msgstr "Atkopšanas komanda"
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgstr "Neobligāta komanda, kas jāizpilda, kad šis slieksnis atkopjas pēc klusuma perioda. Izmanto tos pašus aizstāšanas mainīgos kā trauksmes komanda. SYSLOG_EVENT ir clear; SYSLOG_BREACH_ID atbilst pārkāpuma komandai. Neizdevušās komandas tiek mēģinātas atkārtoti. Atstājiet tukšu, lai atspējotu."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Test rule"
+msgstr "Pārbaudīt kārtulu"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Rule Test Preview"
+msgstr "Kārtulas pārbaudes priekšskatījums"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Value"
+msgstr "Vērtība"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a value"
+msgstr "Ievadiet vērtību"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match"
+msgstr "Atbilstība"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Exclude"
+msgstr "Izslēgt"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a nonnegative integer"
+msgstr "Ievadiet nenegatīvu veselu skaitli"
+
+#: syslog_alerts.php
+msgid "Alarm filter conditions"
+msgstr "Trauksmes filtra nosacījumi"
+
+#: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php
+msgid "All"
+msgstr "Visi"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Go"
+msgstr "Atlasīt"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+msgid "Import"
+msgstr "Importēt"
+
+#: syslog_alerts.php
+msgid "Syslog Alert Filters"
+msgstr "Syslog trauksmju filtri"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Method"
+msgstr "Metode"
+
+#: syslog_alerts.php
+msgid "Threshold Count"
+msgstr "Sliekšņa skaits"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Search String"
+msgstr "Meklēšanas virkne"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Addresses"
+msgstr "E-pasta adreses"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Last Modified"
+msgstr "Pēdējoreiz modificēts"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "By User"
+msgstr "Pēc lietotāja"
+
+#: syslog_alerts.php
+msgid "Alerts"
+msgstr "Trauksmes"
+
+#: syslog_alerts.php
+msgid "Multiple"
+msgstr "Vairāki"
+
+#: syslog_alerts.php
+msgid "No Syslog Alerts Defined"
+msgstr "Nav definētu Syslog trauksmju"
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Local File"
+msgstr "Importēt trauksmes kārtulu no vietējā faila"
+
+#: syslog_alerts.php
+msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
+msgstr "Ja XML fails, kurā ir trauksmes kārtulas definīcijas dati, atrodas jūsu vietējā datorā, atlasiet to šeit."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Text"
+msgstr "Importēt trauksmes kārtulu no teksta"
+
+#: syslog_alerts.php
+msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
+msgstr "Ja jums ir XML fails ar trauksmes kārtulas definīcijas datiem teksta veidā, varat to ielīmēt šajā laukā, lai importētu."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule"
+msgstr "Importēt trauksmes kārtulu"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_saved_searches.php
+msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
+msgstr "Importēšana noraidīta: fails ir tukšs, nederīgs vai satur cita veida Syslog objektu."
+
+#: syslog_alerts.php
+msgid "Import rejected: invalid alarm destination."
+msgstr "Importēšana noraidīta: nederīgs trauksmes galamērķis."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Imported"
+msgstr "Importēts"
+
+#: syslog_alerts.php
+#, php-format
+msgid "NOTE: Alert '%s' %s!"
+msgstr "PIEZĪME: Trauksme '%s' %s!"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_reports.php
+msgid "Updated"
+msgstr "Atjaunināts"
+
+#: syslog_alerts.php
+#, php-format
+msgid "ERROR: Alert '%s' %s Failed!"
+msgstr "KĻŪDA: Trauksmes '%s' %s neizdevās!"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Update"
+msgstr "Atjaunināt"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Select a valid owner."
+msgstr "Atlasiet derīgu īpašnieku."
+
+#: syslog_dashboards.php
+msgid "Unable to save the dashboard. Please try again."
+msgstr "Nevar saglabāt informācijas paneli. Lūdzu, mēģiniet vēlreiz."
+
+#: syslog_dashboards.php
+msgid "Enter a dashboard name between 1 and 128 characters."
+msgstr "Ievadiet informācijas paneļa nosaukumu no 1 līdz 128 rakstzīmēm."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Owner"
+msgstr "Īpašnieks"
+
+#: syslog_dashboards.php
+msgid "Shared"
+msgstr "Koplietots"
+
+#: syslog_dashboards.php
+msgid "Panels"
+msgstr "Paneļi"
+
+#: syslog_dashboards.php
+msgid "deleted user"
+msgstr "dzēsts lietotājs"
+
+#: syslog_dashboards.php
+msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
+msgstr "Vēl nav informācijas paneļu. Lietotāji tos izveido Syslog cilnē Informācijas panelis."
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
+msgstr "Noklikšķiniet uz 'Turpināt', lai dzēstu norādīto(-os) informācijas paneli (paneļus) un visus to paneļus."
+
+#: syslog_dashboards.php
+msgid "Delete Dashboard(s)"
+msgstr "Dzēst informācijas paneli (paneļus)"
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Export the following Dashboard(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai eksportētu norādīto(-os) informācijas paneli (paneļus)."
+
+#: syslog_dashboards.php
+msgid "Export Dashboard(s)"
+msgstr "Eksportēt informācijas paneli (paneļus)"
+
+#: syslog_dashboards.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Dashboard(s)."
+msgstr "PIEZĪME: Importēti %d un atjaunināti %d informācijas paneļi."
+
+#: syslog_dashboards.php
+#, php-format
+msgid "ERROR: %d Dashboard(s) failed to import."
+msgstr "KĻŪDA: Neizdevās importēt %d informācijas paneli (paneļus)."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Local File"
+msgstr "Importēt informācijas paneli no vietējā faila"
+
+#: syslog_dashboards.php
+msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
+msgstr "Ja JSON fails, kurā ir informācijas paneļa definīcijas dati, atrodas jūsu vietējā datorā, atlasiet to šeit."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Text"
+msgstr "Importēt informācijas paneli no teksta"
+
+#: syslog_dashboards.php
+msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
+msgstr "Ja jums ir JSON fails ar informācijas paneļa definīcijas datiem teksta veidā, varat to ielīmēt šajā laukā, lai importētu."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard"
+msgstr "Importēt informācijas paneli"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Users"
+msgstr "Visi lietotāji"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Groups"
+msgstr "Visas grupas"
+
+#: syslog_dashboards.php
+msgid "Edit Dashboard"
+msgstr "Rediģēt informācijas paneli"
+
+#: syslog_dashboards.php
+msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
+msgstr "Nosaukums, kas tiek rādīts Syslog cilnes Informācijas panelis izvēlnē Informācijas paneļi."
+
+#: syslog_dashboards.php
+msgid "The account that owns this dashboard and can manage its panels."
+msgstr "Konts, kuram pieder šis informācijas panelis un kurš var pārvaldīt tā paneļus."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Users"
+msgstr "Koplietots ar lietotājiem"
+
+#: syslog_dashboards.php
+msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
+msgstr "Lietotāji, kuri var skatīt šo informācijas paneli papildus tā īpašniekam un jebkādai globālai koplietošanai. Opcija Visi lietotāji koplieto to ar visiem."
+
+#: syslog_dashboards.php
+msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
+msgstr "Grupas, kuras var skatīt šo informācijas paneli papildus tā īpašniekam un jebkādai globālai koplietošanai. Opcija Visas grupas koplieto to ar visiem."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Groups"
+msgstr "Koplietots ar grupām"
+
+#: syslog_dashboards.php
+msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
+msgstr "Pārdēvēšana attiecas uz katru šī informācijas paneļa skatītāju. Paneļus pārvalda to īpašnieki cilnē Syslog informācijas panelis."
+
+#: syslog_device_rules.php
+msgid "Choose a future pause end date and time."
+msgstr "Izvēlieties nākotnes pauzes beigu datumu un laiku."
+
+#: syslog_device_rules.php
+msgid "A device name is required."
+msgstr "Ierīces nosaukums ir obligāts."
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Click Continue to %s the following Device Alert Rule(s)."
+msgstr "Noklikšķiniet uz Turpināt, lai izpildītu darbību \"%s\" šādām ierīces trauksmes kārtulām."
+
+#: syslog_device_rules.php
+msgid "Do not pass any priority"
+msgstr "Nelaist cauri nevienu prioritāti"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "%s and more urgent"
+msgstr "%s un steidzamākas"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule"
+msgstr "Ierīces trauksmes kārtula"
+
+#: syslog_device_rules.php
+msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
+msgstr "Rakstot meklējiet pašreizējās Syslog ierīces vai ievadiet jebkuru IP adresi vai resursdatora nosaukumu."
+
+#: syslog_device_rules.php
+msgid "Alert Handling"
+msgstr "Trauksmju apstrāde"
+
+#: syslog_device_rules.php
+msgid "Do not pause"
+msgstr "Nepauzēt"
+
+#: syslog_device_rules.php
+msgid "Pause all non-exempt alerts until a date, or indefinitely."
+msgstr "Pauzēt visas neizņemtās trauksmes līdz noteiktam datumam vai nenoteiktu laiku."
+
+#: syslog_device_rules.php
+msgid "Pause indefinitely"
+msgstr "Pauzēt nenoteiktu laiku"
+
+#: syslog_device_rules.php
+msgid "Pause until"
+msgstr "Pauzēt līdz"
+
+#: syslog_device_rules.php
+msgid "Local date and time, YYYY-MM-DD HH:MM."
+msgstr "Lokālais datums un laiks, GGGG-MM-DD HH:MM."
+
+#: syslog_device_rules.php
+msgid "Pause Ends"
+msgstr "Pauze beidzas"
+
+#: syslog_device_rules.php
+msgid "Always Allow Priority"
+msgstr "Vienmēr atļaut prioritāti"
+
+#: syslog_device_rules.php
+msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
+msgstr "Šīs prioritātes tiek laistas cauri šīs ierīces pauzes un apkopes logiem. Kritiskās un steidzamākās prioritātes ir tipiska izvēle augstākās prioritātes ierīcēm."
+
+#: syslog_device_rules.php
+msgid "Allow During Maintenance"
+msgstr "Atļaut apkopes laikā"
+
+#: syslog_device_rules.php
+msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
+msgstr "Atļaut visas prioritātes no šīs ierīces trauksmju apkopes loga laikā. Augstāk norādītais prioritātes izņēmums joprojām ir spēkā, ja šī vērtība ir Nē."
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [edit]"
+msgstr "Ierīces trauksmes kārtula [rediģēt]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [new]"
+msgstr "Ierīces trauksmes kārtula [jauna]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule Filters"
+msgstr "Ierīces trauksmes kārtulu filtri"
+
+#: syslog_device_rules.php syslog_removal.php
+msgid "Rules"
+msgstr "Kārtulas"
+
+#: syslog_device_rules.php
+msgid "Handling"
+msgstr "Apstrāde"
+
+#: syslog_device_rules.php
+msgid "Maintenance"
+msgstr "Apkope"
+
+#: syslog_device_rules.php
+msgid "Pass Through"
+msgstr "Laist cauri"
+
+#: syslog_device_rules.php
+msgid "No device alert rules found."
+msgstr "Nav atrasta neviena ierīces trauksmes kārtula."
+
+#: syslog_device_rules.php
+msgid "Not paused"
+msgstr "Nav pauzēts"
+
+#: syslog_device_rules.php
+msgid "Paused indefinitely"
+msgstr "Pauzēts nenoteiktu laiku"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Paused until %s"
+msgstr "Pauzēts līdz %s"
+
+#: syslog_device_rules.php
+msgid "and more urgent"
+msgstr "un steidzamākas"
+
+#: syslog_device_rules.php
+msgid "Allow all"
+msgstr "Atļaut visas"
+
+#: syslog_device_rules.php
+msgid "Use priority exception"
+msgstr "Izmantot prioritātes izņēmumu"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
+msgstr "Ieteikums netika saglabāts, jo %s. Ievadiet identifikatoru bez atstarpēm un vismaz skaidrojumu vai ieteicamo darbību."
+
+#: syslog_recommendations.php
+msgid "A recommendation for this vendor and identifier already exists."
+msgstr "Ieteikums šim ražotājam un identifikatoram jau pastāv."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
+msgstr "PIEZĪME: Identifikators %s satur rakstzīmes, kas nav burti, cipari, _ . - / un neobligāta burtiska sākuma %%, tāpēc tas nekad nevar atbilst syslog ziņojumam. Aizstājiet vietturus, piemēram, #, vai alternatīvas, piemēram, A|B, ar precīzu kodu."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Export the following Recommendation(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai eksportētu šādus ieteikumus."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Delete the following Recommendation(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai dzēstu šādus ieteikumus."
+
+#: syslog_recommendations.php
+msgid "Export requires the PHP zlib extension to create a JSON gzip file."
+msgstr "Eksportēšanai ir nepieciešams PHP zlib paplašinājums, lai izveidotu JSON gzip failu."
+
+#: syslog_recommendations.php
+msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
+msgstr "Importēšana noraidīta: fails ir tukšs, pārāk liels vai nav derīgs ieteikumu JSON dokuments."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
+msgstr "PIEZĪME: Pievienoti %d, atjaunināti %d un bez izmaiņām atstāti %d esošie ieteikumi."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
+msgstr "KĻŪDA: %d ieteikums(-i) tika noraidīts(-i) (piemēram, %s). Katrs no tiem ar iemeslu ir norādīts Cacti žurnālā."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
+msgstr "KĻŪDA: %d ieteikumu(-us) nevarēja saglabāt. Katrs no tiem ir norādīts Cacti žurnālā."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
+msgstr "PIEZĪME: %d importētajam(-iem) ieteikumam(-iem) ir identifikatori, kas satur tādas rakstzīmes kā | vai #, kuras nekad neparādās ziņojuma vārdā, tāpēc tie nevar atbilst, kamēr nav rediģēti. Iestatiet Var atbilst uz Nē, lai tos parādītu sarakstā."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Local File"
+msgstr "Importēt ieteikumus no lokālā faila"
+
+#: syslog_recommendations.php
+msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
+msgstr "Izvēlieties .json vai .json.gz failu savā lokālajā datorā. Izmantojiet funkciju Eksportēt, lai apskatītu paredzēto formātu: ierakstu sarakstu ar laukiem vendor, identifier, component, severity, message, explanation, recommended_action un reference."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Text"
+msgstr "Importēt ieteikumus no teksta"
+
+#: syslog_recommendations.php
+msgid "Alternatively, paste the JSON document into this box."
+msgstr "Kā alternatīvu varat ielīmēt JSON dokumentu šajā laukā."
+
+#: syslog_recommendations.php
+msgid "Existing Recommendations"
+msgstr "Esošie ieteikumi"
+
+#: syslog_recommendations.php
+msgid "A recommendation is the same as an existing one when its vendor and identifier match."
+msgstr "Ieteikums tiek uzskatīts par tādu pašu kā esošais, ja sakrīt tā ražotājs un identifikators."
+
+#: syslog_recommendations.php
+msgid "Keep the existing recommendation"
+msgstr "Saglabāt esošo ieteikumu"
+
+#: syslog_recommendations.php
+msgid "Replace it with the imported one"
+msgstr "Aizstāt ar importēto"
+
+#: syslog_recommendations.php
+msgid "Import Recommendations"
+msgstr "Importēt ieteikumus"
+
+#: syslog_recommendations.php
+msgid "Importing, please wait..."
+msgstr "Notiek importēšana, lūdzu, uzgaidiet..."
+
+#: syslog_recommendations.php
+msgid "Not specified"
+msgstr "Nav norādīts"
+
+#: syslog_recommendations.php
+msgid "Recommendation"
+msgstr "Ieteikums"
+
+#: syslog_recommendations.php
+msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
+msgstr "Ierīces vai programmatūras ražotājs, kas reģistrē šo ziņojumu, piemēram, Cisco vai Juniper."
+
+#: syslog_recommendations.php
+msgid "Vendor"
+msgstr "Ražotājs"
+
+#: syslog_recommendations.php
+msgid "Identifier"
+msgstr "Identifikators"
+
+#: syslog_recommendations.php
+msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
+msgstr "Meklējamais ziņojuma kods, piemēram, %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN vai 4625. Tam jābūt vienādam ar veselu syslog ziņojuma vārdu (burti, cipari un _ . - /); sākuma % ir burtisks un tam jāatbilst tieši tā, kā uzrakstīts. Salīdzināšana nav reģistrjutīga. Skatiet sadaļu Kā tiek noteikta ieteikumu atbilstība saraksta lapā."
+
+#: syslog_recommendations.php
+msgid "Component"
+msgstr "Komponents"
+
+#: syslog_recommendations.php
+msgid "The facility, module or subsystem that raises the message."
+msgstr "Kategorija, modulis vai apakšsistēma, kas ģenerē ziņojumu."
+
+#: syslog_recommendations.php
+msgid "The severity the vendor documents for this message."
+msgstr "Smaguma pakāpe, kuru ražotājs ir dokumentējis šim ziņojumam."
+
+#: syslog_recommendations.php
+msgid "The message format as documented, including its variable placeholders."
+msgstr "Dokumentētais ziņojuma formāts, iekļaujot tā mainīgo vietturus."
+
+#: syslog_recommendations.php
+msgid "What the message means."
+msgstr "Ko šis ziņojums nozīmē."
+
+#: syslog_recommendations.php
+msgid "What an operator should do about it."
+msgstr "Kas operatoram būtu jādara šajā gadījumā."
+
+#: syslog_recommendations.php
+msgid "Links to the vendor documentation, one per line."
+msgstr "Saites uz ražotāja dokumentāciju, pa vienai rindā."
+
+#: syslog_recommendations.php
+msgid "Recommendation [edit]"
+msgstr "Ieteikums [rediģēt]"
+
+#: syslog_recommendations.php
+msgid "Recommendation [new]"
+msgstr "Ieteikums [jauns]"
+
+#: syslog_recommendations.php
+msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
+msgstr "Spuldzītes ikona pirms ziņojuma apzīmē atbilstošos ieteikumus cilnēs Sistēmas žurnāli un Trauksmju žurnāli. Noklikšķiniet uz ziņojuma, lai tos izlasītu detalizētās informācijas uznirstošajā panelī. Kursora novietošana nekad neveic pieprasījumu serverim."
+
+#: syslog_recommendations.php
+msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
+msgstr "Atbilstības noteikšanai tiek izmantota tikai kolonna <b>Identifikators</b>. Ražotājs, komponents, smaguma pakāpe, ziņojums un skaidrojums tiek parādīti detalizētās informācijas uznirstošajā panelī, bet tajos nekad netiek meklēts."
+
+#: syslog_recommendations.php
+msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
+msgstr "Ziņojuma pirmās 2048 rakstzīmes tiek sadalītas vārdos. Vārds ir burtu, ciparu un rakstzīmju _ . - / virkne, kas var sākties ar %. Jebkura cita rakstzīme, piemēram, atstarpe, kols, komats vai iekava, pabeidz vārdu. Ziņojumā <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> vārdi ir <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> un <code>down</code>."
+
+#: syslog_recommendations.php
+msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
+msgstr "Identifikators atbilst, ja tas ir <b>precīzi vienāds ar vienu pilnu vārdu</b>, neņemot vērā reģistru. Tā nav meklēšana pēc nosacījumiem \"satur\", \"sākas ar\" vai \"beidzas ar\", un aizstājējzīmes netiek izmantotas: <code>LINK-3-UPDOWN</code> neatbilst vārdam <code>LINK-3-UPDOWN-EXT</code>, un <code>UPDOWN</code> neatbilst <code>%LINK-3-UPDOWN</code>."
+
+#: syslog_recommendations.php
+msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
+msgstr "Sākuma rakstzīme <b>%</b> ir burtiska, nevis aizstājējzīme, un tai precīzi jāatbilst ziņojuma vārdam, kā tas ir uzrakstīts. Identifikators <code>%LINK-3-UPDOWN</code> atbilst ziņojuma vārdam <code>%LINK-3-UPDOWN</code>, nevis <code>LINK-3-UPDOWN</code>; identifikators bez prefiksa atbilst tikai vārdam bez prefiksa."
+
+#: syslog_recommendations.php
+msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
+msgstr "Ja syslog resursdators ir Cacti ierīce, kuras ražotājs ir atpazīts pēc tās SNMP sistēmas apraksta vai ierīces veidnes, un šim ražotājam pastāv ieteikumi, tiek pārbaudīti tikai šī ražotāja ieteikumi un ieteikumi bez norādīta ražotāja. Pretējā gadījumā tiek pārbaudīti visi ražotāji, taču identifikators, kas sastāv tikai no cipariem, atbilst tikai ieteikumiem bez ražotāja. Ja atbilst vairāki ieteikumi, vispirms tiek parādīti visgarākie identifikatori, ne vairāk kā trīs."
+
+#: syslog_recommendations.php
+msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
+msgstr "Identifikatori, kas satur citas rakstzīmes, piemēram, slota vietturi <code>#</code> vai alternatīvu atdalītāju <code>|</code> atsevišķu ražotāju dokumentācijā (piemēram, <code>%ASA|PIX-3-331001</code>), tiek saglabāti un eksportēti, bet nekad nevar atbilst. Iestatiet <b>Var atbilst</b> uz Nē, lai tos parādītu sarakstā, un rediģējiet tos par precīzu kodu, piemēram, <code>%ASA-3-331001</code>."
+
+#: syslog_recommendations.php
+msgid "How Recommendations Are Matched"
+msgstr "Kā tiek noteikta ieteikumu atbilstība"
+
+#: syslog_recommendations.php
+msgid "Can Match"
+msgstr "Var atbilst"
+
+#: syslog_recommendations.php
+msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
+msgstr "Vai identifikatoram ir ziņojuma vārda forma, lai ziņojumu meklēšana to vispār varētu atrast"
+
+#: syslog_recommendations.php
+msgid "Export every recommendation that matches the filters"
+msgstr "Eksportēt visus ieteikumus, kas atbilst filtriem"
+
+#: syslog_recommendations.php
+msgid "No recommendations found."
+msgstr "Nav atrasts neviens ieteikums."
+
+#: syslog_removal.php
+msgid "Reprocess"
+msgstr "Apstrādāt atkārtoti"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai dzēstu šādas Syslog noņemšanas kārtulas."
+
+#: syslog_removal.php
+msgid "Delete Syslog Removal Rule(s)"
+msgstr "Dzēst Syslog noņemšanas kārtulas"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai atspējotu šādas Syslog noņemšanas kārtulas."
+
+#: syslog_removal.php
+msgid "Disable Syslog Removal Rule(s)"
+msgstr "Atspējot Syslog noņemšanas kārtulas"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai iespējotu šādas Syslog noņemšanas kārtulas."
+
+#: syslog_removal.php
+msgid "Enable Syslog Removal Rule(s)"
+msgstr "Iespējot Syslog noņemšanas kārtulas"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai atkārtoti apstrādātu šādas Syslog noņemšanas kārtulas."
+
+#: syslog_removal.php
+msgid "Retroactively Process Syslog Removal Rule(s)"
+msgstr "Retrospektīvi apstrādāt Syslog noņemšanas kārtulas"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai eksportētu šādas Syslog noņemšanas kārtulas."
+
+#: syslog_removal.php
+msgid "Export Syslog Removal Rule(s)"
+msgstr "Eksportēt Syslog noņemšanas kārtulas"
+
+#: syslog_removal.php
+#, php-format
+msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
+msgstr "Kārtula '%s': %s/%s ziņojumi noņemti/pārsūtīti"
+
+#: syslog_removal.php
+#, php-format
+msgid "Removal Rule Edit [edit: %s]"
+msgstr "Noņemšanas kārtulas rediģēšana [rediģēt: %s]"
+
+#: syslog_removal.php
+msgid "Removal Rule Edit [new]"
+msgstr "Noņemšanas kārtulas rediģēšana [jauna]"
+
+#: syslog_removal.php
+msgid "New Removal Record"
+msgstr "Jauns noņemšanas ieraksts"
+
+#: syslog_removal.php
+msgid "New Removal Rule"
+msgstr "Jauna noņemšanas kārtula"
+
+#: syslog_removal.php
+msgid "Removal Rule Details"
+msgstr "Noņemšanas kārtulas informācija"
+
+#: syslog_removal.php
+msgid "Removal Rule Name"
+msgstr "Noņemšanas kārtulas nosaukums"
+
+#: syslog_removal.php
+msgid "Please describe this Removal Rule."
+msgstr "Lūdzu, aprakstiet šo noņemšanas kārtulu."
+
+#: syslog_removal.php syslog_reports.php
+msgid "Enabled?"
+msgstr "Iespējots?"
+
+#: syslog_removal.php
+msgid "Is this Removal Rule Enabled?"
+msgstr "Vai šī noņemšanas kārtula ir iespējota?"
+
+#: syslog_removal.php syslog_reports.php
+msgid "String Match Type"
+msgstr "Virknes atbilstības veids"
+
+#: syslog_removal.php
+msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
+msgstr "Norādiet, kā vēlaties salīdzināt šo virkni. Izmantojot SQL izteiksmes veidu, trauksmes ģenerēšanai varat lietot jebkuru derīgu SQL izteiksmi. Pieejamie lauki ir 'message', 'facility', 'priority' un 'host'."
+
+#: syslog_removal.php
+msgid "Syslog Message Match String"
+msgstr "Syslog ziņojuma atbilstības virkne"
+
+#: syslog_removal.php
+msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
+msgstr "Ievadiet atbilstošo syslog ziņojuma daļu, kategoriju vai resursdatora nosaukumu, vai SQL WHERE klauzulu, ja izmantojat SQL izteiksmes atbilstības veidu."
+
+#: syslog_removal.php
+msgid "Method of Removal"
+msgstr "Noņemšanas metode"
+
+#: syslog_removal.php
+msgid "Deletion"
+msgstr "Dzēšana"
+
+#: syslog_removal.php
+msgid "Transferal"
+msgstr "Pārsūtīšana"
+
+#: syslog_removal.php
+msgid "Removal Rule Notes"
+msgstr "Noņemšanas kārtulas piezīmes"
+
+#: syslog_removal.php
+msgid "Space for Notes on the Removal rule"
+msgstr "Vieta piezīmēm par noņemšanas kārtulu"
+
+#: syslog_removal.php
+msgid "Removal filter conditions"
+msgstr "Noņemšanas filtra nosacījumi"
+
+#: syslog_removal.php
+msgid "Syslog Removal Rule Filters"
+msgstr "Syslog noņemšanas kārtulu filtri"
+
+#: syslog_removal.php
+msgid "Removal Name"
+msgstr "Noņemšanas nosaukums"
+
+#: syslog_removal.php
+msgid "Transfer"
+msgstr "Pārsūtīt"
+
+#: syslog_removal.php
+msgid "No Syslog Removal Rules Defined"
+msgstr "Nav definēta neviena Syslog noņemšanas kārtula"
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Local File"
+msgstr "Importēt noņemšanas kārtulu no lokālā faila"
+
+#: syslog_removal.php
+msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
+msgstr "Ja XML fails, kas satur noņemšanas kārtulas definīcijas datus, atrodas jūsu lokālajā datorā, izvēlieties to šeit."
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Text"
+msgstr "Importēt noņemšanas kārtulu no teksta"
+
+#: syslog_removal.php
+msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
+msgstr "Ja jums ir XML fails ar noņemšanas kārtulas definīcijas datiem teksta veidā, varat to ielīmēt šajā laukā, lai importētu."
+
+#: syslog_removal.php
+msgid "Import Removal Rule"
+msgstr "Importēt noņemšanas kārtulu"
+
+#: syslog_removal.php
+#, php-format
+msgid "NOTE: Removal Rule '%s' %s!"
+msgstr "PIEZĪME: Noņemšanas kārtula '%s' %s!"
+
+#: syslog_removal.php
+#, php-format
+msgid "ERROR: Removal Rule '%s' %s Failed!"
+msgstr "KĻŪDA: Noņemšanas kārtulas '%s' darbība %s neizdevās!"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Delete the following Syslog Report(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai dzēstu šādas Syslog atskaites."
+
+#: syslog_reports.php
+msgid "Delete Syslog Report(s)"
+msgstr "Dzēst Syslog atskaites"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Disable the following Syslog Report(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai atspējotu šādas Syslog atskaites."
+
+#: syslog_reports.php
+msgid "Disable Syslog Report(s)"
+msgstr "Atspējot Syslog atskaites"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Enable the following Syslog Report(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai iespējotu šādas Syslog atskaites."
+
+#: syslog_reports.php
+msgid "Enable Syslog Report(s)"
+msgstr "Iespējot Syslog atskaites"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai eksportētu šādas Syslog atskaišu kārtulas."
+
+#: syslog_reports.php
+msgid "Export Syslog Report Rule(s)"
+msgstr "Eksportēt Syslog atskaišu kārtulas"
+
+#: syslog_reports.php
+msgid "You must select at least one Syslog Report."
+msgstr "Jums jāizvēlas vismaz viena Syslog atskaite."
+
+#: syslog_reports.php
+msgid "Return"
+msgstr "Atgriezties"
+
+#: syslog_reports.php
+#, php-format
+msgid "Report Edit [edit: %s]"
+msgstr "Atskaites rediģēšana [rediģēt: %s]"
+
+#: syslog_reports.php
+msgid "Report Edit [new]"
+msgstr "Atskaites rediģēšana [jauna]"
+
+#: syslog_reports.php
+msgid "New Report Record"
+msgstr "Jauns atskaites ieraksts"
+
+#: syslog_reports.php
+msgid "Please describe this Report."
+msgstr "Lūdzu, aprakstiet šo atskaiti."
+
+#: syslog_reports.php
+msgid "Is this Report Enabled?"
+msgstr "Vai šī atskaite ir iespējota?"
+
+#: syslog_reports.php
+msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
+msgstr "Norādiet, kā vēlaties salīdzināt šo virkni. Filtru veidotājs apvieno nosacījumus ziņojumam, resursdatoram, programmai, kategorijai un prioritātei."
+
+#: syslog_reports.php
+msgid "Frequency"
+msgstr "Biežums"
+
+#: syslog_reports.php
+msgid "How often should this Report be sent to the distribution list?"
+msgstr "Cik bieži šī atskaite jānosūta adresātu sarakstam?"
+
+#: syslog_reports.php
+msgid "Send Time"
+msgstr "Nosūtīšanas laiks"
+
+#: syslog_reports.php
+msgid "What time of day should this report be sent?"
+msgstr "Kurā diennakts laikā šī atskaite jānosūta?"
+
+#: syslog_reports.php
+msgid "Report Format"
+msgstr "Atskaites formāts"
+
+#: syslog_reports.php
+msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
+msgstr "Izveidojiet filtra nosacījumus vai ievadiet tekstu vai SQL izteiksmi syslog ziņojumu atlasīšanai."
+
+#: syslog_reports.php
+msgid "The information that will be contained in the body of the Report."
+msgstr "Informācija, kas tiks iekļauta atskaites pamattekstā."
+
+#: syslog_reports.php
+msgid "Comma delimited list of Email addresses to send the report to."
+msgstr "Ar komatiem atdalīts e-pasta adrešu saraksts, uz kurām nosūtīt atskaiti."
+
+#: syslog_reports.php
+msgid "Space for Notes on the Report"
+msgstr "Vieta piezīmēm par atskaiti"
+
+#: syslog_reports.php
+msgid "Report Test Preview"
+msgstr "Atskaites testa priekšskatījums"
+
+#: syslog_reports.php
+msgid "Report filter conditions"
+msgstr "Atskaites filtra nosacījumi"
+
+#: syslog_reports.php
+msgid "Syslog Report Filters"
+msgstr "Syslog atskaišu filtri"
+
+#: syslog_reports.php
+msgid "Report Name"
+msgstr "Atskaites nosaukums"
+
+#: syslog_reports.php
+msgid "Last Sent"
+msgstr "Pēdējo reizi nosūtīts"
+
+#: syslog_reports.php
+msgid "Reports"
+msgstr "Atskaites"
+
+#: syslog_reports.php
+msgid "No Syslog Reports Defined"
+msgstr "Nav definēta neviena Syslog atskaite"
+
+#: syslog_reports.php
+msgid "Import Report Rule from Local File"
+msgstr "Importēt atskaites kārtulu no lokālā faila"
+
+#: syslog_reports.php
+msgid "If the XML file containing the Report Rule definition data is located on your local machine, select it here."
+msgstr "Ja XML fails, kas satur atskaites kārtulas definīcijas datus, atrodas jūsu lokālajā datorā, izvēlieties to šeit."
+
+#: syslog_reports.php
+msgid "Import Report Rule from Text"
+msgstr "Importēt atskaites kārtulu no teksta"
+
+#: syslog_reports.php
+msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
+msgstr "Ja jums ir XML fails ar atskaites kārtulas definīcijas datiem teksta veidā, varat to ielīmēt šajā laukā, lai importētu."
+
+#: syslog_reports.php
+msgid "Import Report Data"
+msgstr "Importēt atskaites datus"
+
+#: syslog_reports.php
+#, php-format
+msgid "NOTE: Report Rule '%s' %s!"
+msgstr "PIEZĪME: Atskaites kārtula '%s' %s!"
+
+#: syslog_reports.php
+#, php-format
+msgid "ERROR: Report Rule '%s' %s Failed!"
+msgstr "KĻŪDA: Atskaites kārtulas '%s' darbība %s neizdevās!"
+
+#: syslog_saved_searches.php
+msgid "Unable to save the template. Please try again."
+msgstr "Nevar saglabāt veidni. Lūdzu, mēģiniet vēlreiz."
+
+#: syslog_saved_searches.php
+msgid "Enter a template name between 1 and 128 characters."
+msgstr "Ievadiet veidnes nosaukumu garumā no 1 līdz 128 rakstzīmēm."
+
+#: syslog_saved_searches.php
+msgid "Templates"
+msgstr "Veidnes"
+
+#: syslog_saved_searches.php
+msgid "Query"
+msgstr "Vaicājums"
+
+#: syslog_saved_searches.php
+msgid "No shared search templates. Save a search for all users from Syslog to create one."
+msgstr "Nav koplietotu meklēšanas veidņu. Saglabājiet meklēšanu visiem lietotājiem sadaļā Syslog, lai izveidotu veidni."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Export the following Saved Search Template(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai eksportētu šādas saglabātās meklēšanas veidnes."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
+msgstr "Noklikšķiniet uz 'Turpināt', lai dzēstu šādas saglabātās meklēšanas veidnes."
+
+#: syslog_saved_searches.php
+msgid "Delete Saved Search Template(s)"
+msgstr "Dzēst saglabātās meklēšanas veidnes"
+
+#: syslog_saved_searches.php
+msgid "Export Saved Search Template(s)"
+msgstr "Eksportēt saglabātās meklēšanas veidnes"
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
+msgstr "PIEZĪME: Importētas %d un atjauninātas %d saglabātās meklēšanas veidnes."
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "ERROR: %d Saved Search Template(s) failed to import."
+msgstr "KĻŪDA: Neizdevās importēt %d saglabāto(-ās) meklēšanas veidni(-es)."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Local File"
+msgstr "Importēt saglabātās meklēšanas veidni no lokālā faila"
+
+#: syslog_saved_searches.php
+msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
+msgstr "Ja JSON fails, kas satur saglabātās meklēšanas veidnes definīcijas datus, atrodas jūsu lokālajā datorā, izvēlieties to šeit."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Text"
+msgstr "Importēt saglabātās meklēšanas veidni no teksta"
+
+#: syslog_saved_searches.php
+msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
+msgstr "Ja jums ir JSON fails ar saglabātās meklēšanas veidnes definīcijas datiem teksta veidā, varat to ielīmēt šajā laukā, lai importētu."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template"
+msgstr "Importēt saglabātās meklēšanas veidni"
+
+#: syslog_saved_searches.php
+msgid "Edit Saved Search Template"
+msgstr "Rediģēt saglabātās meklēšanas veidni"
+
+#: syslog_saved_searches.php
+msgid "The name shown to all users in Saved Searches."
+msgstr "Nosaukums, kas tiek rādīts visiem lietotājiem sadaļā Saglabātās meklēšanas."
+
+#: syslog_saved_searches.php
+msgid "The account that owns this template and can manage it in Saved Searches."
+msgstr "Konts, kuram pieder šī veidne un kurš to var pārvaldīt sadaļā Saglabātās meklēšanas."
+
+#: syslog_saved_searches.php
+msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
+msgstr "Lietotāji, kuri var izmantot šo veidni papildus tās īpašniekam. Opcija Visi lietotāji koplieto to ar visiem."
+
+#: syslog_saved_searches.php
+msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
+msgstr "Grupas, kuras var izmantot šo veidni papildus tās īpašniekam. Opcija Visas grupas koplieto to ar visiem."
+
+#: syslog_saved_searches.php
+msgid "Search Query"
+msgstr "Meklēšanas vaicājums"
+
+#: syslog_saved_searches.php
+msgid "Correct the query syntax to use the query builder."
+msgstr "Izlabojiet vaicājuma sintaksi, lai izmantotu vaicājumu veidotāju."
+
+#: syslog_saved_searches.php
+msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
+msgstr "Izvēlieties lauku, operatoru un vērtību. Izmantojiet AND, OR, NOT vai Grupa, lai izveidotu vaicājumu. Izmaiņas attiecas uz šo koplietoto veidni visiem lietotājiem."
